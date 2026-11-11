@@ -7,7 +7,8 @@
  * Salida:  public/data/paises-2010.json y docs/datos-cobertura.md
  * Uso:     node scripts/datos/10-construir.ts
  */
-import { escribirJsonCompacto, escribirTexto, leerJson } from './lib/comun.ts';
+import { existsSync } from 'node:fs';
+import { escribirJsonCompacto, escribirTexto, leerJson, ruta } from './lib/comun.ts';
 import { construir, type Entradas } from './lib/construir.ts';
 import { informeCobertura } from './lib/informe.ts';
 import { leerPaises } from './lib/paises.ts';
@@ -49,6 +50,11 @@ escribirTexto(
       Object.values(entradas.archivos).map((a) => [a.fuente, a.descargado]),
     ),
     notas: [...incidencias, ...(entradas.archivos.recursos.notas ?? [])],
+    // Las banderas se ven en GitHub al abrir el informe (las descarga 07-banderas.ts).
+    bandera: (pais) =>
+      existsSync(ruta(`public/av/banderas/${pais.id}.svg`))
+        ? `../public/av/banderas/${pais.id}.svg`
+        : null,
   }),
 );
 

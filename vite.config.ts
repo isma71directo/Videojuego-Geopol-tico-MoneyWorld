@@ -40,10 +40,11 @@ export default defineConfig({
   plugins: [publicarRoadmap()],
   build: {
     rollupOptions: {
-      // Dos webs independientes: el juego y la Hoja de ruta.
+      // Webs independientes: el juego, la Hoja de ruta y la galería audiovisual.
       input: {
         juego: ruta('./index.html'),
         'hoja-de-ruta': ruta('./hoja-de-ruta/index.html'),
+        galeria: ruta('./galeria/index.html'),
       },
     },
   },

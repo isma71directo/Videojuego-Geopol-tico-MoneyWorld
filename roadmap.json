@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T19:13:43Z",
+  "actualizado": "2026-11-11T23:44:54Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 casi completa: descargadas las fuentes (Banco Mundial, FMI, Our World in Data, Wikidata) y generado public/data/paises-2010.json con 202 países y territorios y 62 campos, validado, con valores de respaldo marcados como estimados e informe de cobertura en docs/datos-cobertura.md.",
-    "siguientePaso": "Banderas de 2010 e iconos de indicadores (tarea f1-t9) y abrir el PR de la Fase 1.",
+    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 completa en su rama: datos reales de 2010 de 202 países y territorios (62 campos, validados, con estimaciones marcadas), informe de cobertura, banderas de 2010, iconos de indicadores, galería audiovisual y créditos.",
+    "siguientePaso": "Cerrar la Fase 1: subir a la versión 0.2.0 y abrir el PR.",
     "pendienteDelJugador": [
       "Confirmar o corregir las decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego, material que no se puede generar con código, territorios especiales jugables y territorios dependientes"
     ]
@@ -186,34 +186,34 @@
           "titulo": "Valores de respaldo para datos que falten (por región y nivel de renta), marcados como estimados",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t6",
           "titulo": "Validación: rangos lógicos, sumas coherentes (sectores ≈ 100 % del PIB) y ausencia de duplicados",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t7",
           "titulo": "Informe de cobertura (/docs/datos-cobertura.md): qué porcentaje de datos es real o estimado por país",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t8",
           "titulo": "Salida final: /public/data/paises-2010.json",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t9",
           "titulo": "Audiovisual: banderas de todos los países y territorios vigentes el 1 de enero de 2010 (SVG de licencia libre, descargadas con un script reproducible; ojo con las que han cambiado después, como Libia, Birmania, Siria, Mauritania o Afganistán) e iconos vectoriales de los indicadores básicos (población, PIB, paro, inflación, deuda, energía). Créditos en /docs/creditos.md",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         }
       ]

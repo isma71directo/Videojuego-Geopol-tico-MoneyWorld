@@ -17,5 +17,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "hoja-de-ruta", "tests", "scripts", "vite.config.ts"]
+  "include": ["src", "hoja-de-ruta", "galeria", "tests", "scripts", "vite.config.ts"]
 }

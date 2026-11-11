@@ -106,7 +106,35 @@
       "juego": "Ir al juego",
       "repositorio": "Código en GitHub",
       "diseno": "Documento de diseño",
-      "reportar": "Reportar fallo / sugerencia"
+      "reportar": "Reportar fallo / sugerencia",
+      "galeria": "Galería audiovisual"
+    }
+  },
+  "galeria": {
+    "titulo": "Galería audiovisual",
+    "subtitulo": "El contenido gráfico del juego, para revisarlo de un vistazo.",
+    "juego": "Ir al juego",
+    "hojaDeRuta": "Hoja de ruta",
+    "cargando": "Cargando las banderas…",
+    "error": "No se han podido cargar los datos de los países. Comprueba la conexión.",
+    "iconos": {
+      "titulo": "Iconos de indicadores",
+      "nota": "Dibujados para el juego; toman el color del texto que los rodea.",
+      "poblacion": "Población",
+      "pib": "PIB",
+      "crecimiento": "Crecimiento",
+      "paro": "Paro",
+      "inflacion": "Inflación",
+      "deuda": "Deuda",
+      "energia": "Energía",
+      "emisiones": "Emisiones"
+    },
+    "banderas": {
+      "titulo": "Banderas de los {n} Estados",
+      "nota": "Tal como eran el 1 de enero de 2010: Libia, Birmania, Siria, Mauritania, Afganistán y Kirguistán tenían otra bandera.",
+      "especiales": "Territorios de estatus especial ({n})",
+      "notaEspeciales": "Territorios en disputa o con reconocimiento parcial en 2010.",
+      "alt": "Bandera de {pais}"
     }
   }
 }
