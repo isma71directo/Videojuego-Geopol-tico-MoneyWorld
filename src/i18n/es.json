@@ -35,7 +35,7 @@
       "boton": "Reportar fallo / sugerencia",
       "titulo": "Reportar fallo o sugerencia",
       "explicacion": "Elige qué quieres contar. Se abrirá GitHub con el aviso ya preparado: solo tienes que escribir la descripción y enviarlo.",
-      "cuenta": "Hace falta haber iniciado sesión en GitHub. La versión del juego se añade sola.",
+      "cuenta": "Hace falta haber iniciado sesión en GitHub.",
       "fallo": {
         "titulo": "Fallo",
         "descripcion": "Algo no funciona como debería."
@@ -47,7 +47,12 @@
       "datos": {
         "titulo": "Datos",
         "descripcion": "Un dato real del juego es incorrecto o falta."
-      }
+      },
+      "datosTitulo": "Datos que se añaden al aviso",
+      "datosAyuda": "Si GitHub abre el formulario sin estos datos, cópialos aquí y pégalos al final.",
+      "copiar": "Copiar datos del juego",
+      "copiado": "Copiados.",
+      "noCopiado": "No se han podido copiar."
     }
   },
   "hojaDeRuta": {

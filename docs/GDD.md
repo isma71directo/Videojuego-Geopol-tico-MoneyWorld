@@ -1515,6 +1515,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Multijugador | No / por turnos / tiempo real | No hasta la v2.0 (requiere servidor y coste) |
 | Dificultad | Fácil / Normal / Realista | Las tres, cambiando la tolerancia de votantes, mercados e IA |
 | Proyección del mapa | Robinson / Equal Earth / Mercator | Equal Earth (proporciones reales, aspecto de mapa político) |
+| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 5 |
 
 ---
 

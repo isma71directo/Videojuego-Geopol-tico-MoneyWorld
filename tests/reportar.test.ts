@@ -20,12 +20,20 @@ const plantilla = (tipo: string): string =>
   readFileSync(new URL(`../.github/ISSUE_TEMPLATE/${tipo}.md`, import.meta.url), 'utf8');
 
 describe('botón «Reportar fallo / sugerencia»', () => {
-  it('abre una issue nueva del repositorio con su plantilla y su etiqueta', () => {
+  it('abre una issue nueva del repositorio con su etiqueta', () => {
     for (const tipo of TIPOS_REPORTE) {
       const url = new URL(urlReporte(REPO, tipo, sinPartida));
       expect(url.origin + url.pathname).toBe(`${REPO}/issues/new`);
-      expect(url.searchParams.get('template')).toBe(`${tipo}.md`);
       expect(url.searchParams.get('labels')).toBe(tipo);
+    }
+  });
+
+  it('no pide la plantilla en la dirección, para que GitHub respete el texto rellenado', () => {
+    // Con «template», GitHub ignoraba el «body» y la issue llegaba sin versión (issue #3).
+    for (const tipo of TIPOS_REPORTE) {
+      const url = new URL(urlReporte(REPO, tipo, sinPartida));
+      expect(url.searchParams.has('template')).toBe(false);
+      expect(url.searchParams.get('body')).toContain('- Versión: v0.1.0');
     }
   });
 
@@ -66,6 +74,13 @@ describe('botón «Reportar fallo / sugerencia»', () => {
 describe('plantillas de issue', () => {
   it.each(TIPOS_REPORTE)('la plantilla «%s» existe y lleva su etiqueta', (tipo) => {
     expect(plantilla(tipo)).toMatch(new RegExp(`^labels: ${tipo}$`, 'm'));
+  });
+
+  it.each(TIPOS_REPORTE)('la plantilla «%s» no lleva comentarios HTML', (tipo) => {
+    // En el móvil es fácil escribir dentro del comentario o romper su cierre,
+    // y entonces GitHub oculta el resto de la issue (issue #3).
+    expect(plantilla(tipo)).not.toContain('<!--');
+    expect(cuerpoReporte(tipo, sinPartida)).not.toContain('<!--');
   });
 
   it.each(TIPOS_REPORTE)('el botón del juego usa los apartados de «%s»', (tipo) => {

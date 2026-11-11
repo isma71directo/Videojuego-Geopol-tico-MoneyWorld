@@ -7,6 +7,20 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.1.1 - 2026-11-11
+
+### Corregido
+
+- Los avisos enviados con «Reportar fallo / sugerencia» llegaban sin la versión del juego: GitHub
+  cargaba la plantilla e ignoraba el texto ya rellenado (issue n.º 3).
+- Las plantillas de issue llevaban una pista oculta que, al escribir desde el móvil, podía esconder
+  el resto del aviso. Se ha quitado.
+
+### Añadido
+
+- La hoja de reporte muestra los datos del juego que se añaden al aviso y permite copiarlos, por si
+  GitHub abre el formulario sin ellos.
+
 ## 0.1.0 - 2026-11-11
 
 Fase 0 · Cimientos del proyecto.
