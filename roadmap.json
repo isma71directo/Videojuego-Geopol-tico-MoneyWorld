@@ -1,14 +1,14 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.2.0",
-  "actualizado": "2026-11-11T23:45:24Z",
+  "actualizado": "2026-11-11T23:46:12Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
     "resumen": "Fase 1 completa en su rama y versión 0.2.0: datos reales de 2010 de 202 países y territorios (62 campos, validados, con las estimaciones marcadas), informe de cobertura, banderas de 2010, iconos de indicadores, galería audiovisual y créditos. Además, el contenido audiovisual está añadido a todas las fases (GDD 7.1 y regla 19).",
     "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 1 como hecha y planificar la Fase 2 (mapa 2D base), incluida la propuesta de 3D del globo de inicio.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 1 (v0.2.0)",
+      "Fusionar el PR n.º 6 (Fase 1, v0.2.0)",
       "Prueba en el móvil: abrir docs/datos-cobertura.md en GitHub y revisar 3 países conocidos; abrir la galería audiovisual y revisar las banderas",
       "Confirmar o corregir las decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego, material que no se puede generar con código, territorios especiales jugables y territorios dependientes"
     ]
