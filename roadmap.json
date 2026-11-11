@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.0",
-  "actualizado": "2026-11-11T15:28:30Z",
+  "actualizado": "2026-11-11T15:29:06Z",
   "faseActiva": "fase-0",
   "ultimaSesion": {
     "fecha": "2026-11-11",
     "resumen": "Fase 0 completa en su rama: proyecto (Vite + TypeScript + Vitest), estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, publicación con GitHub Actions, web de la Hoja de ruta, pantalla de inicio, botón para reportar fallos e ideas y CHANGELOG.",
-    "siguientePaso": "Abrir el PR de la Fase 0. Cuando el jugador confirme que la publicación funciona, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
+    "siguientePaso": "PR de la Fase 0 abierto (https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/pull/2). Cuando el jugador confirme que la publicación funciona, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
     "pendienteDelJugador": [
-      "En GitHub: Settings → Pages → Source: GitHub Actions",
-      "Fusionar el PR de la Fase 0 en main y esperar a que termine la publicación",
+      "En GitHub: Settings → Pages → Source: GitHub Actions (antes de fusionar)",
+      "Fusionar el PR n.º 2 (Fase 0) en main y esperar a que termine la publicación",
       "Prueba en el móvil: abrir la web, entrar en la Hoja de ruta, desplegar fases y enviar una issue de prueba"
     ]
   },
