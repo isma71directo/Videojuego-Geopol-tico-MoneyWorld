@@ -65,6 +65,11 @@
     "VAT": "Ciudad del Vaticano"
   },
 
+  "nivelesRenta": {
+    "_nota": "Nivel de renta de 2010 fijado a mano donde no hay RNB per cápita (aproximación, a revisar con el jugador). El resto se calcula con los umbrales del Banco Mundial para 2010.",
+    "PRK": "bajo"
+  },
+
   "capitales": {
     "_nota": "Capital el 1 de enero de 2010 cuando Wikidata da varias a la vez o ninguna. En países con varias capitales se usa la sede del gobierno.",
     "BOL": "La Paz",
@@ -80,6 +85,8 @@
       "iso2": "VA",
       "region": "ECS",
       "jugable": false,
+      "wikidata": "Q237",
+      "nivelRenta": "alto",
       "nota": "No figura en el Banco Mundial ni en el FMI; sin datos económicos."
     }
   ],
@@ -120,6 +127,7 @@
     },
     {
       "id": "ESH",
+      "nivelRenta": "medio-bajo",
       "iso2": "EH",
       "nombre": "Sáhara Occidental",
       "capital": "El Aaiún",
@@ -131,6 +139,7 @@
     },
     {
       "id": "SOL",
+      "nivelRenta": "bajo",
       "iso2": null,
       "nombre": "Somalilandia",
       "capital": "Hargeisa",
@@ -142,6 +151,7 @@
     },
     {
       "id": "CYN",
+      "nivelRenta": "medio-alto",
       "iso2": null,
       "nombre": "Chipre del Norte",
       "capital": "Nicosia Norte",
@@ -153,6 +163,7 @@
     },
     {
       "id": "PMR",
+      "nivelRenta": "medio-bajo",
       "iso2": null,
       "nombre": "Transnistria",
       "capital": "Tiráspol",
@@ -164,6 +175,7 @@
     },
     {
       "id": "ABK",
+      "nivelRenta": "medio-bajo",
       "iso2": null,
       "nombre": "Abjasia",
       "capital": "Sujumi",
@@ -175,6 +187,7 @@
     },
     {
       "id": "SOS",
+      "nivelRenta": "medio-bajo",
       "iso2": null,
       "nombre": "Osetia del Sur",
       "capital": "Tsjinval",

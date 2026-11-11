@@ -23,10 +23,20 @@ interface Manual {
   regionesCorregidas: Record<string, string>;
   nombres: Record<string, string>;
   capitales: Record<string, string>;
-  extra: { id: string; iso2: string; region: string; jugable: boolean; nota?: string }[];
+  nivelesRenta: Record<string, string>;
+  extra: {
+    id: string;
+    iso2: string;
+    region: string;
+    jugable: boolean;
+    wikidata?: string;
+    nivelRenta?: string;
+    nota?: string;
+  }[];
   especiales: (Pick<PaisBase, 'id' | 'iso2' | 'nombre' | 'capital' | 'region' | 'jugable'> & {
     estatus: string;
     reclamadoPor: string | null;
+    nivelRenta?: string;
     codigos: PaisBase['codigos'];
   })[];
 }
@@ -141,6 +151,7 @@ for (const pais of respuestaBM[1]) {
     region,
     regionNombre: manual.regiones[region]!,
     codigos: { bm: pais.id, fmi: pais.id, owid: pais.id, wikidata: null },
+    ...(manual.nivelesRenta[pais.id] ? { nivelRentaManual: manual.nivelesRenta[pais.id] } : {}),
     ...(Array.isArray(fusion) ? { componentes: fusion } : {}),
   });
 }
@@ -156,7 +167,8 @@ for (const extra of manual.extra) {
     ...elegirCapital(extra.id, capitales.get(extra.id), ''),
     region: extra.region,
     regionNombre: manual.regiones[extra.region]!,
-    codigos: { bm: null, fmi: null, owid: extra.id, wikidata: null },
+    codigos: { bm: null, fmi: null, owid: extra.id, wikidata: extra.wikidata ?? null },
+    ...(extra.nivelRenta ? { nivelRentaManual: extra.nivelRenta } : {}),
     ...(extra.nota ? { nota: extra.nota } : {}),
   });
 }
@@ -176,6 +188,7 @@ for (const especial of manual.especiales) {
     estatus: especial.estatus,
     reclamadoPor: especial.reclamadoPor,
     codigos: especial.codigos,
+    ...(especial.nivelRenta ? { nivelRentaManual: especial.nivelRenta } : {}),
   });
 }
 

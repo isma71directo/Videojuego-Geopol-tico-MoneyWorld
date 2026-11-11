@@ -1,0 +1,53 @@
+{
+  "fuente": "Wikidata (población con fecha) y Banco Mundial (crecimiento del país de referencia)",
+  "url": "https://query.wikidata.org",
+  "descargado": "2026-11-11",
+  "territorios": {
+    "ABK": {
+      "poblacion": {
+        "valor": 247432,
+        "anioDato": 2016,
+        "metodo": "retroproyectado",
+        "referencia": "GEO"
+      }
+    },
+    "CYN": {
+      "poblacion": {
+        "valor": 287856,
+        "anioDato": 2010,
+        "metodo": "directo"
+      }
+    },
+    "PMR": {
+      "poblacion": {
+        "valor": 505955,
+        "anioDato": 2014,
+        "metodo": "retroproyectado",
+        "referencia": "MDA"
+      }
+    },
+    "SOL": {
+      "poblacion": {
+        "valor": 4192792,
+        "anioDato": 2024,
+        "metodo": "retroproyectado",
+        "referencia": "SOM"
+      }
+    },
+    "SOS": {
+      "poblacion": {
+        "valor": 54415,
+        "anioDato": 2015,
+        "metodo": "retroproyectado",
+        "referencia": "GEO"
+      }
+    },
+    "VAT": {
+      "poblacion": {
+        "valor": 466,
+        "anioDato": 2009,
+        "metodo": "directo"
+      }
+    }
+  }
+}

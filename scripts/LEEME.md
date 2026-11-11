@@ -1,11 +1,34 @@
 # /scripts
 
 Scripts de Node que descargan y procesan los datos reales del juego (GDD, sección 4).
+Están escritos en TypeScript y Node 22 los ejecuta directamente.
 
 Reglas:
 
 - Cada script es **reproducible** e indica la **fuente** y el **año** de cada dato.
-- Los datos que falten se rellenan con valores de respaldo marcados como `"estimado": true`.
+- Los datos que falten se rellenan con valores de respaldo marcados como estimados.
 - La salida va a `/public/data/`. Nunca se editan a mano los archivos generados.
 
-Los primeros scripts llegan en la Fase 1 (datos reales de 2010).
+## Datos de países de 2010 (`scripts/datos/`)
+
+```bash
+npm run datos:descargar   # descarga todas las fuentes (necesita red) → fuentes/datos/
+npm run datos:construir   # une, estima, valida y genera el resultado (sin red)
+npm run datos             # las dos cosas seguidas
+```
+
+| Script                | Qué hace                                                                             | Salida                                                     |
+| --------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| `01-paises.ts`        | Tabla de países y territorios de 2010 (Banco Mundial, Wikidata, CLDR y tabla manual) | `fuentes/datos/paises.json`                                |
+| `02-banco-mundial.ts` | Indicadores WDI de 2008–2010                                                         | `fuentes/datos/banco-mundial.json`                         |
+| `03-fmi.ts`           | Indicadores WEO de 2008–2010                                                         | `fuentes/datos/fmi.json`                                   |
+| `04-owid.ts`          | Energía y emisiones de Our World in Data                                             | `fuentes/datos/owid-*.json`                                |
+| `05-recursos.ts`      | Reservas y producción de recursos naturales                                          | `fuentes/datos/recursos.json`                              |
+| `06-territorios.ts`   | Población de los territorios sin datos oficiales (Wikidata)                          | `fuentes/datos/territorios.json`                           |
+| `10-construir.ts`     | Une las fuentes, aplica los valores de respaldo y valida                             | `public/data/paises-2010.json` y `docs/datos-cobertura.md` |
+
+- `manual/paises-2010.json` es la única tabla hecha a mano: territorios especiales, nombres y
+  capitales de 2010, Sudán unido y niveles de renta sin dato.
+- `lib/campos.ts` es el catálogo de campos: fuente, respaldo y límites de cada uno.
+- Lo descargado se guarda ya reducido en `fuentes/datos/`, así que construir y pasar los tests no
+  necesita red. Un test comprueba que `public/data/paises-2010.json` está al día con esas fuentes.

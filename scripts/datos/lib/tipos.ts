@@ -23,6 +23,8 @@ export interface PaisBase {
   reclamadoPor?: string | null;
   /** Códigos de este país en cada fuente; null si la fuente no lo cubre. */
   codigos: { bm: string | null; fmi: string | null; owid: string | null; wikidata: string | null };
+  /** Nivel de renta fijado a mano cuando no hay RNB per cápita de 2010. */
+  nivelRentaManual?: string;
   /** Códigos del Banco Mundial que hay que sumar (p. ej. Sudán = SDN + SSD). */
   componentes?: string[];
   nota?: string;

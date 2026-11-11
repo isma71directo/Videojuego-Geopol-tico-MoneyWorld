@@ -1,14 +1,14 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T19:04:56Z",
+  "actualizado": "2026-11-11T19:13:43Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 en marcha: tabla de los 202 países y territorios de 2010, indicadores del Banco Mundial y del FMI, energía y emisiones, y recursos naturales (reservas fósiles de 2010 y producción minera; faltan hierro, níquel y tierras raras por país).",
-    "siguientePaso": "Unir todas las fuentes, aplicar los valores de respaldo y generar public/data/paises-2010.json (tareas f1-t5 y f1-t8).",
+    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 casi completa: descargadas las fuentes (Banco Mundial, FMI, Our World in Data, Wikidata) y generado public/data/paises-2010.json con 202 países y territorios y 62 campos, validado, con valores de respaldo marcados como estimados e informe de cobertura en docs/datos-cobertura.md.",
+    "siguientePaso": "Banderas de 2010 e iconos de indicadores (tarea f1-t9) y abrir el PR de la Fase 1.",
     "pendienteDelJugador": [
-      "Confirmar o corregir las tres decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego y material que no se puede generar con código"
+      "Confirmar o corregir las decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego, material que no se puede generar con código, territorios especiales jugables y territorios dependientes"
     ]
   },
   "etapas": [
@@ -172,7 +172,7 @@
           "titulo": "Script de recursos: reservas y producción (petróleo, gas, carbón, minerales principales)",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/9a6a387"
         },
         {
           "id": "f1-t4",
@@ -184,29 +184,29 @@
         {
           "id": "f1-t5",
           "titulo": "Valores de respaldo para datos que falten (por región y nivel de renta), marcados como estimados",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
           "id": "f1-t6",
           "titulo": "Validación: rangos lógicos, sumas coherentes (sectores ≈ 100 % del PIB) y ausencia de duplicados",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
           "id": "f1-t7",
           "titulo": "Informe de cobertura (/docs/datos-cobertura.md): qué porcentaje de datos es real o estimado por país",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
           "id": "f1-t8",
           "titulo": "Salida final: /public/data/paises-2010.json",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {

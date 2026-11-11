@@ -19,7 +19,8 @@
         "fmi": null,
         "owid": null,
         "wikidata": "Q23334"
-      }
+      },
+      "nivelRentaManual": "medio-bajo"
     },
     {
       "id": "AFG",
@@ -752,7 +753,8 @@
         "fmi": null,
         "owid": null,
         "wikidata": "Q23681"
-      }
+      },
+      "nivelRentaManual": "medio-alto"
     },
     {
       "id": "CYP",
@@ -958,7 +960,8 @@
         "fmi": null,
         "owid": "ESH",
         "wikidata": "Q6250"
-      }
+      },
+      "nivelRentaManual": "medio-bajo"
     },
     {
       "id": "ESP",
@@ -2439,7 +2442,8 @@
         "fmi": null,
         "owid": null,
         "wikidata": "Q907112"
-      }
+      },
+      "nivelRentaManual": "medio-bajo"
     },
     {
       "id": "PNG",
@@ -2490,7 +2494,8 @@
         "fmi": "PRK",
         "owid": "PRK",
         "wikidata": null
-      }
+      },
+      "nivelRentaManual": "bajo"
     },
     {
       "id": "PRT",
@@ -2770,7 +2775,8 @@
         "fmi": null,
         "owid": null,
         "wikidata": "Q34754"
-      }
+      },
+      "nivelRentaManual": "bajo"
     },
     {
       "id": "SOM",
@@ -2806,7 +2812,8 @@
         "fmi": null,
         "owid": null,
         "wikidata": "Q23427"
-      }
+      },
+      "nivelRentaManual": "medio-bajo"
     },
     {
       "id": "SRB",
@@ -3283,8 +3290,9 @@
         "bm": null,
         "fmi": null,
         "owid": "VAT",
-        "wikidata": null
+        "wikidata": "Q237"
       },
+      "nivelRentaManual": "alto",
       "nota": "No figura en el Banco Mundial ni en el FMI; sin datos económicos."
     },
     {

@@ -19,6 +19,11 @@ type Columnas = Record<string, { columna: string; descripcion: string; unidad: s
 const TWH = 'TWh';
 
 const ENERGIA: Columnas = {
+  poblacion: {
+    columna: 'population',
+    descripcion: 'Población (Naciones Unidas, vía OWID)',
+    unidad: 'habitantes',
+  },
   generacionElectrica: {
     columna: 'electricity_generation',
     descripcion: 'Generación eléctrica',

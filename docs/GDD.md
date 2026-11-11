@@ -1604,6 +1604,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | Solo componentes complementarios, confirmados fase a fase; el mapa sigue en 2D |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
+| Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | Jugables Kosovo, Taiwán y Palestina (tienen datos reales); los demás, no, hasta tener datos fiables |
+| Territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) | Países aparte / regiones de su país soberano | No están en los datos de la Fase 1; decidir al hacer el mapa (Fases 2 y 3) |
 
 ---
 
