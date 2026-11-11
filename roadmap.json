@@ -1,13 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T23:44:54Z",
+  "versionActual": "0.2.0",
+  "actualizado": "2026-11-11T23:45:24Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 completa en su rama: datos reales de 2010 de 202 países y territorios (62 campos, validados, con estimaciones marcadas), informe de cobertura, banderas de 2010, iconos de indicadores, galería audiovisual y créditos.",
-    "siguientePaso": "Cerrar la Fase 1: subir a la versión 0.2.0 y abrir el PR.",
+    "resumen": "Fase 1 completa en su rama y versión 0.2.0: datos reales de 2010 de 202 países y territorios (62 campos, validados, con las estimaciones marcadas), informe de cobertura, banderas de 2010, iconos de indicadores, galería audiovisual y créditos. Además, el contenido audiovisual está añadido a todas las fases (GDD 7.1 y regla 19).",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 1 como hecha y planificar la Fase 2 (mapa 2D base), incluida la propuesta de 3D del globo de inicio.",
     "pendienteDelJugador": [
+      "Fusionar el PR de la Fase 1 (v0.2.0)",
+      "Prueba en el móvil: abrir docs/datos-cobertura.md en GitHub y revisar 3 países conocidos; abrir la galería audiovisual y revisar las banderas",
       "Confirmar o corregir las decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego, material que no se puede generar con código, territorios especiales jugables y territorios dependientes"
     ]
   },
@@ -214,7 +216,7 @@
           "titulo": "Audiovisual: banderas de todos los países y territorios vigentes el 1 de enero de 2010 (SVG de licencia libre, descargadas con un script reproducible; ojo con las que han cambiado después, como Libia, Birmania, Siria, Mauritania o Afganistán) e iconos vectoriales de los indicadores básicos (población, PIB, paro, inflación, deuda, energía). Créditos en /docs/creditos.md",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d89b1e2"
         }
       ]
     },
@@ -3036,6 +3038,18 @@
         "Corregido: los avisos enviados con «Reportar fallo / sugerencia» llevan ya la versión del juego",
         "Las plantillas de issue ya no llevan texto oculto que estorbaba al escribir desde el móvil",
         "La hoja de reporte muestra los datos del juego que se añaden y permite copiarlos"
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "fecha": "2026-11-11",
+      "cambios": [
+        "Datos reales de partida de 202 países y territorios a 1 de enero de 2010: población, economía, Estado, sociedad, energía, emisiones y recursos (62 campos)",
+        "Cada dato indica su fuente y su año; los que faltan se estiman por región y nivel de renta y quedan marcados como estimados",
+        "Informe de cobertura de los datos (docs/datos-cobertura.md)",
+        "Banderas de todos los países tal como eran en 2010 e iconos de los indicadores",
+        "Nueva galería audiovisual (/galeria/) para revisar banderas e iconos",
+        "Contenido audiovisual añadido a todas las fases del diseño"
       ]
     }
   ]

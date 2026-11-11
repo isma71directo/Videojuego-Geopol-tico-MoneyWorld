@@ -7,6 +7,28 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.2.0 - 2026-11-11
+
+Fase 1 · Datos reales de 2010.
+
+### Añadido
+
+- Datos reales de partida de 202 países y territorios a 1 de enero de 2010 (193 Estados y 9
+  territorios de estatus especial) en `public/data/paises-2010.json`: 62 campos de demografía,
+  economía, Estado, sociedad, energía, emisiones y recursos naturales.
+- Scripts reproducibles en `scripts/datos/` que descargan el Banco Mundial, el FMI, Our World in
+  Data y Wikidata, unen las fuentes y validan el resultado (`npm run datos`).
+- Cada valor indica su fuente y su año. Los que faltan se estiman por región y nivel de renta y
+  quedan marcados como estimados.
+- Informe de cobertura (`docs/datos-cobertura.md`) y créditos (`docs/creditos.md`).
+- Banderas de todos los países tal como eran en 2010 e iconos de los indicadores.
+- Galería audiovisual (`/galeria/`), enlazada desde la Hoja de ruta.
+
+### Diseño
+
+- Contenido audiovisual en todas las fases (GDD, sección 7.1, y regla 19). El 3D se permite en
+  componentes complementarios; el mapa de juego sigue en 2D.
+
 ## 0.1.1 - 2026-11-11
 
 ### Corregido
