@@ -97,6 +97,23 @@ export function fasesDeEtapa(roadmap: Roadmap, etapaId: string): Fase[] {
   return roadmap.fases.filter((fase) => fase.etapa === etapaId);
 }
 
+/** Número de una fase numerada («fase-12» → 12); null en el lanzamiento y las ampliaciones. */
+export function numeroDeFase(faseId: string): number | null {
+  const partes = /^fase-(\d+)$/.exec(faseId);
+  return partes ? Number(partes[1]) : null;
+}
+
+/** Rango de versiones de un grupo de fases, p. ej. «0.1 – 0.5». Vacío si no hay fases. */
+export function rangoVersiones(fases: readonly Fase[]): string {
+  const corta = (version: string): string => version.replace(/\.0$/, '');
+  const primera = fases.at(0);
+  const ultima = fases.at(-1);
+  if (!primera || !ultima) return '';
+  return primera === ultima
+    ? corta(primera.version)
+    : `${corta(primera.version)} – ${corta(ultima.version)}`;
+}
+
 /** Compara dos versiones semver. Devuelve <0, 0 o >0 como Array.sort. */
 export function compararVersiones(a: string, b: string): number {
   const pa = a.split('.').map(Number);

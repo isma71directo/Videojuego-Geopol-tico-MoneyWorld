@@ -1,6 +1,65 @@
 {
-  "juego": {
+  "comun": {
     "titulo": "Geopolítica 2010",
-    "nombreProvisional": "Nombre provisional"
+    "estado": {
+      "pendiente": "Pendiente",
+      "en-curso": "En curso",
+      "hecha": "Hecha"
+    },
+    "nuevaVersion": "Hay una versión nueva: {version}.",
+    "recargar": "Recargar"
+  },
+  "hojaDeRuta": {
+    "titulo": "Hoja de ruta",
+    "subtitulo": "Qué está hecho, qué se está haciendo y qué viene después.",
+    "jugar": "Jugar esta versión",
+    "versionActual": "Versión actual",
+    "progresoTotal": "Progreso hasta la versión 1.0",
+    "tareasHechas": "{hechas} de {total} tareas · {porcentaje} %",
+    "datosDe": "Datos del {fecha}",
+    "comprobado": "Comprobado a las {hora}",
+    "refrescoAutomatico": "Se actualiza sola cada {minutos} minutos.",
+    "actualizar": "Actualizar ahora",
+    "cargando": "Cargando la hoja de ruta…",
+    "errorCarga": "No se ha podido cargar la hoja de ruta. Comprueba la conexión.",
+    "errorRefresco": "Sin conexión: se muestra la última copia descargada.",
+    "reintentar": "Reintentar",
+    "ultimaSesion": {
+      "titulo": "Última sesión",
+      "resumen": "Qué se hizo",
+      "siguientePaso": "Siguiente paso",
+      "pendienteDelJugador": "Pendiente del jugador",
+      "nadaPendiente": "Nada pendiente por tu parte."
+    },
+    "fases": {
+      "titulo": "Etapas y fases",
+      "etapa": "Etapa {id}",
+      "fase": "Fase {numero}",
+      "activa": "Fase activa",
+      "numFases": "{n} fases",
+      "progresoDe": "Progreso de {nombre}",
+      "objetivo": "Objetivo",
+      "dependeDe": "Depende de",
+      "hechoCuando": "Hecho cuando",
+      "pruebaJugador": "Prueba en el móvil",
+      "tareas": "Tareas",
+      "sinTareas": "Las tareas se detallarán al acercarse esta versión.",
+      "verCambio": "Ver el cambio"
+    },
+    "ideas": {
+      "titulo": "Ideas pendientes",
+      "vacio": "Aún no hay ideas pendientes. Puedes proponer una con el botón «Reportar fallo / sugerencia» del juego.",
+      "sinFase": "Sin fase asignada",
+      "origen": "Origen: {origen}"
+    },
+    "historial": {
+      "titulo": "Historial de versiones",
+      "vacio": "Todavía no se ha publicado ninguna versión."
+    },
+    "pie": {
+      "juego": "Ir al juego",
+      "repositorio": "Código en GitHub",
+      "diseno": "Documento de diseño"
+    }
   }
 }

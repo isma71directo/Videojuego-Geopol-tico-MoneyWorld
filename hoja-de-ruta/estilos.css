@@ -1,0 +1,484 @@
+/* Estilos propios de la web de la Hoja de ruta. La base común está en src/ui/estilos/base.css. */
+
+.pagina {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 20px 16px calc(40px + env(safe-area-inset-bottom));
+}
+
+/* Cabecera */
+.cabecera__juego {
+  color: var(--acento);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cabecera__titulo {
+  font-size: 2rem;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.cabecera__subtitulo {
+  margin-top: 6px;
+  color: var(--texto-suave);
+}
+
+.cabecera__version {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-top: 20px;
+}
+
+.cabecera__etiqueta {
+  display: block;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+}
+
+.cabecera__numero {
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.cabecera__progreso {
+  margin-top: 20px;
+}
+
+.cabecera__progreso-texto {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 12px;
+  margin-bottom: 8px;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+/* Barra de estado del refresco automático */
+.estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde);
+}
+
+.estado__texto {
+  flex: 1 1 240px;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+}
+
+.estado__texto--error {
+  color: var(--peligro);
+}
+
+/* Secciones */
+.seccion {
+  margin-top: 36px;
+}
+
+.seccion__titulo {
+  margin-bottom: 12px;
+  font-size: 1.25rem;
+}
+
+.tarjeta {
+  padding: 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+}
+
+.lista-tarjetas {
+  display: grid;
+  gap: 10px;
+}
+
+.vacio {
+  color: var(--texto-suave);
+}
+
+.aviso-carga {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  margin-top: 24px;
+}
+
+/* Fichas de datos (título + valor) */
+.ficha {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.ficha dt {
+  margin-top: 10px;
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ficha dt:first-child {
+  margin-top: 0;
+}
+
+.ficha dd {
+  margin: 0;
+}
+
+/* Última sesión */
+.sesion__fecha {
+  margin-bottom: 10px;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.sesion__jugador {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--superficie-2);
+}
+
+.sesion__jugador--avisar {
+  border-left: 4px solid var(--en-curso);
+}
+
+.sesion__jugador h3 {
+  margin-bottom: 6px;
+  font-size: 0.9375rem;
+}
+
+.sesion__pendientes {
+  display: grid;
+  gap: 6px;
+}
+
+.sesion__pendientes li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.sesion__pendientes li::before {
+  content: '';
+  position: absolute;
+  top: 0.4em;
+  left: 2px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--en-curso);
+  border-radius: 3px;
+}
+
+/* Desplegables de etapa y fase */
+.etapas {
+  display: grid;
+  gap: 12px;
+}
+
+summary {
+  list-style: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+.etapa,
+.fase {
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.etapa {
+  background: var(--superficie);
+}
+
+.fase {
+  background: var(--fondo);
+}
+
+.fase--activa {
+  border-color: var(--en-curso);
+}
+
+.etapa__cabecera,
+.fase__cabecera {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  min-height: var(--tactil);
+  padding: 14px 44px 14px 16px;
+  border-radius: var(--radio);
+}
+
+/* Flecha del desplegable */
+.etapa__cabecera::after,
+.fase__cabecera::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 18px;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--texto-suave);
+  border-bottom: 2px solid var(--texto-suave);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+
+details[open] > .etapa__cabecera::after,
+details[open] > .fase__cabecera::after {
+  top: 24px;
+  transform: rotate(-135deg);
+}
+
+.etapa__titulo,
+.fase__titulo {
+  display: grid;
+  gap: 1px;
+}
+
+.etapa__letra,
+.fase__numero {
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.etapa__letra {
+  color: var(--acento);
+  text-transform: uppercase;
+}
+
+.etapa__nombre {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.fase__nombre {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.etapa__resumen,
+.fase__estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.etapa__resumen > span + span::before {
+  content: '·';
+  margin-right: 10px;
+}
+
+.etapa__porcentaje,
+.fase__porcentaje {
+  color: var(--texto);
+  font-weight: 700;
+}
+
+.chip--activa {
+  border-color: var(--en-curso);
+  background: var(--en-curso);
+  color: #2a1d00;
+}
+
+.etapa__cuerpo {
+  display: grid;
+  gap: 10px;
+  padding: 0 10px 12px;
+}
+
+.etapa__hito {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--superficie-2);
+  font-size: 0.9375rem;
+}
+
+.fase__cuerpo {
+  display: grid;
+  gap: 16px;
+  padding: 4px 16px 16px;
+}
+
+.fase__subtitulo {
+  margin: 0 0 8px;
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Tareas */
+.tareas {
+  display: grid;
+  gap: 2px;
+}
+
+.tarea {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--borde);
+}
+
+.tarea:first-child {
+  border-top: 0;
+}
+
+.tarea__marca {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  border: 2px solid var(--pendiente);
+  border-radius: 50%;
+}
+
+.tarea--en-curso .tarea__marca {
+  border-color: var(--en-curso);
+  background: linear-gradient(90deg, var(--en-curso) 50%, transparent 50%);
+}
+
+.tarea--hecha .tarea__marca {
+  border-color: var(--hecha);
+  background: var(--hecha);
+}
+
+.tarea--hecha .tarea__marca::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 4px;
+  height: 8px;
+  border-right: 2px solid var(--fondo);
+  border-bottom: 2px solid var(--fondo);
+  transform: rotate(45deg);
+}
+
+.tarea__titulo {
+  overflow-wrap: anywhere;
+}
+
+.tarea__detalle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  margin-top: 2px;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tarea--hecha .tarea__estado {
+  color: var(--hecha);
+}
+
+.tarea--en-curso .tarea__estado {
+  color: var(--en-curso);
+}
+
+.tarea__enlace {
+  /* Zona táctil amplia sin descolocar la línea. */
+  margin: -10px -6px;
+  padding: 10px 6px;
+}
+
+/* Ideas e historial */
+.idea__titulo {
+  font-weight: 600;
+}
+
+.historial__version {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.historial__version strong {
+  font-size: 1.0625rem;
+}
+
+.historial__version span {
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+.historial__cambios {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  padding-left: 18px;
+  list-style: disc;
+}
+
+/* Pie */
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borde);
+  font-size: 0.9375rem;
+}
+
+.pie a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tactil);
+}
+
+@media (min-width: 640px) {
+  .pagina {
+    padding-top: 40px;
+  }
+
+  .cabecera__titulo {
+    font-size: 2.5rem;
+  }
+
+  .etapa__cabecera,
+  .fase__cabecera {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .etapa__cabecera > .barra,
+  .fase__cabecera > .barra {
+    grid-column: 1 / -1;
+  }
+}
