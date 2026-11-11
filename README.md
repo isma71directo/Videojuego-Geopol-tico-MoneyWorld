@@ -1,2 +1,3 @@
 # Videojuego-Geopol-tico-MoneyWorld
-Repositorio parz mí videojuego sobre geopolitica. 
+
+Repositorio parz mí videojuego sobre geopolitica.

@@ -1,0 +1,38 @@
+{
+  "name": "geopolitica-2010",
+  "version": "0.1.0",
+  "description": "Simulador geopolítico en el navegador que arranca el 1 de enero de 2010 (nombre provisional: «Geopolítica 2010»).",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld.git"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "compilar": "tsc --noEmit && vite build",
+    "vista-previa": "vite preview",
+    "test": "vitest run",
+    "test:vigilar": "vitest",
+    "lint": "eslint .",
+    "formato": "prettier --write .",
+    "formato:comprobar": "prettier --check .",
+    "comprobar": "npm run lint && npm run formato:comprobar && npm run test && npm run compilar"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "ajv": "^8.20.0",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}
