@@ -21,6 +21,8 @@
     "formato": "prettier --write .",
     "formato:comprobar": "prettier --check .",
     "datos:paises": "node scripts/datos/01-paises.ts",
+    "datos:banco-mundial": "node scripts/datos/02-banco-mundial.ts",
+    "datos:fmi": "node scripts/datos/03-fmi.ts",
     "comprobar": "npm run lint && npm run formato:comprobar && npm run test && npm run compilar"
   },
   "devDependencies": {

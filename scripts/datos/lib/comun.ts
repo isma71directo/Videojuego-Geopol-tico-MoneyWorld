@@ -2,6 +2,7 @@
  * Utilidades comunes de los scripts de datos (GDD, sección 4).
  * Los scripts se ejecutan con Node 22 directamente sobre TypeScript.
  */
+import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +21,33 @@ export function escribirJson(relativa: string, datos: unknown): void {
   escribirTexto(relativa, `${JSON.stringify(datos, null, 2)}\n`);
 }
 
+/**
+ * Como JSON.stringify con sangría, pero a partir de cierta profundidad escribe cada
+ * valor en una sola línea. Así una tabla «país → años» ocupa una línea por país.
+ */
+export function jsonCompacto(datos: unknown, profundidad: number, sangria = ''): string {
+  if (profundidad <= 0 || datos === null || typeof datos !== 'object') {
+    return JSON.stringify(datos);
+  }
+  const interior = `${sangria}  `;
+  if (Array.isArray(datos)) {
+    if (datos.length === 0) return '[]';
+    const elementos = datos.map((v) => interior + jsonCompacto(v, profundidad - 1, interior));
+    return `[\n${elementos.join(',\n')}\n${sangria}]`;
+  }
+  const entradas = Object.entries(datos).filter(([, v]) => v !== undefined);
+  if (entradas.length === 0) return '{}';
+  const lineas = entradas.map(
+    ([clave, v]) =>
+      `${interior}${JSON.stringify(clave)}: ${jsonCompacto(v, profundidad - 1, interior)}`,
+  );
+  return `{\n${lineas.join(',\n')}\n${sangria}}`;
+}
+
+export function escribirJsonCompacto(relativa: string, datos: unknown, profundidad: number): void {
+  escribirTexto(relativa, `${jsonCompacto(datos, profundidad)}\n`);
+}
+
 export function escribirTexto(relativa: string, texto: string | Uint8Array): void {
   const destino = ruta(relativa);
   mkdirSync(dirname(destino), { recursive: true });
@@ -30,8 +58,6 @@ const pausa = (ms: number): Promise<void> => new Promise((resolver) => setTimeou
 
 export interface OpcionesDescarga {
   cabeceras?: Record<string, string>;
-  /** Algunos servidores rechazan identificadores de cliente propios. */
-  sinAgente?: boolean;
   intentos?: number;
 }
 
@@ -45,7 +71,7 @@ export async function descargar(url: string, opciones: OpcionesDescarga = {}): P
   for (let intento = 1; intento <= intentos; intento += 1) {
     try {
       const respuesta = await fetch(url, {
-        headers: { ...(opciones.sinAgente ? {} : { 'User-Agent': AGENTE }), ...opciones.cabeceras },
+        headers: { 'User-Agent': AGENTE, ...opciones.cabeceras },
         redirect: 'follow',
       });
       if (respuesta.ok) return respuesta;
@@ -66,6 +92,18 @@ export async function descargarJson<T>(url: string, opciones?: OpcionesDescarga)
 
 export async function descargarTexto(url: string, opciones?: OpcionesDescarga): Promise<string> {
   return (await descargar(url, opciones)).text();
+}
+
+/**
+ * Descarga con la orden `curl` del sistema. Hace falta para servidores (como el del FMI)
+ * que rechazan las peticiones hechas directamente desde Node.
+ */
+export function descargarTextoConCurl(url: string): string {
+  return execFileSync(
+    'curl',
+    ['--silent', '--show-error', '--fail', '--location', '--retry', '4', '--max-time', '120', url],
+    { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 },
+  );
 }
 
 /** Lee un CSV sencillo (con comillas dobles) y devuelve una fila por objeto. */

@@ -27,3 +27,31 @@ export interface PaisBase {
   componentes?: string[];
   nota?: string;
 }
+
+/** Serie descargada de una fuente: país (código de la fuente) → año → valor. */
+export type SeriePorPais = Record<string, Record<string, number>>;
+
+/** Archivo intermedio de una fuente de indicadores (fuentes/datos/*.json). */
+export interface ArchivoFuente {
+  fuente: string;
+  url: string;
+  /** Fecha de la descarga (AAAA-MM-DD). */
+  descargado: string;
+  indicadores: Record<
+    string,
+    {
+      codigo: string;
+      descripcion: string;
+      unidad: string;
+      /** Fecha de la última actualización según la propia fuente, si la da. */
+      actualizadoFuente?: string;
+      valores: SeriePorPais;
+    }
+  >;
+}
+
+export interface TablaPaises {
+  fuente: string;
+  fechaEscenario: string;
+  paises: PaisBase[];
+}

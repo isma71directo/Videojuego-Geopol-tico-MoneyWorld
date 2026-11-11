@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T18:56:27Z",
+  "actualizado": "2026-11-11T18:59:53Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Empezada la Fase 1: tabla de los 202 países y territorios del escenario de 2010 (193 Estados y 9 territorios especiales), con Sudán unido y capitales de 2010.",
-    "siguientePaso": "Descargar los indicadores del Banco Mundial y del FMI (tarea f1-t1).",
+    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 en marcha: tabla de los 202 países y territorios de 2010 y descarga de los indicadores del Banco Mundial (20) y del FMI (9) para 2008–2010.",
+    "siguientePaso": "Descargar energía y emisiones de Our World in Data (tarea f1-t2).",
     "pendienteDelJugador": [
       "Confirmar o corregir las tres decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego y material que no se puede generar con código"
     ]
@@ -156,8 +156,8 @@
         {
           "id": "f1-t1",
           "titulo": "Script de descarga del Banco Mundial (indicadores de la sección 4) con años 2008–2010; usar 2009 o 2010 según disponibilidad",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
@@ -179,7 +179,7 @@
           "titulo": "Tabla de equivalencias de países (ISO3, nombres en español, países y territorios especiales de 2010)",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c10d215"
         },
         {
           "id": "f1-t5",
