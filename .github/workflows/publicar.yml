@@ -1,0 +1,70 @@
+# Comprueba cada cambio (lint, formato, tests y compilación) y, en main,
+# publica el juego y la Hoja de ruta en GitHub Pages.
+#
+# Requisito (una sola vez): Settings → Pages → Source: «GitHub Actions».
+name: Comprobar y publicar
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publicar-${{ github.ref }}
+  # En main no se cancela una publicación a medias; en los PR sí se cancela lo antiguo.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  comprobar:
+    name: Lint, tests y compilación
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Preparar Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Formato
+        run: npm run formato:comprobar
+
+      - name: Tests
+        run: npm test
+
+      - name: Compilar
+        run: npm run compilar
+
+      - name: Guardar la web compilada
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/
+
+  publicar:
+    name: Publicar en GitHub Pages
+    needs: comprobar
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Publicar
+        id: despliegue
+        uses: actions/deploy-pages@v5

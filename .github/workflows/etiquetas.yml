@@ -1,0 +1,28 @@
+# Crea (o actualiza) las etiquetas que usan las plantillas de issue y el botón
+# «Reportar fallo / sugerencia» del juego: fallo, idea y datos.
+name: Etiquetas de las issues
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/etiquetas.yml
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  etiquetas:
+    name: Crear etiquetas
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: fallo
+        run: gh label create fallo --force --color d73a4a --description "Algo no funciona como debería"
+      - name: idea
+        run: gh label create idea --force --color a2eeef --description "Sugerencia o petición nueva"
+      - name: datos
+        run: gh label create datos --force --color fbca04 --description "Un dato del juego es incorrecto o falta"
