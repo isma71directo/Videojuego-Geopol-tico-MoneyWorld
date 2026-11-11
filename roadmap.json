@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T19:00:54Z",
+  "actualizado": "2026-11-11T19:04:56Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 en marcha: tabla de los 202 países y territorios de 2010, indicadores del Banco Mundial y del FMI, y energía y emisiones de Our World in Data.",
-    "siguientePaso": "Descargar reservas y producción de recursos naturales (tarea f1-t3).",
+    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Fase 1 en marcha: tabla de los 202 países y territorios de 2010, indicadores del Banco Mundial y del FMI, energía y emisiones, y recursos naturales (reservas fósiles de 2010 y producción minera; faltan hierro, níquel y tierras raras por país).",
+    "siguientePaso": "Unir todas las fuentes, aplicar los valores de respaldo y generar public/data/paises-2010.json (tareas f1-t5 y f1-t8).",
     "pendienteDelJugador": [
       "Confirmar o corregir las tres decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego y material que no se puede generar con código"
     ]
@@ -165,13 +165,13 @@
           "titulo": "Script de Our World in Data: energía (mix y consumo) y emisiones",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8e9f5b5"
         },
         {
           "id": "f1-t3",
           "titulo": "Script de recursos: reservas y producción (petróleo, gas, carbón, minerales principales)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
@@ -3009,6 +3009,12 @@
       "titulo": "Que el tiempo avance por horas del día, como en Power & Revolution; los eventos e informes mantienen su ritmo",
       "origen": "issue #3",
       "faseAsignada": "fase-5"
+    },
+    {
+      "id": "idea-2",
+      "titulo": "Completar los recursos de 2010 que la fuente de la Fase 1 no da: producción por país de hierro, níquel y tierras raras, y reservas minerales de 2010 (solo se publican desde 2022)",
+      "origen": "Fase 1, tarea f1-t3",
+      "faseAsignada": "fase-19"
     }
   ],
   "historial": [

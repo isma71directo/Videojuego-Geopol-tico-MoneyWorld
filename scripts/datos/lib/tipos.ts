@@ -37,6 +37,8 @@ export interface ArchivoFuente {
   url: string;
   /** Fecha de la descarga (AAAA-MM-DD). */
   descargado: string;
+  /** Avisos sobre huecos o rarezas de la fuente. */
+  notas?: string[];
   indicadores: Record<
     string,
     {

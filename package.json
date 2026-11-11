@@ -24,6 +24,7 @@
     "datos:banco-mundial": "node scripts/datos/02-banco-mundial.ts",
     "datos:fmi": "node scripts/datos/03-fmi.ts",
     "datos:owid": "node scripts/datos/04-owid.ts",
+    "datos:recursos": "node scripts/datos/05-recursos.ts",
     "comprobar": "npm run lint && npm run formato:comprobar && npm run test && npm run compilar"
   },
   "devDependencies": {
