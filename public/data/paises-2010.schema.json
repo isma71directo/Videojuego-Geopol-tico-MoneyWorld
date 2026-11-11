@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Datos reales de partida de cada país (1 de enero de 2010)",
+  "description": "Formato de paises-2010.json. Lo generan los scripts de /scripts/datos (GDD, sección 4).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "fechaEscenario", "fuentes", "metodosEstimacion", "campos", "paises"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "fechaEscenario": { "const": "2010-01-01" },
+    "fuentes": { "type": "object", "additionalProperties": { "type": "string" } },
+    "metodosEstimacion": { "type": "object", "additionalProperties": { "type": "string" } },
+    "campos": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["nombre", "unidad", "grupo"],
+        "properties": {
+          "nombre": { "type": "string", "minLength": 1 },
+          "unidad": { "type": "string", "minLength": 1 },
+          "grupo": {
+            "enum": ["demografia", "economia", "estado", "sociedad", "energia", "emisiones", "recursos"]
+          }
+        }
+      }
+    },
+    "paises": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[A-Z]{3}$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "iso2",
+          "nombre",
+          "tipo",
+          "jugable",
+          "capital",
+          "region",
+          "regionNombre",
+          "nivelRenta",
+          "datos",
+          "origen",
+          "datosEstimados"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z]{3}$" },
+          "iso2": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" },
+          "nombre": { "type": "string", "minLength": 1 },
+          "tipo": { "enum": ["pais", "especial"] },
+          "jugable": { "type": "boolean" },
+          "capital": { "type": "string", "minLength": 1 },
+          "region": { "enum": ["EAS", "ECS", "LCN", "MEA", "NAC", "SAS", "SSF"] },
+          "regionNombre": { "type": "string", "minLength": 1 },
+          "nivelRenta": { "enum": ["bajo", "medio-bajo", "medio-alto", "alto"] },
+          "estatus": { "type": "string", "minLength": 1 },
+          "reclamadoPor": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" },
+          "datos": { "type": "object", "additionalProperties": { "type": ["number", "null"] } },
+          "origen": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "pattern": "^((BM|FMI|OWID|WD):\\d{4}|OWID:ausente|DER|EST:[a-z0-9-]+)$"
+            }
+          },
+          "datosEstimados": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+        }
+      }
+    }
+  }
+}

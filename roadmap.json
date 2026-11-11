@@ -1,13 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T16:20:00Z",
+  "versionActual": "0.2.0",
+  "actualizado": "2026-11-11T23:46:12Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Fase 0 cerrada. El juego y la Hoja de ruta están publicados en GitHub Pages con la misma versión (0.1.1) y el jugador ha comprobado en el móvil que el aviso de fallo o sugerencia llega a GitHub con los datos del juego.",
-    "siguientePaso": "Empezar la Fase 1 (datos reales de 2010) cuando el jugador lo pida. Todavía no se ha empezado nada de esa fase.",
-    "pendienteDelJugador": ["Fusionar el PR que cierra la Fase 0 en la Hoja de ruta"]
+    "resumen": "Fase 1 completa en su rama y versión 0.2.0: datos reales de 2010 de 202 países y territorios (62 campos, validados, con las estimaciones marcadas), informe de cobertura, banderas de 2010, iconos de indicadores, galería audiovisual y créditos. Además, el contenido audiovisual está añadido a todas las fases (GDD 7.1 y regla 19).",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 1 como hecha y planificar la Fase 2 (mapa 2D base), incluida la propuesta de 3D del globo de inicio.",
+    "pendienteDelJugador": [
+      "Fusionar el PR n.º 6 (Fase 1, v0.2.0)",
+      "Prueba en el móvil: abrir docs/datos-cobertura.md en GitHub y revisar 3 países conocidos; abrir la galería audiovisual y revisar las banderas",
+      "Confirmar o corregir las decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego, material que no se puede generar con código, territorios especiales jugables y territorios dependientes"
+    ]
   },
   "etapas": [
     {
@@ -149,63 +153,70 @@
       "dependeDe": ["fase-0"],
       "hechoCuando": "Existen datos de al menos 190 países y el informe de cobertura está publicado",
       "pruebaJugador": "Abrir el informe de cobertura en GitHub y revisar 3 países conocidos",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f1-t1",
           "titulo": "Script de descarga del Banco Mundial (indicadores de la sección 4) con años 2008–2010; usar 2009 o 2010 según disponibilidad",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/df5af7f"
         },
         {
           "id": "f1-t2",
           "titulo": "Script de Our World in Data: energía (mix y consumo) y emisiones",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8e9f5b5"
         },
         {
           "id": "f1-t3",
           "titulo": "Script de recursos: reservas y producción (petróleo, gas, carbón, minerales principales)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/9a6a387"
         },
         {
           "id": "f1-t4",
           "titulo": "Tabla de equivalencias de países (ISO3, nombres en español, países y territorios especiales de 2010)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c10d215"
         },
         {
           "id": "f1-t5",
           "titulo": "Valores de respaldo para datos que falten (por región y nivel de renta), marcados como estimados",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t6",
           "titulo": "Validación: rangos lógicos, sumas coherentes (sectores ≈ 100 % del PIB) y ausencia de duplicados",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t7",
           "titulo": "Informe de cobertura (/docs/datos-cobertura.md): qué porcentaje de datos es real o estimado por país",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
         },
         {
           "id": "f1-t8",
           "titulo": "Salida final: /public/data/paises-2010.json",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c054631"
+        },
+        {
+          "id": "f1-t9",
+          "titulo": "Audiovisual: banderas de todos los países y territorios vigentes el 1 de enero de 2010 (SVG de licencia libre, descargadas con un script reproducible; ojo con las que han cambiado después, como Libia, Birmania, Siria, Mauritania o Afganistán) e iconos vectoriales de los indicadores básicos (población, PIB, paro, inflación, deuda, energía). Créditos en /docs/creditos.md",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d89b1e2"
         }
       ]
     },
@@ -275,6 +286,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f2-t9",
+          "titulo": "Audiovisual: estilo visual del mapa (colores de países, océano y bordes), animaciones de zoom y de selección, y motor de sonido (Web Audio) con los primeros efectos de interfaz y los ajustes de sonido. Propuesta de 3D: globo terráqueo decorativo en la pantalla de inicio (el mapa de juego sigue en 2D)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -330,6 +348,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f3-t7",
+          "titulo": "Audiovisual: rampas de color accesibles para cada capa, iconos de las capas, leyendas y transición animada al cambiar de capa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -375,6 +400,13 @@
         {
           "id": "f4-t5",
           "titulo": "Base de interfaz: tema oscuro, tipografía, componentes reutilizables (paneles, pestañas, deslizadores, tablas, gráficos)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-t6",
+          "titulo": "Audiovisual: iconos de los regímenes, retratos genéricos ilustrados para los cargos (sin fotografías de personas reales), animaciones de hojas y pestañas, sonidos de navegación y animación de la elección de país",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -440,6 +472,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f5-t8",
+          "titulo": "Audiovisual: reloj animado del paso del tiempo, sonidos de pausa y de cambio de velocidad, indicador de guardado y primera música ambiental sintetizada",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -485,6 +524,13 @@
         {
           "id": "f6-t5",
           "titulo": "Capa del mapa con crecimiento e inflación en tiempo real",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f6-t6",
+          "titulo": "Audiovisual: gráficos históricos animados, iconos de los indicadores macroeconómicos y sonidos de las alertas económicas",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -543,6 +589,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f7-t7",
+          "titulo": "Audiovisual: símbolos de las monedas, visualización de los tipos de interés y del tipo de cambio, y animación del contagio de una crisis en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -598,6 +651,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f8-t7",
+          "titulo": "Audiovisual: deslizadores con respuesta visual y sonora, gráfico de ingresos y gastos y distintivo animado del rating",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -636,6 +696,13 @@
         {
           "id": "f9-t4",
           "titulo": "Pantalla Impuestos con simulador (\"si subes el IVA un punto, recaudarás X\")",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f9-t5",
+          "titulo": "Audiovisual: iconos de cada impuesto, curva de Laffer animada y simulador visual de la recaudación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -687,6 +754,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f10-t6",
+          "titulo": "Audiovisual: iconos de los 20 ministerios, retratos genéricos de los ministros, teletipo animado, sonidos de notificación e ilustración del informe del mes. Propuesta de 3D: sala del Consejo de Ministros",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -725,6 +799,13 @@
         {
           "id": "f11-t4",
           "titulo": "Pantalla de población y capa del mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f11-t5",
+          "titulo": "Audiovisual: pirámide de población animada y flujos migratorios animados en el mapa",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -776,6 +857,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f12-t6",
+          "titulo": "Audiovisual: iconos del mercado laboral y las prestaciones, gráfico de la proyección de pensiones y animación y sonido de las huelgas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -824,6 +912,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f13-t6",
+          "titulo": "Audiovisual: iconos sanitarios, animación de la propagación de epidemias en el mapa y sonidos de alerta sanitaria",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -862,6 +957,13 @@
         {
           "id": "f14-t4",
           "titulo": "Acciones del Ministerio de Educación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f14-t5",
+          "titulo": "Audiovisual: iconos de los niveles educativos y gráficos que muestren los efectos con retraso",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -913,6 +1015,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f15-t6",
+          "titulo": "Audiovisual: iconos de cada tipo de infraestructura, animación de la obra en curso y de la inauguración, y sonidos de construcción. Propuesta de 3D: maquetas sencillas de edificios en la ficha de región",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -951,6 +1060,13 @@
         {
           "id": "f16-t4",
           "titulo": "Capa del mapa de transporte",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f16-t5",
+          "titulo": "Audiovisual: trazado de las redes de transporte en el mapa con animación del tráfico e iconos de cada medio",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1016,6 +1132,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f17-t8",
+          "titulo": "Audiovisual: iconos de las centrales por tipo, animación del flujo eléctrico en la red y efecto visual y sonoro de los apagones. Propuesta de 3D: maqueta de cada tipo de central",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1047,6 +1170,13 @@
         {
           "id": "f18-t3",
           "titulo": "Agua: presas, depuradoras, desaladoras, regadíos, estrés hídrico",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f18-t4",
+          "titulo": "Audiovisual: iconos de telecomunicaciones, vivienda y agua, y animación del despliegue de cobertura en el mapa",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1098,6 +1228,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f19-t6",
+          "titulo": "Audiovisual: iconos de los 18 recursos, gráfico de precios mundiales en movimiento y animación de los descubrimientos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1139,6 +1276,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f20-t5",
+          "titulo": "Audiovisual: iconos de los 28 sectores y diagrama animado de los insumos entre sectores",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1177,6 +1321,13 @@
         {
           "id": "f21-t4",
           "titulo": "Autorizar o bloquear fusiones (básico)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f21-t5",
+          "titulo": "Audiovisual: emblemas genéricos de empresas por sector (sin logotipos reales) y animación de nacionalizaciones y privatizaciones",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1235,6 +1386,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f22-t7",
+          "titulo": "Audiovisual: líneas animadas de los flujos comerciales en el mapa e iconos de los bienes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1276,6 +1434,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f23-t5",
+          "titulo": "Audiovisual: iconos de las acciones diplomáticas, animación de los cambios de relación, escenas ilustradas de visitas y cumbres, y sonidos de firma de tratados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1314,6 +1479,13 @@
         {
           "id": "f24-t4",
           "titulo": "Capa de alianzas en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f24-t5",
+          "titulo": "Audiovisual: emblemas de las organizaciones (los oficiales cuando su licencia lo permita; si no, versiones propias) y sala de votación animada. Propuesta de 3D: sala del Consejo de Seguridad",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1365,6 +1537,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f25-t6",
+          "titulo": "Audiovisual: iconos de los 17 grupos sociales y gráficos animados de satisfacción y de temas de preocupación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1403,6 +1582,13 @@
         {
           "id": "f26-t4",
           "titulo": "Estabilidad del régimen (6.14)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f26-t5",
+          "titulo": "Audiovisual: portadas de prensa y cabeceras de televisión generadas, animación de las protestas en el mapa y ambiente sonoro sintetizado de manifestación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1451,6 +1637,13 @@
         {
           "id": "f27-t5",
           "titulo": "Pantalla Partidos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f27-t6",
+          "titulo": "Audiovisual: emblemas de los partidos a partir de su color y sus siglas (sin logotipos registrados), retratos genéricos de los líderes y brújula ideológica animada",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1509,6 +1702,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f28-t7",
+          "titulo": "Audiovisual: hemiciclo animado con la votación escaño a escaño y sonidos de la votación. Propuesta de 3D: hemiciclo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1561,6 +1761,13 @@
         {
           "id": "f29-t6",
           "titulo": "Derrota del jugador al perder (de momento, fin de partida)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f29-t7",
+          "titulo": "Audiovisual: noche electoral con recuento animado y mapa por circunscripción, sintonía y sonidos propios, y carteles de campaña generados",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1619,6 +1826,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f30-t7",
+          "titulo": "Audiovisual: iconos de las categorías de leyes y animación de la aprobación y la derogación de una ley",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1657,6 +1871,13 @@
         {
           "id": "f31-t4",
           "titulo": "Cambio de régimen por reforma constitucional",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f31-t5",
+          "titulo": "Audiovisual: iconos de los regímenes y secuencias ilustradas, con sonido, de golpe de Estado, revolución y transición",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1705,6 +1926,13 @@
         {
           "id": "f32-t5",
           "titulo": "Pantalla Regiones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f32-t6",
+          "titulo": "Audiovisual: banderas de las principales regiones (licencia libre, script reproducible) y mapa animado de los resultados regionales",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1763,6 +1991,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f33-t7",
+          "titulo": "Audiovisual: animación del nacimiento de un país en el mapa (nueva frontera y bandera), banderas de los movimientos de 2010 y secuencia del referéndum",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1801,6 +2036,13 @@
         {
           "id": "f34-t4",
           "titulo": "Estado inicial de 2010 por país según su nivel tecnológico",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f34-t5",
+          "titulo": "Audiovisual: iconos de las 10 ramas y de las categorías de tecnología, generados de forma sistemática para las ~2.500 tecnologías",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1852,6 +2094,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f35-t6",
+          "titulo": "Audiovisual: árbol tecnológico navegable y animado, y efecto visual y sonoro al completar una tecnología. Propuesta de 3D: maquetas de las tecnologías más destacadas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1897,6 +2146,13 @@
         {
           "id": "f36-t5",
           "titulo": "Pantalla Ejército",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f36-t6",
+          "titulo": "Audiovisual: siluetas vectoriales del equipamiento por tipo y generación e insignias de cada rama de las fuerzas armadas. Propuesta de 3D: modelos del equipamiento en su ficha",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1948,6 +2204,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f37-t6",
+          "titulo": "Audiovisual: símbolos militares estándar de las unidades, animación de movimientos y rutas en el mapa y sonidos de despliegue",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -1996,6 +2259,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f38-t6",
+          "titulo": "Audiovisual: animaciones de combate y de bombardeo en el mapa, líneas de frente, sonido de combate sintetizado y pantalla de guerra. Propuesta de 3D: vista de un combate",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2034,6 +2304,13 @@
         {
           "id": "f39-t4",
           "titulo": "Cambio de fronteras en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f39-t5",
+          "titulo": "Audiovisual: animación del cambio de fronteras, escena ilustrada de la firma de la paz y flujos de refugiados en el mapa",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2085,6 +2362,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f40-t6",
+          "titulo": "Audiovisual: iconos de seguridad y justicia, y tratamiento visual y sonoro sobrio de atentados y escándalos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2133,6 +2417,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f41-t6",
+          "titulo": "Audiovisual: animaciones de cada tipo de desastre en el mapa, capa de temperatura global y sonidos de desastre. Propuesta de 3D: efectos de los desastres",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2164,6 +2455,13 @@
         {
           "id": "f42-t3",
           "titulo": "Reacción a crisis (paro, deuda, protestas)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f42-t4",
+          "titulo": "Audiovisual: resumen visual de las decisiones de cada gobierno e iconos de las personalidades de los países",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2208,6 +2506,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f43-t5",
+          "titulo": "Audiovisual: animaciones en el mapa de las reacciones diplomáticas y de los movimientos militares de los demás países",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2242,6 +2547,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f44-t4",
+          "titulo": "Audiovisual: ilustración o icono propio para cada evento del catálogo, teletipo animado, sintonía de noticias y sonidos según la gravedad",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2273,6 +2585,13 @@
         {
           "id": "f45-t3",
           "titulo": "Tests de credibilidad 2010–2015 frente al histórico real",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f45-t4",
+          "titulo": "Audiovisual: ilustraciones propias de los eventos históricos (sin fotografías reales) y secuencias especiales para los más importantes",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2317,6 +2636,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f46-t5",
+          "titulo": "Audiovisual: gráficos comparativos animados, línea de tiempo ilustrada de la partida y opción de guardar un gráfico como imagen",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2348,6 +2674,13 @@
         {
           "id": "f47-t3",
           "titulo": "Enciclopedia del juego",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f47-t4",
+          "titulo": "Audiovisual: animaciones guiadas y resaltados del tutorial e ilustraciones de la enciclopedia",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2392,6 +2725,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f48-t5",
+          "titulo": "Audiovisual: mezcla y niveles de sonido, ritmo de las animaciones y revisión de la coherencia visual de todo el juego",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2426,6 +2766,13 @@
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
+        },
+        {
+          "id": "f49-t4",
+          "titulo": "Audiovisual: optimización del peso y de la carga de los recursos audiovisuales, modo sin animaciones, alternativa visual para todo sonido e iconos y pantalla de arranque de la app instalada",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
@@ -2457,6 +2804,13 @@
         {
           "id": "f50-t3",
           "titulo": "Más eventos y revisión de textos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f50-t4",
+          "titulo": "Audiovisual: completar los iconos, ilustraciones y sonidos que falten, música ambiental según la situación (paz, crisis, guerra) y pantalla de créditos",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2505,6 +2859,13 @@
         {
           "id": "lanzamiento-t5",
           "titulo": "Tutorial completo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "lanzamiento-t6",
+          "titulo": "Contenido audiovisual completo y créditos al día",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2650,6 +3011,12 @@
       "titulo": "Que el tiempo avance por horas del día, como en Power & Revolution; los eventos e informes mantienen su ritmo",
       "origen": "issue #3",
       "faseAsignada": "fase-5"
+    },
+    {
+      "id": "idea-2",
+      "titulo": "Completar los recursos de 2010 que la fuente de la Fase 1 no da: producción por país de hierro, níquel y tierras raras, y reservas minerales de 2010 (solo se publican desde 2022)",
+      "origen": "Fase 1, tarea f1-t3",
+      "faseAsignada": "fase-19"
     }
   ],
   "historial": [
@@ -2671,6 +3038,18 @@
         "Corregido: los avisos enviados con «Reportar fallo / sugerencia» llevan ya la versión del juego",
         "Las plantillas de issue ya no llevan texto oculto que estorbaba al escribir desde el móvil",
         "La hoja de reporte muestra los datos del juego que se añaden y permite copiarlos"
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "fecha": "2026-11-11",
+      "cambios": [
+        "Datos reales de partida de 202 países y territorios a 1 de enero de 2010: población, economía, Estado, sociedad, energía, emisiones y recursos (62 campos)",
+        "Cada dato indica su fuente y su año; los que faltan se estiman por región y nivel de renta y quedan marcados como estimados",
+        "Informe de cobertura de los datos (docs/datos-cobertura.md)",
+        "Banderas de todos los países tal como eran en 2010 e iconos de los indicadores",
+        "Nueva galería audiovisual (/galeria/) para revisar banderas e iconos",
+        "Contenido audiovisual añadido a todas las fases del diseño"
       ]
     }
   ]

@@ -1,0 +1,90 @@
+/* Galería audiovisual. La base común está en src/ui/estilos/base.css. */
+.galeria {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 16px calc(40px + env(safe-area-inset-bottom));
+}
+
+.galeria__juego {
+  color: var(--acento);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.galeria h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.galeria h2 {
+  font-size: 1.25rem;
+}
+
+.galeria__nota {
+  margin-top: 4px;
+  color: var(--texto-suave);
+}
+
+.galeria__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.galeria__seccion {
+  margin-top: 36px;
+}
+
+.galeria__iconos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.galeria__iconos li {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 14px 8px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  font-size: 0.8125rem;
+  text-align: center;
+}
+
+.galeria__iconos .icono {
+  width: 36px;
+  height: 36px;
+  color: var(--acento);
+}
+
+.galeria__banderas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 14px 10px;
+  margin-top: 14px;
+}
+
+.galeria__bandera {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.galeria__bandera img {
+  width: 96px;
+  height: 72px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--superficie-2);
+  object-fit: cover;
+}

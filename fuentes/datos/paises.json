@@ -1,0 +1,3471 @@
+{
+  "fuente": "Banco Mundial (API de países), Wikidata (capitales con fechas), CLDR (nombres en español) y tabla manual",
+  "fechaEscenario": "2010-01-01",
+  "paises": [
+    {
+      "id": "ABK",
+      "iso2": null,
+      "nombre": "Abjasia",
+      "tipo": "especial",
+      "jugable": false,
+      "capital": "Sujumi",
+      "capitalFuente": "manual",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "estatus": "Reconocida por Rusia desde 2008",
+      "reclamadoPor": "GEO",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": null,
+        "wikidata": "Q23334"
+      },
+      "nivelRentaManual": "medio-bajo"
+    },
+    {
+      "id": "AFG",
+      "iso2": "AF",
+      "nombre": "Afganistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kabul",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "AFG",
+        "fmi": "AFG",
+        "owid": "AFG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "AGO",
+      "iso2": "AO",
+      "nombre": "Angola",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Luanda",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "AGO",
+        "fmi": "AGO",
+        "owid": "AGO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ALB",
+      "iso2": "AL",
+      "nombre": "Albania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Tirana",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "ALB",
+        "fmi": "ALB",
+        "owid": "ALB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "AND",
+      "iso2": "AD",
+      "nombre": "Andorra",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Andorra la Vieja",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "AND",
+        "fmi": "AND",
+        "owid": "AND",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ARE",
+      "iso2": "AE",
+      "nombre": "Emiratos Árabes Unidos",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Abu Dhabi",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "ARE",
+        "fmi": "ARE",
+        "owid": "ARE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ARG",
+      "iso2": "AR",
+      "nombre": "Argentina",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Buenos Aires",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "ARG",
+        "fmi": "ARG",
+        "owid": "ARG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ARM",
+      "iso2": "AM",
+      "nombre": "Armenia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ereván",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "ARM",
+        "fmi": "ARM",
+        "owid": "ARM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ATG",
+      "iso2": "AG",
+      "nombre": "Antigua y Barbuda",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Saint John",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "ATG",
+        "fmi": "ATG",
+        "owid": "ATG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "AUS",
+      "iso2": "AU",
+      "nombre": "Australia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Canberra",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "AUS",
+        "fmi": "AUS",
+        "owid": "AUS",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "AUT",
+      "iso2": "AT",
+      "nombre": "Austria",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Viena",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "AUT",
+        "fmi": "AUT",
+        "owid": "AUT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "AZE",
+      "iso2": "AZ",
+      "nombre": "Azerbaiyán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bakú",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "AZE",
+        "fmi": "AZE",
+        "owid": "AZE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BDI",
+      "iso2": "BI",
+      "nombre": "Burundi",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Buyumbura",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "BDI",
+        "fmi": "BDI",
+        "owid": "BDI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BEL",
+      "iso2": "BE",
+      "nombre": "Bélgica",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bruselas",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "BEL",
+        "fmi": "BEL",
+        "owid": "BEL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BEN",
+      "iso2": "BJ",
+      "nombre": "Benín",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Porto Novo",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "BEN",
+        "fmi": "BEN",
+        "owid": "BEN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BFA",
+      "iso2": "BF",
+      "nombre": "Burkina Faso",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Uagadugú",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "BFA",
+        "fmi": "BFA",
+        "owid": "BFA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BGD",
+      "iso2": "BD",
+      "nombre": "Bangladés",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Daca",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "BGD",
+        "fmi": "BGD",
+        "owid": "BGD",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BGR",
+      "iso2": "BG",
+      "nombre": "Bulgaria",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Sofía",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "BGR",
+        "fmi": "BGR",
+        "owid": "BGR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BHR",
+      "iso2": "BH",
+      "nombre": "Baréin",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Manama",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "BHR",
+        "fmi": "BHR",
+        "owid": "BHR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BHS",
+      "iso2": "BS",
+      "nombre": "Bahamas",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nasáu",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "BHS",
+        "fmi": "BHS",
+        "owid": "BHS",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BIH",
+      "iso2": "BA",
+      "nombre": "Bosnia y Herzegovina",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Sarajevo",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "BIH",
+        "fmi": "BIH",
+        "owid": "BIH",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BLR",
+      "iso2": "BY",
+      "nombre": "Bielorrusia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Minsk",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "BLR",
+        "fmi": "BLR",
+        "owid": "BLR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BLZ",
+      "iso2": "BZ",
+      "nombre": "Belice",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Belmopán",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "BLZ",
+        "fmi": "BLZ",
+        "owid": "BLZ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BOL",
+      "iso2": "BO",
+      "nombre": "Bolivia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "La Paz",
+      "capitalFuente": "manual",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "BOL",
+        "fmi": "BOL",
+        "owid": "BOL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BRA",
+      "iso2": "BR",
+      "nombre": "Brasil",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Brasilia",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "BRA",
+        "fmi": "BRA",
+        "owid": "BRA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BRB",
+      "iso2": "BB",
+      "nombre": "Barbados",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bridgetown",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "BRB",
+        "fmi": "BRB",
+        "owid": "BRB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BRN",
+      "iso2": "BN",
+      "nombre": "Brunéi",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bandar Seri Begawan",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "BRN",
+        "fmi": "BRN",
+        "owid": "BRN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BTN",
+      "iso2": "BT",
+      "nombre": "Bután",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Timbu",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "BTN",
+        "fmi": "BTN",
+        "owid": "BTN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "BWA",
+      "iso2": "BW",
+      "nombre": "Botsuana",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Gaborone",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "BWA",
+        "fmi": "BWA",
+        "owid": "BWA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CAF",
+      "iso2": "CF",
+      "nombre": "República Centroafricana",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bangui",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "CAF",
+        "fmi": "CAF",
+        "owid": "CAF",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CAN",
+      "iso2": "CA",
+      "nombre": "Canadá",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ottawa",
+      "capitalFuente": "wikidata",
+      "region": "NAC",
+      "regionNombre": "América del Norte",
+      "codigos": {
+        "bm": "CAN",
+        "fmi": "CAN",
+        "owid": "CAN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CHE",
+      "iso2": "CH",
+      "nombre": "Suiza",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Berna",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "CHE",
+        "fmi": "CHE",
+        "owid": "CHE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CHL",
+      "iso2": "CL",
+      "nombre": "Chile",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Santiago de Chile",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "CHL",
+        "fmi": "CHL",
+        "owid": "CHL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CHN",
+      "iso2": "CN",
+      "nombre": "China",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Pekín",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "CHN",
+        "fmi": "CHN",
+        "owid": "CHN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CIV",
+      "iso2": "CI",
+      "nombre": "Costa de Marfil",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Yamusukro",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "CIV",
+        "fmi": "CIV",
+        "owid": "CIV",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CMR",
+      "iso2": "CM",
+      "nombre": "Camerún",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Yaundé",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "CMR",
+        "fmi": "CMR",
+        "owid": "CMR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "COD",
+      "iso2": "CD",
+      "nombre": "República Democrática del Congo",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kinsasa",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "COD",
+        "fmi": "COD",
+        "owid": "COD",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "COG",
+      "iso2": "CG",
+      "nombre": "República del Congo",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Brazzaville",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "COG",
+        "fmi": "COG",
+        "owid": "COG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "COL",
+      "iso2": "CO",
+      "nombre": "Colombia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bogotá",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "COL",
+        "fmi": "COL",
+        "owid": "COL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "COM",
+      "iso2": "KM",
+      "nombre": "Comoras",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Moroni",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "COM",
+        "fmi": "COM",
+        "owid": "COM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CPV",
+      "iso2": "CV",
+      "nombre": "Cabo Verde",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Praia",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "CPV",
+        "fmi": "CPV",
+        "owid": "CPV",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CRI",
+      "iso2": "CR",
+      "nombre": "Costa Rica",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "San José",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "CRI",
+        "fmi": "CRI",
+        "owid": "CRI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CUB",
+      "iso2": "CU",
+      "nombre": "Cuba",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "La Habana",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "CUB",
+        "fmi": "CUB",
+        "owid": "CUB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CYN",
+      "iso2": null,
+      "nombre": "Chipre del Norte",
+      "tipo": "especial",
+      "jugable": false,
+      "capital": "Nicosia Norte",
+      "capitalFuente": "manual",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "estatus": "Independencia declarada en 1983; reconocido solo por Turquía",
+      "reclamadoPor": "CYP",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": null,
+        "wikidata": "Q23681"
+      },
+      "nivelRentaManual": "medio-alto"
+    },
+    {
+      "id": "CYP",
+      "iso2": "CY",
+      "nombre": "Chipre",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nicosia",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "CYP",
+        "fmi": "CYP",
+        "owid": "CYP",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CZE",
+      "iso2": "CZ",
+      "nombre": "República Checa",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Praga",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "CZE",
+        "fmi": "CZE",
+        "owid": "CZE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "DEU",
+      "iso2": "DE",
+      "nombre": "Alemania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Berlín",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "DEU",
+        "fmi": "DEU",
+        "owid": "DEU",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "DJI",
+      "iso2": "DJ",
+      "nombre": "Yibuti",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ciudad de Yibuti",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "DJI",
+        "fmi": "DJI",
+        "owid": "DJI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "DMA",
+      "iso2": "DM",
+      "nombre": "Dominica",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Roseau",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "DMA",
+        "fmi": "DMA",
+        "owid": "DMA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "DNK",
+      "iso2": "DK",
+      "nombre": "Dinamarca",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Copenhague",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "DNK",
+        "fmi": "DNK",
+        "owid": "DNK",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "DOM",
+      "iso2": "DO",
+      "nombre": "República Dominicana",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Santo Domingo",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "DOM",
+        "fmi": "DOM",
+        "owid": "DOM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "DZA",
+      "iso2": "DZ",
+      "nombre": "Argelia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Argel",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "DZA",
+        "fmi": "DZA",
+        "owid": "DZA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ECU",
+      "iso2": "EC",
+      "nombre": "Ecuador",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Quito",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "ECU",
+        "fmi": "ECU",
+        "owid": "ECU",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "EGY",
+      "iso2": "EG",
+      "nombre": "Egipto",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "El Cairo",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "EGY",
+        "fmi": "EGY",
+        "owid": "EGY",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ERI",
+      "iso2": "ER",
+      "nombre": "Eritrea",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Asmara",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "ERI",
+        "fmi": "ERI",
+        "owid": "ERI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ESH",
+      "iso2": "EH",
+      "nombre": "Sáhara Occidental",
+      "tipo": "especial",
+      "jugable": false,
+      "capital": "El Aaiún",
+      "capitalFuente": "manual",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "estatus": "Territorio en disputa entre Marruecos y el Frente Polisario",
+      "reclamadoPor": "MAR",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": "ESH",
+        "wikidata": "Q6250"
+      },
+      "nivelRentaManual": "medio-bajo"
+    },
+    {
+      "id": "ESP",
+      "iso2": "ES",
+      "nombre": "España",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Madrid",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "ESP",
+        "fmi": "ESP",
+        "owid": "ESP",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "EST",
+      "iso2": "EE",
+      "nombre": "Estonia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Tallin",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "EST",
+        "fmi": "EST",
+        "owid": "EST",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ETH",
+      "iso2": "ET",
+      "nombre": "Etiopía",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Adís Abeba",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "ETH",
+        "fmi": "ETH",
+        "owid": "ETH",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "FIN",
+      "iso2": "FI",
+      "nombre": "Finlandia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Helsinki",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "FIN",
+        "fmi": "FIN",
+        "owid": "FIN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "FJI",
+      "iso2": "FJ",
+      "nombre": "Fiyi",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Suva",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "FJI",
+        "fmi": "FJI",
+        "owid": "FJI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "FRA",
+      "iso2": "FR",
+      "nombre": "Francia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "París",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "FRA",
+        "fmi": "FRA",
+        "owid": "FRA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "FSM",
+      "iso2": "FM",
+      "nombre": "Micronesia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Palikir",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "FSM",
+        "fmi": "FSM",
+        "owid": "FSM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GAB",
+      "iso2": "GA",
+      "nombre": "Gabón",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Libreville",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "GAB",
+        "fmi": "GAB",
+        "owid": "GAB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GBR",
+      "iso2": "GB",
+      "nombre": "Reino Unido",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Londres",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "GBR",
+        "fmi": "GBR",
+        "owid": "GBR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GEO",
+      "iso2": "GE",
+      "nombre": "Georgia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Tiflis",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "GEO",
+        "fmi": "GEO",
+        "owid": "GEO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GHA",
+      "iso2": "GH",
+      "nombre": "Ghana",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Acra",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "GHA",
+        "fmi": "GHA",
+        "owid": "GHA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GIN",
+      "iso2": "GN",
+      "nombre": "Guinea",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Conakri",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "GIN",
+        "fmi": "GIN",
+        "owid": "GIN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GMB",
+      "iso2": "GM",
+      "nombre": "Gambia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Banjul",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "GMB",
+        "fmi": "GMB",
+        "owid": "GMB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GNB",
+      "iso2": "GW",
+      "nombre": "Guinea-Bisáu",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bisáu",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "GNB",
+        "fmi": "GNB",
+        "owid": "GNB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GNQ",
+      "iso2": "GQ",
+      "nombre": "Guinea Ecuatorial",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Malabo",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "GNQ",
+        "fmi": "GNQ",
+        "owid": "GNQ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GRC",
+      "iso2": "GR",
+      "nombre": "Grecia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Atenas",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "GRC",
+        "fmi": "GRC",
+        "owid": "GRC",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GRD",
+      "iso2": "GD",
+      "nombre": "Granada",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Saint George",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "GRD",
+        "fmi": "GRD",
+        "owid": "GRD",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GTM",
+      "iso2": "GT",
+      "nombre": "Guatemala",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ciudad de Guatemala",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "GTM",
+        "fmi": "GTM",
+        "owid": "GTM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "GUY",
+      "iso2": "GY",
+      "nombre": "Guyana",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Georgetown",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "GUY",
+        "fmi": "GUY",
+        "owid": "GUY",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "HND",
+      "iso2": "HN",
+      "nombre": "Honduras",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Tegucigalpa",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "HND",
+        "fmi": "HND",
+        "owid": "HND",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "HRV",
+      "iso2": "HR",
+      "nombre": "Croacia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Zagreb",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "HRV",
+        "fmi": "HRV",
+        "owid": "HRV",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "HTI",
+      "iso2": "HT",
+      "nombre": "Haití",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Puerto Príncipe",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "HTI",
+        "fmi": "HTI",
+        "owid": "HTI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "HUN",
+      "iso2": "HU",
+      "nombre": "Hungría",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Budapest",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "HUN",
+        "fmi": "HUN",
+        "owid": "HUN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "IDN",
+      "iso2": "ID",
+      "nombre": "Indonesia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Yakarta",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "IDN",
+        "fmi": "IDN",
+        "owid": "IDN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "IND",
+      "iso2": "IN",
+      "nombre": "India",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nueva Delhi",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "IND",
+        "fmi": "IND",
+        "owid": "IND",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "IRL",
+      "iso2": "IE",
+      "nombre": "Irlanda",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Dublín",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "IRL",
+        "fmi": "IRL",
+        "owid": "IRL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "IRN",
+      "iso2": "IR",
+      "nombre": "Irán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Teherán",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "IRN",
+        "fmi": "IRN",
+        "owid": "IRN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "IRQ",
+      "iso2": "IQ",
+      "nombre": "Irak",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bagdad",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "IRQ",
+        "fmi": "IRQ",
+        "owid": "IRQ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ISL",
+      "iso2": "IS",
+      "nombre": "Islandia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Reikiavik",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "ISL",
+        "fmi": "ISL",
+        "owid": "ISL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ISR",
+      "iso2": "IL",
+      "nombre": "Israel",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Jerusalén",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "ISR",
+        "fmi": "ISR",
+        "owid": "ISR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ITA",
+      "iso2": "IT",
+      "nombre": "Italia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Roma",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "ITA",
+        "fmi": "ITA",
+        "owid": "ITA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "JAM",
+      "iso2": "JM",
+      "nombre": "Jamaica",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kingston",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "JAM",
+        "fmi": "JAM",
+        "owid": "JAM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "JOR",
+      "iso2": "JO",
+      "nombre": "Jordania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Amán",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "JOR",
+        "fmi": "JOR",
+        "owid": "JOR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "JPN",
+      "iso2": "JP",
+      "nombre": "Japón",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Tokio",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "JPN",
+        "fmi": "JPN",
+        "owid": "JPN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KAZ",
+      "iso2": "KZ",
+      "nombre": "Kazajistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Astaná",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "KAZ",
+        "fmi": "KAZ",
+        "owid": "KAZ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KEN",
+      "iso2": "KE",
+      "nombre": "Kenia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nairobi",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "KEN",
+        "fmi": "KEN",
+        "owid": "KEN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KGZ",
+      "iso2": "KG",
+      "nombre": "Kirguistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Biskek",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "KGZ",
+        "fmi": "KGZ",
+        "owid": "KGZ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KHM",
+      "iso2": "KH",
+      "nombre": "Camboya",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nom Pen",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "KHM",
+        "fmi": "KHM",
+        "owid": "KHM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KIR",
+      "iso2": "KI",
+      "nombre": "Kiribati",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Tarawa Sur",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "KIR",
+        "fmi": "KIR",
+        "owid": "KIR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KNA",
+      "iso2": "KN",
+      "nombre": "San Cristóbal y Nieves",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Basseterre",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "KNA",
+        "fmi": "KNA",
+        "owid": "KNA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KOR",
+      "iso2": "KR",
+      "nombre": "Corea del Sur",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Seúl",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "KOR",
+        "fmi": "KOR",
+        "owid": "KOR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "KWT",
+      "iso2": "KW",
+      "nombre": "Kuwait",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ciudad de Kuwait",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "KWT",
+        "fmi": "KWT",
+        "owid": "KWT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LAO",
+      "iso2": "LA",
+      "nombre": "Laos",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Vientián",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "LAO",
+        "fmi": "LAO",
+        "owid": "LAO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LBN",
+      "iso2": "LB",
+      "nombre": "Líbano",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Beirut",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "LBN",
+        "fmi": "LBN",
+        "owid": "LBN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LBR",
+      "iso2": "LR",
+      "nombre": "Liberia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Monrovia",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "LBR",
+        "fmi": "LBR",
+        "owid": "LBR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LBY",
+      "iso2": "LY",
+      "nombre": "Libia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Trípoli",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "LBY",
+        "fmi": "LBY",
+        "owid": "LBY",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LCA",
+      "iso2": "LC",
+      "nombre": "Santa Lucía",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Castries",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "LCA",
+        "fmi": "LCA",
+        "owid": "LCA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LIE",
+      "iso2": "LI",
+      "nombre": "Liechtenstein",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Vaduz",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "LIE",
+        "fmi": "LIE",
+        "owid": "LIE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LKA",
+      "iso2": "LK",
+      "nombre": "Sri Lanka",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Colombo",
+      "capitalFuente": "manual",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "LKA",
+        "fmi": "LKA",
+        "owid": "LKA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LSO",
+      "iso2": "LS",
+      "nombre": "Lesoto",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Maseru",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "LSO",
+        "fmi": "LSO",
+        "owid": "LSO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LTU",
+      "iso2": "LT",
+      "nombre": "Lituania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Vilna",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "LTU",
+        "fmi": "LTU",
+        "owid": "LTU",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LUX",
+      "iso2": "LU",
+      "nombre": "Luxemburgo",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Luxemburgo",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "LUX",
+        "fmi": "LUX",
+        "owid": "LUX",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "LVA",
+      "iso2": "LV",
+      "nombre": "Letonia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Riga",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "LVA",
+        "fmi": "LVA",
+        "owid": "LVA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MAR",
+      "iso2": "MA",
+      "nombre": "Marruecos",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Rabat",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "MAR",
+        "fmi": "MAR",
+        "owid": "MAR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MCO",
+      "iso2": "MC",
+      "nombre": "Mónaco",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Mónaco",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "MCO",
+        "fmi": "MCO",
+        "owid": "MCO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MDA",
+      "iso2": "MD",
+      "nombre": "Moldavia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Chisináu",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "MDA",
+        "fmi": "MDA",
+        "owid": "MDA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MDG",
+      "iso2": "MG",
+      "nombre": "Madagascar",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Antananarivo",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "MDG",
+        "fmi": "MDG",
+        "owid": "MDG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MDV",
+      "iso2": "MV",
+      "nombre": "Maldivas",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Malé",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "MDV",
+        "fmi": "MDV",
+        "owid": "MDV",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MEX",
+      "iso2": "MX",
+      "nombre": "México",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ciudad de México",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "MEX",
+        "fmi": "MEX",
+        "owid": "MEX",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MHL",
+      "iso2": "MH",
+      "nombre": "Islas Marshall",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Majuro",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "MHL",
+        "fmi": "MHL",
+        "owid": "MHL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MKD",
+      "iso2": "MK",
+      "nombre": "Macedonia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Skopie",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "MKD",
+        "fmi": "MKD",
+        "owid": "MKD",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MLI",
+      "iso2": "ML",
+      "nombre": "Mali",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bamako",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "MLI",
+        "fmi": "MLI",
+        "owid": "MLI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MLT",
+      "iso2": "MT",
+      "nombre": "Malta",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "La Valeta",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "MLT",
+        "fmi": "MLT",
+        "owid": "MLT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MMR",
+      "iso2": "MM",
+      "nombre": "Birmania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Naipyidó",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "MMR",
+        "fmi": "MMR",
+        "owid": "MMR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MNE",
+      "iso2": "ME",
+      "nombre": "Montenegro",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Podgorica",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "MNE",
+        "fmi": "MNE",
+        "owid": "MNE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MNG",
+      "iso2": "MN",
+      "nombre": "Mongolia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ulán Bator",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "MNG",
+        "fmi": "MNG",
+        "owid": "MNG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MOZ",
+      "iso2": "MZ",
+      "nombre": "Mozambique",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Maputo",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "MOZ",
+        "fmi": "MOZ",
+        "owid": "MOZ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MRT",
+      "iso2": "MR",
+      "nombre": "Mauritania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nuakchot",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "MRT",
+        "fmi": "MRT",
+        "owid": "MRT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MUS",
+      "iso2": "MU",
+      "nombre": "Mauricio",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Port Louis",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "MUS",
+        "fmi": "MUS",
+        "owid": "MUS",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MWI",
+      "iso2": "MW",
+      "nombre": "Malaui",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Lilongüe",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "MWI",
+        "fmi": "MWI",
+        "owid": "MWI",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MYS",
+      "iso2": "MY",
+      "nombre": "Malasia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kuala Lumpur",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "MYS",
+        "fmi": "MYS",
+        "owid": "MYS",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NAM",
+      "iso2": "NA",
+      "nombre": "Namibia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Windhoek",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "NAM",
+        "fmi": "NAM",
+        "owid": "NAM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NER",
+      "iso2": "NE",
+      "nombre": "Níger",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Niamey",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "NER",
+        "fmi": "NER",
+        "owid": "NER",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NGA",
+      "iso2": "NG",
+      "nombre": "Nigeria",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Abuya",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "NGA",
+        "fmi": "NGA",
+        "owid": "NGA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NIC",
+      "iso2": "NI",
+      "nombre": "Nicaragua",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Managua",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "NIC",
+        "fmi": "NIC",
+        "owid": "NIC",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NLD",
+      "iso2": "NL",
+      "nombre": "Países Bajos",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ámsterdam",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "NLD",
+        "fmi": "NLD",
+        "owid": "NLD",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NOR",
+      "iso2": "NO",
+      "nombre": "Noruega",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Oslo",
+      "capitalFuente": "banco-mundial",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "NOR",
+        "fmi": "NOR",
+        "owid": "NOR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NPL",
+      "iso2": "NP",
+      "nombre": "Nepal",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Katmandú",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "NPL",
+        "fmi": "NPL",
+        "owid": "NPL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NRU",
+      "iso2": "NR",
+      "nombre": "Nauru",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Yaren",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "NRU",
+        "fmi": "NRU",
+        "owid": "NRU",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NZL",
+      "iso2": "NZ",
+      "nombre": "Nueva Zelanda",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Wellington",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "NZL",
+        "fmi": "NZL",
+        "owid": "NZL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "OMN",
+      "iso2": "OM",
+      "nombre": "Omán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Mascate",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "OMN",
+        "fmi": "OMN",
+        "owid": "OMN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PAK",
+      "iso2": "PK",
+      "nombre": "Pakistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Islamabad",
+      "capitalFuente": "wikidata",
+      "region": "SAS",
+      "regionNombre": "Asia Meridional",
+      "codigos": {
+        "bm": "PAK",
+        "fmi": "PAK",
+        "owid": "PAK",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PAN",
+      "iso2": "PA",
+      "nombre": "Panamá",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ciudad de Panamá",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "PAN",
+        "fmi": "PAN",
+        "owid": "PAN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PER",
+      "iso2": "PE",
+      "nombre": "Perú",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Lima",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "PER",
+        "fmi": "PER",
+        "owid": "PER",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PHL",
+      "iso2": "PH",
+      "nombre": "Filipinas",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Manila",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "PHL",
+        "fmi": "PHL",
+        "owid": "PHL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PLW",
+      "iso2": "PW",
+      "nombre": "Palaos",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ngerulmud",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "PLW",
+        "fmi": "PLW",
+        "owid": "PLW",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PMR",
+      "iso2": null,
+      "nombre": "Transnistria",
+      "tipo": "especial",
+      "jugable": false,
+      "capital": "Tiráspol",
+      "capitalFuente": "manual",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "estatus": "Independencia declarada en 1990; sin reconocimiento internacional",
+      "reclamadoPor": "MDA",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": null,
+        "wikidata": "Q907112"
+      },
+      "nivelRentaManual": "medio-bajo"
+    },
+    {
+      "id": "PNG",
+      "iso2": "PG",
+      "nombre": "Papúa Nueva Guinea",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Puerto Moresby",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "PNG",
+        "fmi": "PNG",
+        "owid": "PNG",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "POL",
+      "iso2": "PL",
+      "nombre": "Polonia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Varsovia",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "POL",
+        "fmi": "POL",
+        "owid": "POL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PRK",
+      "iso2": "KP",
+      "nombre": "Corea del Norte",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Pionyang",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "PRK",
+        "fmi": "PRK",
+        "owid": "PRK",
+        "wikidata": null
+      },
+      "nivelRentaManual": "bajo"
+    },
+    {
+      "id": "PRT",
+      "iso2": "PT",
+      "nombre": "Portugal",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Lisboa",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "PRT",
+        "fmi": "PRT",
+        "owid": "PRT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PRY",
+      "iso2": "PY",
+      "nombre": "Paraguay",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Asunción",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "PRY",
+        "fmi": "PRY",
+        "owid": "PRY",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PSE",
+      "iso2": "PS",
+      "nombre": "Palestina",
+      "tipo": "especial",
+      "jugable": true,
+      "capital": "Ramala",
+      "capitalFuente": "manual",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "estatus": "Territorios ocupados por Israel; Estado con reconocimiento parcial",
+      "reclamadoPor": null,
+      "codigos": {
+        "bm": "PSE",
+        "fmi": "WBG",
+        "owid": "PSE",
+        "wikidata": "Q219060"
+      }
+    },
+    {
+      "id": "QAT",
+      "iso2": "QA",
+      "nombre": "Catar",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Doha",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "QAT",
+        "fmi": "QAT",
+        "owid": "QAT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ROU",
+      "iso2": "RO",
+      "nombre": "Rumanía",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bucarest",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "ROU",
+        "fmi": "ROU",
+        "owid": "ROU",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "RUS",
+      "iso2": "RU",
+      "nombre": "Rusia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Moscú",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "RUS",
+        "fmi": "RUS",
+        "owid": "RUS",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "RWA",
+      "iso2": "RW",
+      "nombre": "Ruanda",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kigali",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "RWA",
+        "fmi": "RWA",
+        "owid": "RWA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SAU",
+      "iso2": "SA",
+      "nombre": "Arabia Saudí",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Riad",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "SAU",
+        "fmi": "SAU",
+        "owid": "SAU",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SDN",
+      "iso2": "SD",
+      "nombre": "Sudán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Jartum",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "SDN",
+        "fmi": "SDN",
+        "owid": "SDN",
+        "wikidata": null
+      },
+      "componentes": [
+        "SDN",
+        "SSD"
+      ]
+    },
+    {
+      "id": "SEN",
+      "iso2": "SN",
+      "nombre": "Senegal",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Dakar",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "SEN",
+        "fmi": "SEN",
+        "owid": "SEN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SGP",
+      "iso2": "SG",
+      "nombre": "Singapur",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Singapur",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "SGP",
+        "fmi": "SGP",
+        "owid": "SGP",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SLB",
+      "iso2": "SB",
+      "nombre": "Islas Salomón",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Honiara",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "SLB",
+        "fmi": "SLB",
+        "owid": "SLB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SLE",
+      "iso2": "SL",
+      "nombre": "Sierra Leona",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Freetown",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "SLE",
+        "fmi": "SLE",
+        "owid": "SLE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SLV",
+      "iso2": "SV",
+      "nombre": "El Salvador",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "San Salvador",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "SLV",
+        "fmi": "SLV",
+        "owid": "SLV",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SMR",
+      "iso2": "SM",
+      "nombre": "San Marino",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "San Marino",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "SMR",
+        "fmi": "SMR",
+        "owid": "SMR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SOL",
+      "iso2": null,
+      "nombre": "Somalilandia",
+      "tipo": "especial",
+      "jugable": false,
+      "capital": "Hargeisa",
+      "capitalFuente": "manual",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "estatus": "Independencia declarada en 1991; sin reconocimiento internacional",
+      "reclamadoPor": "SOM",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": null,
+        "wikidata": "Q34754"
+      },
+      "nivelRentaManual": "bajo"
+    },
+    {
+      "id": "SOM",
+      "iso2": "SO",
+      "nombre": "Somalia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Mogadiscio",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "SOM",
+        "fmi": "SOM",
+        "owid": "SOM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SOS",
+      "iso2": null,
+      "nombre": "Osetia del Sur",
+      "tipo": "especial",
+      "jugable": false,
+      "capital": "Tsjinval",
+      "capitalFuente": "manual",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "estatus": "Reconocida por Rusia desde 2008",
+      "reclamadoPor": "GEO",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": null,
+        "wikidata": "Q23427"
+      },
+      "nivelRentaManual": "medio-bajo"
+    },
+    {
+      "id": "SRB",
+      "iso2": "RS",
+      "nombre": "Serbia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Belgrado",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "SRB",
+        "fmi": "SRB",
+        "owid": "SRB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "STP",
+      "iso2": "ST",
+      "nombre": "Santo Tomé y Príncipe",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Santo Tomé",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "STP",
+        "fmi": "STP",
+        "owid": "STP",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SUR",
+      "iso2": "SR",
+      "nombre": "Surinam",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Paramaribo",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "SUR",
+        "fmi": "SUR",
+        "owid": "SUR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SVK",
+      "iso2": "SK",
+      "nombre": "Eslovaquia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bratislava",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "SVK",
+        "fmi": "SVK",
+        "owid": "SVK",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SVN",
+      "iso2": "SI",
+      "nombre": "Eslovenia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Liubliana",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "SVN",
+        "fmi": "SVN",
+        "owid": "SVN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SWE",
+      "iso2": "SE",
+      "nombre": "Suecia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Estocolmo",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "SWE",
+        "fmi": "SWE",
+        "owid": "SWE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SWZ",
+      "iso2": "SZ",
+      "nombre": "Suazilandia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Mbabane",
+      "capitalFuente": "manual",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "SWZ",
+        "fmi": "SWZ",
+        "owid": "SWZ",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SYC",
+      "iso2": "SC",
+      "nombre": "Seychelles",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Victoria",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "SYC",
+        "fmi": "SYC",
+        "owid": "SYC",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "SYR",
+      "iso2": "SY",
+      "nombre": "Siria",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Damasco",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "SYR",
+        "fmi": "SYR",
+        "owid": "SYR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TCD",
+      "iso2": "TD",
+      "nombre": "Chad",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Yamena",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "TCD",
+        "fmi": "TCD",
+        "owid": "TCD",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TGO",
+      "iso2": "TG",
+      "nombre": "Togo",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Lomé",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "TGO",
+        "fmi": "TGO",
+        "owid": "TGO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "THA",
+      "iso2": "TH",
+      "nombre": "Tailandia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Bangkok",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "THA",
+        "fmi": "THA",
+        "owid": "THA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TJK",
+      "iso2": "TJ",
+      "nombre": "Tayikistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Dusambé",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "TJK",
+        "fmi": "TJK",
+        "owid": "TJK",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TKM",
+      "iso2": "TM",
+      "nombre": "Turkmenistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Asjabad",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "TKM",
+        "fmi": "TKM",
+        "owid": "TKM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TLS",
+      "iso2": "TL",
+      "nombre": "Timor Oriental",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Dili",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "TLS",
+        "fmi": "TLS",
+        "owid": "TLS",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TON",
+      "iso2": "TO",
+      "nombre": "Tonga",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Nukualofa",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "TON",
+        "fmi": "TON",
+        "owid": "TON",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TTO",
+      "iso2": "TT",
+      "nombre": "Trinidad y Tobago",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Puerto España",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "TTO",
+        "fmi": "TTO",
+        "owid": "TTO",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TUN",
+      "iso2": "TN",
+      "nombre": "Túnez",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Túnez",
+      "capitalFuente": "wikidata",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "TUN",
+        "fmi": "TUN",
+        "owid": "TUN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TUR",
+      "iso2": "TR",
+      "nombre": "Turquía",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Ankara",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "TUR",
+        "fmi": "TUR",
+        "owid": "TUR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TUV",
+      "iso2": "TV",
+      "nombre": "Tuvalu",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Funafuti",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "TUV",
+        "fmi": "TUV",
+        "owid": "TUV",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TWN",
+      "iso2": "TW",
+      "nombre": "Taiwán",
+      "tipo": "especial",
+      "jugable": true,
+      "capital": "Taipéi",
+      "capitalFuente": "manual",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "estatus": "Estatus especial: gobierno propio, reclamado por China",
+      "reclamadoPor": "CHN",
+      "codigos": {
+        "bm": null,
+        "fmi": "TWN",
+        "owid": "TWN",
+        "wikidata": "Q865"
+      }
+    },
+    {
+      "id": "TZA",
+      "iso2": "TZ",
+      "nombre": "Tanzania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Dodoma",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "TZA",
+        "fmi": "TZA",
+        "owid": "TZA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "UGA",
+      "iso2": "UG",
+      "nombre": "Uganda",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kampala",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "UGA",
+        "fmi": "UGA",
+        "owid": "UGA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "UKR",
+      "iso2": "UA",
+      "nombre": "Ucrania",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kiev",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "UKR",
+        "fmi": "UKR",
+        "owid": "UKR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "URY",
+      "iso2": "UY",
+      "nombre": "Uruguay",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Montevideo",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "URY",
+        "fmi": "URY",
+        "owid": "URY",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "USA",
+      "iso2": "US",
+      "nombre": "Estados Unidos",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Washington D. C.",
+      "capitalFuente": "wikidata",
+      "region": "NAC",
+      "regionNombre": "América del Norte",
+      "codigos": {
+        "bm": "USA",
+        "fmi": "USA",
+        "owid": "USA",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "UZB",
+      "iso2": "UZ",
+      "nombre": "Uzbekistán",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Taskent",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": "UZB",
+        "fmi": "UZB",
+        "owid": "UZB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "VAT",
+      "iso2": "VA",
+      "nombre": "Ciudad del Vaticano",
+      "tipo": "pais",
+      "jugable": false,
+      "capital": "Ciudad del Vaticano",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": "VAT",
+        "wikidata": "Q237"
+      },
+      "nivelRentaManual": "alto",
+      "nota": "No figura en el Banco Mundial ni en el FMI; sin datos económicos."
+    },
+    {
+      "id": "VCT",
+      "iso2": "VC",
+      "nombre": "San Vicente y las Granadinas",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Kingstown",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "VCT",
+        "fmi": "VCT",
+        "owid": "VCT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "VEN",
+      "iso2": "VE",
+      "nombre": "Venezuela",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Caracas",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "codigos": {
+        "bm": "VEN",
+        "fmi": "VEN",
+        "owid": "VEN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "VNM",
+      "iso2": "VN",
+      "nombre": "Vietnam",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Hanói",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "VNM",
+        "fmi": "VNM",
+        "owid": "VNM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "VUT",
+      "iso2": "VU",
+      "nombre": "Vanuatu",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Port Vila",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "VUT",
+        "fmi": "VUT",
+        "owid": "VUT",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "WSM",
+      "iso2": "WS",
+      "nombre": "Samoa",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Apia",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "codigos": {
+        "bm": "WSM",
+        "fmi": "WSM",
+        "owid": "WSM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "XKX",
+      "iso2": "XK",
+      "nombre": "Kosovo",
+      "tipo": "especial",
+      "jugable": true,
+      "capital": "Pristina",
+      "capitalFuente": "manual",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "estatus": "Independencia declarada en 2008; reconocimiento parcial",
+      "reclamadoPor": "SRB",
+      "codigos": {
+        "bm": "XKX",
+        "fmi": "UVK",
+        "owid": "OWID_KOS",
+        "wikidata": "Q1246"
+      }
+    },
+    {
+      "id": "YEM",
+      "iso2": "YE",
+      "nombre": "Yemen",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Saná",
+      "capitalFuente": "manual",
+      "region": "MEA",
+      "regionNombre": "Oriente Medio y Norte de África",
+      "codigos": {
+        "bm": "YEM",
+        "fmi": "YEM",
+        "owid": "YEM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ZAF",
+      "iso2": "ZA",
+      "nombre": "Sudáfrica",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Pretoria",
+      "capitalFuente": "manual",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "ZAF",
+        "fmi": "ZAF",
+        "owid": "ZAF",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ZMB",
+      "iso2": "ZM",
+      "nombre": "Zambia",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Lusaka",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "ZMB",
+        "fmi": "ZMB",
+        "owid": "ZMB",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ZWE",
+      "iso2": "ZW",
+      "nombre": "Zimbabue",
+      "tipo": "pais",
+      "jugable": true,
+      "capital": "Harare",
+      "capitalFuente": "wikidata",
+      "region": "SSF",
+      "regionNombre": "África subsahariana",
+      "codigos": {
+        "bm": "ZWE",
+        "fmi": "ZWE",
+        "owid": "ZWE",
+        "wikidata": null
+      }
+    }
+  ]
+}
