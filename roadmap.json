@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.0",
-  "actualizado": "2026-11-11T15:23:29Z",
+  "actualizado": "2026-11-11T15:25:05Z",
   "faseActiva": "fase-0",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Creado el proyecto (Vite + TypeScript + Vitest), la estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, la publicación con GitHub Actions y la web de la Hoja de ruta.",
-    "siguientePaso": "Crear la pantalla de inicio del juego (tarea f0-t7).",
+    "resumen": "Creado el proyecto (Vite + TypeScript + Vitest), la estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, la publicación con GitHub Actions, la web de la Hoja de ruta y la pantalla de inicio del juego.",
+    "siguientePaso": "Crear el botón «Reportar fallo / sugerencia» y las plantillas de issue (tarea f0-t8).",
     "pendienteDelJugador": ["En GitHub: Settings → Pages → Source: GitHub Actions"]
   },
   "etapas": [
@@ -108,13 +108,13 @@
           "titulo": "Crear la web independiente /hoja-de-ruta/ (sección 10)",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/e87eacd"
         },
         {
           "id": "f0-t7",
           "titulo": "Crear la pantalla de inicio del juego: título provisional, versión, botones (Nueva partida, desactivado por ahora; Hoja de ruta; Ajustes)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {

@@ -1,0 +1,153 @@
+/* Pantalla de inicio del juego. */
+.inicio {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  gap: 28px;
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 32px 20px calc(20px + env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+.inicio > * {
+  position: relative;
+}
+
+/* Fondo decorativo: resplandor y globo con meridianos. */
+.inicio__fondo {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 22%, rgb(90 176 255 / 16%), transparent 60%),
+    radial-gradient(circle at 85% 8%, rgb(242 184 75 / 10%), transparent 40%);
+  pointer-events: none;
+}
+
+.inicio__globo {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  width: 440px;
+  max-width: none;
+  transform: translateX(-50%);
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 0.6;
+  opacity: 0.22;
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 92%);
+}
+
+.inicio__cabecera {
+  align-self: center;
+  text-align: center;
+}
+
+.inicio__sello {
+  color: var(--acento);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.inicio__titulo {
+  margin-top: 8px;
+  font-size: clamp(2.5rem, 13vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.inicio__anio {
+  display: block;
+  color: var(--en-curso);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.inicio__lema {
+  max-width: 28ch;
+  margin: 14px auto 0;
+  color: var(--texto-suave);
+  font-size: 1.0625rem;
+  text-wrap: balance;
+}
+
+.inicio__menu {
+  display: grid;
+  gap: 12px;
+}
+
+.boton--menu {
+  flex-direction: column;
+  gap: 0;
+  min-height: 60px;
+  font-size: 1.0625rem;
+}
+
+.boton--menu small {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.inicio__pie {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+
+.inicio__acciones {
+  display: grid;
+  width: 100%;
+}
+
+.inicio__acciones:empty {
+  display: none;
+}
+
+.inicio__version {
+  margin-top: 6px;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.inicio__version strong {
+  color: var(--texto);
+}
+
+.inicio__fase {
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+}
+
+/* En horizontal con poca altura (móvil apaisado) se reparte en dos columnas. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .inicio {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 16px 28px;
+    max-width: 860px;
+    padding-top: 20px;
+  }
+
+  .inicio__cabecera {
+    grid-row: 1 / -1;
+  }
+
+  .inicio__menu {
+    align-self: end;
+  }
+
+  .inicio__globo {
+    left: 25%;
+    width: 360px;
+  }
+}

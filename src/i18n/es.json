@@ -9,6 +9,29 @@
     "nuevaVersion": "Hay una versión nueva: {version}.",
     "recargar": "Recargar"
   },
+  "juego": {
+    "inicio": {
+      "sello": "Simulador geopolítico",
+      "lema": "Dirige un país real a partir del 1 de enero de 2010.",
+      "nuevaPartida": "Nueva partida",
+      "nuevaPartidaAviso": "Disponible a partir de la v0.5.0",
+      "hojaDeRuta": "Hoja de ruta",
+      "hojaDeRutaAviso": "Qué está hecho y qué viene después",
+      "ajustes": "Ajustes",
+      "menu": "Menú principal",
+      "version": "Versión {version}",
+      "nombreProvisional": "nombre provisional",
+      "enDesarrollo": "En desarrollo: {fase}"
+    },
+    "ajustes": {
+      "titulo": "Ajustes",
+      "vacio": "Todavía no hay nada que ajustar. Los ajustes de velocidad, pausa automática, accesibilidad e idioma llegarán con las primeras versiones jugables.",
+      "version": "Versión del juego"
+    },
+    "hoja": {
+      "cerrar": "Cerrar"
+    }
+  },
   "hojaDeRuta": {
     "titulo": "Hoja de ruta",
     "subtitulo": "Qué está hecho, qué se está haciendo y qué viene después.",
