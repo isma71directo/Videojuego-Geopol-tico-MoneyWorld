@@ -24,6 +24,7 @@ Al jugador se le llama «el jugador»: es quien dirige el proyecto y prueba cada
 16. **Peticiones nuevas del jugador:** toda idea o corrección (mensaje o _issue_) se añade a `roadmap.json`: a la fase activa si es pequeña o un fallo; a la fase que corresponda si es un sistema; o a `ideasPendientes` si no encaja. Avisar al jugador de dónde ha ido.
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
+19. **Audiovisual en cada fase:** cada fase entrega su contenido audiovisual (gráficos, animación, sonido y, si procede, 3D) según la sección 7.1. Se crea con código o con material de licencia libre anotado en `/docs/creditos.md`; nunca se usa material sin licencia clara. El 3D se propone al jugador en el plan de la fase y siempre tiene alternativa en 2D.
 
 ## Órdenes útiles
 
@@ -57,6 +58,8 @@ Los tests fallan si las tres cosas no coinciden.
   (hay un test que lo exige).
 - `CHANGELOG.md` — cambios de cada versión, además del `historial` de `roadmap.json`.
 - `src/sim/` — motor puro, sin interfaz. `src/ui/` y `src/map/` — interfaz y mapa.
+- `src/av/` y `public/av/` — sonido, animaciones, escenas 3D y recursos audiovisuales; sus fuentes y
+  licencias se anotan en `docs/creditos.md`.
 - `src/compartido/` — código que usan las dos webs (versión, hoja de ruta, reporte de fallos).
 - `src/i18n/es.json` — todos los textos visibles; no se escriben textos sueltos en el código.
 - `hoja-de-ruta/` — web independiente de la Hoja de ruta.

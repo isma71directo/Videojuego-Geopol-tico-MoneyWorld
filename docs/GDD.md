@@ -2,7 +2,7 @@
 
 > **Documento de Diseño del Juego (GDD).** Este archivo es la referencia principal del proyecto.
 > Claude Code debe leerlo al inicio de cada sesión, junto con `CLAUDE.md` y `roadmap.json`.
-> Versión del documento: 1.1 · Fecha: 11/11/2026 · Idioma del proyecto: español.
+> Versión del documento: 1.2 · Fecha: 11/11/2026 · Idioma del proyecto: español.
 
 ---
 
@@ -39,6 +39,7 @@
    - 6.23 Eventos
    - 6.24 IA de los demás países
 7. Interfaz y experiencia en móvil
+   - 7.1 Contenido audiovisual
 8. Modelo de datos
 9. Hoja de ruta: etapas, fases y versiones (orden de trabajo)
 10. Web de la Hoja de ruta y comunicación entre webs
@@ -57,11 +58,12 @@
 
 1. **Todo está conectado.** Ninguna decisión es aislada. Subir el IVA afecta a la inflación, al consumo, a la popularidad, a los votos de cada grupo social y a la recaudación.
 2. **Datos reales de partida.** Cada país empieza con sus datos reales de 2010. A partir de ahí, la historia la escribe la simulación.
-3. **Mapa 2D interactivo como centro del juego.** El mapa político es plano, con capas de información y zoom hasta las regiones. No hay globo 3D.
+3. **Mapa 2D interactivo como centro del juego.** El mapa político es plano, con capas de información y zoom hasta las regiones. El mapa de juego no es un globo 3D; el 3D se reserva para componentes complementarios (sección 7.1).
 4. **Profundidad accesible.** Hay mucha información, pero se organiza por ministerios, con resúmenes, alertas y consejos de asesores.
 5. **Consecuencias, no guiones.** Hay eventos históricos opcionales, pero el mundo evoluciona por la simulación.
 6. **Pensado para móvil y PC.** Se juega en el navegador, con controles táctiles y paneles que se adaptan a la pantalla.
 7. **Largo plazo.** El juego no tiene fin. Las tecnologías permiten llegar a 2075 y más allá.
+8. **Acabado audiovisual desde el principio.** Cada sistema llega con sus gráficos, sus animaciones y su sonido; no se deja para el final.
 
 **Referencias:** Power & Revolution / Geopolitical Simulator (profundidad política y económica, mapa 2D), Geoplanetical (sistemas interconectados, energía y red eléctrica, árbol tecnológico largo), Democracy (grupos de votantes y políticas), Supreme Ruler (militar en mapa).
 
@@ -80,6 +82,7 @@
 | Guardado | IndexedDB (partidas) + exportar e importar partida como archivo `.json` |
 | Datos | Archivos JSON en `/public/data`, generados con scripts reproducibles en `/scripts` |
 | Idioma | Interfaz en español. Los textos van en `/src/i18n/es.json` para poder traducir en el futuro. |
+| Audiovisual | Gráficos vectoriales (SVG) y Canvas, animaciones con CSS y Canvas, sonido sintetizado con Web Audio y 3D opcional con WebGL, cargado solo cuando se usa (sección 7.1) |
 
 **Estructura de carpetas**
 
@@ -92,10 +95,12 @@
 /scripts/               → descarga y procesado de datos reales (Node)
 /fuentes/               → material original (p. ej. árboles tecnológicos .docx)
 /public/data/           → datos ya procesados que carga el juego
+/public/av/             → recursos audiovisuales (banderas, iconos, ilustraciones, sonidos)
 /src/sim/               → motor de simulación (sin dependencias de interfaz)
 /src/sim/systems/       → un archivo por sistema (economia.ts, energia.ts…)
 /src/ui/                → pantallas y componentes
 /src/map/               → mapa 2D y capas
+/src/av/                → sonido, animaciones y escenas 3D (sin lógica de juego)
 /tests/                 → tests del motor
 ```
 
@@ -527,13 +532,40 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 13. **Investigación:** árbol por ramas (con zoom), cola y prioridades.
 14. **Regiones:** ficha de cada región (economía, autonomía, independentismo).
 15. **Informes y noticias:** teletipo, resúmenes mensuales y asesores.
-16. **Ajustes:** velocidad, pausa automática, accesibilidad, idioma.
+16. **Ajustes:** velocidad, pausa automática, sonido (música y efectos), gráficos (animaciones y 3D), accesibilidad, idioma.
 
 **Experiencia de uso**
 - Zonas táctiles de al menos 44 px, gestos de zoom y arrastre en el mapa, y modo vertical y horizontal.
 - **Asesores:** cada ministro avisa de los problemas y propone medidas ("El paro juvenil supera el 40 %. Propuesta: plan de empleo joven").
 - Tooltips que explican cada indicador y qué lo afecta.
 - Tema oscuro por defecto, con colores accesibles.
+
+### 7.1 Contenido audiovisual
+
+**Principio:** cada fase entrega el contenido audiovisual de lo que construye (gráficos, animaciones, sonido y, si procede, 3D). Es la última tarea de cada fase en la sección 9.
+
+**Qué incluye**
+- **Gráficos:** iconos e ilustraciones vectoriales, banderas y emblemas, visualización de datos (gráficos, leyendas, capas del mapa).
+- **Animación:** transiciones de la interfaz, efectos en el mapa (flujos, crisis, combates, desastres) y secuencias de los momentos importantes (noche electoral, firma de un tratado, nacimiento de un país).
+- **Sonido:** efectos de interfaz, alertas y eventos, y música ambiental según la situación.
+- **3D:** componentes complementarios cuando aporten algo que el 2D no da.
+
+**Cómo se produce**
+- Claude Code lo crea **con código**: SVG, Canvas y CSS para los gráficos y las animaciones, síntesis con Web Audio para el sonido y WebGL para el 3D. No hace falta ningún programa externo.
+- **Material real de licencia libre** cuando exista (por ejemplo, banderas): se descarga con un script reproducible y se anota la fuente y la licencia en `/docs/creditos.md`.
+- **Lo que no se puede crear con código** (fotografías, vídeo grabado, música grabada, voces): se sustituye por una alternativa generada (ilustración, música sintetizada) o lo aporta el jugador en `/fuentes/av/`. Nunca se usa material sin una licencia clara.
+- **Personas, partidos y empresas reales:** no se usan fotografías ni logotipos registrados; se representan con retratos genéricos y emblemas propios (color y siglas).
+
+**Reglas del 3D**
+- El **mapa de juego sigue siendo 2D**. El 3D es para componentes complementarios: globo decorativo del inicio, hemiciclo, salas de votación, maquetas de edificios, centrales y equipamiento militar, efectos de combates y desastres.
+- Cada uso de 3D figura en la sección 9 como **propuesta** y se confirma con el jugador al planificar esa fase.
+- Se carga **solo cuando se usa**, siempre hay una **alternativa en 2D** y se puede desactivar en Ajustes. Nunca es necesario para jugar.
+- Rendimiento en un móvil de gama media: el mapa mantiene sus 60 fps y una escena 3D no baja de unos 30 fps; si no se consigue, se muestra la alternativa en 2D.
+
+**Reglas del sonido**
+- Empieza tras el primer toque del jugador (los navegadores no permiten otra cosa), con un botón de silencio siempre a mano y volúmenes separados de música y efectos.
+- Ninguna información se da solo con sonido o solo con color: todo aviso sonoro tiene su equivalente visual.
+- Con «reducir movimiento» activado en el dispositivo, las animaciones se simplifican.
 
 ---
 
@@ -623,6 +655,7 @@ interface EstadoPartida {
 > - **Tests:** pruebas automáticas obligatorias.
 > - **Prueba en el móvil:** qué debe comprobar el jugador al publicarse la versión.
 > - **Hecho cuando:** condición para cerrar la fase y subir de versión.
+> - **Audiovisual:** la última tarea de cada fase es su contenido gráfico, sonoro y, si procede, 3D (sección 7.1). Las propuestas de 3D se confirman con el jugador al planificar la fase.
 
 ### Resumen de etapas
 
@@ -674,6 +707,7 @@ interface EstadoPartida {
 6. Validación: rangos lógicos, sumas coherentes (sectores ≈ 100 % del PIB) y ausencia de duplicados.
 7. **Informe de cobertura** (`/docs/datos-cobertura.md`): qué porcentaje de datos es real o estimado por país.
 8. Salida final: `/public/data/paises-2010.json`.
+9. **Audiovisual:** banderas de todos los países y territorios vigentes el 1 de enero de 2010 (SVG de licencia libre, descargadas con un script reproducible; ojo con las que han cambiado después, como Libia, Birmania, Siria, Mauritania o Afganistán) e iconos vectoriales de los indicadores básicos (población, PIB, paro, inflación, deuda, energía). Créditos en `/docs/creditos.md`.
 
 **Tests:** validación del esquema de datos; ningún país jugable sin población, PIB o capital.
 **Prueba en el móvil:** abrir el informe de cobertura en GitHub y revisar 3 países conocidos.
@@ -691,6 +725,7 @@ interface EstadoPartida {
 6. Colores por país (estables y distinguibles) y nombres que aparecen según el zoom.
 7. Capitales y ciudades principales al acercar.
 8. Medidor de rendimiento interno (fps) en modo desarrollo.
+9. **Audiovisual:** estilo visual del mapa (colores de países, océano y bordes), animaciones de zoom y de selección, y motor de sonido (Web Audio) con los primeros efectos de interfaz y los ajustes de sonido. Propuesta de 3D: globo terráqueo decorativo en la pantalla de inicio (el mapa de juego sigue en 2D).
 
 **Tests:** cada país de los datos tiene geometría y viceversa (salvo excepciones documentadas).
 **Prueba en el móvil:** mover y acercar el mapa sin tirones; tocar países pequeños (Luxemburgo, Singapur) y que se seleccionen.
@@ -706,6 +741,7 @@ interface EstadoPartida {
 4. Sistema genérico de **capas** con leyenda: político, población, PIB per cápita, crecimiento, paro, deuda, inflación.
 5. Selector de capas (menú desplegable en móvil).
 6. Buscador de países y regiones con autocompletado.
+7. **Audiovisual:** rampas de color accesibles para cada capa, iconos de las capas, leyendas y transición animada al cambiar de capa.
 
 **Tests:** cada región pertenece a un país existente; la suma de población de regiones ≈ población del país.
 **Prueba en el móvil:** cambiar de capa, leer la leyenda, buscar "Cataluña" y "Texas".
@@ -720,6 +756,7 @@ interface EstadoPartida {
 3. Pantalla "Nueva partida": elegir país en el mapa o en una lista ordenable, dificultad, eventos históricos sí o no, semilla.
 4. Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería, popularidad provisional) y barra inferior de navegación (secciones vacías por ahora).
 5. Base de interfaz: tema oscuro, tipografía, componentes reutilizables (paneles, pestañas, deslizadores, tablas, gráficos).
+6. **Audiovisual:** iconos de los regímenes, retratos genéricos ilustrados para los cargos (sin fotografías de personas reales), animaciones de hojas y pestañas, sonidos de navegación y animación de la elección de país.
 
 **Tests:** la ficha muestra datos para todos los países sin errores.
 **Prueba en el móvil:** crear una partida con España y con otro país; navegar por las secciones vacías.
@@ -740,6 +777,7 @@ interface EstadoPartida {
 5. Guardado en IndexedDB (manual, automático mensual y varias ranuras).
 6. Exportar e importar partida como `.json`, con número de versión y **migraciones**.
 7. Pausa automática configurable ante eventos importantes.
+8. **Audiovisual:** reloj animado del paso del tiempo, sonidos de pausa y de cambio de velocidad, indicador de guardado y primera música ambiental sintetizada.
 
 **Tests:** dos partidas con la misma semilla y las mismas acciones dan el mismo resultado; guardar y cargar no altera el estado.
 **Prueba en el móvil:** avanzar un año a ×8, guardar, cerrar el navegador, volver y cargar.
@@ -754,6 +792,7 @@ interface EstadoPartida {
 3. Consumo, inversión, ahorro y confianza.
 4. Historial mensual de indicadores y pantalla **Economía** con gráficos.
 5. Capa del mapa con crecimiento e inflación en tiempo real.
+6. **Audiovisual:** gráficos históricos animados, iconos de los indicadores macroeconómicos y sonidos de las alertas económicas.
 
 **Tests:** simulación de 5 años sin intervención en los 20 mayores países con valores en rangos creíbles (crecimiento entre −10 % y +15 %, inflación entre −5 % y +30 %, salvo casos justificados).
 **Prueba en el móvil:** jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido.
@@ -769,6 +808,7 @@ interface EstadoPartida {
 4. Reservas de divisas y controles de capital.
 5. Sistema bancario simplificado: solvencia, crédito, rescates.
 6. Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio.
+7. **Audiovisual:** símbolos de las monedas, visualización de los tipos de interés y del tipo de cambio, y animación del contagio de una crisis en el mapa.
 
 **Tests:** subir los tipos reduce la inflación y el crecimiento con retraso; una crisis bancaria se contagia a socios con mucha exposición.
 **Prueba en el móvil:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses.
@@ -784,6 +824,7 @@ interface EstadoPartida {
 4. Impago y petición de ayuda al FMI.
 5. Pantalla **Presupuesto** con deslizadores, previsión a 12 meses y comparación interanual.
 6. Prórroga presupuestaria (preparada para cuando exista el parlamento).
+7. **Audiovisual:** deslizadores con respuesta visual y sonora, gráfico de ingresos y gastos y distintivo animado del rating.
 
 **Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo.
 **Prueba en el móvil:** subir mucho el gasto y comprobar que el rating baja.
@@ -797,6 +838,7 @@ interface EstadoPartida {
 2. Recaudación con curva de Laffer suave, economía sumergida y evasión.
 3. Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización.
 4. Pantalla **Impuestos** con simulador ("si subes el IVA un punto, recaudarás X").
+5. **Audiovisual:** iconos de cada impuesto, curva de Laffer animada y simulador visual de la recaudación.
 
 **Tests:** subir un impuesto aumenta la recaudación hasta un punto y después la reduce.
 **Prueba en el móvil:** subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses.
@@ -811,6 +853,7 @@ interface EstadoPartida {
 3. **Asesores:** avisos con propuestas de medidas.
 4. Centro de notificaciones y teletipo de noticias.
 5. Panel de resumen mensual ("Informe del mes").
+6. **Audiovisual:** iconos de los 20 ministerios, retratos genéricos de los ministros, teletipo animado, sonidos de notificación e ilustración del informe del mes. Propuesta de 3D: sala del Consejo de Ministros.
 
 **Tests:** cada ministerio tiene datos para todos los países.
 **Prueba en el móvil:** abrir el Consejo de Ministros, cesar a un ministro y leer el informe del mes.
@@ -824,6 +867,7 @@ interface EstadoPartida {
 2. Migración entre países según renta, seguridad y leyes.
 3. Población por región y urbanización.
 4. Pantalla de población y capa del mapa.
+5. **Audiovisual:** pirámide de población animada y flujos migratorios animados en el mapa.
 
 **Tests:** 10 años de simulación dan cifras de población cercanas a las reales de 2020 (±5 % en los países grandes).
 **Prueba en el móvil:** ver la pirámide de Japón y la de Nigeria.
@@ -844,6 +888,7 @@ interface EstadoPartida {
 3. Pensiones: reparto o capitalización, edad de jubilación, fondo de reserva y sostenibilidad según la demografía.
 4. Huelgas sectoriales y generales (versión básica; se amplía en la Fase 26).
 5. Acciones del Ministerio de Trabajo.
+6. **Audiovisual:** iconos del mercado laboral y las prestaciones, gráfico de la proyección de pensiones y animación y sonido de las huelgas.
 
 **Tests:** subir la edad de jubilación mejora el saldo de pensiones y empeora la satisfacción de los mayores (preparado para la Fase 25).
 **Prueba en el móvil:** reformar las pensiones y ver la proyección a 20 años.
@@ -858,6 +903,7 @@ interface EstadoPartida {
 3. Personal sanitario: formación (enlazada con educación en la Fase 14) y emigración.
 4. Epidemias básicas con contagio entre países.
 5. Acciones: contratar personal, vacunación, campañas de prevención.
+6. **Audiovisual:** iconos sanitarios, animación de la propagación de epidemias en el mapa y sonidos de alerta sanitaria.
 
 **Tests:** recortar el gasto sanitario empeora las listas de espera en meses y la esperanza de vida en años.
 **Prueba en el móvil:** recortar sanidad un 20 % y observar los avisos del asesor.
@@ -871,6 +917,7 @@ interface EstadoPartida {
 2. Profesorado, becas, tasas.
 3. Efectos con retraso en productividad, paro estructural e investigadores.
 4. Acciones del Ministerio de Educación.
+5. **Audiovisual:** iconos de los niveles educativos y gráficos que muestren los efectos con retraso.
 
 **Tests:** más gasto en educación mejora la productividad a 10–15 años, no antes.
 **Prueba en el móvil:** comparar la calidad educativa de varios países en una capa del mapa.
@@ -885,6 +932,7 @@ interface EstadoPartida {
 3. Cola de obras por ministerio, prioridades, retrasos por falta de presupuesto o corrupción.
 4. Degradación sin mantenimiento.
 5. Pantalla **Infraestructuras** y capa del mapa.
+6. **Audiovisual:** iconos de cada tipo de infraestructura, animación de la obra en curso y de la inauguración, y sonidos de construcción. Propuesta de 3D: maquetas sencillas de edificios en la ficha de región.
 
 **Tests:** una obra sin presupuesto se retrasa; una infraestructura sin mantenimiento pierde capacidad.
 **Prueba en el móvil:** construir un hospital en una región y seguirlo hasta su inauguración.
@@ -898,6 +946,7 @@ interface EstadoPartida {
 2. Índice de conectividad regional que afecta a la productividad, el turismo y el comercio.
 3. Conexiones entre regiones y con otros países (preparado para logística militar).
 4. Capa del mapa de transporte.
+5. **Audiovisual:** trazado de las redes de transporte en el mapa con animación del tráfico e iconos de cada medio.
 
 **Tests:** mejorar la conectividad de una región aumenta su producción.
 **Prueba en el móvil:** ver la red de alta velocidad de España en 2010 en la capa de transporte.
@@ -914,6 +963,7 @@ interface EstadoPartida {
 5. Combustibles: petróleo y gas producidos o importados, gasoductos, gas natural licuado, reservas estratégicas.
 6. Pantalla **Energía** (mix, demanda, red, precios) y capa del mapa.
 7. Acciones del Ministerio de Energía.
+8. **Audiovisual:** iconos de las centrales por tipo, animación del flujo eléctrico en la red y efecto visual y sonoro de los apagones. Propuesta de 3D: maqueta de cada tipo de central.
 
 **Tests:** cerrar centrales sin reponer capacidad provoca subida de precios y apagones.
 **Prueba en el móvil:** cerrar todas las nucleares y observar el resultado en un año.
@@ -926,6 +976,7 @@ interface EstadoPartida {
 1. Telecomunicaciones (6.7): fibra, 3G/4G, centros de datos, ciberseguridad, control de internet.
 2. Vivienda: precio, vivienda pública, regulación del alquiler, sinhogarismo.
 3. Agua: presas, depuradoras, desaladoras, regadíos, estrés hídrico.
+4. **Audiovisual:** iconos de telecomunicaciones, vivienda y agua, y animación del despliegue de cobertura en el mapa.
 
 **Tests:** más cobertura de banda ancha mejora la productividad de los servicios.
 **Prueba en el móvil:** desplegar fibra en una región y comprobar el efecto.
@@ -946,6 +997,7 @@ interface EstadoPartida {
 3. Precios mundiales por oferta y demanda, con volatilidad.
 4. Acciones: licencias, regalías, nacionalización, prohibición de exportar, reservas estratégicas.
 5. Capa de recursos en el mapa.
+6. **Audiovisual:** iconos de los 18 recursos, gráfico de precios mundiales en movimiento y animación de los descubrimientos.
 
 **Tests:** cortar la producción de un gran exportador sube el precio mundial.
 **Prueba en el móvil:** como Arabia Saudí, reducir la producción de petróleo y ver el precio.
@@ -959,6 +1011,7 @@ interface EstadoPartida {
 2. Insumos entre sectores (tabla simplificada) y de recursos y energía.
 3. Subvenciones y planes industriales por sector.
 4. Pantalla de sectores dentro de **Economía**.
+5. **Audiovisual:** iconos de los 28 sectores y diagrama animado de los insumos entre sectores.
 
 **Tests:** una subida del petróleo encarece la energía, frena la industria y beneficia a los productores.
 **Prueba en el móvil:** lanzar un plan para el sector automoción y seguir su empleo.
@@ -972,6 +1025,7 @@ interface EstadoPartida {
 2. Nacionalizar, privatizar, rescatar, crear empresas públicas.
 3. Inversión extranjera directa y deslocalización.
 4. Autorizar o bloquear fusiones (básico).
+5. **Audiovisual:** emblemas genéricos de empresas por sector (sin logotipos reales) y animación de nacionalizaciones y privatizaciones.
 
 **Tests:** subir mucho los impuestos de sociedades provoca deslocalización.
 **Prueba en el móvil:** nacionalizar el sector eléctrico y ver el impacto en presupuesto y precios.
@@ -987,6 +1041,7 @@ interface EstadoPartida {
 4. Tratados de libre comercio y uniones aduaneras.
 5. Embargos y sanciones.
 6. Pantalla **Comercio** con socios principales y dependencias.
+7. **Audiovisual:** líneas animadas de los flujos comerciales en el mapa e iconos de los bienes.
 
 **Tests:** sancionar a un socio reduce el comercio de ambos.
 **Prueba en el móvil:** poner aranceles a China y ver precios, exportaciones y reacción.
@@ -1000,6 +1055,7 @@ interface EstadoPartida {
 2. Acciones: embajadas, visitas, cumbres, tratados, ayuda, préstamos, sanciones, expulsiones, reconocimiento de Estados.
 3. Imagen internacional.
 4. Pantalla **Diplomacia** y capa de relaciones en el mapa.
+5. **Audiovisual:** iconos de las acciones diplomáticas, animación de los cambios de relación, escenas ilustradas de visitas y cumbres, y sonidos de firma de tratados.
 
 **Tests:** acciones hostiles bajan las relaciones y los aliados del afectado reaccionan.
 **Prueba en el móvil:** mejorar relaciones con un país mediante visitas y un tratado.
@@ -1013,6 +1069,7 @@ interface EstadoPartida {
 2. Votaciones, adhesiones, salidas y expulsiones.
 3. Beneficios y obligaciones (fondos de la UE, defensa colectiva, cuotas de la OPEP, normas de la OMC).
 4. Capa de alianzas en el mapa.
+5. **Audiovisual:** emblemas de las organizaciones (los oficiales cuando su licencia lo permita; si no, versiones propias) y sala de votación animada. Propuesta de 3D: sala del Consejo de Seguridad.
 
 **Tests:** solicitar la entrada en la UE comprueba requisitos y requiere unanimidad.
 **Prueba en el móvil:** proponer sanciones en el Consejo de Seguridad y ver el veto.
@@ -1033,6 +1090,7 @@ interface EstadoPartida {
 3. Temas de preocupación con peso cambiante.
 4. Popularidad del gobierno y del líder; valoración de ministros.
 5. Pantalla **Sociedad** con grupos y temas.
+6. **Audiovisual:** iconos de los 17 grupos sociales y gráficos animados de satisfacción y de temas de preocupación.
 
 **Tests:** una reforma impopular baja la satisfacción de los grupos afectados y no la de los demás.
 **Prueba en el móvil:** subir el salario mínimo y ver qué grupos mejoran y cuáles empeoran.
@@ -1046,6 +1104,7 @@ interface EstadoPartida {
 2. Manifestaciones, huelgas (ampliación de la Fase 12), disturbios y revueltas.
 3. Gestión: diálogo, concesiones, policía, represión, con consecuencias.
 4. Estabilidad del régimen (6.14).
+5. **Audiovisual:** portadas de prensa y cabeceras de televisión generadas, animación de las protestas en el mapa y ambiente sonoro sintetizado de manifestación.
 
 **Tests:** baja satisfacción prolongada desencadena protestas; la represión baja la imagen internacional.
 **Prueba en el móvil:** provocar una huelga general y negociar su fin.
@@ -1060,6 +1119,7 @@ interface EstadoPartida {
 3. Líderes y personajes con carisma, competencia, edad, ideología, escándalos.
 4. Fundar, fusionar, dividir e ilegalizar partidos.
 5. Pantalla **Partidos**.
+6. **Audiovisual:** emblemas de los partidos a partir de su color y sus siglas (sin logotipos registrados), retratos genéricos de los líderes y brújula ideológica animada.
 
 **Tests:** todos los países tienen al menos un partido o fuerza política coherente con su régimen.
 **Prueba en el móvil:** revisar los partidos de España, Reino Unido y Alemania en 2010.
@@ -1075,6 +1135,7 @@ interface EstadoPartida {
 4. Coaliciones y gobiernos en minoría.
 5. Moción de censura, cuestión de confianza y disolución.
 6. Pantalla **Parlamento** con hemiciclo.
+7. **Audiovisual:** hemiciclo animado con la votación escaño a escaño y sonidos de la votación. Propuesta de 3D: hemiciclo.
 
 **Tests:** un gobierno en minoría no aprueba presupuestos sin apoyos.
 **Prueba en el móvil:** negociar los presupuestos con un partido regional.
@@ -1090,6 +1151,7 @@ interface EstadoPartida {
 4. Campaña: presupuesto, mítines por región, debates, promesas.
 5. Noche electoral con resultados en el mapa por circunscripción.
 6. Derrota del jugador al perder (de momento, fin de partida).
+7. **Audiovisual:** noche electoral con recuento animado y mapa por circunscripción, sintonía y sonidos propios, y carteles de campaña generados.
 
 **Tests:** con la misma situación, el resultado varía poco entre semillas; con una mala gestión, el gobierno pierde.
 **Prueba en el móvil:** jugar hasta las elecciones generales españolas de 2011.
@@ -1105,6 +1167,7 @@ interface EstadoPartida {
 4. Mayorías y referéndums; leyes constitucionales.
 5. Gobierno por decreto en regímenes autoritarios.
 6. Pantalla **Leyes** con buscador, filtros y previsión de votos.
+7. **Audiovisual:** iconos de las categorías de leyes y animación de la aprobación y la derogación de una ley.
 
 **Tests:** cada ley tiene efectos y reacciones definidos y se puede aprobar o derogar.
 **Prueba en el móvil:** aprobar una reforma laboral y ver sus efectos en 6 meses.
@@ -1118,6 +1181,7 @@ interface EstadoPartida {
 2. Lealtad del ejército y las élites.
 3. Golpes de Estado, revoluciones y transiciones democráticas.
 4. Cambio de régimen por reforma constitucional.
+5. **Audiovisual:** iconos de los regímenes y secuencias ilustradas, con sonido, de golpe de Estado, revolución y transición.
 
 **Tests:** estabilidad muy baja durante meses puede producir un golpe o una revolución.
 **Prueba en el móvil:** como un régimen autoritario, reprimir protestas y vigilar la lealtad del ejército.
@@ -1132,6 +1196,7 @@ interface EstadoPartida {
 3. Elecciones regionales.
 4. Financiación regional y agravios.
 5. Pantalla **Regiones**.
+6. **Audiovisual:** banderas de las principales regiones (licencia libre, script reproducible) y mapa animado de los resultados regionales.
 
 **Tests:** transferir competencias cambia quién gestiona el gasto y la satisfacción regional.
 **Prueba en el móvil:** revisar las comunidades autónomas españolas y negociar financiación.
@@ -1147,6 +1212,7 @@ interface EstadoPartida {
 4. **Creación de un país nuevo en el mapa** con su parte de población, deuda, ejército, infraestructuras, recursos y partidos.
 5. Apoyar movimientos independentistas en otros países.
 6. Capa de independentismo en el mapa.
+7. **Audiovisual:** animación del nacimiento de un país en el mapa (nueva frontera y bandera), banderas de los movimientos de 2010 y secuencia del referéndum.
 
 **Tests:** una independencia pactada crea un país válido y jugable; la suma de población se conserva.
 **Prueba en el móvil:** autorizar un referéndum en Escocia y seguir el proceso.
@@ -1166,6 +1232,7 @@ interface EstadoPartida {
 2. Validación: identificadores únicos, prerrequisitos existentes, sin ciclos, costes completos; informe de errores en `/docs/tecnologias-informe.md`.
 3. Asignación de efectos de juego a cada tecnología (propuesta automática por categoría, revisable por el jugador).
 4. Estado inicial de 2010 por país según su nivel tecnológico.
+5. **Audiovisual:** iconos de las 10 ramas y de las categorías de tecnología, generados de forma sistemática para las ~2.500 tecnologías.
 
 **Tests:** las 10 ramas cargan sin errores; ninguna tecnología es inalcanzable.
 **Prueba en el móvil:** revisar el informe y corregir los errores que señale en los documentos.
@@ -1180,6 +1247,7 @@ interface EstadoPartida {
 3. Difusión, licencias y cooperación.
 4. Aplicación de efectos (desbloqueos y mejoras).
 5. Pantalla **Investigación** con árbol navegable y zoom.
+6. **Audiovisual:** árbol tecnológico navegable y animado, y efecto visual y sonoro al completar una tecnología. Propuesta de 3D: maquetas de las tecnologías más destacadas.
 
 **Tests:** cada tecnología investigada aplica sus efectos; sin las instalaciones necesarias no se puede investigar.
 **Prueba en el móvil:** investigar una tecnología energética y ver el efecto en el mix.
@@ -1194,6 +1262,7 @@ interface EstadoPartida {
 3. Compra a otros países y fabricación propia (industria de defensa y tecnología).
 4. Reclutamiento: profesional, servicio obligatorio, reservistas.
 5. Pantalla **Ejército**.
+6. **Audiovisual:** siluetas vectoriales del equipamiento por tipo y generación e insignias de cada rama de las fuerzas armadas. Propuesta de 3D: modelos del equipamiento en su ficha.
 
 **Tests:** la potencia militar inicial ordena a los países de forma creíble (EE. UU., Rusia, China en cabeza).
 **Prueba en el móvil:** comprar aviones a un aliado y ver el coste y el plazo.
@@ -1208,6 +1277,7 @@ interface EstadoPartida {
 3. Bases propias y en el extranjero por acuerdo.
 4. Suministro y logística según el transporte (Fase 16).
 5. Capa militar del mapa.
+6. **Audiovisual:** símbolos militares estándar de las unidades, animación de movimientos y rutas en el mapa y sonidos de despliegue.
 
 **Tests:** una unidad sin suministro pierde preparación.
 **Prueba en el móvil:** desplegar una flota y mover tropas entre regiones.
@@ -1222,6 +1292,7 @@ interface EstadoPartida {
 3. Bombardeos e impacto en infraestructuras y población.
 4. Guerras en curso en 2010 (Afganistán, Irak) representadas.
 5. Pantalla de guerra con frentes y bajas.
+6. **Audiovisual:** animaciones de combate y de bombardeo en el mapa, líneas de frente, sonido de combate sintetizado y pantalla de guerra. Propuesta de 3D: vista de un combate.
 
 **Tests:** el bando superior gana con más frecuencia, pero no siempre.
 **Prueba en el móvil:** iniciar un conflicto limitado y seguirlo en el mapa.
@@ -1235,6 +1306,7 @@ interface EstadoPartida {
 2. Alto el fuego, armisticio, negociación y tratados de paz (anexión, retirada, reparaciones, cambio de régimen, independencia).
 3. Refugiados y reconstrucción.
 4. Cambio de fronteras en el mapa.
+5. **Audiovisual:** animación del cambio de fronteras, escena ilustrada de la firma de la paz y flujos de refugiados en el mapa.
 
 **Tests:** un tratado de paz con anexión mueve la región al nuevo país y conserva sus datos.
 **Prueba en el móvil:** firmar una paz con cesión territorial.
@@ -1249,6 +1321,7 @@ interface EstadoPartida {
 3. Independencia judicial.
 4. Grupos terroristas activos en 2010 y atentados.
 5. Acciones de Interior y Justicia.
+6. **Audiovisual:** iconos de seguridad y justicia, y tratamiento visual y sonoro sobrio de atentados y escándalos.
 
 **Tests:** más corrupción reduce la eficacia del gasto en todos los ministerios.
 **Prueba en el móvil:** lanzar un plan anticorrupción y ver los escándalos que destapa.
@@ -1263,6 +1336,7 @@ interface EstadoPartida {
 3. Desastres naturales con probabilidades según la geografía real.
 4. Ayuda internacional y acuerdos climáticos.
 5. Capa ambiental del mapa.
+6. **Audiovisual:** animaciones de cada tipo de desastre en el mapa, capa de temperatura global y sonidos de desastre. Propuesta de 3D: efectos de los desastres.
 
 **Tests:** más emisiones globales aumentan con los años la frecuencia de desastres climáticos.
 **Prueba en el móvil:** sufrir un desastre y gestionar la reconstrucción.
@@ -1281,6 +1355,7 @@ interface EstadoPartida {
 1. Personalidad de cada país (régimen, ideología, historia).
 2. Decisiones mensuales: presupuesto, impuestos, leyes coherentes con su gobierno, obras, energía.
 3. Reacción a crisis (paro, deuda, protestas).
+4. **Audiovisual:** resumen visual de las decisiones de cada gobierno e iconos de las personalidades de los países.
 
 **Tests:** 10 años sin jugador: ningún país entra en bancarrota absurda ni hace cambios incoherentes con su ideología.
 **Prueba en el móvil:** observar cómo gestiona Francia una crisis.
@@ -1294,6 +1369,7 @@ interface EstadoPartida {
 2. Reacción a las acciones del jugador.
 3. Decisiones militares: rearme, alianzas, intervenciones y guerras con motivo, capacidad y apoyo.
 4. Uso de las organizaciones internacionales.
+5. **Audiovisual:** animaciones en el mapa de las reacciones diplomáticas y de los movimientos militares de los demás países.
 
 **Tests:** la IA no declara guerras sin motivo ni capacidad; responde a amenazas.
 **Prueba en el móvil:** amenazar a un vecino y ver la reacción de sus aliados.
@@ -1306,6 +1382,7 @@ interface EstadoPartida {
 1. Motor de eventos: condiciones, probabilidad, opciones y efectos.
 2. Catálogo inicial de unos 100 eventos.
 3. Teletipo de noticias mundial filtrable.
+4. **Audiovisual:** ilustración o icono propio para cada evento del catálogo, teletipo animado, sintonía de noticias y sonidos según la gravedad.
 
 **Tests:** cada evento se puede disparar en pruebas y sus opciones aplican efectos.
 **Prueba en el móvil:** jugar un año y responder a varios eventos.
@@ -1318,6 +1395,7 @@ interface EstadoPartida {
 1. Eventos históricos condicionados: rescates del euro, Primavera Árabe, Fukushima, Sudán del Sur, Crimea, etc.
 2. Opción de activarlos o desactivarlos al crear la partida.
 3. Tests de credibilidad 2010–2015 frente al histórico real.
+4. **Audiovisual:** ilustraciones propias de los eventos históricos (sin fotografías reales) y secuencias especiales para los más importantes.
 
 **Tests:** con eventos activados y sin jugador, 2010–2015 se parece a la realidad en las grandes cifras.
 **Prueba en el móvil:** jugar con y sin eventos históricos y comparar.
@@ -1331,6 +1409,7 @@ interface EstadoPartida {
 2. Clasificaciones mundiales (PIB, potencia militar, felicidad, tecnología…).
 3. Informe anual del país.
 4. Historial de la partida (línea de tiempo con hechos clave).
+5. **Audiovisual:** gráficos comparativos animados, línea de tiempo ilustrada de la partida y opción de guardar un gráfico como imagen.
 
 **Prueba en el móvil:** comparar España con Italia en 10 indicadores.
 **Hecho cuando:** el jugador puede analizar el mundo con facilidad.
@@ -1345,6 +1424,7 @@ interface EstadoPartida {
 1. Tutorial interactivo por pasos.
 2. Tooltips en todos los indicadores ("qué es" y "qué lo afecta").
 3. Enciclopedia del juego.
+4. **Audiovisual:** animaciones guiadas y resaltados del tutorial e ilustraciones de la enciclopedia.
 **Hecho cuando:** un jugador nuevo entiende lo básico en 15 minutos.
 
 #### Fase 48 — v0.49.0 · Equilibrado
@@ -1352,22 +1432,25 @@ interface EstadoPartida {
 2. Ajuste de parámetros en `/src/sim/config/`.
 3. Niveles de dificultad.
 4. Revisión de todos los "Hecho cuando" anteriores.
+5. **Audiovisual:** mezcla y niveles de sonido, ritmo de las animaciones y revisión de la coherencia visual de todo el juego.
 **Hecho cuando:** ningún país diverge de forma absurda y la dificultad se nota.
 
 #### Fase 49 — v0.50.0 · Rendimiento, accesibilidad e instalación
 1. Optimización para móviles de gama media.
 2. **PWA:** instalable en el móvil como una app y jugable sin conexión.
 3. Accesibilidad (contraste, tamaño de texto, lectores de pantalla en menús).
+4. **Audiovisual:** optimización del peso y de la carga de los recursos audiovisuales, modo sin animaciones, alternativa visual para todo sonido e iconos y pantalla de arranque de la app instalada.
 **Hecho cuando:** se instala en el móvil y una partida de 10 años va fluida.
 
 #### Fase 50 — v0.51.0 · Contenido completo
 1. Ampliar a unas 150 leyes.
 2. Partidos reales en más países.
 3. Más eventos y revisión de textos.
+4. **Audiovisual:** completar los iconos, ilustraciones y sonidos que falten, música ambiental según la situación (paz, crisis, guerra) y pantalla de créditos.
 **Hecho cuando:** se cumplen los objetivos de contenido del GDD.
 
 ### v1.0.0 · Lanzamiento
-**Lista de comprobación:** todos los tests en verde · partida completa con 5 países distintos sin errores · Hoja de ruta y CHANGELOG al día · guardados compatibles · tutorial completo.
+**Lista de comprobación:** todos los tests en verde · partida completa con 5 países distintos sin errores · Hoja de ruta y CHANGELOG al día · guardados compatibles · tutorial completo · contenido audiovisual completo y créditos al día.
 
 ---
 
@@ -1479,6 +1562,7 @@ La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, 
 16. **Peticiones nuevas del jugador:** toda idea o corrección (mensaje o *issue*) se añade a `roadmap.json`: a la fase activa si es pequeña o un fallo; a la fase que corresponda si es un sistema; o a `ideasPendientes` si no encaja. Avisar al jugador de dónde ha ido.
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
+19. **Audiovisual en cada fase:** cada fase entrega su contenido audiovisual (gráficos, animación, sonido y, si procede, 3D) según la sección 7.1. Se crea con código o con material de licencia libre anotado en `/docs/creditos.md`; nunca se usa material sin licencia clara. El 3D se propone al jugador en el plan de la fase y siempre tiene alternativa en 2D.
 
 ---
 
@@ -1499,6 +1583,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 11/11/2026 | GDD v1.0 inicial | — | Todas |
 | 11/11/2026 | Hoja de ruta ampliada a 51 fases en 9 etapas | Más detalle y orden | 9, 10, 11 |
 | 11/11/2026 | Precisado el formato de `roadmap.json`: estados, `fecha` nula en tareas pendientes, lanzamiento y ampliaciones como fases, versión ligada a `package.json` | Necesario para validar el archivo con un esquema (Fase 0) | 10 |
+| 11/11/2026 | Contenido audiovisual en todas las fases: nueva sección 7.1, tarea «Audiovisual» en las fases 1–50, 3D permitido en componentes complementarios (el mapa sigue en 2D) y regla 19 | Petición del jugador | 1, 2, 7, 9, 11, 13 |
 
 ---
 
@@ -1516,6 +1601,9 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Dificultad | Fácil / Normal / Realista | Las tres, cambiando la tolerancia de votantes, mercados e IA |
 | Proyección del mapa | Robinson / Equal Earth / Mercator | Equal Earth (proporciones reales, aspecto de mapa político) |
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 5 |
+| Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | Solo componentes complementarios, confirmados fase a fase; el mapa sigue en 2D |
+| Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |
+| Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 
 ---
 
