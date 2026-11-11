@@ -1449,6 +1449,12 @@ interface EstadoPartida {
 }
 ```
 
+**Notas del formato** (el esquema completo está en `roadmap.schema.json`):
+- Estados posibles de fases y tareas: `pendiente`, `en-curso` y `hecha`.
+- En una tarea pendiente, `fecha` es `null` y `enlace` es `""`.
+- El lanzamiento (`lanzamiento`, v1.0.0) figura como una fase más de la etapa H, con su lista de comprobación como tareas. Las ampliaciones de la etapa I figuran como fases (`v1-1` … `v2-0`) sin tareas hasta que se detallen.
+- `versionActual` debe coincidir con la versión de `package.json` (única fuente de la versión).
+
 La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, siguiente paso y qué tiene pendiente el jugador) y la lista de **ideas pendientes** aún sin fase asignada.
 
 ---
@@ -1492,6 +1498,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 |---|---|---|---|
 | 11/11/2026 | GDD v1.0 inicial | — | Todas |
 | 11/11/2026 | Hoja de ruta ampliada a 51 fases en 9 etapas | Más detalle y orden | 9, 10, 11 |
+| 11/11/2026 | Precisado el formato de `roadmap.json`: estados, `fecha` nula en tareas pendientes, lanzamiento y ampliaciones como fases, versión ligada a `package.json` | Necesario para validar el archivo con un esquema (Fase 0) | 10 |
 
 ---
 

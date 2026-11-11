@@ -1,0 +1,107 @@
+{
+  "comun": {
+    "titulo": "Geopolítica 2010",
+    "estado": {
+      "pendiente": "Pendiente",
+      "en-curso": "En curso",
+      "hecha": "Hecha"
+    },
+    "nuevaVersion": "Hay una versión nueva: {version}.",
+    "recargar": "Recargar"
+  },
+  "juego": {
+    "inicio": {
+      "sello": "Simulador geopolítico",
+      "lema": "Dirige un país real a partir del 1 de enero de 2010.",
+      "nuevaPartida": "Nueva partida",
+      "nuevaPartidaAviso": "Disponible a partir de la v0.5.0",
+      "hojaDeRuta": "Hoja de ruta",
+      "hojaDeRutaAviso": "Qué está hecho y qué viene después",
+      "ajustes": "Ajustes",
+      "menu": "Menú principal",
+      "version": "Versión {version}",
+      "nombreProvisional": "nombre provisional",
+      "enDesarrollo": "En desarrollo: {fase}"
+    },
+    "ajustes": {
+      "titulo": "Ajustes",
+      "vacio": "Todavía no hay nada que ajustar. Los ajustes de velocidad, pausa automática, accesibilidad e idioma llegarán con las primeras versiones jugables.",
+      "version": "Versión del juego"
+    },
+    "hoja": {
+      "cerrar": "Cerrar"
+    },
+    "reportar": {
+      "boton": "Reportar fallo / sugerencia",
+      "titulo": "Reportar fallo o sugerencia",
+      "explicacion": "Elige qué quieres contar. Se abrirá GitHub con el aviso ya preparado: solo tienes que escribir la descripción y enviarlo.",
+      "cuenta": "Hace falta haber iniciado sesión en GitHub. La versión del juego se añade sola.",
+      "fallo": {
+        "titulo": "Fallo",
+        "descripcion": "Algo no funciona como debería."
+      },
+      "idea": {
+        "titulo": "Idea o sugerencia",
+        "descripcion": "Una mejora, un sistema o un contenido nuevo."
+      },
+      "datos": {
+        "titulo": "Datos",
+        "descripcion": "Un dato real del juego es incorrecto o falta."
+      }
+    }
+  },
+  "hojaDeRuta": {
+    "titulo": "Hoja de ruta",
+    "subtitulo": "Qué está hecho, qué se está haciendo y qué viene después.",
+    "jugar": "Jugar esta versión",
+    "versionActual": "Versión actual",
+    "progresoTotal": "Progreso hasta la versión 1.0",
+    "tareasHechas": "{hechas} de {total} tareas · {porcentaje} %",
+    "datosDe": "Datos del {fecha}",
+    "comprobado": "Comprobado a las {hora}",
+    "refrescoAutomatico": "Se actualiza sola cada {minutos} minutos.",
+    "actualizar": "Actualizar ahora",
+    "cargando": "Cargando la hoja de ruta…",
+    "errorCarga": "No se ha podido cargar la hoja de ruta. Comprueba la conexión.",
+    "errorRefresco": "Sin conexión: se muestra la última copia descargada.",
+    "reintentar": "Reintentar",
+    "ultimaSesion": {
+      "titulo": "Última sesión",
+      "resumen": "Qué se hizo",
+      "siguientePaso": "Siguiente paso",
+      "pendienteDelJugador": "Pendiente del jugador",
+      "nadaPendiente": "Nada pendiente por tu parte."
+    },
+    "fases": {
+      "titulo": "Etapas y fases",
+      "etapa": "Etapa {id}",
+      "fase": "Fase {numero}",
+      "activa": "Fase activa",
+      "numFases": "{n} fases",
+      "progresoDe": "Progreso de {nombre}",
+      "objetivo": "Objetivo",
+      "dependeDe": "Depende de",
+      "hechoCuando": "Hecho cuando",
+      "pruebaJugador": "Prueba en el móvil",
+      "tareas": "Tareas",
+      "sinTareas": "Las tareas se detallarán al acercarse esta versión.",
+      "verCambio": "Ver el cambio"
+    },
+    "ideas": {
+      "titulo": "Ideas pendientes",
+      "vacio": "Aún no hay ideas pendientes. Puedes proponer una con el botón «Reportar fallo / sugerencia» del juego.",
+      "sinFase": "Sin fase asignada",
+      "origen": "Origen: {origen}"
+    },
+    "historial": {
+      "titulo": "Historial de versiones",
+      "vacio": "Todavía no se ha publicado ninguna versión."
+    },
+    "pie": {
+      "juego": "Ir al juego",
+      "repositorio": "Código en GitHub",
+      "diseno": "Documento de diseño",
+      "reportar": "Reportar fallo / sugerencia"
+    }
+  }
+}

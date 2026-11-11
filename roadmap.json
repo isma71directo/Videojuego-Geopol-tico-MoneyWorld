@@ -1,0 +1,2658 @@
+{
+  "$schema": "./roadmap.schema.json",
+  "versionActual": "0.1.0",
+  "actualizado": "2026-11-11T15:29:06Z",
+  "faseActiva": "fase-0",
+  "ultimaSesion": {
+    "fecha": "2026-11-11",
+    "resumen": "Fase 0 completa en su rama: proyecto (Vite + TypeScript + Vitest), estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, publicación con GitHub Actions, web de la Hoja de ruta, pantalla de inicio, botón para reportar fallos e ideas y CHANGELOG.",
+    "siguientePaso": "PR de la Fase 0 abierto (https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/pull/2). Cuando el jugador confirme que la publicación funciona, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
+    "pendienteDelJugador": [
+      "En GitHub: Settings → Pages → Source: GitHub Actions (antes de fusionar)",
+      "Fusionar el PR n.º 2 (Fase 0) en main y esperar a que termine la publicación",
+      "Prueba en el móvil: abrir la web, entrar en la Hoja de ruta, desplegar fases y enviar una issue de prueba"
+    ]
+  },
+  "etapas": [
+    {
+      "id": "A",
+      "nombre": "Prealfa: cimientos y mundo",
+      "hito": null
+    },
+    {
+      "id": "B",
+      "nombre": "Alfa 1: el país funciona",
+      "hito": "Hito Alfa 1: ya se puede jugar a gestionar la economía de un país en el tiempo. Partida de prueba recomendada: España 2010–2014."
+    },
+    {
+      "id": "C",
+      "nombre": "Alfa 2: servicios e infraestructuras",
+      "hito": "Hito Alfa 2: el país completo funciona por dentro: servicios, obras, transporte y energía."
+    },
+    {
+      "id": "D",
+      "nombre": "Alfa 3: economía real y mundo conectado",
+      "hito": "Hito Alfa 3: el mundo está conectado por la economía, el comercio y la diplomacia."
+    },
+    {
+      "id": "E",
+      "nombre": "Beta 1: política",
+      "hito": "Hito Beta 1: el juego político completo: gobernar, negociar, ganar elecciones y gestionar el territorio."
+    },
+    {
+      "id": "F",
+      "nombre": "Beta 2: tecnología y poder",
+      "hito": "Hito Beta 2: todos los sistemas del GDD existen."
+    },
+    {
+      "id": "G",
+      "nombre": "Beta 3: mundo vivo",
+      "hito": "Hito Beta 3: el mundo está vivo; el juego está completo en contenido base."
+    },
+    {
+      "id": "H",
+      "nombre": "Versión candidata",
+      "hito": "Lanzamiento 1.0: juego completo como Jefe de Gobierno"
+    },
+    {
+      "id": "I",
+      "nombre": "Ampliaciones después de la 1.0",
+      "hito": null
+    }
+  ],
+  "fases": [
+    {
+      "id": "fase-0",
+      "etapa": "A",
+      "version": "0.1.0",
+      "nombre": "Cimientos del proyecto",
+      "objetivo": "Proyecto creado, publicado automáticamente y con la Hoja de ruta funcionando",
+      "dependeDe": [],
+      "hechoCuando": "La publicación automática funciona y las dos webs muestran la misma versión",
+      "pruebaJugador": "Abrir la dirección pública, ver la pantalla de inicio, entrar en la Hoja de ruta, desplegar fases y enviar una issue de prueba",
+      "estado": "en-curso",
+      "tareas": [
+        {
+          "id": "f0-t1",
+          "titulo": "Crear el proyecto con Vite + TypeScript + Vitest, ESLint y Prettier",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/08fedad"
+        },
+        {
+          "id": "f0-t2",
+          "titulo": "Crear la estructura de carpetas de la sección 2 y mover este documento a docs/GDD.md si no está ahí",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/345101d"
+        },
+        {
+          "id": "f0-t3",
+          "titulo": "Crear CLAUDE.md con las reglas de la sección 11",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/bc2654c"
+        },
+        {
+          "id": "f0-t4",
+          "titulo": "Crear roadmap.json con todas las etapas, fases y tareas de esta sección (formato de la sección 10)",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/04d35b3"
+        },
+        {
+          "id": "f0-t5",
+          "titulo": "Configurar GitHub Actions: instalar, pasar tests, compilar y publicar en GitHub Pages en cada cambio en main",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/4cdfba2"
+        },
+        {
+          "id": "f0-t6",
+          "titulo": "Crear la web independiente /hoja-de-ruta/ (sección 10)",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/e87eacd"
+        },
+        {
+          "id": "f0-t7",
+          "titulo": "Crear la pantalla de inicio del juego: título provisional, versión, botones (Nueva partida, desactivado por ahora; Hoja de ruta; Ajustes)",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c63a2aa"
+        },
+        {
+          "id": "f0-t8",
+          "titulo": "Crear el botón \"Reportar fallo / sugerencia\" con issue de GitHub prerrellenada y plantillas de issue (fallo, idea, datos)",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/16e29f4"
+        },
+        {
+          "id": "f0-t9",
+          "titulo": "Crear CHANGELOG.md y la gestión de versión (una sola fuente: package.json)",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/14fdbb7"
+        }
+      ]
+    },
+    {
+      "id": "fase-1",
+      "etapa": "A",
+      "version": "0.2.0",
+      "nombre": "Datos reales de 2010",
+      "objetivo": "Todos los países con sus datos reales de partida, descargados con scripts reproducibles",
+      "dependeDe": ["fase-0"],
+      "hechoCuando": "Existen datos de al menos 190 países y el informe de cobertura está publicado",
+      "pruebaJugador": "Abrir el informe de cobertura en GitHub y revisar 3 países conocidos",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f1-t1",
+          "titulo": "Script de descarga del Banco Mundial (indicadores de la sección 4) con años 2008–2010; usar 2009 o 2010 según disponibilidad",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t2",
+          "titulo": "Script de Our World in Data: energía (mix y consumo) y emisiones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t3",
+          "titulo": "Script de recursos: reservas y producción (petróleo, gas, carbón, minerales principales)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t4",
+          "titulo": "Tabla de equivalencias de países (ISO3, nombres en español, países y territorios especiales de 2010)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t5",
+          "titulo": "Valores de respaldo para datos que falten (por región y nivel de renta), marcados como estimados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t6",
+          "titulo": "Validación: rangos lógicos, sumas coherentes (sectores ≈ 100 % del PIB) y ausencia de duplicados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t7",
+          "titulo": "Informe de cobertura (/docs/datos-cobertura.md): qué porcentaje de datos es real o estimado por país",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f1-t8",
+          "titulo": "Salida final: /public/data/paises-2010.json",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-2",
+      "etapa": "A",
+      "version": "0.3.0",
+      "nombre": "Mapa 2D base",
+      "objetivo": "Mapa político del mundo en 2010, fluido en móvil",
+      "dependeDe": ["fase-1"],
+      "hechoCuando": "El mapa va a unos 60 fps en un móvil de gama media y todos los países son seleccionables",
+      "pruebaJugador": "Mover y acercar el mapa sin tirones; tocar países pequeños (Luxemburgo, Singapur) y que se seleccionen",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f2-t1",
+          "titulo": "Procesar Natural Earth (admin-0) y aplicar las correcciones de 2010 (sección 3)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t2",
+          "titulo": "Simplificar geometrías a varios niveles de detalle (TopoJSON) para móvil",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t3",
+          "titulo": "Dibujar el mapa en Canvas con proyección adecuada para estrategia (p. ej. Robinson o Equal Earth; decidir con el jugador)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t4",
+          "titulo": "Zoom con pellizco y rueda, arrastre, límites del mundo y doble toque para acercar",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t5",
+          "titulo": "Selección de país al tocar, con resaltado del borde",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t6",
+          "titulo": "Colores por país (estables y distinguibles) y nombres que aparecen según el zoom",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t7",
+          "titulo": "Capitales y ciudades principales al acercar",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f2-t8",
+          "titulo": "Medidor de rendimiento interno (fps) en modo desarrollo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-3",
+      "etapa": "A",
+      "version": "0.4.0",
+      "nombre": "Regiones y capas del mapa",
+      "objetivo": "Regiones dentro de cada país y capas temáticas de información",
+      "dependeDe": ["fase-2"],
+      "hechoCuando": "Las capas funcionan y las regiones se ven y seleccionan al acercar",
+      "pruebaJugador": "Cambiar de capa, leer la leyenda, buscar \"Cataluña\" y \"Texas\"",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f3-t1",
+          "titulo": "Procesar regiones (admin-1) y agruparlas cuando un país tenga demasiadas (máx. orientativo: 30 por país)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f3-t2",
+          "titulo": "Datos básicos por región: población y PIB estimado (reparto proporcional si no hay dato)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f3-t3",
+          "titulo": "Mostrar regiones al superar cierto zoom",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f3-t4",
+          "titulo": "Sistema genérico de capas con leyenda: político, población, PIB per cápita, crecimiento, paro, deuda, inflación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f3-t5",
+          "titulo": "Selector de capas (menú desplegable en móvil)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f3-t6",
+          "titulo": "Buscador de países y regiones con autocompletado",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-4",
+      "etapa": "A",
+      "version": "0.5.0",
+      "nombre": "Fichas de país y nueva partida",
+      "objetivo": "Consultar cualquier país y empezar una partida eligiendo uno",
+      "dependeDe": ["fase-3"],
+      "hechoCuando": "Se puede empezar una partida con cualquier país y ver su ficha completa",
+      "pruebaJugador": "Crear una partida con España y con otro país; navegar por las secciones vacías",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f4-t1",
+          "titulo": "Ficha de país (hoja deslizable en móvil): bandera, régimen, jefe de Estado y de Gobierno de 2010, población, PIB, indicadores clave, con fuente y aviso de estimados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-t2",
+          "titulo": "Ficha de región",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-t3",
+          "titulo": "Pantalla \"Nueva partida\": elegir país en el mapa o en una lista ordenable, dificultad, eventos históricos sí o no, semilla",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-t4",
+          "titulo": "Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería, popularidad provisional) y barra inferior de navegación (secciones vacías por ahora)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-t5",
+          "titulo": "Base de interfaz: tema oscuro, tipografía, componentes reutilizables (paneles, pestañas, deslizadores, tablas, gráficos)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-5",
+      "etapa": "B",
+      "version": "0.6.0",
+      "nombre": "Motor de tiempo y guardado",
+      "objetivo": "El tiempo avanza y la partida se puede guardar",
+      "dependeDe": ["fase-4"],
+      "hechoCuando": "El tiempo avanza sin bloquear la interfaz y las partidas se recuperan siempre",
+      "pruebaJugador": "Avanzar un año a ×8, guardar, cerrar el navegador, volver y cargar",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f5-t1",
+          "titulo": "Reloj con pausa y velocidades (×1, ×2, ×4, ×8) y ritmos diario, semanal, mensual y anual",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f5-t2",
+          "titulo": "Motor de simulación en un Web Worker con comunicación por mensajes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f5-t3",
+          "titulo": "Generador aleatorio determinista con semilla guardada",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f5-t4",
+          "titulo": "Sistema genérico de efectos y modificadores (sección 8)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f5-t5",
+          "titulo": "Guardado en IndexedDB (manual, automático mensual y varias ranuras)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f5-t6",
+          "titulo": "Exportar e importar partida como .json, con número de versión y migraciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f5-t7",
+          "titulo": "Pausa automática configurable ante eventos importantes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-6",
+      "etapa": "B",
+      "version": "0.7.0",
+      "nombre": "Economía macro",
+      "objetivo": "Cada país tiene una economía que evoluciona mes a mes",
+      "dependeDe": ["fase-5"],
+      "hechoCuando": "Pasa el test de credibilidad y los gráficos funcionan",
+      "pruebaJugador": "Jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f6-t1",
+          "titulo": "Modelo de producción y demanda (6.1)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f6-t2",
+          "titulo": "Inflación, paro (Okun), productividad y crecimiento potencial",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f6-t3",
+          "titulo": "Consumo, inversión, ahorro y confianza",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f6-t4",
+          "titulo": "Historial mensual de indicadores y pantalla Economía con gráficos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f6-t5",
+          "titulo": "Capa del mapa con crecimiento e inflación en tiempo real",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-7",
+      "etapa": "B",
+      "version": "0.8.0",
+      "nombre": "Banco central, moneda y sistema financiero",
+      "objetivo": "Política monetaria, tipos de cambio y crisis financieras",
+      "dependeDe": ["fase-6"],
+      "hechoCuando": "La política monetaria funciona y puede producirse una crisis financiera",
+      "pruebaJugador": "Subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f7-t1",
+          "titulo": "Banco central (independiente o no) con regla tipo Taylor",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-t2",
+          "titulo": "Zona euro: el BCE decide para los 16 miembros de 2010",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-t3",
+          "titulo": "Regímenes de moneda: flotante, fijo, unión monetaria; devaluar y revaluar",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-t4",
+          "titulo": "Reservas de divisas y controles de capital",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-t5",
+          "titulo": "Sistema bancario simplificado: solvencia, crédito, rescates",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-t6",
+          "titulo": "Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-8",
+      "etapa": "B",
+      "version": "0.9.0",
+      "nombre": "Presupuesto y deuda",
+      "objetivo": "El Estado tiene ingresos, gastos y deuda",
+      "dependeDe": ["fase-7"],
+      "hechoCuando": "El presupuesto es editable y sus efectos son coherentes",
+      "pruebaJugador": "Subir mucho el gasto y comprobar que el rating baja",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f8-t1",
+          "titulo": "Estructura de ingresos y gastos por partida y ministerio (6.2)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-t2",
+          "titulo": "Datos iniciales de 2010 (gasto por función y deuda real)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-t3",
+          "titulo": "Déficit, emisión de bonos, intereses, prima de riesgo y rating",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-t4",
+          "titulo": "Impago y petición de ayuda al FMI",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-t5",
+          "titulo": "Pantalla Presupuesto con deslizadores, previsión a 12 meses y comparación interanual",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-t6",
+          "titulo": "Prórroga presupuestaria (preparada para cuando exista el parlamento)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-9",
+      "etapa": "B",
+      "version": "0.10.0",
+      "nombre": "Impuestos",
+      "objetivo": "Sistema fiscal completo",
+      "dependeDe": ["fase-8"],
+      "hechoCuando": "Todos los impuestos funcionan y el simulador acierta de forma aproximada",
+      "pruebaJugador": "Subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f9-t1",
+          "titulo": "Todos los impuestos de la sección 6.3 con sus parámetros",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f9-t2",
+          "titulo": "Recaudación con curva de Laffer suave, economía sumergida y evasión",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f9-t3",
+          "titulo": "Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f9-t4",
+          "titulo": "Pantalla Impuestos con simulador (\"si subes el IVA un punto, recaudarás X\")",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-10",
+      "etapa": "B",
+      "version": "0.11.0",
+      "nombre": "Interfaz de gobierno",
+      "objetivo": "Gobernar desde un Consejo de Ministros",
+      "dependeDe": ["fase-9"],
+      "hechoCuando": "Todo lo construido hasta ahora se maneja desde los ministerios",
+      "pruebaJugador": "Abrir el Consejo de Ministros, cesar a un ministro y leer el informe del mes",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f10-t1",
+          "titulo": "Ministerios de la sección 6.4 con presupuesto, indicadores y alertas (las acciones se irán añadiendo en cada fase)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f10-t2",
+          "titulo": "Ministros: competencia, ideología, lealtad; nombrar y cesar",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f10-t3",
+          "titulo": "Asesores: avisos con propuestas de medidas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f10-t4",
+          "titulo": "Centro de notificaciones y teletipo de noticias",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f10-t5",
+          "titulo": "Panel de resumen mensual (\"Informe del mes\")",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-11",
+      "etapa": "B",
+      "version": "0.12.0",
+      "nombre": "Demografía y población",
+      "objetivo": "Población viva",
+      "dependeDe": ["fase-10"],
+      "hechoCuando": "La demografía evoluciona de forma creíble",
+      "pruebaJugador": "Ver la pirámide de Japón y la de Nigeria",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f11-t1",
+          "titulo": "Pirámide de edades, natalidad, mortalidad y envejecimiento",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f11-t2",
+          "titulo": "Migración entre países según renta, seguridad y leyes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f11-t3",
+          "titulo": "Población por región y urbanización",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f11-t4",
+          "titulo": "Pantalla de población y capa del mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-12",
+      "etapa": "C",
+      "version": "0.13.0",
+      "nombre": "Trabajo, pensiones y Seguridad Social",
+      "objetivo": "Mercado laboral y protección social (6.13)",
+      "dependeDe": ["fase-11"],
+      "hechoCuando": "El sistema de pensiones responde a la demografía y a las reformas",
+      "pruebaJugador": "Reformar las pensiones y ver la proyección a 20 años",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f12-t1",
+          "titulo": "Salario mínimo y medio, jornada, despido, temporalidad, convenios y poder sindical",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f12-t2",
+          "titulo": "Prestación por desempleo, renta mínima y dependencia",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f12-t3",
+          "titulo": "Pensiones: reparto o capitalización, edad de jubilación, fondo de reserva y sostenibilidad según la demografía",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f12-t4",
+          "titulo": "Huelgas sectoriales y generales (versión básica; se amplía en la Fase 26)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f12-t5",
+          "titulo": "Acciones del Ministerio de Trabajo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-13",
+      "etapa": "C",
+      "version": "0.14.0",
+      "nombre": "Sanidad",
+      "objetivo": "Sistema sanitario (6.11)",
+      "dependeDe": ["fase-12"],
+      "hechoCuando": "La sanidad responde al gasto y a las decisiones con retrasos realistas",
+      "pruebaJugador": "Recortar sanidad un 20 % y observar los avisos del asesor",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f13-t1",
+          "titulo": "Indicadores: esperanza de vida, mortalidad infantil, personal, camas, listas de espera",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f13-t2",
+          "titulo": "Modelos: público universal, mixto y privado; copago",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f13-t3",
+          "titulo": "Personal sanitario: formación (enlazada con educación en la Fase 14) y emigración",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f13-t4",
+          "titulo": "Epidemias básicas con contagio entre países",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f13-t5",
+          "titulo": "Acciones: contratar personal, vacunación, campañas de prevención",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-14",
+      "etapa": "C",
+      "version": "0.15.0",
+      "nombre": "Educación",
+      "objetivo": "Sistema educativo (6.12)",
+      "dependeDe": ["fase-13"],
+      "hechoCuando": "La educación alimenta la economía a largo plazo",
+      "pruebaJugador": "Comparar la calidad educativa de varios países en una capa del mapa",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f14-t1",
+          "titulo": "Niveles educativos, escolarización, abandono, calidad y universitarios",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f14-t2",
+          "titulo": "Profesorado, becas, tasas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f14-t3",
+          "titulo": "Efectos con retraso en productividad, paro estructural e investigadores",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f14-t4",
+          "titulo": "Acciones del Ministerio de Educación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-15",
+      "etapa": "C",
+      "version": "0.16.0",
+      "nombre": "Infraestructuras: base y cola de obras",
+      "objetivo": "Construir y mantener infraestructuras por región (6.5)",
+      "dependeDe": ["fase-14"],
+      "hechoCuando": "Las obras se construyen, cuestan y afectan a los indicadores regionales",
+      "pruebaJugador": "Construir un hospital en una región y seguirlo hasta su inauguración",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f15-t1",
+          "titulo": "Modelo genérico de infraestructura: tipo, capacidad, estado, coste, plazo, mantenimiento y empleo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f15-t2",
+          "titulo": "Infraestructuras iniciales de 2010 estimadas por región (hospitales, colegios, universidades, prisiones, comisarías)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f15-t3",
+          "titulo": "Cola de obras por ministerio, prioridades, retrasos por falta de presupuesto o corrupción",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f15-t4",
+          "titulo": "Degradación sin mantenimiento",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f15-t5",
+          "titulo": "Pantalla Infraestructuras y capa del mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-16",
+      "etapa": "C",
+      "version": "0.17.0",
+      "nombre": "Transporte y logística",
+      "objetivo": "Redes de transporte",
+      "dependeDe": ["fase-15"],
+      "hechoCuando": "El transporte influye en la economía regional",
+      "pruebaJugador": "Ver la red de alta velocidad de España en 2010 en la capa de transporte",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f16-t1",
+          "titulo": "Carreteras, autopistas, ferrocarril convencional y alta velocidad, metro, puertos y aeropuertos por región",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f16-t2",
+          "titulo": "Índice de conectividad regional que afecta a la productividad, el turismo y el comercio",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f16-t3",
+          "titulo": "Conexiones entre regiones y con otros países (preparado para logística militar)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f16-t4",
+          "titulo": "Capa del mapa de transporte",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-17",
+      "etapa": "C",
+      "version": "0.18.0",
+      "nombre": "Energía y red eléctrica",
+      "objetivo": "Sistema energético completo (6.6)",
+      "dependeDe": ["fase-16"],
+      "hechoCuando": "La energía limita y encarece la economía de forma realista",
+      "pruebaJugador": "Cerrar todas las nucleares y observar el resultado en un año",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f17-t1",
+          "titulo": "Centrales por tipo y región con capacidad y factor de carga (datos de 2010)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t2",
+          "titulo": "Demanda eléctrica por sectores y hogares",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t3",
+          "titulo": "Red de transporte entre regiones e interconexiones internacionales",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t4",
+          "titulo": "Precios mayorista y minorista; apagones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t5",
+          "titulo": "Combustibles: petróleo y gas producidos o importados, gasoductos, gas natural licuado, reservas estratégicas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t6",
+          "titulo": "Pantalla Energía (mix, demanda, red, precios) y capa del mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t7",
+          "titulo": "Acciones del Ministerio de Energía",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-18",
+      "etapa": "C",
+      "version": "0.19.0",
+      "nombre": "Telecomunicaciones, vivienda y agua",
+      "objetivo": "Completar los servicios básicos",
+      "dependeDe": ["fase-17"],
+      "hechoCuando": "Todos los ministerios de servicios tienen contenido real",
+      "pruebaJugador": "Desplegar fibra en una región y comprobar el efecto",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f18-t1",
+          "titulo": "Telecomunicaciones (6.7): fibra, 3G/4G, centros de datos, ciberseguridad, control de internet",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f18-t2",
+          "titulo": "Vivienda: precio, vivienda pública, regulación del alquiler, sinhogarismo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f18-t3",
+          "titulo": "Agua: presas, depuradoras, desaladoras, regadíos, estrés hídrico",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-19",
+      "etapa": "D",
+      "version": "0.20.0",
+      "nombre": "Recursos naturales y precios mundiales",
+      "objetivo": "Recursos con reservas, producción y mercado mundial (6.8)",
+      "dependeDe": ["fase-18"],
+      "hechoCuando": "Los recursos generan ingresos y dependencias reales",
+      "pruebaJugador": "Como Arabia Saudí, reducir la producción de petróleo y ver el precio",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f19-t1",
+          "titulo": "Reservas y producción por país y región (datos de 2010)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f19-t2",
+          "titulo": "Agotamiento, exploración y descubrimientos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f19-t3",
+          "titulo": "Precios mundiales por oferta y demanda, con volatilidad",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f19-t4",
+          "titulo": "Acciones: licencias, regalías, nacionalización, prohibición de exportar, reservas estratégicas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f19-t5",
+          "titulo": "Capa de recursos en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-20",
+      "etapa": "D",
+      "version": "0.21.0",
+      "nombre": "Sectores productivos e industria",
+      "objetivo": "Economía dividida en unos 28 sectores (6.9)",
+      "dependeDe": ["fase-19"],
+      "hechoCuando": "El PIB es la suma de sectores interconectados",
+      "pruebaJugador": "Lanzar un plan para el sector automoción y seguir su empleo",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f20-t1",
+          "titulo": "Sectores con producción, empleo, salarios, productividad e inversión",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f20-t2",
+          "titulo": "Insumos entre sectores (tabla simplificada) y de recursos y energía",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f20-t3",
+          "titulo": "Subvenciones y planes industriales por sector",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f20-t4",
+          "titulo": "Pantalla de sectores dentro de Economía",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-21",
+      "etapa": "D",
+      "version": "0.22.0",
+      "nombre": "Empresas",
+      "objetivo": "Empresas agregadas, públicas y privadas",
+      "dependeDe": ["fase-20"],
+      "hechoCuando": "Las empresas responden al entorno y al gobierno",
+      "pruebaJugador": "Nacionalizar el sector eléctrico y ver el impacto en presupuesto y precios",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f21-t1",
+          "titulo": "Empresas agregadas por sector y país (públicas y privadas)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f21-t2",
+          "titulo": "Nacionalizar, privatizar, rescatar, crear empresas públicas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f21-t3",
+          "titulo": "Inversión extranjera directa y deslocalización",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f21-t4",
+          "titulo": "Autorizar o bloquear fusiones (básico)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-22",
+      "etapa": "D",
+      "version": "0.23.0",
+      "nombre": "Comercio internacional",
+      "objetivo": "Flujos comerciales entre países (6.10)",
+      "dependeDe": ["fase-21"],
+      "hechoCuando": "El comercio conecta las economías del mundo",
+      "pruebaJugador": "Poner aranceles a China y ver precios, exportaciones y reacción",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f22-t1",
+          "titulo": "Matriz de comercio bilateral inicial (datos de 2010 o modelo de gravedad)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f22-t2",
+          "titulo": "Evolución según demanda, precios, distancia, aranceles y relaciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f22-t3",
+          "titulo": "Aranceles por categoría, cuotas, subvenciones a la exportación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f22-t4",
+          "titulo": "Tratados de libre comercio y uniones aduaneras",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f22-t5",
+          "titulo": "Embargos y sanciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f22-t6",
+          "titulo": "Pantalla Comercio con socios principales y dependencias",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-23",
+      "etapa": "D",
+      "version": "0.24.0",
+      "nombre": "Diplomacia y relaciones",
+      "objetivo": "Relaciones entre países (6.19)",
+      "dependeDe": ["fase-22"],
+      "hechoCuando": "La diplomacia tiene consecuencias económicas y políticas",
+      "pruebaJugador": "Mejorar relaciones con un país mediante visitas y un tratado",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f23-t1",
+          "titulo": "Relaciones bilaterales iniciales de 2010 (afinidad, alianzas, conflictos conocidos)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f23-t2",
+          "titulo": "Acciones: embajadas, visitas, cumbres, tratados, ayuda, préstamos, sanciones, expulsiones, reconocimiento de Estados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f23-t3",
+          "titulo": "Imagen internacional",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f23-t4",
+          "titulo": "Pantalla Diplomacia y capa de relaciones en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-24",
+      "etapa": "D",
+      "version": "0.25.0",
+      "nombre": "Organizaciones internacionales",
+      "objetivo": "El orden internacional de 2010",
+      "dependeDe": ["fase-23"],
+      "hechoCuando": "Las organizaciones influyen en las decisiones de los países",
+      "pruebaJugador": "Proponer sanciones en el Consejo de Seguridad y ver el veto",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f24-t1",
+          "titulo": "ONU (Asamblea y Consejo de Seguridad con veto), UE, OTAN, OTSC, UA, ASEAN, Mercosur, OEA, Liga Árabe, OPEP, OCS, G8, G20, BRIC, FMI, Banco Mundial y OMC con sus miembros de 2010",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f24-t2",
+          "titulo": "Votaciones, adhesiones, salidas y expulsiones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f24-t3",
+          "titulo": "Beneficios y obligaciones (fondos de la UE, defensa colectiva, cuotas de la OPEP, normas de la OMC)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f24-t4",
+          "titulo": "Capa de alianzas en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-25",
+      "etapa": "E",
+      "version": "0.26.0",
+      "nombre": "Sociedad y grupos sociales",
+      "objetivo": "La población opina según sus intereses (6.14)",
+      "dependeDe": ["fase-24"],
+      "hechoCuando": "Cada decisión tiene ganadores y perdedores visibles",
+      "pruebaJugador": "Subir el salario mínimo y ver qué grupos mejoran y cuáles empeoran",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f25-t1",
+          "titulo": "Grupos sociales con tamaño estimado por país, prioridades e ideología media",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f25-t2",
+          "titulo": "Satisfacción de cada grupo calculada a partir de todos los sistemas anteriores",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f25-t3",
+          "titulo": "Temas de preocupación con peso cambiante",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f25-t4",
+          "titulo": "Popularidad del gobierno y del líder; valoración de ministros",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f25-t5",
+          "titulo": "Pantalla Sociedad con grupos y temas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-26",
+      "etapa": "E",
+      "version": "0.27.0",
+      "nombre": "Medios, protestas y estabilidad",
+      "objetivo": "Reacción social activa",
+      "dependeDe": ["fase-25"],
+      "hechoCuando": "La sociedad puede presionar al gobierno",
+      "pruebaJugador": "Provocar una huelga general y negociar su fin",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f26-t1",
+          "titulo": "Medios de comunicación: libertad de prensa, medios públicos y privados, propaganda",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f26-t2",
+          "titulo": "Manifestaciones, huelgas (ampliación de la Fase 12), disturbios y revueltas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f26-t3",
+          "titulo": "Gestión: diálogo, concesiones, policía, represión, con consecuencias",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f26-t4",
+          "titulo": "Estabilidad del régimen (6.14)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-27",
+      "etapa": "E",
+      "version": "0.28.0",
+      "nombre": "Partidos y personajes",
+      "objetivo": "Partidos y políticos (6.15)",
+      "dependeDe": ["fase-26"],
+      "hechoCuando": "El panorama político de 2010 es reconocible",
+      "pruebaJugador": "Revisar los partidos de España, Reino Unido y Alemania en 2010",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f27-t1",
+          "titulo": "Ideología en 4 ejes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f27-t2",
+          "titulo": "Partidos reales de 2010 en unos 40 países (datos con fuente) y plantilla genérica para el resto",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f27-t3",
+          "titulo": "Líderes y personajes con carisma, competencia, edad, ideología, escándalos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f27-t4",
+          "titulo": "Fundar, fusionar, dividir e ilegalizar partidos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f27-t5",
+          "titulo": "Pantalla Partidos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-28",
+      "etapa": "E",
+      "version": "0.29.0",
+      "nombre": "Parlamento y votaciones",
+      "objetivo": "El parlamento decide",
+      "dependeDe": ["fase-27"],
+      "hechoCuando": "El presupuesto y las leyes dependen del parlamento",
+      "pruebaJugador": "Negociar los presupuestos con un partido regional",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f28-t1",
+          "titulo": "Una o dos cámaras con escaños de 2010",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f28-t2",
+          "titulo": "Votación de leyes y presupuestos: disciplina de partido, ideología, presión y acuerdos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f28-t3",
+          "titulo": "Negociación de apoyos (concesiones, inversiones regionales, cargos)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f28-t4",
+          "titulo": "Coaliciones y gobiernos en minoría",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f28-t5",
+          "titulo": "Moción de censura, cuestión de confianza y disolución",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f28-t6",
+          "titulo": "Pantalla Parlamento con hemiciclo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-29",
+      "etapa": "E",
+      "version": "0.30.0",
+      "nombre": "Elecciones y campañas",
+      "objetivo": "Ganar o perder el poder en las urnas",
+      "dependeDe": ["fase-28"],
+      "hechoCuando": "Se pueden ganar y perder elecciones en España y en 3 países más de prueba",
+      "pruebaJugador": "Jugar hasta las elecciones generales españolas de 2011",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f29-t1",
+          "titulo": "Sistemas electorales: D'Hondt, Sainte-Laguë, mayoritario, dos vueltas, mixto, presidencial; barreras y circunscripciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f29-t2",
+          "titulo": "Calendario electoral real (próximas elecciones desde 2010)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f29-t3",
+          "titulo": "Modelo de voto (6.15) y encuestas semanales con margen de error",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f29-t4",
+          "titulo": "Campaña: presupuesto, mítines por región, debates, promesas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f29-t5",
+          "titulo": "Noche electoral con resultados en el mapa por circunscripción",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f29-t6",
+          "titulo": "Derrota del jugador al perder (de momento, fin de partida)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-30",
+      "etapa": "E",
+      "version": "0.31.0",
+      "nombre": "Leyes y constitución",
+      "objetivo": "Catálogo de leyes (6.16)",
+      "dependeDe": ["fase-29"],
+      "hechoCuando": "Las leyes cambian el país de forma visible",
+      "pruebaJugador": "Aprobar una reforma laboral y ver sus efectos en 6 meses",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f30-t1",
+          "titulo": "Formato de ley con opciones, efectos y reacciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f30-t2",
+          "titulo": "Situación legal inicial de cada país en 2010 (las leyes clave, con fuente cuando se pueda)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f30-t3",
+          "titulo": "Catálogo inicial de unas 60 leyes en todas las categorías",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f30-t4",
+          "titulo": "Mayorías y referéndums; leyes constitucionales",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f30-t5",
+          "titulo": "Gobierno por decreto en regímenes autoritarios",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f30-t6",
+          "titulo": "Pantalla Leyes con buscador, filtros y previsión de votos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-31",
+      "etapa": "E",
+      "version": "0.32.0",
+      "nombre": "Regímenes y cambios de régimen",
+      "objetivo": "Distintos sistemas políticos y su caída",
+      "dependeDe": ["fase-30"],
+      "hechoCuando": "Los regímenes pueden caer y transformarse",
+      "pruebaJugador": "Como un régimen autoritario, reprimir protestas y vigilar la lealtad del ejército",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f31-t1",
+          "titulo": "Regímenes de 2010 (parlamentario, presidencial, monarquías, partido único, junta, teocracia) con poderes del jugador",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f31-t2",
+          "titulo": "Lealtad del ejército y las élites",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f31-t3",
+          "titulo": "Golpes de Estado, revoluciones y transiciones democráticas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f31-t4",
+          "titulo": "Cambio de régimen por reforma constitucional",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-32",
+      "etapa": "E",
+      "version": "0.33.0",
+      "nombre": "Regiones, autonomía y elecciones regionales",
+      "objetivo": "El país por dentro (6.17, parte 1)",
+      "dependeDe": ["fase-31"],
+      "hechoCuando": "Las regiones tienen vida política propia",
+      "pruebaJugador": "Revisar las comunidades autónomas españolas y negociar financiación",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f32-t1",
+          "titulo": "Nivel de autonomía por región y competencias transferidas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f32-t2",
+          "titulo": "Gobiernos y parlamentos regionales en países descentralizados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f32-t3",
+          "titulo": "Elecciones regionales",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f32-t4",
+          "titulo": "Financiación regional y agravios",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f32-t5",
+          "titulo": "Pantalla Regiones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-33",
+      "etapa": "E",
+      "version": "0.34.0",
+      "nombre": "Independentismo y nuevos países",
+      "objetivo": "Secesión (6.17, parte 2)",
+      "dependeDe": ["fase-32"],
+      "hechoCuando": "Pueden nacer países nuevos en la partida",
+      "pruebaJugador": "Autorizar un referéndum en Escocia y seguir el proceso",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f33-t1",
+          "titulo": "Identidad, apoyo a la independencia y apoyo exterior por región, con los movimientos de 2010",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f33-t2",
+          "titulo": "Acciones del gobierno central (diálogo, referéndum, intervención de la autonomía, ilegalización, represión)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f33-t3",
+          "titulo": "Referéndum pactado o unilateral; declaración unilateral; reconocimiento internacional",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f33-t4",
+          "titulo": "Creación de un país nuevo en el mapa con su parte de población, deuda, ejército, infraestructuras, recursos y partidos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f33-t5",
+          "titulo": "Apoyar movimientos independentistas en otros países",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f33-t6",
+          "titulo": "Capa de independentismo en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-34",
+      "etapa": "F",
+      "version": "0.35.0",
+      "nombre": "Importación de los árboles tecnológicos",
+      "objetivo": "Cargar las ~2.500 tecnologías del jugador (6.18)",
+      "dependeDe": ["fase-33"],
+      "hechoCuando": "Todo el árbol está cargado y validado",
+      "pruebaJugador": "Revisar el informe y corregir los errores que señale en los documentos",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f34-t1",
+          "titulo": "Script que lee los .docx de /fuentes/arboles/ (formato de 01_Energia.docx) y genera JSON por rama",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f34-t2",
+          "titulo": "Validación: identificadores únicos, prerrequisitos existentes, sin ciclos, costes completos; informe de errores en /docs/tecnologias-informe.md",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f34-t3",
+          "titulo": "Asignación de efectos de juego a cada tecnología (propuesta automática por categoría, revisable por el jugador)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f34-t4",
+          "titulo": "Estado inicial de 2010 por país según su nivel tecnológico",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-35",
+      "etapa": "F",
+      "version": "0.36.0",
+      "nombre": "Investigación y efectos",
+      "objetivo": "Investigar y notar los resultados",
+      "dependeDe": ["fase-34"],
+      "hechoCuando": "La tecnología transforma la economía y desbloquea contenido",
+      "pruebaJugador": "Investigar una tecnología energética y ver el efecto en el mix",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f35-t1",
+          "titulo": "Puntos de investigación por rama (I+D público y privado, investigadores, centros, universidades)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f35-t2",
+          "titulo": "Cola de proyectos y prioridades; consumo de dinero, personal, recursos e instalaciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f35-t3",
+          "titulo": "Difusión, licencias y cooperación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f35-t4",
+          "titulo": "Aplicación de efectos (desbloqueos y mejoras)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f35-t5",
+          "titulo": "Pantalla Investigación con árbol navegable y zoom",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-36",
+      "etapa": "F",
+      "version": "0.37.0",
+      "nombre": "Fuerzas armadas y equipamiento",
+      "objetivo": "Ejércitos de 2010 (6.20, parte 1)",
+      "dependeDe": ["fase-35"],
+      "hechoCuando": "Cada país tiene un ejército gestionable",
+      "pruebaJugador": "Comprar aviones a un aliado y ver el coste y el plazo",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f36-t1",
+          "titulo": "Efectivos, presupuesto, preparación, moral y experiencia por país (datos reales y estimaciones)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f36-t2",
+          "titulo": "Catálogo de equipamiento por tipo y generación tecnológica",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f36-t3",
+          "titulo": "Compra a otros países y fabricación propia (industria de defensa y tecnología)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f36-t4",
+          "titulo": "Reclutamiento: profesional, servicio obligatorio, reservistas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f36-t5",
+          "titulo": "Pantalla Ejército",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-37",
+      "etapa": "F",
+      "version": "0.38.0",
+      "nombre": "Unidades en el mapa, bases y logística",
+      "objetivo": "Fuerzas visibles y desplegables",
+      "dependeDe": ["fase-36"],
+      "hechoCuando": "Las fuerzas se mueven por el mapa con lógica",
+      "pruebaJugador": "Desplegar una flota y mover tropas entre regiones",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f37-t1",
+          "titulo": "Agrupaciones (brigadas o divisiones, flotas, escuadrones) en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f37-t2",
+          "titulo": "Movimiento por regiones, rutas marítimas y aéreas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f37-t3",
+          "titulo": "Bases propias y en el extranjero por acuerdo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f37-t4",
+          "titulo": "Suministro y logística según el transporte (Fase 16)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f37-t5",
+          "titulo": "Capa militar del mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-38",
+      "etapa": "F",
+      "version": "0.39.0",
+      "nombre": "Guerra y combate",
+      "objetivo": "Conflictos armados (6.20, parte 2)",
+      "dependeDe": ["fase-37"],
+      "hechoCuando": "Se puede librar una guerra completa",
+      "pruebaJugador": "Iniciar un conflicto limitado y seguirlo en el mapa",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f38-t1",
+          "titulo": "Causas de guerra y declaración (parlamento, opinión pública, ONU, alianzas)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f38-t2",
+          "titulo": "Combate por región: modelo tipo Lanchester con terreno, tecnología, aire, suministro y moral",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f38-t3",
+          "titulo": "Bombardeos e impacto en infraestructuras y población",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f38-t4",
+          "titulo": "Guerras en curso en 2010 (Afganistán, Irak) representadas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f38-t5",
+          "titulo": "Pantalla de guerra con frentes y bajas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-39",
+      "etapa": "F",
+      "version": "0.40.0",
+      "nombre": "Ocupación, insurgencia y paz",
+      "objetivo": "Cerrar los conflictos",
+      "dependeDe": ["fase-38"],
+      "hechoCuando": "Las guerras terminan y cambian el mapa",
+      "pruebaJugador": "Firmar una paz con cesión territorial",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f39-t1",
+          "titulo": "Ocupación de regiones, resistencia e insurgencia",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f39-t2",
+          "titulo": "Alto el fuego, armisticio, negociación y tratados de paz (anexión, retirada, reparaciones, cambio de régimen, independencia)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f39-t3",
+          "titulo": "Refugiados y reconstrucción",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f39-t4",
+          "titulo": "Cambio de fronteras en el mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-40",
+      "etapa": "F",
+      "version": "0.41.0",
+      "nombre": "Interior, justicia, corrupción y terrorismo",
+      "objetivo": "Seguridad interior (6.21)",
+      "dependeDe": ["fase-39"],
+      "hechoCuando": "La seguridad interior influye en la política y la economía",
+      "pruebaJugador": "Lanzar un plan anticorrupción y ver los escándalos que destapa",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f40-t1",
+          "titulo": "Criminalidad, policía, prisiones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f40-t2",
+          "titulo": "Corrupción: pérdidas de gasto, escándalos, lucha anticorrupción",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f40-t3",
+          "titulo": "Independencia judicial",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f40-t4",
+          "titulo": "Grupos terroristas activos en 2010 y atentados",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f40-t5",
+          "titulo": "Acciones de Interior y Justicia",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-41",
+      "etapa": "F",
+      "version": "0.42.0",
+      "nombre": "Medio ambiente, clima y desastres",
+      "objetivo": "El planeta reacciona (6.22)",
+      "dependeDe": ["fase-40"],
+      "hechoCuando": "El medio ambiente es un factor más del juego",
+      "pruebaJugador": "Sufrir un desastre y gestionar la reconstrucción",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f41-t1",
+          "titulo": "Emisiones por sector y país; contaminación local y su efecto en la salud",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f41-t2",
+          "titulo": "Clima global simplificado",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f41-t3",
+          "titulo": "Desastres naturales con probabilidades según la geografía real",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f41-t4",
+          "titulo": "Ayuda internacional y acuerdos climáticos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f41-t5",
+          "titulo": "Capa ambiental del mapa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-42",
+      "etapa": "G",
+      "version": "0.43.0",
+      "nombre": "IA de países: política interior",
+      "objetivo": "Los países no jugadores se gobiernan solos (6.24)",
+      "dependeDe": ["fase-41"],
+      "hechoCuando": "Los países no jugadores se gobiernan de forma creíble",
+      "pruebaJugador": "Observar cómo gestiona Francia una crisis",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f42-t1",
+          "titulo": "Personalidad de cada país (régimen, ideología, historia)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f42-t2",
+          "titulo": "Decisiones mensuales: presupuesto, impuestos, leyes coherentes con su gobierno, obras, energía",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f42-t3",
+          "titulo": "Reacción a crisis (paro, deuda, protestas)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-43",
+      "etapa": "G",
+      "version": "0.44.0",
+      "nombre": "IA de países: exterior y militar",
+      "objetivo": "Los países actúan en el mundo",
+      "dependeDe": ["fase-42"],
+      "hechoCuando": "El mundo responde con lógica al jugador",
+      "pruebaJugador": "Amenazar a un vecino y ver la reacción de sus aliados",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f43-t1",
+          "titulo": "Diplomacia, comercio y tratados según intereses",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f43-t2",
+          "titulo": "Reacción a las acciones del jugador",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f43-t3",
+          "titulo": "Decisiones militares: rearme, alianzas, intervenciones y guerras con motivo, capacidad y apoyo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f43-t4",
+          "titulo": "Uso de las organizaciones internacionales",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-44",
+      "etapa": "G",
+      "version": "0.45.0",
+      "nombre": "Eventos aleatorios y noticias",
+      "objetivo": "Imprevistos (6.23)",
+      "dependeDe": ["fase-43"],
+      "hechoCuando": "Las partidas tienen sorpresas variadas",
+      "pruebaJugador": "Jugar un año y responder a varios eventos",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f44-t1",
+          "titulo": "Motor de eventos: condiciones, probabilidad, opciones y efectos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f44-t2",
+          "titulo": "Catálogo inicial de unos 100 eventos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f44-t3",
+          "titulo": "Teletipo de noticias mundial filtrable",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-45",
+      "etapa": "G",
+      "version": "0.46.0",
+      "nombre": "Eventos históricos de 2010 en adelante",
+      "objetivo": "Historia opcional",
+      "dependeDe": ["fase-44"],
+      "hechoCuando": "El modo histórico funciona sin forzar resultados",
+      "pruebaJugador": "Jugar con y sin eventos históricos y comparar",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f45-t1",
+          "titulo": "Eventos históricos condicionados: rescates del euro, Primavera Árabe, Fukushima, Sudán del Sur, Crimea, etc",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f45-t2",
+          "titulo": "Opción de activarlos o desactivarlos al crear la partida",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f45-t3",
+          "titulo": "Tests de credibilidad 2010–2015 frente al histórico real",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-46",
+      "etapa": "G",
+      "version": "0.47.0",
+      "nombre": "Estadísticas, informes y comparador",
+      "objetivo": "Entender lo que pasa",
+      "dependeDe": ["fase-45"],
+      "hechoCuando": "El jugador puede analizar el mundo con facilidad",
+      "pruebaJugador": "Comparar España con Italia en 10 indicadores",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f46-t1",
+          "titulo": "Comparador de países con gráficos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f46-t2",
+          "titulo": "Clasificaciones mundiales (PIB, potencia militar, felicidad, tecnología…)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f46-t3",
+          "titulo": "Informe anual del país",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f46-t4",
+          "titulo": "Historial de la partida (línea de tiempo con hechos clave)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-47",
+      "etapa": "H",
+      "version": "0.48.0",
+      "nombre": "Tutorial y ayuda",
+      "objetivo": "",
+      "dependeDe": ["fase-46"],
+      "hechoCuando": "Un jugador nuevo entiende lo básico en 15 minutos",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f47-t1",
+          "titulo": "Tutorial interactivo por pasos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f47-t2",
+          "titulo": "Tooltips en todos los indicadores (\"qué es\" y \"qué lo afecta\")",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f47-t3",
+          "titulo": "Enciclopedia del juego",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-48",
+      "etapa": "H",
+      "version": "0.49.0",
+      "nombre": "Equilibrado",
+      "objetivo": "",
+      "dependeDe": ["fase-47"],
+      "hechoCuando": "Ningún país diverge de forma absurda y la dificultad se nota",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f48-t1",
+          "titulo": "Partidas automáticas de 20 años con distintas semillas",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f48-t2",
+          "titulo": "Ajuste de parámetros en /src/sim/config/",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f48-t3",
+          "titulo": "Niveles de dificultad",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f48-t4",
+          "titulo": "Revisión de todos los \"Hecho cuando\" anteriores",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-49",
+      "etapa": "H",
+      "version": "0.50.0",
+      "nombre": "Rendimiento, accesibilidad e instalación",
+      "objetivo": "",
+      "dependeDe": ["fase-48"],
+      "hechoCuando": "Se instala en el móvil y una partida de 10 años va fluida",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f49-t1",
+          "titulo": "Optimización para móviles de gama media",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f49-t2",
+          "titulo": "PWA: instalable en el móvil como una app y jugable sin conexión",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f49-t3",
+          "titulo": "Accesibilidad (contraste, tamaño de texto, lectores de pantalla en menús)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "fase-50",
+      "etapa": "H",
+      "version": "0.51.0",
+      "nombre": "Contenido completo",
+      "objetivo": "",
+      "dependeDe": ["fase-49"],
+      "hechoCuando": "Se cumplen los objetivos de contenido del GDD",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "f50-t1",
+          "titulo": "Ampliar a unas 150 leyes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f50-t2",
+          "titulo": "Partidos reales en más países",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f50-t3",
+          "titulo": "Más eventos y revisión de textos",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "lanzamiento",
+      "etapa": "H",
+      "version": "1.0.0",
+      "nombre": "Lanzamiento",
+      "objetivo": "Juego completo como Jefe de Gobierno",
+      "dependeDe": ["fase-50"],
+      "hechoCuando": "Se cumple toda la lista de comprobación del lanzamiento",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": [
+        {
+          "id": "lanzamiento-t1",
+          "titulo": "Todos los tests en verde",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "lanzamiento-t2",
+          "titulo": "Partida completa con 5 países distintos sin errores",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "lanzamiento-t3",
+          "titulo": "Hoja de ruta y CHANGELOG al día",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "lanzamiento-t4",
+          "titulo": "Guardados compatibles",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "lanzamiento-t5",
+          "titulo": "Tutorial completo",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        }
+      ]
+    },
+    {
+      "id": "v1-1",
+      "etapa": "I",
+      "version": "1.1.0",
+      "nombre": "Grandes empresas reales con nombre (2010) y mercado bursátil por empresa",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-2",
+      "etapa": "I",
+      "version": "1.2.0",
+      "nombre": "Oposición jugable: liderar un partido, ganar elecciones, mociones, movilizaciones",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-3",
+      "etapa": "I",
+      "version": "1.3.0",
+      "nombre": "Servicios de inteligencia: espionaje, contraespionaje, operaciones encubiertas",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-4",
+      "etapa": "I",
+      "version": "1.4.0",
+      "nombre": "Ciberguerra y robo de tecnología",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-5",
+      "etapa": "I",
+      "version": "1.5.0",
+      "nombre": "Armas nucleares completas: doctrina, disuasión, ataque, invierno nuclear",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-6",
+      "etapa": "I",
+      "version": "1.6.0",
+      "nombre": "Espacio: satélites, estaciones, base lunar y más allá (según la rama Espacio)",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-7",
+      "etapa": "I",
+      "version": "1.7.0",
+      "nombre": "Multinacionales jugables (rol de empresario)",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-8",
+      "etapa": "I",
+      "version": "1.8.0",
+      "nombre": "Escenarios con objetivos y desafíos",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-9",
+      "etapa": "I",
+      "version": "1.9.0",
+      "nombre": "Editor y soporte de mods",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v1-10",
+      "etapa": "I",
+      "version": "1.10.0",
+      "nombre": "Más idiomas",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    },
+    {
+      "id": "v2-0",
+      "etapa": "I",
+      "version": "2.0.0",
+      "nombre": "Multijugador (requiere servidor; ver decisiones abiertas)",
+      "objetivo": "",
+      "dependeDe": ["lanzamiento"],
+      "hechoCuando": "",
+      "pruebaJugador": "",
+      "estado": "pendiente",
+      "tareas": []
+    }
+  ],
+  "ideasPendientes": [],
+  "historial": [
+    {
+      "version": "0.1.0",
+      "fecha": "2026-11-11",
+      "cambios": [
+        "Primera versión pública: pantalla de inicio con la versión del juego",
+        "Web de la Hoja de ruta con etapas, fases, tareas, última sesión, ideas pendientes e historial",
+        "Botón «Reportar fallo / sugerencia» con plantillas de issue (fallo, idea, datos)",
+        "Publicación automática en GitHub Pages con GitHub Actions",
+        "Proyecto con Vite, TypeScript y Vitest, y reglas de trabajo en CLAUDE.md"
+      ]
+    }
+  ]
+}
