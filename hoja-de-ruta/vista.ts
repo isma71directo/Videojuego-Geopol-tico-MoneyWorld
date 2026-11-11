@@ -331,6 +331,7 @@ function pie(): HTMLElement {
     el('a', { href: URL_JUEGO }, t('hojaDeRuta.pie.juego')),
     el('a', { href: REPOSITORIO, ...externo }, t('hojaDeRuta.pie.repositorio')),
     el('a', { href: URL_GDD, ...externo }, t('hojaDeRuta.pie.diseno')),
+    el('a', { href: `${REPOSITORIO}/issues/new/choose`, ...externo }, t('hojaDeRuta.pie.reportar')),
   );
 }
 

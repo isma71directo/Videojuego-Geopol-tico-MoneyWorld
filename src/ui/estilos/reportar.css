@@ -1,0 +1,43 @@
+/* Opciones de la hoja «Reportar fallo / sugerencia». */
+.reportar__opciones {
+  display: grid;
+  gap: 10px;
+}
+
+.reportar__opcion {
+  display: grid;
+  gap: 2px;
+  min-height: 60px;
+  padding: 12px 14px;
+  border: 1px solid var(--borde);
+  border-left-width: 4px;
+  border-radius: var(--radio);
+  background: var(--superficie-2);
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.reportar__opcion:hover {
+  border-color: var(--acento);
+}
+
+.reportar__opcion span {
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+.reportar__opcion--fallo {
+  border-left-color: var(--peligro);
+}
+
+.reportar__opcion--idea {
+  border-left-color: var(--acento);
+}
+
+.reportar__opcion--datos {
+  border-left-color: var(--en-curso);
+}
+
+.reportar__cuenta {
+  font-size: 0.8125rem;
+}

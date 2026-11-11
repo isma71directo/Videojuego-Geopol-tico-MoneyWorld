@@ -30,6 +30,24 @@
     },
     "hoja": {
       "cerrar": "Cerrar"
+    },
+    "reportar": {
+      "boton": "Reportar fallo / sugerencia",
+      "titulo": "Reportar fallo o sugerencia",
+      "explicacion": "Elige qué quieres contar. Se abrirá GitHub con el aviso ya preparado: solo tienes que escribir la descripción y enviarlo.",
+      "cuenta": "Hace falta haber iniciado sesión en GitHub. La versión del juego se añade sola.",
+      "fallo": {
+        "titulo": "Fallo",
+        "descripcion": "Algo no funciona como debería."
+      },
+      "idea": {
+        "titulo": "Idea o sugerencia",
+        "descripcion": "Una mejora, un sistema o un contenido nuevo."
+      },
+      "datos": {
+        "titulo": "Datos",
+        "descripcion": "Un dato real del juego es incorrecto o falta."
+      }
     }
   },
   "hojaDeRuta": {
@@ -82,7 +100,8 @@
     "pie": {
       "juego": "Ir al juego",
       "repositorio": "Código en GitHub",
-      "diseno": "Documento de diseño"
+      "diseno": "Documento de diseño",
+      "reportar": "Reportar fallo / sugerencia"
     }
   }
 }

@@ -6,6 +6,7 @@ import { VERSION, etiquetaVersion } from './compartido/version';
 import { t } from './i18n';
 import { el, reemplazar } from './ui/dom';
 import { crearPantallaInicio } from './ui/inicio';
+import { botonReportar } from './ui/reportar';
 
 /** Cada cuánto comprueba el juego si se ha publicado una versión nueva. */
 const MINUTOS_REFRESCO = 5;
@@ -14,6 +15,15 @@ const app = document.querySelector<HTMLElement>('#app')!;
 const avisoVersion = document.querySelector<HTMLElement>('#aviso-version')!;
 
 const inicio = crearPantallaInicio();
+inicio.acciones.appendChild(
+  // Todavía no hay partidas: la fecha y el país se añadirán en la Fase 4.
+  botonReportar(() => ({
+    version: VERSION,
+    fechaPartida: null,
+    pais: null,
+    dispositivo: navigator.userAgent,
+  })),
+);
 reemplazar(app, inicio.elemento);
 
 function mostrarAvisoVersion(version: string): void {

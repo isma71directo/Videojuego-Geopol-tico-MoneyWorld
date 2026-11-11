@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.0",
-  "actualizado": "2026-11-11T15:25:05Z",
+  "actualizado": "2026-11-11T15:26:34Z",
   "faseActiva": "fase-0",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Creado el proyecto (Vite + TypeScript + Vitest), la estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, la publicación con GitHub Actions, la web de la Hoja de ruta y la pantalla de inicio del juego.",
-    "siguientePaso": "Crear el botón «Reportar fallo / sugerencia» y las plantillas de issue (tarea f0-t8).",
+    "resumen": "Creado el proyecto (Vite + TypeScript + Vitest), la estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, la publicación con GitHub Actions, la web de la Hoja de ruta, la pantalla de inicio y el botón para reportar fallos e ideas.",
+    "siguientePaso": "Crear CHANGELOG.md y cerrar la gestión de versión (tarea f0-t9).",
     "pendienteDelJugador": ["En GitHub: Settings → Pages → Source: GitHub Actions"]
   },
   "etapas": [
@@ -115,13 +115,13 @@
           "titulo": "Crear la pantalla de inicio del juego: título provisional, versión, botones (Nueva partida, desactivado por ahora; Hoja de ruta; Ajustes)",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c63a2aa"
         },
         {
           "id": "f0-t8",
           "titulo": "Crear el botón \"Reportar fallo / sugerencia\" con issue de GitHub prerrellenada y plantillas de issue (fallo, idea, datos)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
