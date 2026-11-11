@@ -1,7 +1,7 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.0",
-  "actualizado": "2026-11-11T15:27:13Z",
+  "actualizado": "2026-11-11T15:28:30Z",
   "faseActiva": "fase-0",
   "ultimaSesion": {
     "fecha": "2026-11-11",
@@ -133,7 +133,7 @@
           "titulo": "Crear CHANGELOG.md y la gestión de versión (una sola fuente: package.json)",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/14fdbb7"
         }
       ]
     },

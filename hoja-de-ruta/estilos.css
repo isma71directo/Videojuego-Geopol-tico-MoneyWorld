@@ -410,8 +410,8 @@ details[open] > .fase__cabecera::after {
 
 .tarea__enlace {
   /* Zona táctil amplia sin descolocar la línea. */
-  margin: -10px -6px;
-  padding: 10px 6px;
+  margin: -13px -6px;
+  padding: 13px 6px;
 }
 
 /* Ideas e historial */
