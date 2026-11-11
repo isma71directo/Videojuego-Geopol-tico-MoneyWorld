@@ -1,0 +1,188 @@
+{
+  "_nota": "Tabla manual de la Fase 1: lo que ninguna fuente da tal como lo necesita el escenario del 1 de enero de 2010 (GDD, sección 3). Se edita a mano; el script 01-paises.ts la combina con el Banco Mundial y Wikidata.",
+
+  "dependenciasExcluidas": {
+    "_nota": "Territorios dependientes que el Banco Mundial lista como economías. No son países en la Fase 1; su tratamiento en el mapa se decide en las Fases 2 y 3.",
+    "codigos": [
+      "ABW",
+      "ASM",
+      "BMU",
+      "CHI",
+      "CUW",
+      "CYM",
+      "FRO",
+      "GIB",
+      "GRL",
+      "GUM",
+      "HKG",
+      "IMN",
+      "MAC",
+      "MAF",
+      "MNP",
+      "NCL",
+      "PRI",
+      "PYF",
+      "SXM",
+      "TCA",
+      "VGB",
+      "VIR"
+    ]
+  },
+
+  "fusiones": {
+    "_nota": "Países que en 2010 eran uno solo y las fuentes actuales dan por separado.",
+    "SDN": ["SDN", "SSD"]
+  },
+
+  "regiones": {
+    "EAS": "Asia Oriental y Pacífico",
+    "ECS": "Europa y Asia Central",
+    "LCN": "América Latina y el Caribe",
+    "MEA": "Oriente Medio y Norte de África",
+    "NAC": "América del Norte",
+    "SAS": "Asia Meridional",
+    "SSF": "África subsahariana"
+  },
+
+  "regionesCorregidas": {
+    "_nota": "El Banco Mundial ha movido hace poco Afganistán y Pakistán a la región de Oriente Medio; aquí se mantienen en Asia Meridional.",
+    "AFG": "SAS",
+    "PAK": "SAS"
+  },
+
+  "nombres": {
+    "_nota": "Nombres en español usados en 2010 o más habituales que el que da la base de nombres (CLDR).",
+    "BHS": "Bahamas",
+    "CIV": "Costa de Marfil",
+    "COG": "República del Congo",
+    "CZE": "República Checa",
+    "FSM": "Micronesia",
+    "MKD": "Macedonia",
+    "MMR": "Birmania",
+    "PSE": "Palestina",
+    "SWZ": "Suazilandia",
+    "TLS": "Timor Oriental",
+    "VAT": "Ciudad del Vaticano"
+  },
+
+  "capitales": {
+    "_nota": "Capital el 1 de enero de 2010 cuando Wikidata da varias a la vez o ninguna. En países con varias capitales se usa la sede del gobierno.",
+    "BOL": "La Paz",
+    "LKA": "Colombo",
+    "SWZ": "Mbabane",
+    "YEM": "Saná",
+    "ZAF": "Pretoria"
+  },
+
+  "extra": [
+    {
+      "id": "VAT",
+      "iso2": "VA",
+      "region": "ECS",
+      "jugable": false,
+      "nota": "No figura en el Banco Mundial ni en el FMI; sin datos económicos."
+    }
+  ],
+
+  "especiales": [
+    {
+      "id": "XKX",
+      "iso2": "XK",
+      "nombre": "Kosovo",
+      "capital": "Pristina",
+      "region": "ECS",
+      "estatus": "Independencia declarada en 2008; reconocimiento parcial",
+      "reclamadoPor": "SRB",
+      "jugable": true,
+      "codigos": { "bm": "XKX", "fmi": "UVK", "owid": "OWID_KOS", "wikidata": "Q1246" }
+    },
+    {
+      "id": "TWN",
+      "iso2": "TW",
+      "nombre": "Taiwán",
+      "capital": "Taipéi",
+      "region": "EAS",
+      "estatus": "Estatus especial: gobierno propio, reclamado por China",
+      "reclamadoPor": "CHN",
+      "jugable": true,
+      "codigos": { "bm": null, "fmi": "TWN", "owid": "TWN", "wikidata": "Q865" }
+    },
+    {
+      "id": "PSE",
+      "iso2": "PS",
+      "nombre": "Palestina",
+      "capital": "Ramala",
+      "region": "MEA",
+      "estatus": "Territorios ocupados por Israel; Estado con reconocimiento parcial",
+      "reclamadoPor": null,
+      "jugable": true,
+      "codigos": { "bm": "PSE", "fmi": "WBG", "owid": "PSE", "wikidata": "Q219060" }
+    },
+    {
+      "id": "ESH",
+      "iso2": "EH",
+      "nombre": "Sáhara Occidental",
+      "capital": "El Aaiún",
+      "region": "MEA",
+      "estatus": "Territorio en disputa entre Marruecos y el Frente Polisario",
+      "reclamadoPor": "MAR",
+      "jugable": false,
+      "codigos": { "bm": null, "fmi": null, "owid": "ESH", "wikidata": "Q6250" }
+    },
+    {
+      "id": "SOL",
+      "iso2": null,
+      "nombre": "Somalilandia",
+      "capital": "Hargeisa",
+      "region": "SSF",
+      "estatus": "Independencia declarada en 1991; sin reconocimiento internacional",
+      "reclamadoPor": "SOM",
+      "jugable": false,
+      "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q34754" }
+    },
+    {
+      "id": "CYN",
+      "iso2": null,
+      "nombre": "Chipre del Norte",
+      "capital": "Nicosia Norte",
+      "region": "ECS",
+      "estatus": "Independencia declarada en 1983; reconocido solo por Turquía",
+      "reclamadoPor": "CYP",
+      "jugable": false,
+      "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q23681" }
+    },
+    {
+      "id": "PMR",
+      "iso2": null,
+      "nombre": "Transnistria",
+      "capital": "Tiráspol",
+      "region": "ECS",
+      "estatus": "Independencia declarada en 1990; sin reconocimiento internacional",
+      "reclamadoPor": "MDA",
+      "jugable": false,
+      "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q907112" }
+    },
+    {
+      "id": "ABK",
+      "iso2": null,
+      "nombre": "Abjasia",
+      "capital": "Sujumi",
+      "region": "ECS",
+      "estatus": "Reconocida por Rusia desde 2008",
+      "reclamadoPor": "GEO",
+      "jugable": false,
+      "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q23334" }
+    },
+    {
+      "id": "SOS",
+      "iso2": null,
+      "nombre": "Osetia del Sur",
+      "capital": "Tsjinval",
+      "region": "ECS",
+      "estatus": "Reconocida por Rusia desde 2008",
+      "reclamadoPor": "GEO",
+      "jugable": false,
+      "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q23427" }
+    }
+  ]
+}

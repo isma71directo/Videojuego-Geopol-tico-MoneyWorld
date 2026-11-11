@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T18:55:00Z",
+  "actualizado": "2026-11-11T18:56:27Z",
   "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Petición del jugador: contenido audiovisual en todas las fases. Añadida la sección 7.1 del GDD, la regla 19 y una tarea «Audiovisual» en las fases 1 a 50 (y un punto en la lista del lanzamiento). El 3D queda permitido en componentes complementarios; el mapa sigue en 2D.",
-    "siguientePaso": "Empezar la Fase 1 (datos reales de 2010) por la tabla de países (f1-t4) y la descarga del Banco Mundial (f1-t1).",
+    "resumen": "Añadido el contenido audiovisual a todas las fases (GDD 7.1 y regla 19). Empezada la Fase 1: tabla de los 202 países y territorios del escenario de 2010 (193 Estados y 9 territorios especiales), con Sudán unido y capitales de 2010.",
+    "siguientePaso": "Descargar los indicadores del Banco Mundial y del FMI (tarea f1-t1).",
     "pendienteDelJugador": [
       "Confirmar o corregir las tres decisiones abiertas nuevas del GDD (sección 13): uso del 3D, sonido al abrir el juego y material que no se puede generar con código"
     ]
@@ -151,7 +151,7 @@
       "dependeDe": ["fase-0"],
       "hechoCuando": "Existen datos de al menos 190 países y el informe de cobertura está publicado",
       "pruebaJugador": "Abrir el informe de cobertura en GitHub y revisar 3 países conocidos",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f1-t1",
@@ -177,8 +177,8 @@
         {
           "id": "f1-t4",
           "titulo": "Tabla de equivalencias de países (ISO3, nombres en español, países y territorios especiales de 2010)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         },
         {
