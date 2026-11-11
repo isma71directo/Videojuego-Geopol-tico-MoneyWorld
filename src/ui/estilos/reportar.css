@@ -41,3 +41,37 @@
 .reportar__cuenta {
   font-size: 0.8125rem;
 }
+
+/* Datos del juego que acompañan al aviso. */
+.reportar__datos {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px dashed var(--borde);
+  border-radius: var(--radio);
+}
+
+.reportar__datos-titulo {
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.reportar__datos-lista {
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.reportar__copiar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.reportar__copiado {
+  color: var(--hecha);
+  font-size: 0.875rem;
+}

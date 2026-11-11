@@ -38,24 +38,26 @@ const PLANTILLAS: Record<TipoReporte, { prefijo: string; apartados: string[] }> 
   },
 };
 
+/** Líneas «- Versión: …» con los datos del juego que acompañan a cada aviso. */
+export function datosDelJuego(tipo: TipoReporte, contexto: ContextoReporte): string[] {
+  const lineas = [
+    `- Versión: ${etiquetaVersion(contexto.version)}`,
+    `- Fecha de la partida: ${contexto.fechaPartida ?? SIN_PARTIDA}`,
+    `- País: ${contexto.pais ?? SIN_PARTIDA}`,
+  ];
+  if (tipo === 'fallo') {
+    lineas.push(`- Dispositivo y navegador: ${contexto.dispositivo ?? 'desconocido'}`);
+  }
+  return lineas;
+}
+
 /** Texto de la issue: los apartados de la plantilla y los datos del juego ya rellenados. */
 export function cuerpoReporte(tipo: TipoReporte, contexto: ContextoReporte): string {
   const lineas: string[] = [];
   for (const apartado of PLANTILLAS[tipo].apartados) {
     lineas.push(`**${apartado}**`, '', apartado === 'Pasos para repetirlo' ? '1. ' : '', '');
   }
-  lineas.push(
-    '---',
-    '',
-    '**Datos del juego**',
-    '',
-    `- Versión: ${etiquetaVersion(contexto.version)}`,
-    `- Fecha de la partida: ${contexto.fechaPartida ?? SIN_PARTIDA}`,
-    `- País: ${contexto.pais ?? SIN_PARTIDA}`,
-  );
-  if (tipo === 'fallo') {
-    lineas.push(`- Dispositivo y navegador: ${contexto.dispositivo ?? 'desconocido'}`);
-  }
+  lineas.push('---', '', '**Datos del juego**', '', ...datosDelJuego(tipo, contexto));
   return `${lineas.join('\n')}\n`;
 }
 
@@ -65,8 +67,9 @@ export function urlReporte(
   tipo: TipoReporte,
   contexto: ContextoReporte,
 ): string {
+  // Sin el parámetro «template»: con él, GitHub carga el texto de la plantilla
+  // e ignora el «body», y la issue llega sin los datos del juego (issue #3).
   const parametros = new URLSearchParams({
-    template: `${tipo}.md`,
     labels: tipo,
     title: PLANTILLAS[tipo].prefijo,
     body: cuerpoReporte(tipo, contexto),

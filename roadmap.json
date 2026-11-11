@@ -1,16 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.1.0",
-  "actualizado": "2026-11-11T15:29:06Z",
+  "versionActual": "0.1.1",
+  "actualizado": "2026-11-11T16:05:00Z",
   "faseActiva": "fase-0",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Fase 0 completa en su rama: proyecto (Vite + TypeScript + Vitest), estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, publicación con GitHub Actions, web de la Hoja de ruta, pantalla de inicio, botón para reportar fallos e ideas y CHANGELOG.",
-    "siguientePaso": "PR de la Fase 0 abierto (https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/pull/2). Cuando el jugador confirme que la publicación funciona, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
+    "resumen": "Fase 0 fusionada y publicada: el juego y la Hoja de ruta funcionan en GitHub Pages y las etiquetas existen. La issue de prueba (n.º 3) destapó un fallo en el aviso prerrellenado, corregido en la v0.1.1. La idea de la issue (tiempo por horas) queda apuntada para la Fase 5.",
+    "siguientePaso": "Cuando el jugador confirme que un aviso nuevo llega con la versión, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
     "pendienteDelJugador": [
-      "En GitHub: Settings → Pages → Source: GitHub Actions (antes de fusionar)",
-      "Fusionar el PR n.º 2 (Fase 0) en main y esperar a que termine la publicación",
-      "Prueba en el móvil: abrir la web, entrar en la Hoja de ruta, desplegar fases y enviar una issue de prueba"
+      "Fusionar el PR de la v0.1.1 (corrección del aviso)",
+      "Repetir la prueba en el móvil: enviar otro aviso y comprobar que lleva «Versión: v0.1.1»; decir si GitHub se abrió en la app o en el navegador",
+      "Opcional: en Actions, abrir la ejecución fallida «Merge pull request #2» y pulsar «Re-run failed jobs» para quitar la X roja de main"
     ]
   },
   "etapas": [
@@ -134,6 +134,13 @@
           "estado": "hecha",
           "fecha": "2026-11-11",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/14fdbb7"
+        },
+        {
+          "id": "f0-t10",
+          "titulo": "Corregir el aviso desde el móvil: la issue llegaba sin la versión y la pista de la plantilla estorbaba al escribir (issue #3)",
+          "estado": "hecha",
+          "fecha": "2026-11-11",
+          "enlace": ""
         }
       ]
     },
@@ -2641,7 +2648,14 @@
       "tareas": []
     }
   ],
-  "ideasPendientes": [],
+  "ideasPendientes": [
+    {
+      "id": "idea-1",
+      "titulo": "Que el tiempo avance por horas del día, como en Power & Revolution; los eventos e informes mantienen su ritmo",
+      "origen": "issue #3",
+      "faseAsignada": "fase-5"
+    }
+  ],
   "historial": [
     {
       "version": "0.1.0",
@@ -2652,6 +2666,15 @@
         "Botón «Reportar fallo / sugerencia» con plantillas de issue (fallo, idea, datos)",
         "Publicación automática en GitHub Pages con GitHub Actions",
         "Proyecto con Vite, TypeScript y Vitest, y reglas de trabajo en CLAUDE.md"
+      ]
+    },
+    {
+      "version": "0.1.1",
+      "fecha": "2026-11-11",
+      "cambios": [
+        "Corregido: los avisos enviados con «Reportar fallo / sugerencia» llevan ya la versión del juego",
+        "Las plantillas de issue ya no llevan texto oculto que estorbaba al escribir desde el móvil",
+        "La hoja de reporte muestra los datos del juego que se añaden y permite copiarlos"
       ]
     }
   ]

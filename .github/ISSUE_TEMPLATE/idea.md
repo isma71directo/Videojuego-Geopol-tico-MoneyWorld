@@ -7,8 +7,6 @@ labels: idea
 
 **¿Qué te gustaría añadir o cambiar?**
 
-<!-- Describe la idea. Puede ser pequeña (un botón) o grande (un sistema nuevo). -->
-
 **¿Por qué mejoraría el juego?**
 
 ---

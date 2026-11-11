@@ -7,8 +7,6 @@ labels: fallo
 
 **¿Qué ha pasado?**
 
-<!-- Describe el fallo con tus palabras. Si puedes, añade una captura. -->
-
 **¿Qué esperabas que pasara?**
 
 **Pasos para repetirlo**
