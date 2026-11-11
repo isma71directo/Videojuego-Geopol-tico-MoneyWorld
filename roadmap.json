@@ -1,13 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.0",
-  "actualizado": "2026-11-11T15:26:34Z",
+  "actualizado": "2026-11-11T15:27:13Z",
   "faseActiva": "fase-0",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Creado el proyecto (Vite + TypeScript + Vitest), la estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, la publicación con GitHub Actions, la web de la Hoja de ruta, la pantalla de inicio y el botón para reportar fallos e ideas.",
-    "siguientePaso": "Crear CHANGELOG.md y cerrar la gestión de versión (tarea f0-t9).",
-    "pendienteDelJugador": ["En GitHub: Settings → Pages → Source: GitHub Actions"]
+    "resumen": "Fase 0 completa en su rama: proyecto (Vite + TypeScript + Vitest), estructura de carpetas, CLAUDE.md, roadmap.json con todas las fases, publicación con GitHub Actions, web de la Hoja de ruta, pantalla de inicio, botón para reportar fallos e ideas y CHANGELOG.",
+    "siguientePaso": "Abrir el PR de la Fase 0. Cuando el jugador confirme que la publicación funciona, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
+    "pendienteDelJugador": [
+      "En GitHub: Settings → Pages → Source: GitHub Actions",
+      "Fusionar el PR de la Fase 0 en main y esperar a que termine la publicación",
+      "Prueba en el móvil: abrir la web, entrar en la Hoja de ruta, desplegar fases y enviar una issue de prueba"
+    ]
   },
   "etapas": [
     {
@@ -122,13 +126,13 @@
           "titulo": "Crear el botón \"Reportar fallo / sugerencia\" con issue de GitHub prerrellenada y plantillas de issue (fallo, idea, datos)",
           "estado": "hecha",
           "fecha": "2026-11-11",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/16e29f4"
         },
         {
           "id": "f0-t9",
           "titulo": "Crear CHANGELOG.md y la gestión de versión (una sola fuente: package.json)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-11",
           "enlace": ""
         }
       ]
@@ -2638,5 +2642,17 @@
     }
   ],
   "ideasPendientes": [],
-  "historial": []
+  "historial": [
+    {
+      "version": "0.1.0",
+      "fecha": "2026-11-11",
+      "cambios": [
+        "Primera versión pública: pantalla de inicio con la versión del juego",
+        "Web de la Hoja de ruta con etapas, fases, tareas, última sesión, ideas pendientes e historial",
+        "Botón «Reportar fallo / sugerencia» con plantillas de issue (fallo, idea, datos)",
+        "Publicación automática en GitHub Pages con GitHub Actions",
+        "Proyecto con Vite, TypeScript y Vitest, y reglas de trabajo en CLAUDE.md"
+      ]
+    }
+  ]
 }

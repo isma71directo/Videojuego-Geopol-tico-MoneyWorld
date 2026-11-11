@@ -38,6 +38,16 @@ npm run formato    # aplicar Prettier
 
 Antes de cada commit debe pasar `npm run comprobar`.
 
+## Cómo subir de versión
+
+La versión tiene una sola fuente: `package.json`. Al cerrar una fase:
+
+1. `npm version <nueva> --no-git-tag-version` (cambia `package.json` y `package-lock.json`).
+2. En `roadmap.json`: `versionActual`, estado de la fase, nueva `faseActiva` y entrada en `historial`.
+3. En `CHANGELOG.md`: apartado `## <nueva> - AAAA-MM-DD` con lo nuevo.
+
+Los tests fallan si las tres cosas no coinciden.
+
 ## Dónde está cada cosa
 
 - `docs/GDD.md` — diseño del juego. La sección 9 es la hoja de ruta y la 10, el formato de `roadmap.json`.
