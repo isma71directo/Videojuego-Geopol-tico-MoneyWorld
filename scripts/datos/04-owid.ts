@@ -129,18 +129,21 @@ async function procesar(url: string, fuente: string, columnas: Columnas): Promis
   const [cabecera, ...lineas] = texto.split('\n');
   const utiles = lineas.filter((linea) => /,(2008|2009|2010),/.test(linea));
   const filas = leerCsv([cabecera, ...utiles].join('\n'))
-    .map((fila) => ({ ...fila, iso_code: fila.iso_code || (SIN_ISO[fila.country!] ?? '') }))
-    .filter((fila) => ANIOS.has(fila.year!) && codigos.has(fila.iso_code));
+    .map((fila): Record<string, string> => ({
+      ...fila,
+      iso_code: fila.iso_code || (SIN_ISO[fila.country!] ?? ''),
+    }))
+    .filter((fila) => ANIOS.has(fila.year!) && codigos.has(fila.iso_code!));
   const salida: ArchivoFuente = { fuente, url, descargado: hoy(), indicadores: {} };
   for (const [clave, definicion] of Object.entries(columnas)) {
     if (!(definicion.columna in (filas[0] ?? {}))) {
       throw new Error(`La columna ${definicion.columna} ya no existe en ${url}`);
     }
     const valores: SeriePorPais = {};
-    for (const fila of [...filas].sort((a, b) => a.iso_code.localeCompare(b.iso_code))) {
+    for (const fila of [...filas].sort((a, b) => a.iso_code!.localeCompare(b.iso_code!))) {
       const valor = numero(fila[definicion.columna]);
       if (valor === null) continue;
-      (valores[fila.iso_code] ??= {})[fila.year!] = redondear(valor);
+      (valores[fila.iso_code!] ??= {})[fila.year!] = redondear(valor);
     }
     salida.indicadores[clave] = {
       codigo: definicion.columna,
