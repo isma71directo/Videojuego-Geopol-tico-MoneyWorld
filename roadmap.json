@@ -1,17 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.1.1",
-  "actualizado": "2026-11-11T16:05:00Z",
-  "faseActiva": "fase-0",
+  "actualizado": "2026-11-11T16:20:00Z",
+  "faseActiva": "fase-1",
   "ultimaSesion": {
     "fecha": "2026-11-11",
-    "resumen": "Fase 0 fusionada y publicada: el juego y la Hoja de ruta funcionan en GitHub Pages y las etiquetas existen. La issue de prueba (n.º 3) destapó un fallo en el aviso prerrellenado, corregido en la v0.1.1. La idea de la issue (tiempo por horas) queda apuntada para la Fase 5.",
-    "siguientePaso": "Cuando el jugador confirme que un aviso nuevo llega con la versión, marcar la Fase 0 como hecha y empezar la Fase 1 (datos reales de 2010).",
-    "pendienteDelJugador": [
-      "Fusionar el PR de la v0.1.1 (corrección del aviso)",
-      "Repetir la prueba en el móvil: enviar otro aviso y comprobar que lleva «Versión: v0.1.1»; decir si GitHub se abrió en la app o en el navegador",
-      "Opcional: en Actions, abrir la ejecución fallida «Merge pull request #2» y pulsar «Re-run failed jobs» para quitar la X roja de main"
-    ]
+    "resumen": "Fase 0 cerrada. El juego y la Hoja de ruta están publicados en GitHub Pages con la misma versión (0.1.1) y el jugador ha comprobado en el móvil que el aviso de fallo o sugerencia llega a GitHub con los datos del juego.",
+    "siguientePaso": "Empezar la Fase 1 (datos reales de 2010) cuando el jugador lo pida. Todavía no se ha empezado nada de esa fase.",
+    "pendienteDelJugador": ["Fusionar el PR que cierra la Fase 0 en la Hoja de ruta"]
   },
   "etapas": [
     {
@@ -70,7 +66,7 @@
       "dependeDe": [],
       "hechoCuando": "La publicación automática funciona y las dos webs muestran la misma versión",
       "pruebaJugador": "Abrir la dirección pública, ver la pantalla de inicio, entrar en la Hoja de ruta, desplegar fases y enviar una issue de prueba",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f0-t1",
