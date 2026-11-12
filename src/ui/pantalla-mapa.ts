@@ -1,10 +1,12 @@
-/** Pantalla del mapa del mundo a pantalla completa (Fase 3). */
+/** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
+import type { ConjuntoPaises } from '../datos/paises';
 import { t } from '../i18n';
 import { MapaMundo } from '../map/mapa';
 import { ESTILO_MAPA } from '../map/estilo';
 import { conectarGestos } from '../map/gestos';
 import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
-import { el } from './dom';
+import { el, reemplazar } from './dom';
+import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
 import './estilos/mapa.css';
 
 function medidorActivo(): boolean {
@@ -37,7 +39,24 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     { class: 'mapa__fps', 'aria-hidden': 'true', hidden: !medidorActivo() },
     '— fps',
   );
-  const elemento = el('section', { class: 'mapa' }, lienzo, volver, estado, medidor);
+  // Recuadro que sigue al ratón y panel del país seleccionado (tarea f4-t1).
+  const recuadro = el('div', { class: 'ficha', 'aria-hidden': 'true', hidden: true });
+  const panel = el('aside', {
+    class: 'panel-pais',
+    'aria-labelledby': 'panel-pais-titulo',
+    'aria-live': 'polite',
+    hidden: true,
+  });
+  const elemento = el(
+    'section',
+    { class: 'mapa' },
+    lienzo,
+    volver,
+    estado,
+    medidor,
+    recuadro,
+    panel,
+  );
   document.body.appendChild(elemento);
 
   const mapa = new MapaMundo(
@@ -60,6 +79,58 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     mapa.pedirDibujo();
   };
   lienzo.addEventListener('keydown', alternarMedidor);
+
+  let conjunto: ConjuntoPaises | null = null;
+  let recuadroDe: string | null = null;
+  mapa.alSenalar = (id, x, y) => {
+    const pais = id && conjunto ? conjunto.paises[id] : undefined;
+    if (!pais || !conjunto) {
+      recuadro.hidden = true;
+      recuadroDe = null;
+      return;
+    }
+    if (recuadroDe !== id) {
+      reemplazar(recuadro, ...contenidoRecuadro(pais, conjunto));
+      recuadroDe = id;
+    }
+    recuadro.hidden = false;
+    // Al lado del ratón, sin salirse de la pantalla.
+    const margen = 16;
+    const ancho = recuadro.offsetWidth;
+    const alto = recuadro.offsetHeight;
+    const izquierda = x + margen + ancho > elemento.clientWidth ? x - margen - ancho : x + margen;
+    const arriba = Math.min(y + margen, elemento.clientHeight - alto - 8);
+    recuadro.style.transform = `translate(${Math.max(8, izquierda)}px, ${Math.max(8, arriba)}px)`;
+  };
+  mapa.alSeleccionar = (id) => {
+    const pais = id && conjunto ? conjunto.paises[id] : undefined;
+    if (!pais || !conjunto) {
+      panel.hidden = true;
+      panel.replaceChildren();
+      return;
+    }
+    reemplazar(panel, ...contenidoPanel(pais, conjunto, () => mapa.seleccionar(null)));
+    panel.hidden = false;
+  };
+  const alPulsarEscape = (evento: KeyboardEvent): void => {
+    if (evento.key === 'Escape' && mapa.paisSeleccionado) {
+      evento.preventDefault();
+      mapa.seleccionar(null);
+      lienzo.focus({ preventScroll: true });
+    }
+  };
+  document.addEventListener('keydown', alPulsarEscape);
+  fetch('./data/paises-2010.json')
+    .then((respuesta) => {
+      if (!respuesta.ok) throw new Error(String(respuesta.status));
+      return respuesta.json() as Promise<ConjuntoPaises>;
+    })
+    .then((datos) => {
+      conjunto = datos;
+    })
+    .catch(() => {
+      // Sin datos el mapa sigue funcionando; solo faltan las fichas.
+    });
   mapa
     .iniciar()
     .then(() => estado.remove())
@@ -73,6 +144,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
 
   const cerrar = (): void => {
     lienzo.removeEventListener('keydown', alternarMedidor);
+    document.removeEventListener('keydown', alPulsarEscape);
     desconectar();
     mapa.destruir();
     elemento.remove();

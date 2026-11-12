@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.4.1",
-  "actualizado": "2026-11-12T05:53:44Z",
+  "actualizado": "2026-11-12T06:17:02Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 3 cerrada y medidor de fps corregido (v0.4.1). El jugador decide que el juego sea solo para PC: GDD 1.4, CLAUDE.md y hoja de ruta adaptados (ratón y teclado, interfaz densa, «Prueba en el PC»).",
-    "siguientePaso": "Fase 4 (Mapa: selección, nombres y sonido), ya pensada para ratón: señalar países al pasar el ratón, clic para seleccionar, colores distintos entre vecinos, nombres, capitales y sonido.",
+    "resumen": "Fase 4 en curso. Hecha la tarea f4-t1: al pasar el ratón se resalta el país y aparece su ficha (bandera, capital, población y PIB por habitante); con un clic se selecciona y se abre el panel de la derecha; Escape o clic en el mar quitan la selección; los microestados se señalan por su punto.",
+    "siguientePaso": "Colores de país distintos de los de sus vecinos y nombres según el zoom (tarea f4-t2).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -307,13 +307,13 @@
       "dependeDe": ["fase-3"],
       "hechoCuando": "Todos los países se pueden señalar y seleccionar con el ratón y el sonido se puede activar y silenciar",
       "pruebaJugador": "Pasar el ratón por varios países y ver su nombre; hacer clic en Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f4-t1",
           "titulo": "Selección de país con clic y resaltado al pasar el ratón, con su nombre y sus datos clave (también los países pequeños, por su punto de etiqueta)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

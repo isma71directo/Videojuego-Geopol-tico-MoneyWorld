@@ -60,9 +60,36 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda o pellizca para acercar y pulsa F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país para seleccionarlo, Escape para quitar la selección y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
-      "error": "No se ha podido cargar el mapa. Comprueba la conexión."
+      "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
+      "pais": {
+        "cerrar": "Cerrar ficha del país",
+        "capital": "Capital",
+        "region": "Región",
+        "poblacion": "Población",
+        "pib": "PIB",
+        "pibPerCapita": "PIB por habitante",
+        "crecimientoPib": "Crecimiento del PIB",
+        "paro": "Paro",
+        "inflacion": "Inflación",
+        "deudaPib": "Deuda pública",
+        "esperanzaVida": "Esperanza de vida",
+        "anos": "{valor} años",
+        "sinDato": "Sin dato",
+        "estimado": "* Estimación: no hay dato real de 2010 para este valor.",
+        "dependiente": "Territorio dependiente de {soberano}",
+        "especial": "Estatus especial: {estatus}",
+        "noJugable": "No se puede elegir para jugar",
+        "renta": {
+          "bajo": "Baja",
+          "medio-bajo": "Media-baja",
+          "medio-alto": "Media-alta",
+          "alto": "Alta"
+        },
+        "datos2010": "Datos de 2010",
+        "nivelRenta": "Nivel de renta"
+      }
     }
   },
   "hojaDeRuta": {

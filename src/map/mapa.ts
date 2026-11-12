@@ -21,7 +21,8 @@ import {
   type Camara,
 } from './camara';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
-import { ANCHO_MUNDO } from './proyeccion';
+import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
+import { paisEnPunto, UMBRAL_PEQUENO_PX } from './seleccion';
 import { Relieve } from './relieve';
 
 /** A partir de este zoom (relativo al mundo entero) se usa el nivel de detalle. */
@@ -77,6 +78,16 @@ export class MapaMundo {
   private readonly observador: ResizeObserver;
   /** Se llama después de cada dibujo (p. ej. para el medidor de fps). */
   alDibujar: ((estadisticas: Estadisticas) => void) | null = null;
+  /** País bajo el ratón (o null) y posición del ratón en la pantalla del mapa. */
+  alSenalar: ((id: string | null, x: number, y: number) => void) | null = null;
+  /** País seleccionado con un clic (o null al hacer clic en el mar). */
+  alSeleccionar: ((id: string | null) => void) | null = null;
+  private senalado: string | null = null;
+  /** Última posición del ratón sin pulsar y la cámara con la que se miró qué había debajo. */
+  private raton: [number, number] | null = null;
+  private camaraSenalada: Camara | null = null;
+  private seleccionado: string | null = null;
+  private readonly proyeccion = crearProyeccion();
 
   constructor(
     private readonly contenedor: HTMLElement,
@@ -160,6 +171,84 @@ export class MapaMundo {
   };
 
   alEmpezarGesto = (): void => this.detenerAnimacion();
+
+  /** País en un punto de la pantalla del mapa (o null si es mar). */
+  paisEn(px: number, py: number): string | null {
+    const nivel =
+      this.detalle && zoomRelativo(this.camara) >= ZOOM_DETALLE ? this.detalle : this.mundo;
+    if (!nivel) return null;
+    const x = this.camara.cx + (px - this.camara.ancho / 2) / this.camara.k;
+    const y = this.camara.cy + (py - this.camara.alto / 2) / this.camara.k;
+    return paisEnPunto(nivel.figuras.paises, x, y, this.camara.k, (punto) => {
+      const lugar = this.proyeccion.invert?.(punto);
+      return lugar ? [lugar[0], lugar[1]] : null;
+    });
+  }
+
+  /** El ratón se mueve sobre el mapa (sin pulsar); null si sale del mapa. */
+  alPasar = (x: number | null, y: number | null): void => {
+    const id = x === null || y === null ? null : this.paisEn(x, y);
+    this.raton = x === null || y === null ? null : [x, y];
+    this.camaraSenalada = this.camara;
+    if (id !== this.senalado) {
+      this.senalado = id;
+      this.lienzo.style.cursor = id ? 'pointer' : '';
+      this.pedirDibujo();
+    }
+    this.alSenalar?.(id, x ?? 0, y ?? 0);
+  };
+
+  /** Clic sin arrastre: selecciona el país (o quita la selección si es mar). */
+  alTocar = (x: number, y: number): void => {
+    this.seleccionar(this.paisEn(x, y));
+  };
+
+  get paisSeleccionado(): string | null {
+    return this.seleccionado;
+  }
+
+  seleccionar(id: string | null): void {
+    if (id === this.seleccionado) return;
+    this.seleccionado = id;
+    this.pedirDibujo();
+    this.alSeleccionar?.(id);
+  }
+
+  /** Círculo alrededor de un país que en pantalla es demasiado pequeño para verse resaltado. */
+  private anillo(figura: Figura, camara: Camara, color: string): void {
+    const [x0, y0, x1, y1] = figura.caja;
+    if (!figura.etiqueta || Math.max(x1 - x0, y1 - y0) * camara.k >= UMBRAL_PEQUENO_PX) return;
+    const { ctx } = this;
+    ctx.beginPath();
+    ctx.arc(figura.etiqueta[0], figura.etiqueta[1], 7 / camara.k, 0, Math.PI * 2);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2 / camara.k;
+    ctx.stroke();
+  }
+
+  private resaltar(nivel: Nivel, paises: Figura[], camara: Camara): void {
+    const { ctx } = this;
+    const senalada = paises.find((f) => f.id === this.senalado && f.id !== this.seleccionado);
+    if (senalada) {
+      const camino = this.camino(nivel, senalada);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.fill(camino);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.lineWidth = 1.4 / camara.k;
+      ctx.stroke(camino);
+      this.anillo(senalada, camara, 'rgba(255, 255, 255, 0.85)');
+    }
+    const elegida = paises.find((f) => f.id === this.seleccionado);
+    if (elegida) {
+      const camino = this.camino(nivel, elegida);
+      ctx.fillStyle = 'rgba(255, 214, 120, 0.16)';
+      ctx.fill(camino);
+      ctx.strokeStyle = '#ffd678';
+      ctx.lineWidth = 2.2 / camara.k;
+      ctx.stroke(camino);
+      this.anillo(elegida, camara, '#ffd678');
+    }
+  }
 
   private caminoAgua(elemento: ElementoAgua): Path2D {
     let camino = this.caminosAgua.get(elemento);
@@ -301,6 +390,7 @@ export class MapaMundo {
         ctx.lineWidth = Math.min(1.4, 0.6 + 0.12 * (z - 2.5)) / camara.k;
         ctx.lineJoin = 'round';
         for (const figura of [...zonas, ...paises]) ctx.stroke(this.camino(nivel, figura));
+        this.resaltar(nivel, paises, camara);
       }
     }
 
@@ -309,5 +399,11 @@ export class MapaMundo {
     this.marcas.push(fin);
     while (this.marcas.length > 0 && this.marcas[0]! < fin - 1000) this.marcas.shift();
     this.alDibujar?.({ fps: this.marcas.length, msUltimo: this.msUltimo, nivel: this.nivelActual });
+
+    // Si el mapa se ha movido bajo un ratón quieto (teclado, zoom animado), el país señalado cambia.
+    const raton = this.raton;
+    if (raton && this.camaraSenalada !== this.camara) {
+      queueMicrotask(() => this.alPasar(raton[0], raton[1]));
+    }
   }
 }
