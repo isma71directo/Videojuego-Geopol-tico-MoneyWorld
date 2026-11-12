@@ -15,6 +15,14 @@ export interface Tarea {
   enlace: string;
 }
 
+/** Ajuste que pide el jugador tras probar una fase; sale en una versión de corrección. */
+export interface Ajuste extends Tarea {
+  /** Versión de corrección (x.y.Z) en la que sale. */
+  version: string;
+  /** De dónde viene la petición (mensaje del jugador, issue…). */
+  origen: string;
+}
+
 export interface Fase {
   id: string;
   etapa: string;
@@ -26,6 +34,8 @@ export interface Fase {
   pruebaJugador: string;
   estado: Estado;
   tareas: Tarea[];
+  /** Ajustes tras la prueba del jugador (no cuentan para el progreso de la fase). */
+  ajustes?: Ajuste[];
 }
 
 export interface Etapa {
@@ -150,7 +160,11 @@ export function comprobarCoherencia(roadmap: Roadmap): string[] {
     problemas.push(`Etapa repetida: ${id}`);
   }
   for (const id of duplicados(idsFases)) problemas.push(`Fase repetida: ${id}`);
-  for (const id of duplicados(roadmap.fases.flatMap((fase) => fase.tareas.map((t) => t.id)))) {
+  const idsTareas = roadmap.fases.flatMap((fase) => [
+    ...fase.tareas.map((t) => t.id),
+    ...(fase.ajustes ?? []).map((a) => a.id),
+  ]);
+  for (const id of duplicados(idsTareas)) {
     problemas.push(`Tarea repetida: ${id}`);
   }
   for (const id of duplicados(roadmap.ideasPendientes.map((idea) => idea.id))) {
@@ -183,7 +197,17 @@ export function comprobarCoherencia(roadmap: Roadmap): string[] {
     if (fase.estado === 'pendiente' && estados.some((estado) => estado !== 'pendiente')) {
       problemas.push(`La fase ${fase.id} está pendiente pero tiene tareas empezadas`);
     }
-    for (const tarea of fase.tareas) {
+    for (const ajuste of fase.ajustes ?? []) {
+      // Un ajuste sale en una versión de corrección de su fase: 0.5.0 → 0.5.1, 0.5.2…
+      const [mayor, menor] = fase.version.split('.');
+      const [mayorA, menorA, parche] = ajuste.version.split('.');
+      if (mayor !== mayorA || menor !== menorA || Number(parche) === 0) {
+        problemas.push(
+          `El ajuste ${ajuste.id} no sale en una versión de corrección de ${fase.version}`,
+        );
+      }
+    }
+    for (const tarea of [...fase.tareas, ...(fase.ajustes ?? [])]) {
       if (tarea.estado !== 'pendiente' && tarea.fecha === null) {
         problemas.push(`La tarea ${tarea.id} está ${tarea.estado} pero no tiene fecha`);
       }

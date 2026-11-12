@@ -1,16 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.0",
-  "actualizado": "2026-11-12T06:39:37Z",
-  "faseActiva": "fase-4",
+  "actualizado": "2026-11-12T07:03:21Z",
+  "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 completa en su rama y versión 0.5.0: países que se señalan y seleccionan con el ratón (ficha y panel con sus datos de 2010), colores sin repetir entre vecinos, nombres de países, capitales de 2010 y ciudades según el zoom, sonido de interfaz con botón de silencio y pulso de selección.",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 4 como hecha y empezar la Fase 5.",
-    "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 4 (v0.5.0)",
-      "Prueba en el PC: pasar el ratón por varios países y ver su ficha; hacer clic en Luxemburgo y Singapur y que se abra su panel; acercarse y ver nombres, capitales (Buyumbura en Burundi) y ciudades; oír el sonido de selección y silenciarlo con el altavoz o la tecla M"
-    ]
+    "resumen": "Fase 4 cerrada: el jugador ha probado la v0.5.0 y la da por buena. Pide ajustes del mapa, apuntados en «Ajustes tras la prueba» de la Fase 4 (v0.5.1).",
+    "siguientePaso": "Ajustes de la Fase 4 (v0.5.1): más colores (f4-a1), nombres de países (f4-a2), población y orden de las ciudades (f4-a3) y ficha de la ciudad (f4-a4).",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -310,7 +307,7 @@
       "dependeDe": ["fase-3"],
       "hechoCuando": "Todos los países se pueden señalar y seleccionar con el ratón y el sonido se puede activar y silenciar",
       "pruebaJugador": "Pasar el ratón por varios países y ver su nombre; hacer clic en Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f4-t1",
@@ -339,6 +336,44 @@
           "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ddc1840"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f4-a1",
+          "titulo": "Más colores de país y que no se repitan cerca (vecinos de vecinos y países próximos), no solo entre vecinos",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-a2",
+          "titulo": "Nombres de países visibles siempre que no se pisen (Marruecos, República Checa con el mundo entero a la vista); solo los muy pequeños, como Hong Kong, esperan al zoom",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-a3",
+          "titulo": "Población de cada ciudad (la de 2010 o la más cercana, con su año) y ciudades que aparecen al acercarse por orden de población",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f4-a4",
+          "titulo": "Ficha de la ciudad al pasar el ratón por encima y al hacer clic",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },

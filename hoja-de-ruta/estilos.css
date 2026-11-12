@@ -482,3 +482,14 @@ details[open] > .fase__cabecera::after {
     grid-column: 1 / -1;
   }
 }
+
+/* Ajustes tras la prueba del jugador (versiones de corrección). */
+.fase__nota {
+  margin: -4px 0 8px;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+}
+
+.fase__subtitulo:not(:first-child) {
+  margin-top: 16px;
+}

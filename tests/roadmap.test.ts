@@ -125,6 +125,42 @@ describe('comprobarCoherencia', () => {
     expect(comprobarCoherencia(malo).some((p) => p.includes('le quedan tareas'))).toBe(true);
   });
 
+  it('detecta un ajuste que no sale en una versión de corrección de su fase', () => {
+    const malo = copia();
+    const fase = malo.fases.find((f) => f.id === 'fase-4')!;
+    fase.ajustes = [
+      {
+        id: 'f4-a9',
+        titulo: 'Prueba',
+        version: '0.6.0',
+        origen: 'test',
+        estado: 'pendiente',
+        fecha: null,
+        enlace: '',
+      },
+    ];
+    expect(comprobarCoherencia(malo).some((p) => p.includes('versión de corrección'))).toBe(true);
+    fase.ajustes[0]!.version = '0.5.2';
+    expect(comprobarCoherencia(malo).some((p) => p.includes('versión de corrección'))).toBe(false);
+  });
+
+  it('detecta un ajuste con el mismo identificador que una tarea', () => {
+    const malo = copia();
+    const fase = malo.fases.find((f) => f.id === 'fase-4')!;
+    fase.ajustes = [
+      {
+        id: 'f4-t1',
+        titulo: 'Prueba',
+        version: '0.5.1',
+        origen: 'test',
+        estado: 'pendiente',
+        fecha: null,
+        enlace: '',
+      },
+    ];
+    expect(comprobarCoherencia(malo)).toContain('Tarea repetida: f4-t1');
+  });
+
   it('detecta una tarea hecha sin fecha', () => {
     const malo = copia();
     const fase = malo.fases[0]!;

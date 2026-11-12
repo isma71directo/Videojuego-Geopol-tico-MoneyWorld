@@ -132,7 +132,9 @@
       "pruebaJugador": "Prueba en el PC",
       "tareas": "Tareas",
       "sinTareas": "Las tareas se detallarán al acercarse esta versión.",
-      "verCambio": "Ver el cambio"
+      "verCambio": "Ver el cambio",
+      "ajustes": "Ajustes tras la prueba",
+      "ajustesNota": "Lo que el jugador pidió cambiar al probar esta fase; sale en una versión de corrección."
     },
     "ideas": {
       "titulo": "Ideas pendientes",

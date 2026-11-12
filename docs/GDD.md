@@ -2027,6 +2027,7 @@ interface EstadoPartida {
 - En una tarea pendiente, `fecha` es `null` y `enlace` es `""`.
 - El lanzamiento (`lanzamiento`, v1.0.0) figura como una fase más de la etapa H, con su lista de comprobación como tareas. Las ampliaciones de la etapa I figuran como fases (`v1-1` … `v2-0`) sin tareas hasta que se detallen.
 - `versionActual` debe coincidir con la versión de `package.json` (única fuente de la versión).
+- Una fase puede tener `ajustes`: lo que el jugador pide cambiar al probarla. Cada ajuste es como una tarea, con dos campos más: `version` (la versión de corrección en la que sale, p. ej. `0.5.1` en la fase `0.5.0`) y `origen` (mensaje del jugador, *issue*…). No cuentan para el porcentaje de la fase y la Hoja de ruta los muestra aparte, como «Ajustes tras la prueba».
 
 La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, siguiente paso y qué tiene pendiente el jugador) y la lista de **ideas pendientes** aún sin fase asignada.
 
@@ -2049,7 +2050,7 @@ La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, 
 13. **Guardar el trabajo a menudo:** hacer commit y push al terminar **cada tarea**, sin acumular cambios. Si la sesión se detiene (límite de uso, inactividad o cierre), lo subido a GitHub no se pierde.
 14. **Dejar la sesión lista para retomar:** al terminar cada tarea, actualizar `ultimaSesion` en `roadmap.json` (qué se hizo, siguiente paso y qué tiene pendiente el jugador). Al empezar una sesión nueva o retomar una, leer ese bloque y continuar desde ahí.
 15. **Una fase, una rama y un PR:** trabajar cada fase en su rama. Al cerrarla, abrir el PR con un resumen en español de lo nuevo y la "Prueba en el PC" para que el jugador sepa qué comprobar.
-16. **Peticiones nuevas del jugador:** toda idea o corrección (mensaje o *issue*) se añade a `roadmap.json`: a la fase activa si es pequeña o un fallo; a la fase que corresponda si es un sistema; o a `ideasPendientes` si no encaja. Avisar al jugador de dónde ha ido.
+16. **Peticiones nuevas del jugador:** toda idea o corrección (mensaje o *issue*) se añade a `roadmap.json`: a la fase activa si es pequeña o un fallo; a los `ajustes` de una fase ya probada si cambia lo que esa fase entregó (sale en una versión de corrección, x.y.Z); a la fase que corresponda si es un sistema; o a `ideasPendientes` si no encaja. Avisar al jugador de dónde ha ido.
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
 19. **Audiovisual en cada fase:** cada fase entrega su contenido audiovisual (gráficos, animación, sonido y, si procede, 3D) según la sección 7.1. Se crea con código o con material de licencia libre anotado en `/docs/creditos.md`; nunca se usa material sin licencia clara. El 3D se propone al jugador en el plan de la fase y siempre tiene alternativa en 2D.
@@ -2066,6 +2067,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 3. **Con una *issue*:** desde el botón del juego o desde GitHub, con las etiquetas `fallo`, `idea` o `datos`. Claude las revisa al empezar cada sesión.
 4. **Editando el GDD:** el jugador cambia `docs/GDD.md` y avisa a Claude para que adapte el código y la Hoja de ruta.
 
+**Ajustes tras la prueba:** si al probar una fase el jugador pide cambiar algo de lo que esa fase entregó (colores, cuándo aparece algo, un dato que falta…), se apunta en los `ajustes` de esa fase y sale en una versión de corrección (p. ej. 0.5.1) antes de seguir con la fase siguiente.
+
 **Registro de cambios de diseño**
 
 | Fecha | Cambio | Motivo | Secciones afectadas |
@@ -2081,6 +2084,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Mapa de juego grande, plano y rectangular a pantalla completa, con zoom y elementos clicables; Equal Earth descartada | Decisión del jugador | 7, 9, 13 |
 | 12/11/2026 | Proyección Miller con desplazamiento continuo este-oeste; mapa vivo (relieve, ríos, lagos) y modos de mapa con leyenda | Decisión del jugador | 7, 9, 13 |
 | 12/11/2026 | Juego solo para PC (ratón y teclado, interfaz densa, más detalle); «Prueba en el móvil» pasa a «Prueba en el PC» en las fases pendientes | Decisión del jugador | 1, 2, 7, 9, 11, 13 |
+| 12/11/2026 | «Ajustes tras la prueba» en `roadmap.json`: lo que el jugador pide cambiar de una fase ya probada sale en una versión de corrección (x.y.Z). Primeros ajustes de la Fase 4 (v0.5.1): más colores, nombres de países y ciudades por tamaño y población de las ciudades con su ficha | Petición del jugador tras probar la v0.5.0 | 10, 11, 12 |
 
 ---
 
