@@ -1,13 +1,18 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.5.1",
-  "actualizado": "2026-11-12T07:46:54Z",
+  "versionActual": "0.5.2",
+  "actualizado": "2026-11-12T07:48:03Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Nombres de ciudades corregidos (ajuste f4-a5): traducciones erróneas, nombres de 2010 de ciudades renombradas después, transliteraciones raras y nombres oficiales largos; dos lugares erróneos de Natural Earth quitados.",
-    "siguientePaso": "Publicar la v0.5.2; después, presentar el plan de la Fase 5 (regiones del mundo) y las opciones para la idea-3 (mapa más realista).",
-    "pendienteDelJugador": []
+    "resumen": "v0.5.2 lista en su rama: nombres de ciudades corregidos (traducciones erróneas, nombres de 2010, transliteraciones raras) y dos lugares erróneos de Natural Earth quitados. Presentado al jugador el plan de la Fase 5 (regiones) y las opciones para un mapa más realista (idea-3).",
+    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 5, empezar la tarea f5-t1 (regiones de 2010 agrupadas hasta 30 por país). Asignar la idea-3 a la fase que elija el jugador.",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la v0.5.2",
+      "Prueba en el PC: acercarse a México, Ucrania y Filipinas y ver Tlaxcala, Puebla, Dnipropetrovsk, Kirovogrado, Davao y Cebú con su nombre correcto",
+      "Aprobar (o cambiar) el plan de la Fase 5: regiones del mundo",
+      "Elegir las opciones para un mapa más realista (idea-3) y en qué fase hacerlas"
+    ]
   },
   "etapas": [
     {
@@ -382,7 +387,7 @@
           "origen": "Mensaje del jugador tras probar la v0.5.1",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d0a9d2a"
         }
       ]
     },
@@ -4256,6 +4261,14 @@
         "Nombres de países siempre que no se pisen (Marruecos con el mundo entero a la vista); forma corta si el nombre entero no cabe («Rep. Checa»)",
         "Población de cada ciudad (la de 2010 o la más cercana, con su año) y ciudades que aparecen al acercarse por orden de población; 2214 ciudades",
         "Ficha de la ciudad al pasar el ratón y panel al hacer clic"
+      ]
+    },
+    {
+      "version": "0.5.2",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Nombres de ciudades corregidos: traducciones erróneas (Tlaxcala, Puerto Plata…), nombres de 2010 de las ciudades renombradas después (Dnipropetrovsk, Kirovogrado, Almatý…), transliteraciones raras y nombres oficiales largos",
+        "Quitados dos lugares erróneos de Natural Earth con la población de otra ciudad homónima"
       ]
     }
   ]
