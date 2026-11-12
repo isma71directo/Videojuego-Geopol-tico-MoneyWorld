@@ -1,15 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T11:45:30Z",
+  "actualizado": "2026-11-12T13:01:56Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "v0.6.1 lista en su rama: capitales de provincia en todos los países (ajuste f5-a1), 2035 ciudades nuevas y 1443 marcadas; en España, las 50 capitales de provincia, Ceuta, Melilla, Mérida y Santiago de Compostela.",
-    "siguientePaso": "Cuando el jugador dé por buena la v0.6.1, presentar el plan de la Fase 6 (capas del mapa, mapa más realista f6-t3 con las opciones A + C y su audiovisual) antes de programar.",
+    "resumen": "El jugador ha probado la v0.6.1 (capitales de provincia) y la da por buena; PR #15 fusionado y publicado. Presentado el plan de la Fase 6 (capas del mapa y mapa más realista), con una vista previa de los dos estilos de colores del terreno de Natural Earth.",
+    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 6, dividir f6-t3 en dos tareas (colores del terreno y profundidad del mar; efecto de volumen), anotar sus decisiones en el GDD y empezar por f6-t1 (sistema genérico de capas con leyenda).",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.6.1",
-      "Prueba en el PC: acercarse a España y ver Cáceres, Teruel, Soria, Cuenca, Ávila y las demás capitales de provincia; pasar el ratón por Cáceres y leer «Capital de Cáceres (España)»; mirar también otro país grande (Francia, Italia o Turquía)"
+      "Aprobar (o cambiar) el plan de la Fase 6: capas del mapa y mapa más realista",
+      "Elegir el estilo de los colores del terreno (A1 Natural Earth II o A2 hipsométrico)",
+      "Elegir los atajos de teclado de las capas y si se añaden la densidad de población y las capas por región"
     ]
   },
   "etapas": [
