@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.5.2",
-  "actualizado": "2026-11-12T11:07:48Z",
+  "versionActual": "0.6.0",
+  "actualizado": "2026-11-12T11:08:20Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 5 completa en su rama: regiones de 2010, su población y PIB, en el mapa al acercarse con ficha y panel, y transición animada entre países y regiones.",
-    "siguientePaso": "Cerrar la Fase 5: versión 0.6.0, CHANGELOG, historial y PR con la Prueba en el PC.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 5 completa en su rama y versión 0.6.0: 2974 regiones como eran en 2010, con su población y su PIB (DOSE, Wikidata o estimados y marcados), visibles y seleccionables al acercarse, con transición animada.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 5 como hecha y presentar el plan de la Fase 6 (capas del mapa y mapa más realista).",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la Fase 5 (v0.6.0)",
+      "Prueba en el PC: acercarse a España hasta ver sus comunidades, pasar el ratón por varias y hacer clic en Cataluña y en Andalucía; comprobar su población y su PIB y el botón «Ver la ficha de España»; acercarse a Francia y ver sus 22 regiones de 2010"
+    ]
   },
   "etapas": [
     {
@@ -423,7 +426,7 @@
           "titulo": "Audiovisual: transición animada entre la vista de países y la de regiones",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6664032"
         }
       ]
     },
@@ -4271,6 +4274,16 @@
       "cambios": [
         "Nombres de ciudades corregidos: traducciones erróneas (Tlaxcala, Puerto Plata…), nombres de 2010 de las ciudades renombradas después (Dnipropetrovsk, Kirovogrado, Almatý…), transliteraciones raras y nombres oficiales largos",
         "Quitados dos lugares erróneos de Natural Earth con la población de otra ciudad homónima"
+      ]
+    },
+    {
+      "version": "0.6.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Regiones del mundo como eran en 2010 (2974): España por comunidades autónomas, Francia con sus 22 regiones de 2010, Kenia con sus 8 provincias, Sudán con el sur incluido… agrupadas hasta unas 30 por país",
+        "Población y PIB de 2010 de cada región: DOSE (66 países) y Wikidata, ajustados al total del país; lo que falta, estimado y marcado",
+        "Las regiones aparecen al acercarse, con sus fronteras, sus nombres y un tono propio; ficha al pasar el ratón y panel al hacer clic",
+        "Transición animada entre la vista de países y la de regiones"
       ]
     }
   ]
