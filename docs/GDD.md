@@ -516,6 +516,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 1. **Inicio:** nueva partida, cargar, ajustes, enlace a la Hoja de ruta, versión del juego.
 2. **Nueva partida:** elegir país en el mapa, dificultad, eventos históricos sí o no, semilla.
 3. **Mapa principal:**
+   - **Mapa de juego (decisión del jugador, 12/11/2026):** un mapa grande, plano y rectangular a pantalla completa, como el modo plano de los simuladores geopolíticos del género, sin 3D. Se mueve con el dedo o el ratón, con zoom continuo desde el mundo entero hasta las regiones y las ciudades. Todo lo que se ve es clicable: países, regiones, capitales y ciudades y, más adelante, infraestructuras y unidades. La proyección se elige con el jugador (sección 13).
    - Barra superior: fecha, controles de tiempo, tesorería, popularidad, alertas.
    - Barra inferior (móvil): Gobierno · Economía · Política · Mundo · Ejército · Más.
    - **Capas del mapa:** político, alianzas, relaciones con mi país, PIB per cápita, crecimiento, paro, deuda, energía (mix y apagones), recursos, independentismo por región, conflictos, militar y elecciones.
@@ -729,16 +730,16 @@ interface EstadoPartida {
 **Hecho cuando:** todos los países y territorios de los datos tienen su frontera de 2010.
 
 #### Fase 3 — v0.4.0 · Mapa: dibujo y navegación
-**Objetivo:** ver el mapa del mundo en el juego y moverse por él con fluidez.
+**Objetivo:** un mapa del mundo grande, a pantalla completa, por el que moverse con fluidez.
 **Tareas**
-1. Dibujar el mapa en Canvas con la proyección Equal Earth (propuesta de la sección 13; confirmar con el jugador).
-2. Zoom con pellizco y rueda, arrastre, límites del mundo y doble toque para acercar.
+1. Dibujar el mapa a pantalla completa en Canvas con la proyección rectangular elegida por el jugador (sección 13), cargando el nivel de detalle que toque según el zoom.
+2. Zoom con pellizco y rueda, arrastre, doble toque para acercar y límites del mundo (con desplazamiento continuo este-oeste si el jugador lo confirma).
 3. Medidor de rendimiento (fps) en modo desarrollo.
 4. **Audiovisual:** estilo visual del mapa (colores de países, océano y bordes) y animación suave del zoom.
 
 **Tests:** la proyección sitúa ciudades conocidas donde corresponde; el zoom no sale de sus límites.
-**Prueba en el móvil:** mover y acercar el mapa con los dedos sin tirones.
-**Hecho cuando:** el mapa va a unos 60 fps en un móvil de gama media.
+**Prueba en el móvil:** abrir el mapa a pantalla completa, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, sin tirones.
+**Hecho cuando:** el mapa llena la pantalla y va a unos 60 fps en un móvil de gama media.
 
 #### Fase 4 — v0.5.0 · Mapa: selección, nombres y sonido
 **Objetivo:** tocar un país para seleccionarlo y reconocer el mapa por sus nombres.
@@ -2075,6 +2076,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | 3D solo donde sea posible y necesario; sin 3D decorativo (no hay globo 3D) | Decisión del jugador | 7.1, 9, 13 |
 | 12/11/2026 | Territorios con independencia de hecho jugables | Decisión del jugador | 3, 9, 13 |
 | 12/11/2026 | Territorios dependientes con datos (Hong Kong, Puerto Rico…) jugables; Antillas Neerlandesas como en 2010 | Decisión del jugador | 3, 9, 13 |
+| 12/11/2026 | Mapa de juego grande, plano y rectangular a pantalla completa, con zoom y elementos clicables; Equal Earth descartada | Decisión del jugador | 7, 9, 13 |
 
 ---
 
@@ -2090,7 +2092,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Derrota al perder elecciones | Fin de partida / seguir como oposición | Fin de partida hasta la v1.2 |
 | Multijugador | No / por turnos / tiempo real | No hasta la v2.0 (requiere servidor y coste) |
 | Dificultad | Fácil / Normal / Realista | Las tres, cambiando la tolerancia de votantes, mercados e IA |
-| Proyección del mapa | Robinson / Equal Earth / Mercator | Equal Earth (proporciones reales, aspecto de mapa político) |
+| Proyección del mapa | Miller / Mercator / Equirectangular / Equal Earth | **Equal Earth descartada por el jugador (12/11/2026):** quiere un mapa grande y rectangular a pantalla completa. Propuesta: Miller (rectangular, llena la pantalla, poca deformación). Pendiente de que el jugador elija |
+| Desplazamiento este-oeste | Con borde / continuo (el mapa da la vuelta) | Continuo, como en los juegos de estrategia: al pasar el Pacífico se vuelve a América. Pendiente del jugador |
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 11 (reloj del juego) |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |

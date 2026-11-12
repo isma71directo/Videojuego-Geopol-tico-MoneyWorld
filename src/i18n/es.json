@@ -140,7 +140,7 @@
     },
     "mapa": {
       "titulo": "Mapa del mundo de 2010",
-      "nota": "Fronteras del 1 de enero de 2010: Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas y los territorios dependientes como entidades propias. Proyección Equal Earth (propuesta; se confirma en la Fase 3).",
+      "nota": "Vista previa estática para revisar las fronteras del 1 de enero de 2010: Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas y los territorios dependientes como entidades propias. No es el mapa del juego: el mapa grande, con zoom y clicable, llega en las Fases 3 y 4.",
       "alt": "Mapa del mundo de 2010 con los Estados, los territorios especiales, los territorios dependientes y las zonas sin país.",
       "estados": "Estados",
       "especiales": "Territorios especiales o en disputa",
