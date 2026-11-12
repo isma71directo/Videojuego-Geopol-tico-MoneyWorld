@@ -15,7 +15,7 @@ Procedencia y licencia de todo el material de terceros que usa el juego. Lo que 
 | [Wikidata](https://www.wikidata.org) | Capitales de 2010 (nombre y, si no están en Natural Earth, posición), capitales de provincia de 2010 (nombre y posición), población de las ciudades y de las regiones (la de 2010 o la más cercana) y población de territorios sin datos oficiales | CC0 |
 | [DOSE](https://zenodo.org/records/20035157), de Wenz y otros | PIB y población de 2010 por regiones (V2.14) | CC BY 4.0 |
 | [CLDR](https://cldr.unicode.org) | Nombres de los países en español | Licencia Unicode |
-| [Natural Earth](https://www.naturalearthdata.com) | Fronteras, regiones y ciudades (1:10m), tierra firme, ríos, lagos y relieve sombreado con fondo oceánico (1:50m) | Dominio público |
+| [Natural Earth](https://www.naturalearthdata.com) | Fronteras, regiones y ciudades (1:10m), tierra firme, ríos, lagos, relieve sombreado con fondo oceánico y colores del terreno de Natural Earth II (1:50m) | Dominio público |
 
 El detalle de cada dato (fuente y año) está en `public/data/paises-2010.json` y en el
 [informe de cobertura](datos-cobertura.md).

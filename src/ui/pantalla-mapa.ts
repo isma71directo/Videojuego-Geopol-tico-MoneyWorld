@@ -112,12 +112,15 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       mundo: './data/mapa-2010-mundo.json',
       detalle: './data/mapa-2010-detalle.json',
       relieve: './av/relieve/',
+      terreno: './av/terreno/',
       agua: './data/mapa-agua.json',
       ciudades: './data/ciudades-2010.json',
       regiones: './data/regiones-2010.json',
     },
     ESTILO_MAPA,
   );
+  // Cuánto se ve el terreno bajo los países (Ajustes, tarea f6-t3).
+  mapa.terrenoVisible = leerAjuste('intensidadTerreno');
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };

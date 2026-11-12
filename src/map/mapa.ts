@@ -74,6 +74,8 @@ export type Objetivo =
 const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const DURACION_PULSO_MS = 520;
+/** Resolución del terreno respecto a la pantalla (el relieve usa 0,75). */
+const NITIDEZ_TERRENO = 0.4;
 const DURACION_FUNDIDO_REGIONES_MS = 400;
 const LETRA_CAPITAL = 12;
 const LETRA_CIUDAD = 11;
@@ -122,6 +124,10 @@ export class MapaMundo {
   private nombresCortos = new Map<string, string>();
   private readonly anchosTexto = new Map<string, number>();
   private relieve: Relieve | null = null;
+  /** Terreno bajo los países (tarea f6-t3): bosques, desiertos, hielo y mar profundo. */
+  private terreno: Relieve | null = null;
+  /** Cuánto se ve el terreno bajo los colores de los países, de 0 a 1 (Ajustes). */
+  private intensidadTerreno = 0.7;
   private agua: CapaAgua | null = null;
   /** Ciudades con su posición en coordenadas de mundo. */
   private ciudades: { ciudad: Ciudad; x: number; y: number }[] = [];
@@ -182,6 +188,8 @@ export class MapaMundo {
       mundo: string;
       detalle: string;
       relieve?: string;
+      /** Carpeta de las teselas del terreno (colores de la tierra y profundidad del mar). */
+      terreno?: string;
       agua?: string;
       ciudades?: string;
       regiones?: string;
@@ -205,6 +213,17 @@ export class MapaMundo {
       Relieve.cargar(this.urls.relieve, () => this.pedirDibujo())
         .then((relieve) => {
           this.relieve = relieve;
+          this.pedirDibujo();
+        })
+        .catch(() => undefined);
+    }
+    if (this.urls.terreno) {
+      // También decorativo: sin terreno, los países se pintan con colores lisos.
+      // Va debajo de colores semitransparentes: basta con teselas algo más pequeñas, que
+      // ocupan menos memoria gráfica junto a las del relieve.
+      Relieve.cargar(this.urls.terreno, () => this.pedirDibujo(), 'terreno.json', NITIDEZ_TERRENO)
+        .then((terreno) => {
+          this.terreno = terreno;
           this.pedirDibujo();
         })
         .catch(() => undefined);
@@ -356,6 +375,22 @@ export class MapaMundo {
   /** ¿Hay en el mapa algún país sin color en esta capa? (para la muestra «sin datos»). */
   hayPaisesSinDatos(coloreado: Coloreado): boolean {
     return (this.mundo?.figuras.paises ?? []).some((figura) => !coloreado.colores.has(figura.id));
+  }
+
+  /** Cuánto se ve el terreno bajo los países (0: colores lisos; 1: terreno muy visible). */
+  set terrenoVisible(intensidad: number) {
+    this.intensidadTerreno = Math.min(1, Math.max(0, intensidad));
+    this.pedirDibujo();
+  }
+
+  /**
+   * Opacidad de los colores de los países sobre el terreno: en la capa política se ve bastante
+   * terreno; en las de datos, menos, para que los colores de la leyenda se lean bien.
+   */
+  private opacidadPaises(): number {
+    if (!this.terreno) return 1;
+    const i = this.intensidadTerreno;
+    return this.coloreado ? 1 - 0.3 * i : 1 - 0.65 * i;
   }
 
   /** Capa de datos que se pinta (o null para volver a la capa política). */
@@ -579,7 +614,6 @@ export class MapaMundo {
       if (!opacidad) continue;
       ctx.save();
       ctx.clip(this.camino(nivel, figura));
-      ctx.globalAlpha = opacidad;
       const rayadas: RegionMapa[] = [];
       for (const region of regiones.porPais.get(figura.id) ?? []) {
         let color = this.coloresRegion.get(region.id);
@@ -588,10 +622,12 @@ export class MapaMundo {
           this.coloresRegion.set(region.id, color);
         }
         if (!color) continue;
+        ctx.globalAlpha = opacidad * this.opacidadPaises();
         ctx.fillStyle = color.color;
         ctx.fill(this.caminoRegion(region));
         if (color.rayado) rayadas.push(region);
       }
+      ctx.globalAlpha = opacidad;
       const patron = rayadas.length > 0 ? this.patronRayado(camara) : null;
       if (patron) {
         ctx.fillStyle = patron;
@@ -1051,17 +1087,31 @@ export class MapaMundo {
 
         const zonas = nivel.figuras.zonas.filter((f) => cajasSeCruzan(f.caja, visible));
         const paises = nivel.figuras.paises.filter((f) => cajasSeCruzan(f.caja, visible));
+        if (this.terreno) {
+          // Terreno debajo de todo: los países lo dejan ver según la intensidad elegida.
+          ctx.imageSmoothingQuality = 'high';
+          this.terreno.dibujar(ctx, visible, ANCHO_MUNDO * camara.k * dpr, 0.6 / camara.k);
+        }
+        const opacidad = this.opacidadPaises();
+        ctx.globalAlpha = opacidad;
         ctx.fillStyle = estilo.zona;
         for (const figura of zonas) ctx.fill(this.camino(nivel, figura));
         const capa = this.coloreado;
+        this.calcularPaisesConRegiones(paises, camara);
+        const conRegiones = capa?.region && this.regiones ? this.paisesConRegiones : null;
         for (const figura of paises) {
+          // Bajo las regiones de una capa por región, el país se pinta más transparente: con
+          // las regiones encima (opacidad × o), el terreno se ve igual que fuera de ellas.
+          const o = conRegiones?.get(figura.id) ?? 0;
+          ctx.globalAlpha =
+            o > 0 && opacidad < 1 ? 1 - (1 - opacidad) / (1 - opacidad * o) : opacidad;
           ctx.fillStyle = capa
             ? (capa.colores.get(figura.id) ?? capa.sinDatos)
             : (this.colores.get(figura.id) ?? estilo.paleta[0]!);
           ctx.fill(this.camino(nivel, figura));
         }
+        ctx.globalAlpha = 1;
         if (capa) this.rayarEstimados(nivel, paises, capa, camara);
-        this.calcularPaisesConRegiones(paises, camara);
         // En las capas de datos, los tonos de las regiones sugerirían diferencias que no hay;
         // las capas por región dan a cada región el color de su propio dato.
         if (!capa) this.tintarRegiones(nivel, paises);

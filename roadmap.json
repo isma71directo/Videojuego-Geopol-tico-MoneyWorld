@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T13:33:05Z",
+  "actualizado": "2026-11-12T13:41:14Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "f6-t2 hecha: desplegable de capas con iconos en la barra superior (clic o tecla C; flechas, Intro y Escape), capa recordada entre visitas, capa de densidad con la superficie terrestre real (FAO vía Banco Mundial, nuevo script 16-superficie.ts) y capas de riqueza, población y densidad también por regiones al acercarse. La ficha de una región muestra el dato de la capa (el de su país en las capas que no son por región).",
-    "siguientePaso": "f6-t3: colores del terreno de Natural Earth II bajo los países, deslizador de intensidad en Ajustes y mar más oscuro donde es más profundo.",
+    "resumen": "f6-t3 hecha: terreno de Natural Earth II (bosques, desiertos, hielo) bajo los colores de los países y mar más oscuro cuanto más profundo (nuevo script 17-terreno.ts, teselas en public/av/terreno, 1,6 MB). Deslizador «Intensidad del terreno» en Ajustes (70 % por defecto; 0 % deja los colores lisos). En las capas de datos los países son más opacos para que la leyenda se lea bien. El dibujo se mantiene en unos 5–6 ms por fotograma.",
+    "siguientePaso": "f6-t4 (audiovisual): efecto de volumen sin 3D (luz y sombra en los bordes, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua), transición animada y sonido al cambiar de capa, y su muestra en la galería; después, cerrar la Fase 6 (v0.7.0).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -461,13 +461,13 @@
           "titulo": "Capas de política, riqueza (PIB per cápita), población (total o densidad), crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), elegidas en un desplegable con iconos que se abre con un clic o con la tecla C; riqueza y población también por región al acercarse",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ebba593"
         },
         {
           "id": "f6-t3",
           "titulo": "Mapa más realista (opción A): colores del terreno de Natural Earth II bajo los colores de los países, con deslizador de intensidad en Ajustes, y el mar más oscuro donde es más profundo",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

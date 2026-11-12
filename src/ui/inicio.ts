@@ -97,11 +97,41 @@ function ajustesSonido(): HTMLElement[] {
   ];
 }
 
+/** Intensidad del terreno bajo los colores de los países (tarea f6-t3). */
+function deslizadorTerreno(): HTMLElement {
+  const intensidad = el('input', {
+    type: 'range',
+    min: 0,
+    max: 100,
+    step: 5,
+    value: Math.round(leerAjuste('intensidadTerreno') * 100),
+    'aria-label': t('juego.ajustes.intensidadTerreno'),
+  });
+  const valor = el('output', {}, `${intensidad.value} %`);
+  intensidad.addEventListener('input', () => {
+    valor.textContent = `${intensidad.value} %`;
+    guardarAjuste('intensidadTerreno', Number(intensidad.value) / 100);
+  });
+  return el(
+    'label',
+    { class: 'ajuste ajuste--deslizador' },
+    el(
+      'span',
+      {},
+      el('strong', {}, t('juego.ajustes.intensidadTerreno')),
+      el('small', {}, t('juego.ajustes.intensidadTerrenoAyuda')),
+    ),
+    intensidad,
+    valor,
+  );
+}
+
 function abrirAjustes(): void {
   abrirHoja(
     t('juego.ajustes.titulo'),
     casillaMedidorFps(),
     ...ajustesSonido(),
+    deslizadorTerreno(),
     el('p', { class: 'hoja__nota' }, t('juego.ajustes.vacio')),
     el(
       'p',

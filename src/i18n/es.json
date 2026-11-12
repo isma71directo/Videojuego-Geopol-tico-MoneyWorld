@@ -33,7 +33,9 @@
       "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
       "silenciar": "Silenciar el sonido",
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
-      "volumenEfectos": "Volumen de los efectos"
+      "volumenEfectos": "Volumen de los efectos",
+      "intensidadTerreno": "Intensidad del terreno",
+      "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos)."
     },
     "hoja": {
       "cerrar": "Cerrar"
