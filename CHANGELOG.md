@@ -7,6 +7,28 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.4.0 - 2026-11-12
+
+Fase 3 · Mapa: dibujo, relieve y navegación.
+
+### Añadido
+
+- Mapa del mundo de 2010 a pantalla completa en Canvas con la proyección Miller, abierto desde
+  «Explorar el mapa» en la pantalla de inicio.
+- Navegación: arrastrar, pellizcar y doble toque en el móvil; rueda y doble clic en el PC;
+  flechas y +/− en el teclado. Límites arriba y abajo y vuelta continua este-oeste.
+- Relieve sombreado y fondo oceánico de Natural Earth reproyectados a Miller, en teselas que se
+  descargan según el zoom (1,8 MB en total).
+- Ríos y lagos de Natural Earth: los grandes desde lejos y los demás al acercarse.
+- Paleta de colores de mapa político, zoom animado e inercia al soltar (se desactivan si el
+  dispositivo pide reducir el movimiento).
+- Medidor de rendimiento con `?fps` al final de la dirección.
+
+### Diseño
+
+- Decisiones del jugador: mapa grande, plano y rectangular (proyección Miller), con vuelta
+  este-oeste, vivo (relieve, ríos, detalle) y con modos de mapa con leyenda.
+
 ## 0.3.0 - 2026-11-12
 
 Fase 2 · Mapa: fronteras y territorios de 2010.
