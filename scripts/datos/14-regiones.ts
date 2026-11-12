@@ -227,7 +227,7 @@ unidades.forEach(({ f, pais }, indice) => {
 function limpiarNombre(nombre: string, nombrePais: string): string {
   const limpio = nombre
     .replace(
-      /^(Voivodato|Municipio|Municipalidad|Parroquia|Estado|Departamento|Provincia|Distrito|Gobernación|Gobernorado|Condado|Prefectura|Óblast|Cantón|Región|Autónoma) (de la |de los |de las |del |de )/u,
+      /^(Voivodato|Municipio|Municipalidad|Parroquia|Estado|Departamento|Provincia|Distrito|Gobernación|Gobernorado|Condado|Prefectura|Óblast|Cantón|Región|Autónoma|Periferia) (de la |de los |de las |del |de )/u,
       '',
     )
     .replace(/^(del|de|las|los|la|el) /u, '');

@@ -146,6 +146,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | UN Comtrade / CEPII BACI / WITS | Comercio bilateral por productos | Comercio. Si no es accesible, se aproxima con un modelo de gravedad. |
 | SIPRI (vía Banco Mundial) | Gasto militar | Ejército |
 | Natural Earth | Fronteras de países y regiones (admin-1), capitales, ciudades | Mapa |
+| DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | ParlGov / Wikipedia | Partidos, escaños, gobiernos y sistemas electorales en 2010 | Política (detallado en unos 40 países principales; plantilla genérica en el resto) |
 | Listas Fortune Global 500 (2010) | Grandes empresas reales | Empresas con nombre (fase posterior) |
 

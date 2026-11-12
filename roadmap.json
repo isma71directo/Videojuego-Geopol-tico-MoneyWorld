@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.2",
-  "actualizado": "2026-11-12T10:48:34Z",
+  "actualizado": "2026-11-12T10:58:24Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 5 en curso. Hecha f5-t1: 2975 regiones de 2010 (scripts/datos/14-regiones.ts y manual/regiones-2010.json): España por comunidades autónomas, Francia con sus 22 regiones de 2010, Kenia con 8 provincias, cambios posteriores a 2010 deshechos (Telangana, Alborz, Darfur…), países con muchas divisiones agrupados (Italia, Reino Unido, Rusia, Turquía…), nombres en español revisados.",
-    "siguientePaso": "Población (Wikidata, la de 2010 o la más cercana, ajustada al país) y PIB de cada región (tarea f5-t2).",
+    "resumen": "Fase 5 en curso. Hechas f5-t1 (2974 regiones de 2010) y f5-t2 (población y PIB de cada región: DOSE en 66 países, Wikidata y estimaciones marcadas, ajustado al total del país).",
+    "siguientePaso": "Mostrar y seleccionar las regiones al acercarse, con su ficha y su panel (tarea f5-t3).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -402,20 +402,20 @@
           "titulo": "Procesar las regiones como eran en 2010 (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país): España con sus 17 comunidades autónomas, Ceuta y Melilla; Francia con sus 22 regiones de 2010; Kenia con sus 8 provincias de 2010.",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/57be7aa"
         },
         {
           "id": "f5-t2",
           "titulo": "Datos básicos por región: población (Wikidata, la de 2010 o la más cercana, ajustada al total del país) y PIB de 2010 donde haya fuente abierta (Eurostat, OCDE, DOSE); si no, reparto proporcional del dato del país, marcado como estimado.",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f5-t3",
           "titulo": "Mostrar y seleccionar las regiones a partir de cierto zoom",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

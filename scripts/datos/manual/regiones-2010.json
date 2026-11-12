@@ -490,7 +490,8 @@
     "TZA|Geita": "Mwanza",
     "TTO|Eastern Tobago": "Western Tobago",
     "MUS|Port Louis city": "Port Louis",
-    "SYR|UNDOF": "Quneitra"
+    "SYR|UNDOF": "Quneitra",
+    "KOR|Sejong": "South Chungcheong"
   },
   "nombres": {
     "_nota": "Nombres en español de Natural Earth que se corrigen: «país|unidad» → nombre.",
@@ -531,7 +532,8 @@
     "ARG|Ciudad de Buenos Aires": "Ciudad de Buenos Aires",
     "ARG|Buenos Aires": "Provincia de Buenos Aires",
     "NZL|The Snares": "Islas Snares",
-    "BRA|Distrito Federal": "Distrito Federal"
+    "BRA|Distrito Federal": "Distrito Federal",
+    "DNK|Hovedstaden": "Región Capital"
   },
   "asignar": {
     "_nota": "Unidades cuyo punto de etiqueta cae en otro país del mapa de 2010: «código de Natural Earth|unidad» → país.",

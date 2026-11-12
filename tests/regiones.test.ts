@@ -110,3 +110,67 @@ describe('regiones de 2010', () => {
     expect(texto.length).toBeLessThan(2 * 1024 * 1024);
   });
 });
+
+describe('población y PIB de las regiones (f5-t2)', () => {
+  interface DatosRegion {
+    poblacion: number | null;
+    origenPoblacion: string | null;
+    pib: number | null;
+    origenPib: string | null;
+  }
+  const { regiones: datos } = JSON.parse(
+    readFileSync(ruta('regiones-2010-datos.json'), 'utf8'),
+  ) as {
+    regiones: Record<string, DatosRegion>;
+  };
+  const porPais = (pais: string): [string, DatosRegion][] =>
+    regiones
+      .filter((r) => r.properties.pais === pais)
+      .map((r) => [r.properties.nombre, datos[r.properties.id]!]);
+
+  it('cada región tiene sus datos y no sobra ninguno', () => {
+    for (const r of regiones) expect(datos, r.properties.id).toHaveProperty(r.properties.id);
+    expect(Object.keys(datos)).toHaveLength(regiones.length);
+  });
+
+  it('la población de las regiones suma la del país, y el PIB, el del país', () => {
+    for (const [id, pais] of Object.entries(paises)) {
+      const lista = porPais(id);
+      const poblacion = pais.datos.poblacion;
+      if (poblacion !== null && poblacion !== undefined) {
+        const suma = lista.reduce((s, [, d]) => s + (d.poblacion ?? 0), 0);
+        expect(Math.abs(suma - poblacion), id).toBeLessThanOrEqual(lista.length);
+      }
+      const pib = pais.datos.pib;
+      if (pib !== null && pib !== undefined) {
+        const suma = lista.reduce((s, [, d]) => s + (d.pib ?? 0), 0);
+        expect(Math.abs(suma - pib), id).toBeLessThanOrEqual(lista.length);
+      }
+    }
+  });
+
+  it('cada valor dice de dónde sale (dato real con su año o estimación marcada)', () => {
+    const valido =
+      /^(DOSE:2010|WD:\d{4}|EST:(superficie|dose-poblacion|poblacion)|BM:\d{4}|FMI:\d{4}|OWID:\d{4}|WD:\d{4}|DER|EST:[a-z-]+)$/;
+    for (const d of Object.values(datos)) {
+      if (d.poblacion !== null) expect(d.origenPoblacion).toMatch(valido);
+      if (d.pib !== null) expect(d.origenPib).toMatch(valido);
+    }
+  });
+
+  it('España: datos de DOSE de 2010 y Madrid con más PIB por habitante que Extremadura', () => {
+    const espana = new Map(porPais('ESP'));
+    const madrid = espana.get('Comunidad de Madrid')!;
+    const extremadura = espana.get('Extremadura')!;
+    expect(madrid.origenPib).toBe('DOSE:2010');
+    expect(espana.get('Cataluña')!.origenPoblacion).toBe('DOSE:2010');
+    expect(madrid.pib! / madrid.poblacion!).toBeGreaterThan(
+      (1.5 * extremadura.pib!) / extremadura.poblacion!,
+    );
+  });
+
+  it('las regiones de un país dividido por DOSE de otra forma quedan marcadas como estimadas', () => {
+    // DOSE trae Inglaterra entera: sus 9 regiones se reparten por población.
+    expect(new Map(porPais('GBR')).get('Londres')!.origenPib).toBe('EST:dose-poblacion');
+  });
+});
