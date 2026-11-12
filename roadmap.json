@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.6.0",
-  "actualizado": "2026-11-12T11:44:47Z",
+  "versionActual": "0.6.1",
+  "actualizado": "2026-11-12T11:45:30Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Capitales de provincia añadidas (ajuste f5-a1): 2035 ciudades nuevas y 1443 que ya estaban marcadas como capital de su provincia, en 198 países; en España, las 50 capitales de provincia, Ceuta, Melilla, Mérida y Santiago de Compostela.",
-    "siguientePaso": "Publicar la v0.6.1 y abrir su PR; después, presentar el plan de la Fase 6.",
-    "pendienteDelJugador": []
+    "resumen": "v0.6.1 lista en su rama: capitales de provincia en todos los países (ajuste f5-a1), 2035 ciudades nuevas y 1443 marcadas; en España, las 50 capitales de provincia, Ceuta, Melilla, Mérida y Santiago de Compostela.",
+    "siguientePaso": "Cuando el jugador dé por buena la v0.6.1, presentar el plan de la Fase 6 (capas del mapa, mapa más realista f6-t3 con las opciones A + C y su audiovisual) antes de programar.",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la v0.6.1",
+      "Prueba en el PC: acercarse a España y ver Cáceres, Teruel, Soria, Cuenca, Ávila y las demás capitales de provincia; pasar el ratón por Cáceres y leer «Capital de Cáceres (España)»; mirar también otro país grande (Francia, Italia o Turquía)"
+    ]
   },
   "etapas": [
     {
@@ -434,7 +437,7 @@
           "origen": "Mensaje del jugador tras probar la v0.6.0",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3de147b"
         }
       ]
     },
@@ -4292,6 +4295,14 @@
         "Población y PIB de 2010 de cada región: DOSE (66 países) y Wikidata, ajustados al total del país; lo que falta, estimado y marcado",
         "Las regiones aparecen al acercarse, con sus fronteras, sus nombres y un tono propio; ficha al pasar el ratón y panel al hacer clic",
         "Transición animada entre la vista de países y la de regiones"
+      ]
+    },
+    {
+      "version": "0.6.1",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Capitales de provincia en todos los países: 2035 ciudades nuevas y 1443 ya existentes marcadas como capital de su provincia (por ejemplo, en España las 50 capitales de provincia, Ceuta y Melilla)",
+        "Las capitales de provincia aparecen antes al acercarse, con un punto algo mayor, y su ficha dice de qué provincia son capital"
       ]
     }
   ]

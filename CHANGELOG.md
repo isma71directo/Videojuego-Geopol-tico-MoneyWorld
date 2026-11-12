@@ -7,6 +7,30 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.6.1 - 2026-11-12
+
+Ajuste de la Fase 5 pedido por el jugador tras probar la v0.6.0.
+
+### Añadido
+
+- Capitales de provincia en todos los países (`scripts/datos/13-ciudades.ts`): la capital de
+  cada unidad de primer nivel de Natural Earth según Wikidata (la vigente en 2010) y las capitales
+  de región de Natural Earth. Si la ciudad ya estaba, solo se marca como capital de provincia.
+  - 2035 ciudades nuevas y 1443 ya existentes marcadas, en 198 países (4246 ciudades en total).
+  - España: las 50 capitales de provincia (Cáceres, Teruel, Soria…), Ceuta, Melilla, Mérida y
+    Santiago de Compostela.
+  - Eslovenia, Macedonia, Letonia, Malta y Azerbaiyán se quedan sin ellas: sus unidades de
+    primer nivel son municipios.
+  - La población, como en el resto de ciudades: la de 2010 o la más cercana; 393 de las nuevas
+    no tienen dato en Wikidata.
+
+### Cambiado
+
+- Las capitales de provincia aparecen antes al acercarse (como muy tarde con el zoom con el que
+  se ven todas), con un punto algo mayor que el de las demás ciudades.
+- La ficha y el panel de una capital de provincia dicen de qué provincia es: «Capital de
+  Cáceres (España)».
+
 ## 0.6.0 - 2026-11-12
 
 Fase 5 · Regiones del mundo.
