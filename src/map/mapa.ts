@@ -4,7 +4,16 @@
  * cambia, y se salta los países que quedan fuera de la vista.
  */
 import {
+  prepararAgua,
+  zoomWeb,
+  type CapaAgua,
+  type ElementoAgua,
+  type TopologiaAgua,
+} from './agua';
+import {
   camaraInicial,
+  desplazar,
+  zoomEn,
   copiasVisibles,
   limitar,
   rectanguloVisible,
@@ -21,6 +30,8 @@ export const ZOOM_DETALLE = 2.5;
 export interface Estilo {
   fondo: string;
   oceano: string;
+  /** Lagos y ríos. */
+  agua: string;
   zona: string;
   borde: string;
   /** Color de relleno de cada país o territorio. */
@@ -51,6 +62,12 @@ export class MapaMundo {
   private dpr = 1;
   private mundo: Nivel | null = null;
   private relieve: Relieve | null = null;
+  private agua: CapaAgua | null = null;
+  private readonly caminosAgua = new Map<ElementoAgua, Path2D>();
+  /** Animación en curso (zoom suave o inercia); se cancela al tocar el mapa. */
+  private animacion: number | null = null;
+  private readonly sinMovimiento =
+    typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
   private detalle: Nivel | null = null;
   private cargandoDetalle = false;
   private dibujoPendiente = false;
@@ -63,7 +80,7 @@ export class MapaMundo {
 
   constructor(
     private readonly contenedor: HTMLElement,
-    private readonly urls: { mundo: string; detalle: string; relieve?: string },
+    private readonly urls: { mundo: string; detalle: string; relieve?: string; agua?: string },
     private readonly estilo: Estilo,
   ) {
     this.lienzo = document.createElement('canvas');
@@ -87,11 +104,74 @@ export class MapaMundo {
         })
         .catch(() => undefined);
     }
+    if (this.urls.agua) {
+      fetch(this.urls.agua)
+        .then((r) => (r.ok ? (r.json() as Promise<TopologiaAgua>) : Promise.reject(new Error())))
+        .then((topo) => {
+          this.agua = prepararAgua(topo);
+          this.pedirDibujo();
+        })
+        .catch(() => undefined);
+    }
     this.mundo = crearNivel(await this.descargar(this.urls.mundo));
     this.pedirDibujo();
   }
 
+  /** Detiene la animación en curso (al empezar un gesto nuevo). */
+  detenerAnimacion(): void {
+    if (this.animacion !== null) cancelAnimationFrame(this.animacion);
+    this.animacion = null;
+  }
+
+  /** Zoom animado (doble toque, teclado) manteniendo fijo el punto (x, y). */
+  alPedirZoom = (factor: number, x: number, y: number): void => {
+    this.detenerAnimacion();
+    const inicio = this.camara;
+    if (this.sinMovimiento) {
+      this.vista = zoomEn(inicio, factor, x, y);
+      return;
+    }
+    const duracion = 260;
+    const t0 = performance.now();
+    const paso = (ahora: number): void => {
+      const t = Math.min(1, (ahora - t0) / duracion);
+      const suave = 1 - (1 - t) ** 3;
+      this.vista = zoomEn(inicio, factor ** suave, x, y);
+      this.animacion = t < 1 ? requestAnimationFrame(paso) : null;
+    };
+    this.animacion = requestAnimationFrame(paso);
+  };
+
+  /** Inercia al soltar un arrastre: el mapa sigue un poco y se frena (velocidad en px/ms). */
+  alSoltar = (vx: number, vy: number): void => {
+    this.detenerAnimacion();
+    if (this.sinMovimiento || Math.hypot(vx, vy) < 0.15) return;
+    let ultimo = performance.now();
+    let velocidad: [number, number] = [vx, vy];
+    const paso = (ahora: number): void => {
+      const dt = Math.min(48, ahora - ultimo);
+      ultimo = ahora;
+      this.vista = desplazar(this.camara, velocidad[0] * dt, velocidad[1] * dt);
+      const freno = 0.994 ** dt;
+      velocidad = [velocidad[0] * freno, velocidad[1] * freno];
+      this.animacion = Math.hypot(...velocidad) > 0.02 ? requestAnimationFrame(paso) : null;
+    };
+    this.animacion = requestAnimationFrame(paso);
+  };
+
+  alEmpezarGesto = (): void => this.detenerAnimacion();
+
+  private caminoAgua(elemento: ElementoAgua): Path2D {
+    let camino = this.caminosAgua.get(elemento);
+    if (!camino) {
+      camino = new Path2D(elemento.camino);
+      this.caminosAgua.set(elemento, camino);
+    }
+    return camino;
+  }
+
   destruir(): void {
+    this.detenerAnimacion();
     this.observador.disconnect();
     this.lienzo.remove();
   }
@@ -194,6 +274,13 @@ export class MapaMundo {
           ctx.fillStyle = estilo.colorPais(figura.id);
           ctx.fill(this.camino(nivel, figura));
         }
+        // Lagos antes del relieve, para que también tengan su sombreado.
+        const z = zoomWeb(camara.k);
+        const lagos = (this.agua?.lagos ?? []).filter(
+          (lago) => lago.z <= z + 0.6 && cajasSeCruzan(lago.caja, visible),
+        );
+        ctx.fillStyle = estilo.agua;
+        for (const lago of lagos) ctx.fill(this.caminoAgua(lago));
         if (this.relieve) {
           // «Luz suave»: el gris medio no cambia nada; más claro ilumina y más oscuro sombrea.
           ctx.globalCompositeOperation = 'soft-light';
@@ -201,8 +288,17 @@ export class MapaMundo {
           this.relieve.dibujar(ctx, visible, ANCHO_MUNDO * camara.k * dpr, 0.6 / camara.k);
           ctx.globalCompositeOperation = 'source-over';
         }
+        // Ríos: más gruesos los grandes y al acercarse.
+        ctx.strokeStyle = estilo.agua;
+        ctx.lineCap = 'round';
+        for (const rio of this.agua?.rios ?? []) {
+          if (rio.z > z + 0.6 || !cajasSeCruzan(rio.caja, visible)) continue;
+          const grosor = Math.min(2.2, 0.5 + 0.25 * (z - rio.z) + (rio.z <= 2.1 ? 0.4 : 0));
+          ctx.lineWidth = Math.max(0.5, grosor) / camara.k;
+          ctx.stroke(this.caminoAgua(rio));
+        }
         ctx.strokeStyle = estilo.borde;
-        ctx.lineWidth = 0.9 / camara.k;
+        ctx.lineWidth = Math.min(1.4, 0.6 + 0.12 * (z - 2.5)) / camara.k;
         ctx.lineJoin = 'round';
         for (const figura of [...zonas, ...paises]) ctx.stroke(this.camino(nivel, figura));
       }

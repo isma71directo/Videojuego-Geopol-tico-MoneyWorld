@@ -11,6 +11,10 @@ export interface DestinoGestos {
   alTocar?: (x: number, y: number) => void;
   /** Zoom pedido por doble toque o teclado; permite animarlo. */
   alPedirZoom?: (factor: number, x: number, y: number) => void;
+  /** Al soltar un arrastre, con su velocidad en px/ms (para la inercia). */
+  alSoltar?: (vx: number, vy: number) => void;
+  /** Al empezar cualquier gesto (para detener animaciones). */
+  alEmpezarGesto?: () => void;
 }
 
 /** Por debajo de esta distancia (px) un toque no cuenta como arrastre. */
@@ -24,6 +28,8 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
   let arrastrado = false;
   let inicioToque: [number, number] | null = null;
   let ultimoToque = { t: 0, x: 0, y: 0 };
+  /** Últimas posiciones del arrastre, para calcular la velocidad al soltar. */
+  let huella: { t: number; x: number; y: number }[] = [];
 
   const posicion = (evento: { clientX: number; clientY: number }): [number, number] => {
     const caja = elemento.getBoundingClientRect();
@@ -35,6 +41,8 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
   };
 
   const alBajar = (evento: PointerEvent): void => {
+    destino.alEmpezarGesto?.();
+    huella = [];
     elemento.setPointerCapture(evento.pointerId);
     punteros.set(evento.pointerId, posicion(evento));
     if (punteros.size === 1) {
@@ -59,6 +67,9 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
       }
       if (arrastrado) {
         destino.vista = desplazar(destino.vista, actual[0] - anterior[0], actual[1] - anterior[1]);
+        const ahora = performance.now();
+        huella.push({ t: ahora, x: actual[0], y: actual[1] });
+        huella = huella.filter((marca) => marca.t > ahora - 100);
       }
     } else if (punteros.size === 2) {
       const [otroId, otro] = [...punteros].find(([id]) => id !== evento.pointerId)!;
@@ -72,6 +83,14 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
     const habiaUno = punteros.size === 1;
     const final = punteros.get(evento.pointerId);
     punteros.delete(evento.pointerId);
+    if (habiaUno && arrastrado && huella.length >= 2) {
+      const primera = huella[0]!;
+      const ultima = huella.at(-1)!;
+      const dt = ultima.t - primera.t;
+      if (dt > 0 && performance.now() - ultima.t < 60) {
+        destino.alSoltar?.((ultima.x - primera.x) / dt, (ultima.y - primera.y) / dt);
+      }
+    }
     if (!habiaUno || arrastrado || !final) return;
     const ahora = performance.now();
     const [x, y] = final;
@@ -93,6 +112,7 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
 
   const alRueda = (evento: WheelEvent): void => {
     evento.preventDefault();
+    destino.alEmpezarGesto?.();
     // Ratón (saltos grandes) y panel táctil (saltos pequeños) dan un zoom proporcional.
     const delta = evento.deltaMode === 1 ? evento.deltaY * 16 : evento.deltaY;
     const [x, y] = posicion(evento);

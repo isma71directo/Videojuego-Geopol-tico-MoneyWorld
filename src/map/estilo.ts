@@ -1,18 +1,22 @@
 /**
- * Colores del mapa (provisionales hasta la tarea audiovisual de la Fase 3).
- * Cada país recibe siempre el mismo color a partir de su identificador.
+ * Estilo visual del mapa (tarea audiovisual de la Fase 3): océano, agua, bordes y una paleta
+ * de colores de país suaves que combinan con el relieve. Cada país recibe siempre el mismo
+ * color; en la Fase 4 se ajustará para que dos vecinos nunca coincidan.
  */
 import type { Estilo } from './mapa';
 
-const PALETA = [
-  '#5b7fa8',
-  '#7a9a6a',
-  '#b08d5e',
-  '#8f6fa8',
-  '#5e9a98',
-  '#a8706a',
-  '#9a9a5e',
-  '#6a7fa0',
+/** Tonos de mapa político, apagados para el tema oscuro y para que se lea el relieve. */
+export const PALETA = [
+  '#6f8fb5',
+  '#83a56f',
+  '#c39a62',
+  '#9a80b6',
+  '#6ba5a0',
+  '#b97d72',
+  '#a9a669',
+  '#7f8fb0',
+  '#c08aa0',
+  '#8db394',
 ];
 
 export function colorEstable(id: string, paleta: readonly string[] = PALETA): string {
@@ -23,8 +27,9 @@ export function colorEstable(id: string, paleta: readonly string[] = PALETA): st
 
 export const ESTILO_MAPA: Estilo = {
   fondo: '#060b14',
-  oceano: '#14304f',
-  zona: '#8a93a6',
-  borde: 'rgba(8, 14, 26, 0.85)',
+  oceano: '#173a5e',
+  agua: '#2f6595',
+  zona: '#9aa3b4',
+  borde: 'rgba(10, 16, 28, 0.8)',
   colorPais: (id) => colorEstable(id),
 };

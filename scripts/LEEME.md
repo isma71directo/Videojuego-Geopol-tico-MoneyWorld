@@ -29,6 +29,7 @@ npm run datos             # las dos cosas seguidas
 | `08-creditos.ts`      | Créditos de datos y banderas (sin red)                                                                      | `docs/creditos.md`                                         |
 | `09-fronteras.ts`     | Fronteras del 1 de enero de 2010 a partir de Natural Earth, con las correcciones de `manual/mapa-2010.json` | `public/data/mapa-2010-*.json` (TopoJSON)                  |
 | `11-relieve.ts`       | Relieve sombreado y fondo oceánico reproyectados a Miller, en teselas (necesita `unzip`)                    | `public/av/relieve/`                                       |
+| `12-agua.ts`          | Ríos y lagos de Natural Earth con el zoom al que se muestran                                                | `public/data/mapa-agua.json`                               |
 | `10-construir.ts`     | Une las fuentes, aplica los valores de respaldo y valida                                                    | `public/data/paises-2010.json` y `docs/datos-cobertura.md` |
 
 - `manual/mapa-2010.json` recoge las correcciones del mapa de 2010 (Crimea, Abjasia, Sudán unido…).

@@ -32,6 +32,11 @@ const ANCHO_MAXIMO = 8192;
 const TESELA = 512;
 const NIVELES = [1024, 2048, 4096, 8192].filter((ancho) => ancho <= ANCHO_MAXIMO);
 const CALIDAD_WEBP = 70;
+/**
+ * Refuerzo del sombreado por nivel: al reducir la imagen el relieve se suaviza, así que los
+ * niveles de vista lejana se contrastan más para que el mundo entero no se vea plano.
+ */
+const REFUERZO_NIVEL: Record<number, number> = { 1024: 2.2, 2048: 1.8, 4096: 1.4, 8192: 1.15 };
 
 /** Intensidad del sombreado en tierra y en el mar, y peso de la profundidad del mar. */
 const GANANCIA_TIERRA = 1.6;
@@ -189,6 +194,10 @@ try {
         .toBuffer({ resolveWithObject: true }),
     );
     mkdirSync(ruta(`public/av/relieve/${ancho}`), { recursive: true });
+    const refuerzo = REFUERZO_NIVEL[ancho] ?? 1;
+    for (let i = 0; i < imagen.length; i += 1) {
+      imagen[i] = Math.max(0, Math.min(255, Math.round(128 + (imagen[i]! - 128) * refuerzo)));
+    }
     const columnas = Math.ceil(ancho / TESELA);
     const filas = Math.ceil(alto / TESELA);
     for (let fila = 0; fila < filas; fila += 1) {

@@ -1,7 +1,7 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.3.0",
-  "actualizado": "2026-11-12T01:13:46Z",
+  "actualizado": "2026-11-12T01:17:06Z",
   "faseActiva": "fase-3",
   "ultimaSesion": {
     "fecha": "2026-11-12",
@@ -289,12 +289,12 @@
           "titulo": "Relieve: imagen de relieve sombreado y fondo oceánico de Natural Earth reproyectada a Miller, en teselas por nivel de zoom",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b2ef60e"
         },
         {
           "id": "f3-t4",
           "titulo": "Audiovisual: ríos y lagos, colores de países y bordes, y animación suave del zoom",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         }
