@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { CAMPOS, DERIVADOS } from '../scripts/datos/lib/campos.ts';
 import { jsonCompacto, leerJson } from '../scripts/datos/lib/comun.ts';
 import { construir, mediana, type Entradas } from '../scripts/datos/lib/construir.ts';
+import { superficiesDelMapa } from '../scripts/datos/lib/geometria.ts';
 import type { ArchivoFuente, PaisBase, SeriePorPais } from '../scripts/datos/lib/tipos.ts';
 import { ESTADOS_2010, cobertura, validar } from '../scripts/datos/lib/validar.ts';
 import { esEstimado, type ConjuntoPaises } from '../src/datos/paises.ts';
@@ -138,10 +139,12 @@ describe('paises-2010.json (datos publicados)', () => {
         energia: archivo('owid-energia'),
         emisiones: archivo('owid-emisiones'),
         recursos: archivo('recursos'),
+        superficie: archivo('superficie'),
       },
       territorios: leerJson<{ territorios: Entradas['territorios'] }>(
         'fuentes/datos/territorios.json',
       ).territorios,
+      superficiesMapa: superficiesDelMapa(leerJson('public/data/mapa-2010-detalle.json')),
     };
     expect(`${jsonCompacto(construir(entradas).conjunto, 3)}\n`).toBe(texto);
   });
@@ -215,6 +218,7 @@ function mundo(cambios: {
       energia: fuente({}),
       emisiones: fuente({}),
       recursos: fuente(cambios.recursos ?? {}),
+      superficie: fuente({}),
     },
     territorios: {},
   };

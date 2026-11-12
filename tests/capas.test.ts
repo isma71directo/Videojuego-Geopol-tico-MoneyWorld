@@ -7,11 +7,16 @@ import {
   claseDe,
   colorDe,
   colorearCapa,
+  colorearRegiones,
   COLOR_SIN_DATOS,
   COLOR_SIN_RESERVAS,
   entradasLeyenda,
+  SUPERFICIE_MINIMA_KM2,
+  superficieKm2,
+  valorRegion,
   type CapaDatos,
 } from '../src/map/capas';
+import { etiquetaCapa, opcionesCapas, POLITICA } from '../src/ui/selector-capas';
 import { ESTILO_MAPA } from '../src/map/estilo';
 import {
   distancia,
@@ -77,6 +82,7 @@ describe('capas del mapa (tarea f6-t1)', () => {
     expect(CAPAS.map((c) => c.id)).toEqual([
       'riqueza',
       'poblacion',
+      'densidad',
       'crecimiento',
       'paro',
       'deuda',
@@ -187,6 +193,8 @@ describe('leyenda de las capas (tarea f6-t1)', () => {
     expect(textoValorCapa(capa('poblacion'), 46576897)).toBe('46,6 millones');
     expect(textoValorCapa(capa('petroleo'), 150)).toBe('150 millones de barriles');
     expect(textoValorCapa(capa('carbon'), 0)).toBe('Sin reservas');
+    expect(textoValorCapa(capa('densidad'), 93.2)).toBe('93 hab./km²');
+    expect(textoValorCapa(capa('densidad'), 1.76)).toBe('1,8 hab./km²');
   });
 });
 
@@ -221,5 +229,96 @@ describe('rampas accesibles (tarea f6-t1)', () => {
       const luz = c.colores.map((color) => oklabDeHex(color)[0]);
       for (let i = 1; i < luz.length; i++) expect(luz[i], c.id).toBeGreaterThan(luz[i - 1]!);
     }
+  });
+});
+
+describe('densidad y capas por región (tarea f6-t2)', () => {
+  it('la densidad de cada país es su población entre su superficie de tierra', () => {
+    const densidad = capa('densidad');
+    const espana = conjunto.paises.ESP!;
+    expect(espana.datos.densidad).toBeCloseTo(
+      espana.datos.poblacion! / espana.datos.superficie!,
+      1,
+    );
+    // España: unos 93 habitantes por km² (entre 50 y 100).
+    expect(colorearCapa(densidad, conjunto.paises).colores.get('ESP')).toBe(densidad.colores[3]);
+    // El Vaticano no tiene superficie medible: queda sin dato.
+    expect(colorearCapa(densidad, conjunto.paises).colores.has('VAT')).toBe(false);
+  });
+
+  it('solo riqueza, población y densidad se ven por regiones', () => {
+    expect(CAPAS.filter((c) => c.porRegion).map((c) => c.id)).toEqual([
+      'riqueza',
+      'poblacion',
+      'densidad',
+    ]);
+    expect(colorearRegiones(capa('paro'), {})).toBeUndefined();
+  });
+
+  it('calcula el dato de cada región y lo marca estimado si lo es alguna de sus partes', () => {
+    const datos = { poblacion: 2e6, origenPoblacion: 'DOSE:2010', pib: 4e10, origenPib: 'EST:x' };
+    expect(valorRegion(capa('riqueza'), datos)).toEqual({ valor: 20000, estimado: true });
+    expect(valorRegion(capa('poblacion'), datos)).toEqual({ valor: 2e6, estimado: false });
+    expect(valorRegion(capa('densidad'), datos, 20000)).toEqual({ valor: 100, estimado: false });
+    // Sin superficie fiable, la densidad de la región queda sin dato.
+    expect(valorRegion(capa('densidad'), datos, SUPERFICIE_MINIMA_KM2 / 2)).toBeNull();
+    expect(valorRegion(capa('paro'), datos)).toBeNull();
+    expect(valorRegion(capa('riqueza'), { ...datos, pib: null })).toBeNull();
+  });
+
+  it('colorea las regiones con los datos de 2010', () => {
+    const datos = JSON.parse(readFileSync('public/data/regiones-2010-datos.json', 'utf8')) as {
+      regiones: Record<string, Parameters<typeof valorRegion>[1]>;
+    };
+    const regionRica = Object.entries(datos.regiones).find(
+      ([, d]) => d && d.pib && d.poblacion && d.pib / d.poblacion > 50000,
+    )!;
+    const color = colorearRegiones(capa('riqueza'), datos.regiones as never)!(regionRica[0], {
+      type: 'Feature',
+      properties: {},
+      geometry: { type: 'Point', coordinates: [0, 0] },
+    });
+    expect(color?.color).toBe(capa('riqueza').colores.at(-1));
+  });
+
+  it('mide la superficie de una forma en km²', () => {
+    // Un cuadrado de 1° × 1° en el ecuador mide unos 12.360 km².
+    const cuadrado = {
+      type: 'Feature' as const,
+      properties: {},
+      geometry: {
+        type: 'Polygon' as const,
+        coordinates: [
+          [
+            [0, 0],
+            [0, 1],
+            [1, 1],
+            [1, 0],
+            [0, 0],
+          ],
+        ],
+      },
+    };
+    expect(superficieKm2(cuadrado)).toBeGreaterThan(12300);
+    expect(superficieKm2(cuadrado)).toBeLessThan(12400);
+  });
+});
+
+describe('desplegable de capas (tarea f6-t2)', () => {
+  it('ofrece la capa política y todas las de datos, con rayas entre grupos', () => {
+    const opciones = opcionesCapas();
+    expect(opciones[0]!.id).toBe(POLITICA);
+    expect(opciones.map((o) => o.id).slice(1)).toEqual(CAPAS.map((c) => c.id));
+    expect(opciones.filter((o) => o.separadorAntes).map((o) => o.id)).toEqual([
+      'riqueza',
+      'petroleo',
+    ]);
+  });
+
+  it('nombra cada opción con claridad', () => {
+    expect(etiquetaCapa('politica')).toBe('Política');
+    expect(etiquetaCapa('poblacion')).toBe('Población total');
+    expect(etiquetaCapa('densidad')).toBe('Densidad de población');
+    expect(etiquetaCapa('gas')).toBe('Reservas de gas natural');
   });
 });

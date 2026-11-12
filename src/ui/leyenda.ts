@@ -52,6 +52,10 @@ export function textoValorCapa(capa: CapaDatos, valor: number): string {
       return personas(valor);
     case 'porcentaje':
       return porcentaje(valor);
+    case 'densidad':
+      return t('juego.mapa.capas.densidad.valor', {
+        valor: valor < 10 ? numero.format(Math.round(valor * 10) / 10) : enteros(valor),
+      });
     case 'reservas':
       return valor <= 0
         ? t('juego.mapa.capas.sinReservas')
@@ -99,5 +103,13 @@ export function contenidoLeyenda(
     el('ul', { class: 'leyenda__lista' }, ...lineas),
     extras.length > 0 ? el('ul', { class: 'leyenda__lista leyenda__extras' }, ...extras) : null,
     el('p', { class: 'leyenda__pie' }, t('juego.mapa.capas.datos2010')),
+    capa.porRegion
+      ? el(
+          'p',
+          { class: 'leyenda__pie' },
+          t('juego.mapa.capas.porRegiones'),
+          capa.campo === 'densidad' ? ` ${t('juego.mapa.capas.regionesDensidad')}` : null,
+        )
+      : null,
   ];
 }

@@ -6,7 +6,7 @@
 import type { GrupoCampo } from '../../../src/datos/paises.ts';
 
 /** Archivo intermedio de fuentes/datos/ del que sale un indicador. */
-export type Archivo = 'bm' | 'fmi' | 'energia' | 'emisiones' | 'recursos';
+export type Archivo = 'bm' | 'fmi' | 'energia' | 'emisiones' | 'recursos' | 'superficie';
 
 /** Sigla de cada archivo en el campo «origen». */
 export const SIGLA: Record<Archivo, string> = {
@@ -15,6 +15,7 @@ export const SIGLA: Record<Archivo, string> = {
   energia: 'OWID',
   emisiones: 'OWID',
   recursos: 'OWID',
+  superficie: 'OWID',
 };
 
 export type Agregacion = 'suma' | 'media-poblacion' | 'media-pib';
@@ -27,7 +28,9 @@ export type Respaldo =
   /** Mediana por habitante de su grupo, multiplicada por su población. */
   | 'per-capita'
   /** Se supone 0 (p. ej. un microestado sin producción de carbón). */
-  | 'cero';
+  | 'cero'
+  /** Superficie medida en el mapa (territorios sin dato oficial de superficie). */
+  | 'mapa';
 
 export interface Campo {
   clave: string;
@@ -119,6 +122,17 @@ export const CAMPOS: Campo[] = [
     agregacion: 'suma',
     respaldo: 'ninguno',
     limites: [100, 2e9],
+  },
+  {
+    clave: 'superficie',
+    nombre: 'Superficie terrestre',
+    unidad: 'km²',
+    grupo: 'demografia',
+    fuentes: [{ archivo: 'superficie', indicador: 'superficie' }],
+    anios: [2010, 2009, 2011, 2008, 2012],
+    agregacion: 'suma',
+    respaldo: 'mapa',
+    limites: [0.1, 17_500_000],
   },
   // ── Economía ──
   {
@@ -438,6 +452,15 @@ export const DERIVADOS: (Omit<Campo, 'fuentes' | 'agregacion' | 'respaldo'> & {
     de: ['pib', 'poblacion'],
     calcular: (pib, poblacion) => pib / poblacion,
     limites: [50, 300000],
+  },
+  {
+    clave: 'densidad',
+    nombre: 'Densidad de población',
+    unidad: 'habitantes por km²',
+    grupo: 'demografia',
+    de: ['poblacion', 'superficie'],
+    calcular: (poblacion, superficie) => poblacion / superficie,
+    limites: [0, 30000],
   },
   {
     clave: 'co2PerCapita',

@@ -63,7 +63,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, C para elegir la capa del mapa, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -176,7 +176,8 @@
       "capas": {
         "politica": {
           "nombre": "Política",
-          "unidad": "Un color por país"
+          "unidad": "Un color por país",
+          "opcion": "Política"
         },
         "riqueza": {
           "nombre": "Riqueza",
@@ -184,7 +185,13 @@
         },
         "poblacion": {
           "nombre": "Población",
-          "unidad": "Millones de habitantes"
+          "unidad": "Millones de habitantes",
+          "opcion": "Población total"
+        },
+        "densidad": {
+          "nombre": "Densidad de población",
+          "unidad": "Habitantes por km² de tierra",
+          "valor": "{valor} hab./km²"
         },
         "crecimiento": {
           "nombre": "Crecimiento",
@@ -224,7 +231,14 @@
         "estimado": "Dato estimado",
         "sinDatos": "Sin datos",
         "datos2010": "Datos de 2010",
-        "leyenda": "Leyenda de la capa del mapa"
+        "leyenda": "Leyenda de la capa del mapa",
+        "selector": {
+          "boton": "Capa del mapa: {capa}. Pulsa C para elegir otra",
+          "titulo": "Capa del mapa (C)",
+          "menu": "Capas del mapa"
+        },
+        "porRegiones": "Al acercarte, también por regiones.",
+        "regionesDensidad": "La superficie de las regiones se mide en el mapa."
       }
     }
   },

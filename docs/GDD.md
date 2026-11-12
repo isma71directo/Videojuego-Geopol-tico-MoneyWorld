@@ -146,6 +146,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | UN Comtrade / CEPII BACI / WITS | Comercio bilateral por productos | Comercio. Si no es accesible, se aproxima con un modelo de gravedad. |
 | SIPRI (vía Banco Mundial) | Gasto militar | Ejército |
 | Natural Earth | Fronteras de países y regiones (admin-1), capitales, ciudades | Mapa |
+| FAO, vía Banco Mundial (servida por Our World in Data) | Superficie terrestre de cada país (la API del Banco Mundial no responde desde el entorno de trabajo; es el mismo indicador). Los territorios sin dato usan la superficie medida en el mapa, marcada como estimada | Densidad de población (Fase 6) |
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | ParlGov / Wikipedia | Partidos, escaños, gobiernos y sistemas electorales en 2010 | Política (detallado en unos 40 países principales; plantilla genérica en el resto) |
 | Listas Fortune Global 500 (2010) | Grandes empresas reales | Empresas con nombre (fase posterior) |
@@ -2090,6 +2091,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Mapa más realista (idea-3): relieve con los colores del terreno, profundidad del mar y efecto de volumen sin pasar a 3D, en la Fase 6 (nueva tarea 3). La vista inclinada en 3D real queda para más adelante, como opción | Decisión del jugador (opciones A y C) | 7, 9, 13 |
 | 12/11/2026 | «Ajustes tras la prueba» en `roadmap.json`: lo que el jugador pide cambiar de una fase ya probada sale en una versión de corrección (x.y.Z). Primeros ajustes de la Fase 4 (v0.5.1): más colores, nombres de países y ciudades por tamaño y población de las ciudades con su ficha | Petición del jugador tras probar la v0.5.0 | 10, 11, 12 |
 | 12/11/2026 | Fase 6 concretada con el jugador: terreno de Natural Earth II (A1), capas en un desplegable con la tecla C (sin atajo por capa), población total o densidad, capas de riqueza y población también por región; las rampas van con el sistema de capas, los iconos con el desplegable y el efecto de volumen (C) con la tarea audiovisual | Plan de la Fase 6 aprobado por el jugador | 7, 9, 13 |
+| 12/11/2026 | Densidad de población con la superficie terrestre real (FAO, vía Banco Mundial) en lugar de la medida en el mapa, que falla en los archipiélagos (Feroe, Polinesia, Maldivas); el mapa solo se usa para los territorios sin dato y para las regiones | Mejora de la propuesta aprobada por el jugador (no inventar datos) | 4, 9 |
 
 ---
 

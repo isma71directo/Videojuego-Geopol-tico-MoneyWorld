@@ -14,6 +14,8 @@ export interface Ajustes {
   volumenEfectos: number;
   /** Volumen de la música, de 0 a 1 (la música llegará más adelante). */
   volumenMusica: number;
+  /** Capa del mapa que se ve al abrirlo (Fase 6): «politica», «riqueza», «paro»… */
+  capaMapa: string;
 }
 
 const POR_DEFECTO: Ajustes = {
@@ -21,6 +23,7 @@ const POR_DEFECTO: Ajustes = {
   sonidoSilenciado: false,
   volumenEfectos: 0.7,
   volumenMusica: 0.5,
+  capaMapa: 'politica',
 };
 
 export function leerAjuste<K extends keyof Ajustes>(clave: K): Ajustes[K] {

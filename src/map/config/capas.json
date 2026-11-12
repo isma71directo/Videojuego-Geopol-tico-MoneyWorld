@@ -7,15 +7,27 @@
       "id": "riqueza",
       "campo": "pibPerCapita",
       "formato": "dolaresPorPersona",
+      "porRegion": true,
       "tramos": [1000, 2500, 5000, 10000, 20000, 40000],
       "rampa": { "tipo": "secuencial", "desde": [0.45, 0.11, 285], "hasta": [0.92, 0.17, 110] }
     },
     {
       "id": "poblacion",
+      "grupo": "poblacion",
       "campo": "poblacion",
       "formato": "personas",
+      "porRegion": true,
       "escalaLeyenda": 1000000,
       "tramos": [1000000, 5000000, 10000000, 30000000, 100000000, 300000000],
+      "rampa": { "tipo": "secuencial", "desde": [0.45, 0.13, 330], "hasta": [0.92, 0.08, 420] }
+    },
+    {
+      "id": "densidad",
+      "grupo": "poblacion",
+      "campo": "densidad",
+      "formato": "densidad",
+      "porRegion": true,
+      "tramos": [10, 25, 50, 100, 200, 500],
       "rampa": { "tipo": "secuencial", "desde": [0.45, 0.13, 330], "hasta": [0.92, 0.08, 420] }
     },
     {

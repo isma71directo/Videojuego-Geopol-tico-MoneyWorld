@@ -20,7 +20,7 @@ import {
   zoomRelativo,
   type Camara,
 } from './camara';
-import type { Coloreado } from './capas';
+import { superficieKm2, type ColorRegion, type Coloreado } from './capas';
 import { coloresDelMapa } from './colores';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
 import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
@@ -61,6 +61,8 @@ export interface RegionSenalada {
   id: string;
   pais: string;
   nombre: string;
+  /** Superficie medida en el mapa, en km². */
+  superficie: number;
 }
 
 /** Lo que se puede señalar o seleccionar en el mapa: un país, una región o una ciudad. */
@@ -169,6 +171,10 @@ export class MapaMundo {
   private coloreado: Coloreado | null = null;
   /** Rayado de los datos estimados, con el mismo tamaño en pantalla a cualquier zoom. */
   private rayado: CanvasPattern | null = null;
+  /** Color de cada región en la capa activa (se calcula la primera vez que se dibuja). */
+  private coloresRegion = new Map<string, ColorRegion | null>();
+  /** Superficie de cada región en km² (para la densidad de población por región). */
+  private readonly superficiesRegion = new Map<string, number>();
 
   constructor(
     private readonly contenedor: HTMLElement,
@@ -322,7 +328,7 @@ export class MapaMundo {
     const objetivo: Objetivo | null = ciudad
       ? { tipo: 'ciudad', ciudad }
       : region
-        ? { tipo: 'region', region: { id: region.id, pais: region.pais, nombre: region.nombre } }
+        ? { tipo: 'region', region: this.senalarRegion(region) }
         : id
           ? { tipo: 'pais', id }
           : null;
@@ -355,7 +361,18 @@ export class MapaMundo {
   /** Capa de datos que se pinta (o null para volver a la capa política). */
   set capa(coloreado: Coloreado | null) {
     this.coloreado = coloreado;
+    this.coloresRegion = new Map();
     this.pedirDibujo();
+  }
+
+  /** La región tal como se pasa a la interfaz, con su superficie medida en el mapa. */
+  private senalarRegion(region: RegionMapa): RegionSenalada {
+    let superficie = this.superficiesRegion.get(region.id);
+    if (superficie === undefined) {
+      superficie = superficieKm2(region.forma);
+      this.superficiesRegion.set(region.id, superficie);
+    }
+    return { id: region.id, pais: region.pais, nombre: region.nombre, superficie };
   }
 
   set nombres(nombres: Map<string, string>) {
@@ -405,7 +422,7 @@ export class MapaMundo {
     this.pedirDibujo();
     this.alSeleccionar?.({
       tipo: 'region',
-      region: { id: region.id, pais: region.pais, nombre: region.nombre },
+      region: this.senalarRegion(region),
     });
   }
 
@@ -516,11 +533,8 @@ export class MapaMundo {
     }
   }
 
-  /** Cada región con un tono algo más claro u oscuro que su país (distinto de sus vecinas). */
-  /** Rayado fino en diagonal sobre los países cuyo dato de la capa es una estimación. */
-  private rayarEstimados(nivel: Nivel, paises: Figura[], capa: Coloreado, camara: Camara): void {
-    const rayados = paises.filter((figura) => capa.rayados.has(figura.id));
-    if (rayados.length === 0) return;
+  /** Rayado fino en diagonal (datos estimados), con el mismo tamaño en pantalla a cualquier zoom. */
+  private patronRayado(camara: Camara): CanvasPattern | null {
     if (!this.rayado) {
       const lado = 7;
       const tesela = document.createElement('canvas');
@@ -537,12 +551,57 @@ export class MapaMundo {
       pincel.stroke();
       this.rayado = this.ctx.createPattern(tesela, 'repeat');
     }
-    if (!this.rayado) return;
-    this.rayado.setTransform(new DOMMatrix([1 / camara.k, 0, 0, 1 / camara.k, 0, 0]));
-    this.ctx.fillStyle = this.rayado;
+    this.rayado?.setTransform(new DOMMatrix([1 / camara.k, 0, 0, 1 / camara.k, 0, 0]));
+    return this.rayado;
+  }
+
+  /** Rayado sobre los países cuyo dato de la capa es una estimación. */
+  private rayarEstimados(nivel: Nivel, paises: Figura[], capa: Coloreado, camara: Camara): void {
+    const rayados = paises.filter((figura) => capa.rayados.has(figura.id));
+    const patron = rayados.length > 0 ? this.patronRayado(camara) : null;
+    if (!patron) return;
+    this.ctx.fillStyle = patron;
     for (const figura of rayados) this.ctx.fill(this.camino(nivel, figura));
   }
 
+  /**
+   * En las capas por región (riqueza y población), cada región de los países que se ven con
+   * regiones toma el color de su propio dato, con el mismo fundido con que aparecen sus
+   * fronteras. Las regiones sin dato dejan ver el color de su país.
+   */
+  private pintarRegionesCapa(nivel: Nivel, paises: Figura[], capa: Coloreado, camara: Camara) {
+    const regiones = this.regiones;
+    const colorRegion = capa.region;
+    if (!regiones || !colorRegion) return;
+    const { ctx } = this;
+    for (const figura of paises) {
+      const opacidad = this.paisesConRegiones.get(figura.id);
+      if (!opacidad) continue;
+      ctx.save();
+      ctx.clip(this.camino(nivel, figura));
+      ctx.globalAlpha = opacidad;
+      const rayadas: RegionMapa[] = [];
+      for (const region of regiones.porPais.get(figura.id) ?? []) {
+        let color = this.coloresRegion.get(region.id);
+        if (color === undefined) {
+          color = colorRegion(region.id, region.forma);
+          this.coloresRegion.set(region.id, color);
+        }
+        if (!color) continue;
+        ctx.fillStyle = color.color;
+        ctx.fill(this.caminoRegion(region));
+        if (color.rayado) rayadas.push(region);
+      }
+      const patron = rayadas.length > 0 ? this.patronRayado(camara) : null;
+      if (patron) {
+        ctx.fillStyle = patron;
+        for (const region of rayadas) ctx.fill(this.caminoRegion(region));
+      }
+      ctx.restore();
+    }
+  }
+
+  /** Cada región con un tono algo más claro u oscuro que su país (distinto de sus vecinas). */
   private tintarRegiones(nivel: Nivel, paises: Figura[]): void {
     const capa = this.regiones;
     if (!capa) return;
@@ -1003,8 +1062,10 @@ export class MapaMundo {
         }
         if (capa) this.rayarEstimados(nivel, paises, capa, camara);
         this.calcularPaisesConRegiones(paises, camara);
-        // En las capas de datos, los tonos de las regiones sugerirían diferencias que no hay.
+        // En las capas de datos, los tonos de las regiones sugerirían diferencias que no hay;
+        // las capas por región dan a cada región el color de su propio dato.
         if (!capa) this.tintarRegiones(nivel, paises);
+        else this.pintarRegionesCapa(nivel, paises, capa, camara);
         // Lagos antes del relieve, para que también tengan su sombreado.
         const z = zoomWeb(camara.k);
         const lagos = (this.agua?.lagos ?? []).filter(

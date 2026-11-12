@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T13:20:12Z",
+  "actualizado": "2026-11-12T13:33:05Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "f6-t1 hecha: sistema de capas con leyenda (src/map/capas.ts y config/capas.json), rampas de color en OKLCH comprobadas con los tres tipos de daltonismo (src/map/rampas.ts), rayado de los datos estimados, gris para los países sin dato y el dato de la capa en la ficha. Nueve capas de datos ya definidas (riqueza, población, crecimiento, paro, deuda, inflación, petróleo, gas y carbón); de momento se eligen con «?capa=…» en la dirección.",
-    "siguientePaso": "f6-t2: desplegable de capas con iconos (clic y tecla C), población total o densidad y capas de riqueza y población por región al acercarse.",
+    "resumen": "f6-t2 hecha: desplegable de capas con iconos en la barra superior (clic o tecla C; flechas, Intro y Escape), capa recordada entre visitas, capa de densidad con la superficie terrestre real (FAO vía Banco Mundial, nuevo script 16-superficie.ts) y capas de riqueza, población y densidad también por regiones al acercarse. La ficha de una región muestra el dato de la capa (el de su país en las capas que no son por región).",
+    "siguientePaso": "f6-t3: colores del terreno de Natural Earth II bajo los países, deslizador de intensidad en Ajustes y mar más oscuro donde es más profundo.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -454,13 +454,13 @@
           "titulo": "Sistema genérico de capas con leyenda y rampas de color accesibles (aptas para daltónicos): color de cada país según su dato, con tramos redondos; gris neutro sin dato y rayado fino para los estimados; la ficha muestra el dato de la capa",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/26fc244"
         },
         {
           "id": "f6-t2",
           "titulo": "Capas de política, riqueza (PIB per cápita), población (total o densidad), crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), elegidas en un desplegable con iconos que se abre con un clic o con la tecla C; riqueza y población también por región al acercarse",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

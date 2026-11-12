@@ -26,6 +26,8 @@ export interface Entradas {
   archivos: Record<Archivo, ArchivoFuente>;
   /** Población de los territorios sin datos oficiales (06-territorios.ts). */
   territorios: Record<string, { poblacion: PoblacionTerritorio }>;
+  /** Superficie de cada país medida en el mapa (km²), para los que no tienen dato oficial. */
+  superficiesMapa?: Record<string, number>;
 }
 
 interface Valor {
@@ -47,6 +49,8 @@ export const METODOS_ESTIMACION: Record<string, string> = {
   retroproyeccion:
     'Dato de Wikidata de otro año llevado a 2010 con el crecimiento del país del que forma parte.',
   derivado: 'Calculado a partir de otros campos, alguno de ellos estimado.',
+  'superficie-mapa':
+    'Superficie medida en el mapa (Natural Earth 1:10m): el territorio no tiene dato oficial.',
   'anio-AAAA': 'Dato real de otro año (el indicado) usado como aproximación para 2010.',
 };
 
@@ -253,6 +257,9 @@ export function construir(entradas: Entradas): Resultado {
         }
       } else if (campo.respaldo === 'cero') {
         nuevas[campo.clave] = { valor: 0, origen: 'EST:cero' };
+      } else if (campo.respaldo === 'mapa') {
+        const superficie = entradas.superficiesMapa?.[pais.id];
+        if (superficie) nuevas[campo.clave] = { valor: superficie, origen: 'EST:superficie-mapa' };
       }
     }
     // Mix eléctrico de un país sin dato de generación: reparto como la mediana de su grupo.
