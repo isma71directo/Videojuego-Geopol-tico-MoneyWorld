@@ -3,7 +3,7 @@
 > Generado por `npm run datos:construir`. No se edita a mano.
 
 Procedencia y licencia de todo el material de terceros que usa el juego. Lo que no figura aquí
-(iconos, interfaz, código) está hecho para el proyecto.
+(iconos, sonidos sintetizados, interfaz, código) está hecho para el proyecto.
 
 ## Datos
 

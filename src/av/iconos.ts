@@ -1,5 +1,5 @@
 /**
- * Iconos vectoriales de los indicadores (GDD, sección 7.1). Son SVG propios, dibujados con
+ * Iconos vectoriales de los indicadores y de la interfaz (GDD, sección 7.1). Son SVG propios, dibujados con
  * trazo y `currentColor`, así que toman el color del texto que los rodea.
  */
 import crecimiento from './iconos/crecimiento.svg?raw';
@@ -10,8 +10,21 @@ import inflacion from './iconos/inflacion.svg?raw';
 import paro from './iconos/paro.svg?raw';
 import pib from './iconos/pib.svg?raw';
 import poblacion from './iconos/poblacion.svg?raw';
+import silencio from './iconos/silencio.svg?raw';
+import sonido from './iconos/sonido.svg?raw';
 
-const ICONOS = { poblacion, pib, crecimiento, paro, inflacion, deuda, energia, emisiones };
+const ICONOS = {
+  poblacion,
+  pib,
+  crecimiento,
+  paro,
+  inflacion,
+  deuda,
+  energia,
+  emisiones,
+  sonido,
+  silencio,
+};
 
 export type NombreIcono = keyof typeof ICONOS;
 

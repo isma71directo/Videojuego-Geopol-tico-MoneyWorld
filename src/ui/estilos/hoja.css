@@ -117,3 +117,27 @@
   color: var(--texto-suave);
   font-size: 0.8125rem;
 }
+
+/* Deslizador de volumen (tarea f4-t4). */
+.ajuste--deslizador {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ajuste--deslizador strong {
+  flex: 1 1 100%;
+}
+
+.ajuste.ajuste--deslizador input {
+  flex: 1;
+  width: auto;
+  height: 24px;
+  margin: 0;
+}
+
+.ajuste--deslizador output {
+  min-width: 3.5em;
+  color: var(--texto-suave);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

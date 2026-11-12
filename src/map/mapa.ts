@@ -41,6 +41,7 @@ export const ZOOM_DETALLE = 2.5;
 
 const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
+const DURACION_PULSO_MS = 520;
 const LETRA_CAPITAL = 12;
 const LETRA_CIUDAD = 11;
 const fuenteCiudad = (capital: boolean): string =>
@@ -107,6 +108,9 @@ export class MapaMundo {
   /** País seleccionado con un clic (o null al hacer clic en el mar). */
   alSeleccionar: ((id: string | null) => void) | null = null;
   private senalado: string | null = null;
+  /** Momento en que empezó el pulso de la selección (animación de la tarea f4-t4). */
+  private inicioPulso: number | null = null;
+  private pedirDibujoSiguiente = false;
   /** Última posición del ratón sin pulsar y la cámara con la que se miró qué había debajo. */
   private raton: [number, number] | null = null;
   private camaraSenalada: Camara | null = null;
@@ -260,6 +264,7 @@ export class MapaMundo {
   seleccionar(id: string | null): void {
     if (id === this.seleccionado) return;
     this.seleccionado = id;
+    this.inicioPulso = id && !this.sinMovimiento ? performance.now() : null;
     this.pedirDibujo();
     this.alSeleccionar?.(id);
   }
@@ -274,6 +279,41 @@ export class MapaMundo {
     ctx.strokeStyle = color;
     ctx.lineWidth = 2 / camara.k;
     ctx.stroke();
+  }
+
+  /**
+   * Pulso de la selección: un destello dorado que se abre y se desvanece en medio segundo
+   * (sin él si el dispositivo pide reducir el movimiento).
+   */
+  private pulso(camino: Path2D, figura: Figura, camara: Camara): void {
+    if (this.inicioPulso === null) return;
+    const progreso = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
+    if (progreso >= 1) {
+      this.inicioPulso = null;
+      return;
+    }
+    const resto = 1 - progreso;
+    const { ctx } = this;
+    ctx.fillStyle = `rgba(255, 214, 120, ${0.22 * resto})`;
+    ctx.fill(camino);
+    ctx.strokeStyle = `rgba(255, 214, 120, ${0.6 * resto})`;
+    ctx.lineWidth = (2.2 + 9 * progreso) / camara.k;
+    ctx.stroke(camino);
+    // En los países diminutos, un anillo que crece alrededor de su punto.
+    const [x0, y0, x1, y1] = figura.caja;
+    if (figura.etiqueta && Math.max(x1 - x0, y1 - y0) * camara.k < UMBRAL_PEQUENO_PX) {
+      ctx.beginPath();
+      ctx.arc(
+        figura.etiqueta[0],
+        figura.etiqueta[1],
+        (7 + 14 * progreso) / camara.k,
+        0,
+        Math.PI * 2,
+      );
+      ctx.lineWidth = 2 / camara.k;
+      ctx.stroke();
+    }
+    this.pedirDibujoSiguiente = true;
   }
 
   private resaltar(nivel: Nivel, paises: Figura[], camara: Camara): void {
@@ -297,6 +337,7 @@ export class MapaMundo {
       ctx.lineWidth = 2.2 / camara.k;
       ctx.stroke(camino);
       this.anillo(elegida, camara, '#ffd678');
+      this.pulso(camino, elegida, camara);
     }
   }
 
@@ -566,6 +607,12 @@ export class MapaMundo {
         this.resaltar(nivel, paises, camara);
       }
       this.dibujarRotulos(camara);
+    }
+
+    if (this.pedirDibujoSiguiente) {
+      // Hay una animación en marcha: otro fotograma.
+      this.pedirDibujoSiguiente = false;
+      this.pedirDibujo();
     }
 
     const fin = performance.now();

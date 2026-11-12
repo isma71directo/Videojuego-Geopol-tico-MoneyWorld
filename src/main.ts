@@ -8,6 +8,7 @@ import { el, reemplazar } from './ui/dom';
 import { crearPantallaInicio } from './ui/inicio';
 import { abrirPantallaMapa, type PantallaMapa } from './ui/pantalla-mapa';
 import { botonReportar } from './ui/reportar';
+import { activarSonidoAlInteractuar } from './ui/sonido';
 
 /** Cada cuánto comprueba el juego si se ha publicado una versión nueva. */
 const MINUTOS_REFRESCO = 5;
@@ -71,6 +72,9 @@ mostrarSegunDireccion();
 
 // La Hoja de ruta abierta en otra pestaña avisa al instante de una versión nueva.
 const canal = abrirCanal((mensaje) => mostrarAvisoVersion(mensaje.version));
+
+// El sonido se pone en marcha con el primer clic o la primera tecla (GDD 7.1).
+activarSonidoAlInteractuar();
 
 vigilarRoadmap({
   url: './roadmap.json',

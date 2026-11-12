@@ -7,6 +7,8 @@ import { conectarGestos } from '../map/gestos';
 import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el, reemplazar } from './dom';
 import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
+import { icono } from '../av/iconos';
+import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
 
 function medidorActivo(): boolean {
@@ -26,6 +28,23 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     '← ',
     t('juego.mapa.volver'),
   );
+  // Botón de silencio, siempre a mano (GDD 7.1); también con la tecla M.
+  const botonSonido = el('button', { class: 'boton mapa__sonido', type: 'button' });
+  const pintarBotonSonido = (): void => {
+    const texto = t(sonido.silenciado ? 'juego.mapa.activarSonido' : 'juego.mapa.silenciar');
+    botonSonido.replaceChildren(icono(sonido.silenciado ? 'silencio' : 'sonido'));
+    botonSonido.setAttribute('aria-label', texto);
+    botonSonido.setAttribute('aria-pressed', String(sonido.silenciado));
+    botonSonido.title = texto;
+  };
+  const alternarSonido = (): void => {
+    silenciar(!sonido.silenciado);
+    pintarBotonSonido();
+    reproducir('boton');
+  };
+  pintarBotonSonido();
+  botonSonido.addEventListener('click', alternarSonido);
+  const barra = el('div', { class: 'mapa__barra' }, volver, botonSonido);
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -51,7 +70,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     'section',
     { class: 'mapa' },
     lienzo,
-    volver,
+    barra,
     estado,
     medidor,
     recuadro,
@@ -74,6 +93,10 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
   const alternarMedidor = (evento: KeyboardEvent): void => {
+    if (evento.key === 'm' || evento.key === 'M') {
+      alternarSonido();
+      return;
+    }
     if (evento.key !== 'f' && evento.key !== 'F') return;
     medidor.hidden = !medidor.hidden;
     guardarAjuste('medidorFps', !medidor.hidden);
@@ -106,10 +129,13 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   mapa.alSeleccionar = (id) => {
     const pais = id && conjunto ? conjunto.paises[id] : undefined;
     if (!pais || !conjunto) {
+      if (!panel.hidden) reproducir('deseleccionar');
       panel.hidden = true;
       panel.replaceChildren();
       return;
     }
+    if (panel.hidden) reproducir('abrirPanel');
+    reproducir('seleccionar');
     reemplazar(panel, ...contenidoPanel(pais, conjunto, () => mapa.seleccionar(null)));
     panel.hidden = false;
   };
@@ -151,6 +177,9 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     mapa.destruir();
     elemento.remove();
   };
-  volver.addEventListener('click', alCerrar);
+  volver.addEventListener('click', () => {
+    reproducir('boton');
+    alCerrar();
+  });
   return { elemento, mapa, cerrar };
 }

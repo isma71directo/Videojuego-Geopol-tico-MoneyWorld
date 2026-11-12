@@ -24,12 +24,34 @@
   display: block;
 }
 
-.mapa__volver {
+.mapa__barra {
   position: absolute;
   top: calc(10px + env(safe-area-inset-top));
   left: calc(10px + env(safe-area-inset-left));
+  display: flex;
+  gap: 8px;
+}
+
+.mapa__volver,
+.mapa__sonido {
   background: rgb(18 27 45 / 85%);
   backdrop-filter: blur(6px);
+}
+
+/* Botón de silencio (tarea f4-t4): cuadrado, con el icono del altavoz. */
+.mapa__sonido {
+  width: var(--tactil);
+  padding: 0;
+  justify-content: center;
+}
+
+.mapa__sonido .icono {
+  width: 22px;
+  height: 22px;
+}
+
+.mapa__sonido[aria-pressed='true'] {
+  color: var(--texto-suave);
 }
 
 .mapa__estado {

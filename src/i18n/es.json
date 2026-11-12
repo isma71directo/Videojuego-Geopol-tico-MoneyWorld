@@ -27,10 +27,13 @@
     },
     "ajustes": {
       "titulo": "Ajustes",
-      "vacio": "El resto de ajustes (velocidad, pausa automática, sonido, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
+      "vacio": "El resto de ajustes (velocidad, pausa automática, música, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
       "version": "Versión del juego",
       "medidorFps": "Mostrar el medidor de rendimiento",
-      "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa."
+      "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
+      "silenciar": "Silenciar el sonido",
+      "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
+      "volumenEfectos": "Volumen de los efectos"
     },
     "hoja": {
       "cerrar": "Cerrar"
@@ -60,7 +63,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país para seleccionarlo, Escape para quitar la selección y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país para seleccionarlo, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -89,7 +92,9 @@
         },
         "datos2010": "Datos de 2010",
         "nivelRenta": "Nivel de renta"
-      }
+      },
+      "silenciar": "Silenciar el sonido (M)",
+      "activarSonido": "Activar el sonido (M)"
     }
   },
   "hojaDeRuta": {
@@ -155,7 +160,7 @@
     "cargando": "Cargando el mapa y las banderas…",
     "error": "No se han podido cargar los datos de los países. Comprueba la conexión.",
     "iconos": {
-      "titulo": "Iconos de indicadores",
+      "titulo": "Iconos de indicadores y de la interfaz",
       "nota": "Dibujados para el juego; toman el color del texto que los rodea.",
       "poblacion": "Población",
       "pib": "PIB",
@@ -164,7 +169,9 @@
       "inflacion": "Inflación",
       "deuda": "Deuda",
       "energia": "Energía",
-      "emisiones": "Emisiones"
+      "emisiones": "Emisiones",
+      "sonido": "Sonido",
+      "silencio": "Silencio"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -183,6 +190,19 @@
       "especiales": "Territorios especiales o en disputa",
       "dependientes": "Territorios dependientes",
       "zonas": "Zonas sin país"
+    },
+    "sonidos": {
+      "titulo": "Sonidos de la interfaz",
+      "nota": "Sintetizados con código (Web Audio), sin archivos de audio. Pulsa para escucharlos.",
+      "seleccionar": "Seleccionar un país",
+      "deseleccionar": "Quitar la selección",
+      "abrirPanel": "Abrir un panel",
+      "boton": "Pulsar un botón",
+      "escuchar": "Escuchar: {efecto}"
+    },
+    "paleta": {
+      "titulo": "Paleta del mapa político",
+      "nota": "Ocho tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo y nunca el de un vecino."
     }
   }
 }

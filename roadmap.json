@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.4.1",
-  "actualizado": "2026-11-12T06:34:08Z",
+  "actualizado": "2026-11-12T06:39:02Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 en curso. Hechas f4-t1 (señalar y seleccionar países), f4-t2 (colores sin repetir entre vecinos y nombres de países según el zoom) y f4-t3 (capitales de 2010 y ciudades principales al acercar, con el script 13-ciudades.ts: Natural Earth y Wikidata).",
-    "siguientePaso": "Sonido de interfaz con Web Audio, botón de silencio y animación de la selección (tarea f4-t4); después, cerrar la fase (v0.5.0) y abrir el PR.",
+    "resumen": "Fase 4 en curso: hechas sus cuatro tareas (señalar y seleccionar países, colores y nombres, capitales y ciudades, y sonido con botón de silencio y pulso de selección).",
+    "siguientePaso": "Cerrar la Fase 4: subir a la versión 0.5.0, CHANGELOG, historial y abrir el PR con la Prueba en el PC.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -328,13 +328,13 @@
           "titulo": "Capitales y ciudades principales al acercar",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2ba5faa"
         },
         {
           "id": "f4-t4",
           "titulo": "Audiovisual: motor de sonido (Web Audio), primeros efectos de interfaz, botón de silencio y animación de la selección",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         }
       ]
