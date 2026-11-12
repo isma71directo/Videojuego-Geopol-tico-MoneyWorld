@@ -2,6 +2,8 @@
  * Terreno del mapa (tarea f6-t3, opción A elegida por el jugador): los colores de la tierra
  * (bosques, desiertos, hielo) y el mar más oscuro cuanto más profundo, reproyectados a Miller y
  * cortados en teselas por nivel de zoom. El mapa los dibuja debajo de los colores de los países.
+ * La tierra proyecta además una sombra suave sobre el mar hacia el sureste (tarea f6-t4,
+ * efecto de volumen sin 3D), con la luz de arriba a la izquierda como el relieve.
  *
  * Fuentes (Natural Earth, dominio público):
  *  - «Natural Earth II with Shaded Relief and Water» 1:50m (NE2_50M_SR_W): colores de la tierra.
@@ -40,6 +42,11 @@ const MAR_MEDIO: [number, number, number] = [23, 58, 94];
 const MAR_PROFUNDO: [number, number, number] = [9, 26, 52];
 /** La tierra de Natural Earth II es muy clara para el tema oscuro: se oscurece un poco. */
 const BRILLO_TIERRA = 0.86;
+/** Sombra de la costa sobre el mar: desplazamiento (px del nivel máximo), difuminado y fuerza. */
+const SOMBRA_DX = 9;
+const SOMBRA_DY = 11;
+const SOMBRA_DESENFOQUE = 7;
+const SOMBRA_FUERZA = 0.5;
 
 sharp.cache(false);
 
@@ -133,7 +140,22 @@ try {
     mar[i] = 255 - mascara[i]!;
     soloMar[i] = Math.round((gris[i]! * mar[i]!) / 255);
   }
-  const [marBorroso, pesoMar] = await Promise.all([desenfocar(soloMar, 6), desenfocar(mar, 6)]);
+  // Sombra de la tierra sobre el mar: la máscara desplazada al sureste (dando la vuelta en el
+  // antimeridiano) y difuminada.
+  const desplazada = new Uint8Array(gris.length);
+  for (let y = 0; y < alturaFuente; y += 1) {
+    const yOrigen = y - SOMBRA_DY;
+    if (yOrigen < 0) continue;
+    for (let x = 0; x < ANCHO_MAXIMO; x += 1) {
+      const xOrigen = (x - SOMBRA_DX + ANCHO_MAXIMO) % ANCHO_MAXIMO;
+      desplazada[y * ANCHO_MAXIMO + x] = mascara[yOrigen * ANCHO_MAXIMO + xOrigen]!;
+    }
+  }
+  const [marBorroso, pesoMar, sombra] = await Promise.all([
+    desenfocar(soloMar, 6),
+    desenfocar(mar, 6),
+    desenfocar(desplazada, SOMBRA_DESENFOQUE),
+  ]);
   const brilloMar = new Float32Array(gris.length);
   const muestra: number[] = [];
   for (let i = 0; i < gris.length; i += 1) {
@@ -165,7 +187,7 @@ try {
   const filaFuente = (latitud: number): number => ((90 - latitud) / 180) * alturaFuente;
 
   const salida = Buffer.alloc(ANCHO_MAXIMO * altoSalida * 3);
-  const acumulado = new Float64Array(ANCHO_MAXIMO * 5);
+  const acumulado = new Float64Array(ANCHO_MAXIMO * 6);
   for (let fila = 0; fila < altoSalida; fila += 1) {
     const r0 = filaFuente(latitudDeFila(fila));
     const r1 = filaFuente(latitudDeFila(fila + 1));
@@ -176,21 +198,23 @@ try {
       const base = r * ANCHO_MAXIMO;
       for (let x = 0; x < ANCHO_MAXIMO; x += 1) {
         const i = base + x;
-        acumulado[x * 5] = acumulado[x * 5]! + color[i * 3]!;
-        acumulado[x * 5 + 1] = acumulado[x * 5 + 1]! + color[i * 3 + 1]!;
-        acumulado[x * 5 + 2] = acumulado[x * 5 + 2]! + color[i * 3 + 2]!;
-        acumulado[x * 5 + 3] = acumulado[x * 5 + 3]! + brilloMar[i]!;
-        acumulado[x * 5 + 4] = acumulado[x * 5 + 4]! + mascara[i]!;
+        acumulado[x * 6] = acumulado[x * 6]! + color[i * 3]!;
+        acumulado[x * 6 + 1] = acumulado[x * 6 + 1]! + color[i * 3 + 1]!;
+        acumulado[x * 6 + 2] = acumulado[x * 6 + 2]! + color[i * 3 + 2]!;
+        acumulado[x * 6 + 3] = acumulado[x * 6 + 3]! + brilloMar[i]!;
+        acumulado[x * 6 + 4] = acumulado[x * 6 + 4]! + mascara[i]!;
+        acumulado[x * 6 + 5] = acumulado[x * 6 + 5]! + sombra[i]!;
       }
     }
     const n = hasta - desde + 1;
     const destino = fila * ANCHO_MAXIMO * 3;
     for (let x = 0; x < ANCHO_MAXIMO; x += 1) {
-      const m = acumulado[x * 5 + 4]! / n / 255;
-      const brillo = acumulado[x * 5 + 3]! / n;
+      const m = acumulado[x * 6 + 4]! / n / 255;
+      const brillo = acumulado[x * 6 + 3]! / n;
+      const oscurecer = 1 - SOMBRA_FUERZA * (acumulado[x * 6 + 5]! / n / 255);
       for (let canal = 0; canal < 3; canal += 1) {
-        const enTierra = (acumulado[x * 5 + canal]! / n) * BRILLO_TIERRA;
-        const valor = m * enTierra + (1 - m) * colorMar(brillo, canal);
+        const enTierra = (acumulado[x * 6 + canal]! / n) * BRILLO_TIERRA;
+        const valor = m * enTierra + (1 - m) * colorMar(brillo, canal) * oscurecer;
         salida[destino + x * 3 + canal] = Math.max(0, Math.min(255, Math.round(valor)));
       }
     }
@@ -232,7 +256,7 @@ try {
 
   escribirJson('public/av/terreno/terreno.json', {
     descripcion:
-      'Colores del terreno (Natural Earth II) y mar más oscuro cuanto más profundo, en proyección Miller (60° S a 84° N). Se dibuja debajo de los colores de los países.',
+      'Colores del terreno (Natural Earth II), mar más oscuro cuanto más profundo y sombra de la costa sobre el mar, en proyección Miller (60° S a 84° N). Se dibuja debajo de los colores de los países.',
     fuente: 'Natural Earth: NE2_50M_SR_W, GRAY_50M_SR_OB y ne_50m_land (dominio público)',
     tesela: TESELA,
     formato: 'webp',

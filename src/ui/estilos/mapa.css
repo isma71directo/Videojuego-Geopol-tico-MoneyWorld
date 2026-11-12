@@ -433,3 +433,63 @@
   color: #ffe3a1;
   font-weight: 600;
 }
+
+/* La leyenda nueva entra al cambiar de capa (tarea f6-t4). */
+.leyenda--cambio {
+  animation: leyenda-entrar 260ms ease-out;
+}
+
+@keyframes leyenda-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/*
+ * Brillo suave del agua (tarea f6-t4): dos reflejos de luz muy tenues que se mueven despacio.
+ * Con «trama» (screen) apenas cambian los colores claros de la tierra y sí el mar oscuro. Solo
+ * se anima la posición (transform), que no obliga a repintar el mapa.
+ */
+.mapa__brillo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.11;
+}
+
+.mapa__brillo[hidden] {
+  display: none;
+}
+
+.mapa__brillo::before {
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(38% 30% at 32% 36%, rgb(150 200 255 / 80%), transparent 70%),
+    radial-gradient(30% 24% at 70% 66%, rgb(150 200 255 / 60%), transparent 70%);
+  content: '';
+  animation: mapa-brillo 34s ease-in-out infinite alternate;
+}
+
+@keyframes mapa-brillo {
+  from {
+    transform: translate(-8%, -5%) rotate(-2deg);
+  }
+
+  to {
+    transform: translate(8%, 6%) rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa__brillo {
+    display: none;
+  }
+
+  .leyenda--cambio {
+    animation: none;
+  }
+}

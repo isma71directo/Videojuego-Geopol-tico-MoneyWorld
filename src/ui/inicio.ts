@@ -126,12 +126,30 @@ function deslizadorTerreno(): HTMLElement {
   );
 }
 
+/** Brillo animado del agua (tarea f6-t4). */
+function casillaBrilloAgua(): HTMLElement {
+  const casilla = el('input', { type: 'checkbox', checked: leerAjuste('brilloAgua') });
+  casilla.addEventListener('change', () => guardarAjuste('brilloAgua', casilla.checked));
+  return el(
+    'label',
+    { class: 'ajuste' },
+    casilla,
+    el(
+      'span',
+      {},
+      el('strong', {}, t('juego.ajustes.brilloAgua')),
+      el('small', {}, t('juego.ajustes.brilloAguaAyuda')),
+    ),
+  );
+}
+
 function abrirAjustes(): void {
   abrirHoja(
     t('juego.ajustes.titulo'),
     casillaMedidorFps(),
     ...ajustesSonido(),
     deslizadorTerreno(),
+    casillaBrilloAgua(),
     el('p', { class: 'hoja__nota' }, t('juego.ajustes.vacio')),
     el(
       'p',

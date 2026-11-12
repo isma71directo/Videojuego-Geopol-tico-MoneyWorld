@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T13:41:14Z",
+  "actualizado": "2026-11-12T17:09:04Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "f6-t3 hecha: terreno de Natural Earth II (bosques, desiertos, hielo) bajo los colores de los países y mar más oscuro cuanto más profundo (nuevo script 17-terreno.ts, teselas en public/av/terreno, 1,6 MB). Deslizador «Intensidad del terreno» en Ajustes (70 % por defecto; 0 % deja los colores lisos). En las capas de datos los países son más opacos para que la leyenda se lea bien. El dibujo se mantiene en unos 5–6 ms por fotograma.",
-    "siguientePaso": "f6-t4 (audiovisual): efecto de volumen sin 3D (luz y sombra en los bordes, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua), transición animada y sonido al cambiar de capa, y su muestra en la galería; después, cerrar la Fase 6 (v0.7.0).",
+    "resumen": "f6-t4 hecha: efecto de volumen sin 3D (luz y sombra en los bordes de los países, sombra de la costa sobre el mar en las teselas del terreno, país seleccionado levantado con su sombra y brillo suave del agua, que se apaga con «reducir movimiento» y en Ajustes), cambio de capa con fundido de colores, leyenda animada y sonido propio, y rampas de las capas en la galería. Las cuatro tareas de la Fase 6 están hechas.",
+    "siguientePaso": "Cerrar la Fase 6 en su rama (versión 0.7.0, CHANGELOG e historial) y abrir el PR con la «Prueba en el PC».",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -468,13 +468,13 @@
           "titulo": "Mapa más realista (opción A): colores del terreno de Natural Earth II bajo los colores de los países, con deslizador de intensidad en Ajustes, y el mar más oscuro donde es más profundo",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/20bddb8"
         },
         {
           "id": "f6-t4",
           "titulo": "Audiovisual: efecto de volumen sin 3D (opción C: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua, manteniendo 60 fps), transición animada y sonido suave al cambiar de capa, y su muestra en la galería",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         }
       ]

@@ -1,5 +1,5 @@
 {
-  "descripcion": "Colores del terreno (Natural Earth II) y mar más oscuro cuanto más profundo, en proyección Miller (60° S a 84° N). Se dibuja debajo de los colores de los países.",
+  "descripcion": "Colores del terreno (Natural Earth II), mar más oscuro cuanto más profundo y sombra de la costa sobre el mar, en proyección Miller (60° S a 84° N). Se dibuja debajo de los colores de los países.",
   "fuente": "Natural Earth: NE2_50M_SR_W, GRAY_50M_SR_OB y ne_50m_land (dominio público)",
   "tesela": 512,
   "formato": "webp",

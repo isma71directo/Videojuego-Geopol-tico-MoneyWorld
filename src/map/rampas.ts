@@ -167,3 +167,20 @@ export function rampaDivergente(
     });
   return [...brazo(nBajo, bajo).reverse(), ...brazo(nAlto, alto)];
 }
+
+/** Mezcla dos colores «#rrggbb» (t = 0: el primero; t = 1: el segundo), para los cambios de capa. */
+export function mezclarHex(a: string, b: string, t: number): string {
+  if (t <= 0) return a;
+  if (t >= 1) return b;
+  const na = Number.parseInt(a.slice(1), 16);
+  const nb = Number.parseInt(b.slice(1), 16);
+  let salida = '#';
+  for (const desplazamiento of [16, 8, 0]) {
+    const ca = (na >> desplazamiento) & 255;
+    const cb = (nb >> desplazamiento) & 255;
+    salida += Math.round(ca + (cb - ca) * t)
+      .toString(16)
+      .padStart(2, '0');
+  }
+  return salida;
+}

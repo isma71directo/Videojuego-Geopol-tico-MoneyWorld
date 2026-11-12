@@ -60,7 +60,12 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     (id) => {
       capa = capaPorId(id);
       guardarAjuste('capaMapa', capa?.id ?? POLITICA);
+      reproducir('capa');
       pintarCapa();
+      // La leyenda nueva entra con una animación corta.
+      leyenda.classList.remove('leyenda--cambio');
+      void leyenda.offsetWidth;
+      leyenda.classList.add('leyenda--cambio');
       lienzo.focus({ preventScroll: true });
     },
     () => reproducir('boton'),
@@ -93,10 +98,18 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     'aria-labelledby': 'leyenda-titulo',
     hidden: true,
   });
+  // Brillo suave del agua (tarea f6-t4): una capa CSS animada encima del mapa, que no obliga a
+  // redibujarlo. Con «reducir movimiento» no se ve (mapa.css).
+  const brillo = el('div', {
+    class: 'mapa__brillo',
+    'aria-hidden': 'true',
+    hidden: !leerAjuste('brilloAgua'),
+  });
   const elemento = el(
     'section',
     { class: 'mapa' },
     lienzo,
+    brillo,
     barra,
     estado,
     medidor,

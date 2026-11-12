@@ -35,7 +35,9 @@
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
       "volumenEfectos": "Volumen de los efectos",
       "intensidadTerreno": "Intensidad del terreno",
-      "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos)."
+      "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos).",
+      "brilloAgua": "Brillo animado del agua",
+      "brilloAguaAyuda": "Un reflejo de luz suave que se mueve despacio sobre el mar. No se ve si el sistema pide reducir el movimiento."
     },
     "hoja": {
       "cerrar": "Cerrar"
@@ -320,7 +322,13 @@
       "energia": "Energía",
       "emisiones": "Emisiones",
       "sonido": "Sonido",
-      "silencio": "Silencio"
+      "silencio": "Silencio",
+      "capas": "Capas del mapa",
+      "politica": "Mapa político",
+      "densidad": "Densidad de población",
+      "petroleo": "Petróleo",
+      "gas": "Gas natural",
+      "carbon": "Carbón"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -347,11 +355,16 @@
       "deseleccionar": "Quitar la selección",
       "abrirPanel": "Abrir un panel",
       "boton": "Pulsar un botón",
-      "escuchar": "Escuchar: {efecto}"
+      "escuchar": "Escuchar: {efecto}",
+      "capa": "Cambiar la capa del mapa"
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
       "nota": "Doce tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo, nunca el de un vecino y, en lo posible, tampoco el de los países de su entorno."
+    },
+    "capas": {
+      "titulo": "Capas del mapa",
+      "nota": "Rampas de color de cada capa, creadas con código. Van de oscuro a claro: más claro es más (en crecimiento e inflación, más lejos de cero). Se distinguen también con los tres tipos de daltonismo. En el mapa, el rayado marca los datos estimados."
     }
   }
 }

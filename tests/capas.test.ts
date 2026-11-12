@@ -21,6 +21,7 @@ import { ESTILO_MAPA } from '../src/map/estilo';
 import {
   distancia,
   hexDeOklch,
+  mezclarHex,
   oklabDeHex,
   rampaDivergente,
   rampaSecuencial,
@@ -320,5 +321,14 @@ describe('desplegable de capas (tarea f6-t2)', () => {
     expect(etiquetaCapa('poblacion')).toBe('Población total');
     expect(etiquetaCapa('densidad')).toBe('Densidad de población');
     expect(etiquetaCapa('gas')).toBe('Reservas de gas natural');
+  });
+});
+
+describe('cambio de capa animado (tarea f6-t4)', () => {
+  it('mezcla los colores de una capa y otra', () => {
+    expect(mezclarHex('#000000', '#ffffff', 0)).toBe('#000000');
+    expect(mezclarHex('#000000', '#ffffff', 1)).toBe('#ffffff');
+    expect(mezclarHex('#000000', '#ffffff', 0.5)).toBe('#808080');
+    expect(mezclarHex('#6f8fb5', '#ecee55', 0.25)).toBe('#8ea79d');
   });
 });
