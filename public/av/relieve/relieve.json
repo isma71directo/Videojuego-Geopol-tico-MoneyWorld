@@ -1,0 +1,32 @@
+{
+  "descripcion": "Relieve sombreado y fondo oceánico en proyección Miller (60° S a 84° N), centrado en gris medio para fusionarlo con «luz suave».",
+  "fuente": "Natural Earth: GRAY_50M_SR_OB y ne_50m_land (dominio público)",
+  "tesela": 512,
+  "formato": "webp",
+  "niveles": [
+    {
+      "ancho": 1024,
+      "alto": 521,
+      "columnas": 2,
+      "filas": 2
+    },
+    {
+      "ancho": 2048,
+      "alto": 1043,
+      "columnas": 4,
+      "filas": 3
+    },
+    {
+      "ancho": 4096,
+      "alto": 2085,
+      "columnas": 8,
+      "filas": 5
+    },
+    {
+      "ancho": 8192,
+      "alto": 4170,
+      "columnas": 16,
+      "filas": 9
+    }
+  ]
+}

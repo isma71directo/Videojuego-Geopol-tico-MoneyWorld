@@ -1,16 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.3.0",
-  "actualizado": "2026-11-12T00:46:01Z",
-  "faseActiva": "fase-2",
+  "versionActual": "0.4.0",
+  "actualizado": "2026-11-12T01:17:36Z",
+  "faseActiva": "fase-3",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 2 completa en su rama y versión 0.3.0: territorios dependientes y territorios de hecho jugables (223 países y territorios), fronteras de 2010 corregidas desde Natural Earth, mapa en dos niveles de detalle y vista previa en la galería.",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 2 como hecha y empezar la Fase 3 (Mapa: dibujo y navegación), confirmando antes la proyección Equal Earth.",
+    "resumen": "Fase 3 completa en su rama y versión 0.4.0: mapa del mundo a pantalla completa con la proyección Miller, relieve sombreado, ríos y lagos, navegación con el dedo, el ratón y el teclado, zoom animado, inercia y vuelta continua este-oeste.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 3 como hecha y empezar la Fase 4 (selección de países, nombres y sonido).",
     "pendienteDelJugador": [
-      "Fusionar el PR n.º 8 (Fase 2, v0.3.0)",
-      "Prueba en el móvil: abrir la galería y ver el mapa de 2010 (Sudán unido, Crimea dentro de Ucrania, Groenlandia como territorio dependiente) y las banderas de Hong Kong, Puerto Rico y las Antillas Neerlandesas",
-      "Confirmar la proyección Equal Earth para el mapa del juego (Fase 3)"
+      "Fusionar el PR de la Fase 3 (v0.4.0)",
+      "Prueba en el móvil: abrir «Explorar el mapa», moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, cruzar el Pacífico y ver el relieve y los ríos; con «?fps» al final de la dirección, comprobar que va a unos 60 fps",
+      "Decidir la plataforma: móvil y PC con niveles de calidad (propuesta) o solo PC"
     ]
   },
   "etapas": [
@@ -229,7 +229,7 @@
       "dependeDe": ["fase-1"],
       "hechoCuando": "Todos los países y territorios de los datos tienen su frontera de 2010",
       "pruebaJugador": "Abrir la galería y ver el mapa de 2010: Sudán unido, Crimea dentro de Ucrania y Hong Kong y Puerto Rico como territorios propios",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f2-t1",
@@ -265,40 +265,40 @@
       "id": "fase-3",
       "etapa": "A",
       "version": "0.4.0",
-      "nombre": "Mapa: dibujo y navegación",
-      "objetivo": "Ver el mapa del mundo en el juego y moverse por él con fluidez",
+      "nombre": "Mapa: dibujo, relieve y navegación",
+      "objetivo": "Un mapa del mundo grande y vivo, a pantalla completa, por el que moverse con fluidez",
       "dependeDe": ["fase-2"],
-      "hechoCuando": "El mapa va a unos 60 fps en un móvil de gama media",
-      "pruebaJugador": "Mover y acercar el mapa con los dedos sin tirones",
-      "estado": "pendiente",
+      "hechoCuando": "El mapa llena la pantalla, se ve vivo y va a unos 60 fps en un móvil de gama media",
+      "pruebaJugador": "Abrir el mapa desde la pantalla de inicio, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, cruzar el Pacífico sin chocar con un borde y ver el relieve y los ríos",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f3-t1",
-          "titulo": "Dibujar el mapa en Canvas con la proyección Equal Earth (propuesta de la sección 13; confirmar con el jugador)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Mapa a pantalla completa en Canvas con la proyección Miller, con el nivel de detalle que toque según el zoom, abierto desde la pantalla de inicio",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/79b6670"
         },
         {
           "id": "f3-t2",
-          "titulo": "Zoom con pellizco y rueda, arrastre, límites del mundo y doble toque para acercar",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Navegación: pellizco, rueda, arrastre y doble toque para acercar, límites norte-sur y desplazamiento continuo este-oeste; medidor de fps en modo desarrollo",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/09e53dc"
         },
         {
           "id": "f3-t3",
-          "titulo": "Medidor de rendimiento (fps) en modo desarrollo",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Relieve: imagen de relieve sombreado y fondo oceánico de Natural Earth reproyectada a Miller, en teselas por nivel de zoom",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b2ef60e"
         },
         {
           "id": "f3-t4",
-          "titulo": "Audiovisual: estilo visual del mapa (colores de países, océano y bordes) y animación suave del zoom",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Audiovisual: ríos y lagos, colores de países y bordes, y animación suave del zoom",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f48d704"
         }
       ]
     },
@@ -404,7 +404,7 @@
         },
         {
           "id": "f6-t2",
-          "titulo": "Capas de política, población, PIB per cápita, crecimiento, paro, deuda e inflación, con selector de capas (menú desplegable en móvil)",
+          "titulo": "Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con selector de capas (menú desplegable en móvil)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -4167,6 +4167,17 @@
         "Mapa en dos niveles de detalle, ligero para el móvil, sin perder los microestados",
         "Vista previa del mapa de 2010 en la galería audiovisual y banderas de los territorios nuevos",
         "Hoja de ruta dividida en 108 fases cortas, una versión cada una"
+      ]
+    },
+    {
+      "version": "0.4.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Mapa del mundo de 2010 a pantalla completa, con la proyección Miller: «Explorar el mapa» en la pantalla de inicio",
+        "Navegación con el dedo (arrastrar, pellizcar, doble toque), el ratón (rueda, doble clic) y el teclado; el mapa da la vuelta al cruzar el Pacífico",
+        "Mapa vivo: relieve sombreado, fondo oceánico, ríos y lagos, con más detalle al acercarse",
+        "Zoom animado e inercia al soltar el mapa",
+        "Medidor de rendimiento añadiendo «?fps» a la dirección"
       ]
     }
   ]

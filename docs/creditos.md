@@ -14,6 +14,7 @@ Procedencia y licencia de todo el material de terceros que usa el juego. Lo que 
 | [Our World in Data](https://ourworldindata.org) | Energía, emisiones y recursos (datos de Ember, Energy Institute, EIA, Global Carbon Project, USGS y BGS) | CC BY 4.0 para lo elaborado por OWID; los datos de terceros, según las condiciones de cada productor |
 | [Wikidata](https://www.wikidata.org) | Capitales de 2010 y población de territorios sin datos oficiales | CC0 |
 | [CLDR](https://cldr.unicode.org) | Nombres de los países en español | Licencia Unicode |
+| [Natural Earth](https://www.naturalearthdata.com) | Fronteras (1:10m), tierra firme, ríos, lagos y relieve sombreado con fondo oceánico (1:50m) | Dominio público |
 
 El detalle de cada dato (fuente y año) está en `public/data/paises-2010.json` y en el
 [informe de cobertura](datos-cobertura.md).
