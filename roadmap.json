@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.1",
-  "actualizado": "2026-11-12T07:41:03Z",
+  "actualizado": "2026-11-12T07:46:54Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "El jugador ha probado la v0.5.1 y la da por buena. Pide corregir los nombres de ciudades mal traducidos (ajuste f4-a5, v0.5.2) y un mapa más bonito, realista y con más sensación de 3D (idea-3, por decidir con el jugador).",
-    "siguientePaso": "Corregir los nombres de las ciudades (f4-a5) y publicar la v0.5.2; después, presentar el plan de la Fase 5 (regiones del mundo) y las opciones para la idea-3.",
+    "resumen": "Nombres de ciudades corregidos (ajuste f4-a5): traducciones erróneas, nombres de 2010 de ciudades renombradas después, transliteraciones raras y nombres oficiales largos; dos lugares erróneos de Natural Earth quitados.",
+    "siguientePaso": "Publicar la v0.5.2; después, presentar el plan de la Fase 5 (regiones del mundo) y las opciones para la idea-3 (mapa más realista).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -380,7 +380,7 @@
           "titulo": "Corregir los nombres de ciudades mal traducidos o mal identificados (p. ej. «Señorío de Tlaxcala» en lugar de Tlaxcala)",
           "version": "0.5.2",
           "origen": "Mensaje del jugador tras probar la v0.5.1",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         }

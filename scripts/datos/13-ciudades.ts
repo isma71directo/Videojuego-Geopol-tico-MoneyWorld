@@ -13,6 +13,9 @@
  *         coinciden por nombre se resuelven en scripts/datos/manual/ciudades-2010.json; si queda
  *         alguna sin resolver, el script falla. Las capitales que no están en Natural Earth
  *         (Road Town, Yaren…) toman su posición y su nombre de Wikidata (CC0).
+ * Nombres: el español de Natural Earth (NAME_ES), con las correcciones de la tabla manual
+ *         (traducciones erróneas, nombres de 2010 de las ciudades renombradas después,
+ *         transliteraciones raras). Los lugares erróneos de Natural Earth se excluyen ahí también.
  * Población: de Wikidata (CC0, propiedad P1082, población del municipio), la de 2010 o, si no
  *         hay, la de la fecha más cercana; con su año en «origenPoblacion» («WD:2010»). Si
  *         Wikidata no tiene ninguna con fecha, la de 2010 de la ONU (aglomeración urbana) que
@@ -47,6 +50,10 @@ interface Manual {
   capitalesNE: Record<string, string>;
   /** Código del país → identificadores de Wikidata de su capital (o capitales). */
   capitalesWikidata: Record<string, string[] | string>;
+  /** «país|nombre en Natural Earth» → nombre corregido (ajuste f4-a5). */
+  nombres: Record<string, string>;
+  /** «país|nombre en Natural Earth» → motivo por el que el lugar no se usa (ajuste f4-a5). */
+  excluir: Record<string, string>;
 }
 type Lugar = Feature<Point, Record<string, string | number | null>>;
 
@@ -69,6 +76,10 @@ const sinNotas = <T>(tabla: Record<string, T | string>): Map<string, T> =>
   new Map(Object.entries(tabla).filter(([clave]) => !clave.startsWith('_')) as [string, T][]);
 const capitalesNE = sinNotas<string>(manual.capitalesNE);
 const capitalesWikidata = sinNotas<string[]>(manual.capitalesWikidata);
+const nombresCorregidos = sinNotas<string>(manual.nombres);
+const excluidos = sinNotas<string>(manual.excluir);
+/** Entradas de la tabla manual que se han usado: si sobra alguna, la tabla está desfasada. */
+const usadas = new Set<string>();
 const paises = Object.fromEntries(leerPaises().map((pais) => [pais.id, pais]));
 const topo = leerJson<Topology>('public/data/mapa-2010-detalle.json');
 const formas = (
@@ -229,6 +240,14 @@ for (const [paisId, lista] of capitalesWikidata) {
   }
 }
 
+/** Nombre corregido (si está en la tabla manual) o el de Natural Earth. */
+function corregirNombre(clave: string, nombreNE: string): string {
+  const corregido = nombresCorregidos.get(clave);
+  if (corregido === undefined) return nombreNE;
+  usadas.add(clave);
+  return corregido;
+}
+
 const esCapital = new Set(capitales.values());
 const pendientes: Pendiente[] = [...deWikidata];
 const capitalDe = new Map([...capitales].map(([paisId, lugar]) => [lugar, paisId]));
@@ -239,6 +258,13 @@ const ordenados = [...conPais].sort(
 for (const { lugar, lon, lat, pais } of ordenados) {
   const capital = esCapital.has(lugar);
   const rango = Number(lugar.properties.RANK_MAX);
+  // Nombre en español de Natural Earth, corregido si está en la tabla manual.
+  const nombreNE = texto(lugar, 'NAME_ES') || texto(lugar, 'NAME');
+  const clave = `${pais}|${nombreNE}`;
+  if (excluidos.has(clave)) {
+    usadas.add(clave);
+    continue;
+  }
   if (!capital) {
     if (rango < RANGO_MINIMO) continue;
     const cuenta = porPais.get(pais) ?? 0;
@@ -249,9 +275,7 @@ for (const { lugar, lon, lat, pais } of ordenados) {
   pendientes.push({
     ciudad: {
       // Las capitales llevan el mismo nombre que en la ficha del país.
-      nombre: paisCapital
-        ? paises[paisCapital]!.capital
-        : texto(lugar, 'NAME_ES') || texto(lugar, 'NAME'),
+      nombre: paisCapital ? paises[paisCapital]!.capital : corregirNombre(clave, nombreNE),
       pais: paisCapital ?? pais,
       lon: Math.round(lon * 1000) / 1000,
       lat: Math.round(lat * 1000) / 1000,
@@ -263,6 +287,14 @@ for (const { lugar, lon, lat, pais } of ordenados) {
     qid: texto(lugar, 'WIKIDATAID'),
     onu2010: Number(lugar.properties.POP2010 ?? 0),
   });
+}
+
+const sobran = [...nombresCorregidos.keys(), ...excluidos.keys()].filter((c) => !usadas.has(c));
+if (sobran.length > 0) {
+  console.error(
+    `Entradas de manual/ciudades-2010.json que no coinciden con ninguna ciudad:\n  ${sobran.join('\n  ')}`,
+  );
+  process.exit(1);
 }
 
 // Población de Wikidata: todas las declaraciones de P1082 con su fecha, por lotes.
