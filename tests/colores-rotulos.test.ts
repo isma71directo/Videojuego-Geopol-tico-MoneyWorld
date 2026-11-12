@@ -2,7 +2,9 @@
 import { readFileSync } from 'node:fs';
 import { neighbors } from 'topojson-client';
 import { describe, expect, it } from 'vitest';
-import { asignarColores, coloresDelMapa, indiceEstable } from '../src/map/colores';
+import type { MultiPolygon, Polygon } from 'geojson';
+import { feature } from 'topojson-client';
+import { asignarColores, coloresDelMapa, indiceEstable, paisesCercanos } from '../src/map/colores';
 import { PALETA } from '../src/map/estilo';
 import type { TopologiaMapa } from '../src/map/geometria';
 import {
@@ -46,6 +48,43 @@ describe('colores de país', () => {
     const mundo = coloresDelMapa(topologia('mundo'), PALETA);
     expect(coloresDelMapa(topologia('mundo'), PALETA)).toEqual(mundo);
     expect(coloresDelMapa(topologia('detalle'), PALETA)).toEqual(mundo);
+  });
+
+  it('en el entorno de un país (él y sus vecinos) ningún color se repite tres veces', () => {
+    const topo = topologia('mundo');
+    const geometrias = topo.objects.paises.geometries;
+    const colores = coloresDelMapa(topo, PALETA);
+    const vecinos = neighbors(geometrias);
+    geometrias.forEach((g, i) => {
+      const cuenta = new Map<string, number>();
+      for (const k of [i, ...vecinos[i]!]) {
+        const color = colores.get(String(geometrias[k]!.id))!;
+        cuenta.set(color, (cuenta.get(color) ?? 0) + 1);
+      }
+      expect(Math.max(...cuenta.values()), String(g.id)).toBeLessThan(3);
+    });
+  });
+
+  it('los países cercanos sin frontera (islas, estrechos) tampoco repiten color', () => {
+    const topo = topologia('mundo');
+    const colores = coloresDelMapa(topo, PALETA);
+    const ids = topo.objects.paises.geometries.map((g) => String(g.id));
+    const formas = feature(topo, topo.objects.paises).features.map(
+      (f) => f.geometry as Polygon | MultiPolygon,
+    );
+    const cercanos = paisesCercanos(formas);
+    const iguales = cercanos.flatMap((lista, i) =>
+      lista.filter((j) => j > i && colores.get(ids[i]!) === colores.get(ids[j]!)),
+    );
+    expect(iguales.length).toBeLessThanOrEqual(3);
+    for (const [a, b] of [
+      ['GBR', 'FRA'],
+      ['CUB', 'JAM'],
+      ['JPN', 'KOR'],
+      ['ESP', 'MAR'],
+    ] as const) {
+      expect(colores.get(a), `${a} y ${b}`).not.toBe(colores.get(b));
+    }
   });
 
   it('se usan todos los colores de la paleta de forma equilibrada', () => {

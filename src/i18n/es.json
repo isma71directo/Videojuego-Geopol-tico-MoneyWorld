@@ -204,7 +204,7 @@
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
-      "nota": "Ocho tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo y nunca el de un vecino."
+      "nota": "Doce tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo, nunca el de un vecino y, en lo posible, tampoco el de los países de su entorno."
     }
   }
 }
