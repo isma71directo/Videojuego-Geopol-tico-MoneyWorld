@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.4.1",
-  "actualizado": "2026-11-12T06:17:02Z",
+  "actualizado": "2026-11-12T06:22:59Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 en curso. Hecha la tarea f4-t1: al pasar el ratón se resalta el país y aparece su ficha (bandera, capital, población y PIB por habitante); con un clic se selecciona y se abre el panel de la derecha; Escape o clic en el mar quitan la selección; los microestados se señalan por su punto.",
-    "siguientePaso": "Colores de país distintos de los de sus vecinos y nombres según el zoom (tarea f4-t2).",
+    "resumen": "Fase 4 en curso. Hechas f4-t1 (señalar y seleccionar países con el ratón, ficha y panel) y f4-t2 (colores sin repetir entre vecinos, paleta de 8 tonos y nombres de países según el zoom, sin pisarse; los países pequeños llevan el nombre debajo al acercarse).",
+    "siguientePaso": "Capitales y ciudades principales al acercar (tarea f4-t3): script con Natural Earth (ciudades pobladas) y capitales de 2010.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -314,13 +314,13 @@
           "titulo": "Selección de país con clic y resaltado al pasar el ratón, con su nombre y sus datos clave (también los países pequeños, por su punto de etiqueta)",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7e0ae83"
         },
         {
           "id": "f4-t2",
           "titulo": "Colores por país estables y distintos de los de sus vecinos, y nombres de países que aparecen según el zoom",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

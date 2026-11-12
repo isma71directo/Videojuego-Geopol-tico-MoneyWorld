@@ -127,6 +127,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     })
     .then((datos) => {
       conjunto = datos;
+      mapa.nombres = new Map(Object.values(datos.paises).map((pais) => [pais.id, pais.nombre]));
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.

@@ -20,13 +20,17 @@ import {
   zoomRelativo,
   type Camara,
 } from './camara';
+import { coloresDelMapa } from './colores';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
 import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
 import { paisEnPunto, UMBRAL_PEQUENO_PX } from './seleccion';
 import { Relieve } from './relieve';
+import { colocarRotulos, type CandidatoRotulo } from './rotulos';
 
 /** A partir de este zoom (relativo al mundo entero) se usa el nivel de detalle. */
 export const ZOOM_DETALLE = 2.5;
+
+const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 export interface Estilo {
   fondo: string;
@@ -35,8 +39,8 @@ export interface Estilo {
   agua: string;
   zona: string;
   borde: string;
-  /** Color de relleno de cada país o territorio. */
-  colorPais(id: string): string;
+  /** Colores de país; colores.ts reparte uno a cada país sin repetir entre vecinos. */
+  paleta: readonly string[];
 }
 
 interface Nivel {
@@ -62,6 +66,10 @@ export class MapaMundo {
   private camara: Camara;
   private dpr = 1;
   private mundo: Nivel | null = null;
+  private colores = new Map<string, string>();
+  /** Nombres de los países (los pone la pantalla del mapa al cargar los datos). */
+  private nombresPaises = new Map<string, string>();
+  private readonly anchosTexto = new Map<string, number>();
   private relieve: Relieve | null = null;
   private agua: CapaAgua | null = null;
   private readonly caminosAgua = new Map<ElementoAgua, Path2D>();
@@ -124,7 +132,9 @@ export class MapaMundo {
         })
         .catch(() => undefined);
     }
-    this.mundo = crearNivel(await this.descargar(this.urls.mundo));
+    const topo = await this.descargar(this.urls.mundo);
+    this.colores = coloresDelMapa(topo, this.estilo.paleta);
+    this.mundo = crearNivel(topo);
     this.pedirDibujo();
   }
 
@@ -202,6 +212,11 @@ export class MapaMundo {
   alTocar = (x: number, y: number): void => {
     this.seleccionar(this.paisEn(x, y));
   };
+
+  set nombres(nombres: Map<string, string>) {
+    this.nombresPaises = nombres;
+    this.pedirDibujo();
+  }
 
   get paisSeleccionado(): string | null {
     return this.seleccionado;
@@ -330,6 +345,56 @@ export class MapaMundo {
     return camino;
   }
 
+  /** Nombres de los países en pantalla, sin pisarse (tarea f4-t2). */
+  private dibujarRotulos(camara: Camara): void {
+    if (!this.mundo || this.nombresPaises.size === 0) return;
+    const { ctx } = this;
+    const candidatos: CandidatoRotulo[] = [];
+    for (const desplazamiento of copiasVisibles(camara)) {
+      for (const figura of this.mundo.figuras.paises) {
+        const texto = this.nombresPaises.get(figura.id);
+        if (!texto || !figura.etiqueta) continue;
+        candidatos.push({
+          id: figura.id,
+          texto,
+          x: (figura.etiqueta[0] + desplazamiento - camara.cx) * camara.k + camara.ancho / 2,
+          y: (figura.etiqueta[1] - camara.cy) * camara.k + camara.alto / 2,
+          tamanoPais: Math.sqrt(figura.area) * camara.k,
+        });
+      }
+    }
+    const fuente = (tamano: number): string => `600 ${tamano}px ${FUENTE_ROTULOS}`;
+    ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+    ctx.letterSpacing = '0.05em';
+    const medir = (texto: string, tamano: number): number => {
+      const clave = `${tamano}|${texto}`;
+      let anchoTexto = this.anchosTexto.get(clave);
+      if (anchoTexto === undefined) {
+        ctx.font = fuente(tamano);
+        anchoTexto = ctx.measureText(texto).width;
+        this.anchosTexto.set(clave, anchoTexto);
+      }
+      return anchoTexto;
+    };
+    const rotulos = colocarRotulos(candidatos, medir, camara.ancho, camara.alto);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = 'rgba(6, 12, 24, 0.7)';
+    for (const rotulo of rotulos) {
+      ctx.font = fuente(rotulo.tamano);
+      ctx.lineWidth = Math.max(2.5, rotulo.tamano / 5);
+      ctx.fillStyle = rotulo.id === this.seleccionado ? '#ffe3a1' : 'rgba(255, 255, 255, 0.92)';
+      const salto = rotulo.tamano * 1.15;
+      const y0 = rotulo.y - ((rotulo.lineas.length - 1) * salto) / 2;
+      rotulo.lineas.forEach((linea, i) => {
+        ctx.strokeText(linea, rotulo.x, y0 + i * salto);
+        ctx.fillText(linea, rotulo.x, y0 + i * salto);
+      });
+    }
+    ctx.letterSpacing = '0px';
+  }
+
   private dibujar(): void {
     const inicio = performance.now();
     const { ctx, camara, dpr, estilo } = this;
@@ -360,7 +425,7 @@ export class MapaMundo {
         ctx.fillStyle = estilo.zona;
         for (const figura of zonas) ctx.fill(this.camino(nivel, figura));
         for (const figura of paises) {
-          ctx.fillStyle = estilo.colorPais(figura.id);
+          ctx.fillStyle = this.colores.get(figura.id) ?? estilo.paleta[0]!;
           ctx.fill(this.camino(nivel, figura));
         }
         // Lagos antes del relieve, para que también tengan su sombreado.
@@ -392,6 +457,7 @@ export class MapaMundo {
         for (const figura of [...zonas, ...paises]) ctx.stroke(this.camino(nivel, figura));
         this.resaltar(nivel, paises, camara);
       }
+      this.dibujarRotulos(camara);
     }
 
     const fin = performance.now();
