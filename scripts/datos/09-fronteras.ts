@@ -12,16 +12,19 @@
  *  - Territorios dependientes sin datos (Malvinas, Anguila…) dentro de su país soberano.
  *  - Zonas sin país (Antártida, Bir Tawil…) aparte, como zonas neutras.
  *
- * Salida: public/data/mapa-2010-detalle.json (TopoJSON con los objetos «paises» y «zonas»)
+ * Salida: public/data/mapa-2010-mundo.json y mapa-2010-detalle.json (TopoJSON con los objetos
+ *         «paises» y «zonas»), uno por nivel de detalle.
  * Uso:    node scripts/datos/09-fronteras.ts
  */
 import type { Feature, FeatureCollection, MultiPolygon, Polygon } from 'geojson';
 import polygonClipping from 'polygon-clipping';
-import { quantize } from 'topojson-client';
+import { geoArea } from 'd3-geo';
+import { feature, quantize } from 'topojson-client';
 import { topology } from 'topojson-server';
 import { presimplify, quantile, simplify, sphericalTriangleArea } from 'topojson-simplify';
 import { descargarJson, escribirTexto, leerJson } from './lib/comun.ts';
 import {
+  areaConSigno,
   comoMultiPoligono,
   longitudMaxima,
   orientarParaD3,
@@ -181,8 +184,59 @@ const paises: Feature<MultiPolygon, { etiqueta: [number, number] }>[] = [...geom
 for (const zona of zonas)
   zona.geometry.coordinates = orientarParaD3(zona.geometry.coordinates as MultiPoligono);
 
+/**
+ * Por debajo de esta área (grados², plana) el polígono principal de un país se protege de la
+ * simplificación: así los microestados (Vaticano, Mónaco, San Marino…) y los países isleños
+ * pequeños no desaparecen del mapa.
+ */
+const AREA_PROTEGIDA = 2;
+
+type ArcoConPeso = number[][];
+type GeometriaTopo = { type: string; arcs?: number[][][] | number[][]; id?: string | number };
+
+/** Coordenadas de un anillo de TopoJSON a partir de sus arcos (un índice negativo va al revés). */
+function anilloDeArcos(arcos: ArcoConPeso[], indices: number[]): number[][] {
+  const puntos: number[][] = [];
+  for (const indice of indices) {
+    const arco = indice < 0 ? [...arcos[~indice]!].reverse() : arcos[indice]!;
+    puntos.push(...(puntos.length > 0 ? arco.slice(1) : arco));
+  }
+  return puntos;
+}
+
+/**
+ * Marca con peso infinito los puntos de los países pequeños para que la simplificación no los
+ * borre: el polígono principal si es pequeño y, con `todo`, todos los polígonos de los países
+ * pequeños (la península de Macao, las islas de Malta…). `todo` solo sirve con una rejilla fina:
+ * con una gruesa, los atolos diminutos se invierten al cuantizar.
+ */
+function protegerPequenos(topo: Parameters<typeof presimplify>[0], todo: boolean): void {
+  const arcos = topo.arcs as unknown as ArcoConPeso[];
+  const paisesTopo = (topo.objects.paises as unknown as { geometries: GeometriaTopo[] }).geometries;
+  const proteger = (anillo: number[]): void => {
+    for (const indice of anillo) {
+      for (const punto of arcos[indice < 0 ? ~indice : indice]!) punto[2] = Infinity;
+    }
+  };
+  for (const geometria of paisesTopo) {
+    const poligonos = (
+      geometria.type === 'Polygon' ? [geometria.arcs] : geometria.arcs
+    ) as number[][][];
+    const areas = poligonos.map((poligono) =>
+      Math.abs(areaConSigno(anilloDeArcos(arcos, poligono[0]!))),
+    );
+    const total = areas.reduce((suma, area) => suma + area, 0);
+    if (todo && total < AREA_PROTEGIDA) {
+      for (const poligono of poligonos) proteger(poligono[0]!);
+    } else {
+      const mayor = areas.indexOf(Math.max(...areas));
+      if (areas[mayor]! < AREA_PROTEGIDA) proteger(poligonos[mayor]![0]!);
+    }
+  }
+}
+
 /** Construye el TopoJSON: fronteras compartidas una sola vez, simplificadas y cuantizadas. */
-function mapa(proporcionPuntos: number, cuantizacion: number): string {
+function mapa(proporcionPuntos: number, cuantizacion: number, protegerTodo: boolean): string {
   const colecciones: Record<string, FeatureCollection> = {
     paises: { type: 'FeatureCollection', features: paises },
     zonas: { type: 'FeatureCollection', features: zonas },
@@ -193,13 +247,46 @@ function mapa(proporcionPuntos: number, cuantizacion: number): string {
     sphericalTriangleArea,
   );
   // «quantile» ordena los pesos de mayor a menor: devuelve el peso que conserva esa proporción.
-  const simplificado = simplify(topo, quantile(topo, proporcionPuntos));
+  const umbral = quantile(topo, proporcionPuntos);
+  protegerPequenos(topo, protegerTodo);
+  const simplificado = simplify(topo, umbral);
   return JSON.stringify(quantize(simplificado, cuantizacion));
 }
 
-const detalle = mapa(0.2, 1e5);
-escribirTexto('public/data/mapa-2010-detalle.json', `${detalle}\n`);
+/**
+ * Niveles de detalle (tarea f2-t3):
+ *  - «mundo»: para ver el mundo entero en el móvil; ligero. Los microestados más pequeños
+ *    (Vaticano) quedan por debajo de la rejilla: se tocan por su punto de etiqueta.
+ *  - «detalle»: para acercarse a un país o una región; rejilla fina para que no se pierda
+ *    ningún país.
+ */
+const NIVELES = [
+  { nombre: 'mundo', proporcionPuntos: 0.03, cuantizacion: 3e4, protegerTodo: false },
+  { nombre: 'detalle', proporcionPuntos: 0.12, cuantizacion: 1e6, protegerTodo: true },
+];
+
+/**
+ * Comprueba que ninguna geometría ha quedado invertida al simplificar o cuantizar: d3-geo la
+ * dibujaría cubriendo el resto del mundo.
+ */
+function comprobarOrientacion(texto: string, nivel: string): void {
+  const topo = JSON.parse(texto) as Parameters<typeof feature>[0];
+  for (const objeto of ['paises', 'zonas']) {
+    const coleccion = feature(topo, topo.objects[objeto]!) as unknown as FeatureCollection;
+    for (const f of coleccion.features) {
+      if (geoArea(f) > 2 * Math.PI) throw new Error(`${f.id} queda invertido en el nivel ${nivel}`);
+    }
+  }
+}
+
+const tamanos: string[] = [];
+for (const nivel of NIVELES) {
+  const texto = mapa(nivel.proporcionPuntos, nivel.cuantizacion, nivel.protegerTodo);
+  comprobarOrientacion(texto, nivel.nombre);
+  escribirTexto(`public/data/mapa-2010-${nivel.nombre}.json`, `${texto}\n`);
+  tamanos.push(`${nivel.nombre} ${(texto.length / 1024).toFixed(0)} KB`);
+}
 console.log(
   `Mapa de 2010: ${paises.length} países y territorios y ${zonas.length} zonas neutras · ` +
-    `detalle ${(detalle.length / 1024).toFixed(0)} KB (Natural Earth ${VERSION_NE}).`,
+    `${tamanos.join(' · ')} (Natural Earth ${VERSION_NE}).`,
 );

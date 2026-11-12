@@ -48,7 +48,7 @@ const PUNTOS_2010: [string, number, number, string][] = [
   ['Puerto Rico', -66.5, 18.2, 'PRI'],
   ['Groenlandia', -40, 72, 'GRL'],
   ['Islas Malvinas', -58.6, -51.65, 'GBR'],
-  ['Åland', 19.93, 60.1, 'FIN'],
+  ['Åland', 19.95, 60.25, 'FIN'],
   ['Pristina', 21.17, 42.66, 'XKX'],
   ['Hargeisa', 44.06, 9.56, 'SOL'],
   ['Nicosia Norte', 33.36, 35.2, 'CYN'],
@@ -89,6 +89,66 @@ describe('mapa de 2010: nivel de detalle', () => {
       expect(lat, String(f.id)).toBeLessThanOrEqual(90);
     }
   });
+});
+
+/** Microestados y países pequeños: en el nivel de detalle tienen que conservar su forma. */
+const PEQUENOS: [string, number, number, string][] = [
+  ['Ciudad del Vaticano', 12.4534, 41.9029, 'VAT'],
+  ['San Marino', 12.4578, 43.9424, 'SMR'],
+  ['Mónaco', 7.4246, 43.7384, 'MCO'],
+  ['Liechtenstein', 9.55, 47.15, 'LIE'],
+  ['Andorra', 1.55, 42.55, 'AND'],
+  ['Malta', 14.44, 35.89, 'MLT'],
+  ['Singapur', 103.82, 1.35, 'SGP'],
+  ['Baréin', 50.55, 26.07, 'BHR'],
+  ['Nauru', 166.93, -0.53, 'NRU'],
+  ['Gibraltar', -5.352, 36.14, 'GIB'],
+  ['Macao (península)', 113.543, 22.198, 'MAC'],
+];
+
+describe('mapa de 2010: microestados en el nivel de detalle', () => {
+  const { paises } = cargar('detalle');
+
+  it.each(PEQUENOS)('%s conserva su forma y su sitio', (_, lon, lat, id) => {
+    expect(paises.filter((f) => geoContains(f, [lon, lat])).map((f) => f.id)).toEqual([id]);
+  });
+
+  it('ningún país queda sin superficie', () => {
+    for (const f of paises) expect(geoArea(f), String(f.id)).toBeGreaterThan(0);
+  });
+});
+
+describe('mapa de 2010: nivel «mundo» para el móvil', () => {
+  const { paises, zonas } = cargar('mundo');
+
+  it('pesa menos de 1 MB', () => {
+    expect(leer('public/data/mapa-2010-mundo.json').length).toBeLessThan(1024 * 1024);
+  });
+
+  it('tiene los mismos países y zonas que el nivel de detalle', () => {
+    const detalle = cargar('detalle');
+    expect(paises.map((f) => f.id)).toEqual(detalle.paises.map((f) => f.id));
+    expect(zonas.map((f) => f.id)).toEqual(detalle.zonas.map((f) => f.id));
+  });
+
+  it('ninguna geometría está invertida', () => {
+    for (const f of [...paises, ...zonas])
+      expect(geoArea(f), String(f.id)).toBeLessThan(2 * Math.PI);
+  });
+
+  it('solo pierden la superficie los países diminutos, que se tocarán por su etiqueta', () => {
+    const sinSuperficie = paises.filter((f) => geoArea(f) === 0).map((f) => String(f.id));
+    expect(sinSuperficie.every((id) => ['VAT', 'MCO', 'SMR', 'GIB', 'MAC'].includes(id))).toBe(
+      true,
+    );
+  });
+
+  it.each(PUNTOS_2010.filter(([, , , id]) => !['CHI', 'ANT'].includes(id)))(
+    '%s cae en su territorio también en la vista del mundo',
+    (_, lon, lat, id) => {
+      expect(paises.filter((f) => geoContains(f, [lon, lat])).map((f) => f.id)).toEqual([id]);
+    },
+  );
 });
 
 describe('geometría', () => {

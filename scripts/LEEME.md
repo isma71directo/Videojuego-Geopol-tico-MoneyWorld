@@ -25,6 +25,8 @@ npm run datos             # las dos cosas seguidas
 | `04-owid.ts`          | Energía y emisiones de Our World in Data                                                                    | `fuentes/datos/owid-*.json`                                |
 | `05-recursos.ts`      | Reservas y producción de recursos naturales                                                                 | `fuentes/datos/recursos.json`                              |
 | `06-territorios.ts`   | Población de los territorios sin datos oficiales (Wikidata)                                                 | `fuentes/datos/territorios.json`                           |
+| `07-banderas.ts`      | Banderas de 2010 (flag-icons y Wikimedia Commons) con su licencia                                           | `public/av/banderas/`                                      |
+| `08-creditos.ts`      | Créditos de datos y banderas (sin red)                                                                      | `docs/creditos.md`                                         |
 | `09-fronteras.ts`     | Fronteras del 1 de enero de 2010 a partir de Natural Earth, con las correcciones de `manual/mapa-2010.json` | `public/data/mapa-2010-*.json` (TopoJSON)                  |
 | `10-construir.ts`     | Une las fuentes, aplica los valores de respaldo y valida                                                    | `public/data/paises-2010.json` y `docs/datos-cobertura.md` |
 

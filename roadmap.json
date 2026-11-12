@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.2.0",
-  "actualizado": "2026-11-12T00:40:15Z",
+  "actualizado": "2026-11-12T00:43:29Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 2 en marcha: 21 territorios dependientes y los territorios de hecho, jugables (223 en total). Fronteras de 2010 generadas desde Natural Earth con sus correcciones (Crimea en Ucrania, Sudán unido, Abjasia, Osetia del Sur, Transnistria y Sáhara Occidental separados, Antillas Neerlandesas e Islas del Canal unidas).",
-    "siguientePaso": "Niveles de detalle del mapa para móvil y protección de los microestados (tarea f2-t3).",
+    "resumen": "Fase 2 casi completa: 223 países y territorios jugables o marcados, fronteras de 2010 corregidas y mapa en dos niveles de detalle (mundo, 340 KB, y detalle, 926 KB) sin perder los microestados.",
+    "siguientePaso": "Banderas de los territorios nuevos y vista previa del mapa de 2010 en la galería (tarea f2-t4); después, cerrar la fase.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -239,20 +239,20 @@
           "titulo": "Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas, y Antillas Neerlandesas e Islas del Canal unidas",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/4a02a39"
         },
         {
           "id": "f2-t3",
           "titulo": "Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f2-t4",
           "titulo": "Audiovisual: banderas de los territorios nuevos y vista previa del mapa del mundo de 2010 en la galería audiovisual",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         }
       ]
