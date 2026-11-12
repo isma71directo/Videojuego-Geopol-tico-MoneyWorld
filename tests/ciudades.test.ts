@@ -236,3 +236,46 @@ describe('ficha de la ciudad (ajuste f4-a4)', () => {
     );
   });
 });
+
+describe('nombres de las ciudades (ajuste f4-a5)', () => {
+  const nombres = new Set(ciudades.map((c) => c.nombre));
+
+  it('corrige las traducciones erróneas de Natural Earth', () => {
+    for (const bien of [
+      'Tlaxcala',
+      'Puerto Plata',
+      'Santa Ana del Yacuma',
+      'Kilju',
+      'Minneapolis',
+    ]) {
+      expect(nombres, bien).toContain(bien);
+    }
+    for (const mal of [
+      'Señorío de Tlaxcala',
+      'El higo luperon',
+      'Condado de Kilju',
+      'Mineápolis',
+    ]) {
+      expect(nombres, mal).not.toContain(mal);
+    }
+  });
+
+  it('usa el nombre que tenían las ciudades en 2010', () => {
+    for (const nombre of ['Dnipropetrovsk', 'Kirovogrado', 'Xiangfan', 'Jessore', 'Almatý']) {
+      expect(nombres, nombre).toContain(nombre);
+    }
+    for (const posterior of ['Dnipró', 'Kropivnitskiy', 'Xiangyang', 'Jashore', 'Alma Ata']) {
+      expect(nombres, posterior).not.toContain(posterior);
+    }
+  });
+
+  it('sin transliteraciones con signos poco usados en español (salvo los nombres japoneses)', () => {
+    const raros = ciudades.filter((c) => c.pais !== 'JPN' && /[āīūḥṭṣḍẓġ]/.test(c.nombre));
+    expect(raros.map((c) => c.nombre)).toEqual([]);
+  });
+
+  it('no incluye los lugares erróneos de Natural Earth', () => {
+    expect(ciudades.some((c) => c.pais === 'DZA' && c.nombre === 'Arak')).toBe(false);
+    expect(ciudades.some((c) => c.pais === 'SAU' && c.nombre.startsWith('Al Ḥ'))).toBe(false);
+  });
+});

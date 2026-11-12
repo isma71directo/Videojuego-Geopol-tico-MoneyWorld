@@ -1,15 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.5.1",
-  "actualizado": "2026-11-12T07:25:15Z",
+  "versionActual": "0.5.2",
+  "actualizado": "2026-11-12T07:48:03Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "v0.5.1 lista en su rama con los ajustes que pidió el jugador tras probar la Fase 4: 12 colores sin repeticiones cerca, nombres de países siempre que no se pisen (con forma corta si hace falta), población de las ciudades (2010 o la más cercana) con orden de aparición por población, y ficha y panel de cada ciudad.",
-    "siguientePaso": "Cuando el jugador confirme la prueba de la v0.5.1, empezar la Fase 5 (regiones del mundo) presentando antes su plan.",
+    "resumen": "v0.5.2 lista en su rama: nombres de ciudades corregidos (traducciones erróneas, nombres de 2010, transliteraciones raras) y dos lugares erróneos de Natural Earth quitados. Presentado al jugador el plan de la Fase 5 (regiones) y las opciones para un mapa más realista (idea-3).",
+    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 5, empezar la tarea f5-t1 (regiones de 2010 agrupadas hasta 30 por país). Asignar la idea-3 a la fase que elija el jugador.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.5.1",
-      "Prueba en el PC: ver que los colores no se repiten cerca; con el mundo entero a la vista, ver el nombre de Marruecos y, con poco zoom, el de República Checa; acercarse a España y ver que salen primero Zaragoza, luego Córdoba y luego Oviedo; pasar el ratón por una ciudad y hacer clic en ella para ver su población y su año"
+      "Fusionar el PR de la v0.5.2",
+      "Prueba en el PC: acercarse a México, Ucrania y Filipinas y ver Tlaxcala, Puebla, Dnipropetrovsk, Kirovogrado, Davao y Cebú con su nombre correcto",
+      "Aprobar (o cambiar) el plan de la Fase 5: regiones del mundo",
+      "Elegir las opciones para un mapa más realista (idea-3) y en qué fase hacerlas"
     ]
   },
   "etapas": [
@@ -377,6 +379,15 @@
           "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7c88035"
+        },
+        {
+          "id": "f4-a5",
+          "titulo": "Corregir los nombres de ciudades mal traducidos o mal identificados (p. ej. «Señorío de Tlaxcala» en lugar de Tlaxcala)",
+          "version": "0.5.2",
+          "origen": "Mensaje del jugador tras probar la v0.5.1",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d0a9d2a"
         }
       ]
     },
@@ -4159,6 +4170,12 @@
       "titulo": "Completar los recursos de 2010 que la fuente de la Fase 1 no da: producción por país de hierro, níquel y tierras raras, y reservas minerales de 2010 (solo se publican desde 2022)",
       "origen": "Fase 1, tarea f1-t3",
       "faseAsignada": "fase-43"
+    },
+    {
+      "id": "idea-3",
+      "titulo": "Mapa más bonito y realista, con más sensación de relieve y de 3D (sin cambiar de concepto: el mismo mapa plano, mejor dibujado)",
+      "origen": "Mensaje del jugador tras probar la v0.5.1",
+      "faseAsignada": null
     }
   ],
   "historial": [
@@ -4244,6 +4261,14 @@
         "Nombres de países siempre que no se pisen (Marruecos con el mundo entero a la vista); forma corta si el nombre entero no cabe («Rep. Checa»)",
         "Población de cada ciudad (la de 2010 o la más cercana, con su año) y ciudades que aparecen al acercarse por orden de población; 2214 ciudades",
         "Ficha de la ciudad al pasar el ratón y panel al hacer clic"
+      ]
+    },
+    {
+      "version": "0.5.2",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Nombres de ciudades corregidos: traducciones erróneas (Tlaxcala, Puerto Plata…), nombres de 2010 de las ciudades renombradas después (Dnipropetrovsk, Kirovogrado, Almatý…), transliteraciones raras y nombres oficiales largos",
+        "Quitados dos lugares erróneos de Natural Earth con la población de otra ciudad homónima"
       ]
     }
   ]

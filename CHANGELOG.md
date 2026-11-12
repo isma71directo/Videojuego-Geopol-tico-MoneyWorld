@@ -7,6 +7,22 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.5.2 - 2026-11-12
+
+Ajuste de la Fase 4 pedido por el jugador tras probar la v0.5.1.
+
+### Corregido
+
+- Nombres de ciudades mal traducidos en Natural Earth: «Señorío de Tlaxcala» → Tlaxcala,
+  «El higo luperon» → Puerto Plata, «San Borja» → Santa Ana del Yacuma, «Condado de Kilju» →
+  Kilju, «Mineápolis» → Minneapolis, entre otros.
+- Ciudades renombradas después de 2010, con su nombre de entonces: Dnipropetrovsk,
+  Kirovogrado, Xiangfan, Jessore y Almatý.
+- Transliteraciones con signos poco usados en español (Kunduz, Herat, Ludhiana…) y nombres
+  oficiales largos en lugar del habitual (Puebla, Acapulco, Querétaro, Davao, Cebú…).
+- Quitados dos lugares erróneos de Natural Earth que tenían la población de otra ciudad del
+  mismo nombre («Arak» en Argelia y «Al Ḥilla» en Arabia Saudí).
+
 ## 0.5.1 - 2026-11-12
 
 Ajustes de la Fase 4 pedidos por el jugador tras probar la v0.5.0.
