@@ -1,17 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T13:01:56Z",
+  "actualizado": "2026-11-12T13:09:35Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "El jugador ha probado la v0.6.1 (capitales de provincia) y la da por buena; PR #15 fusionado y publicado. Presentado el plan de la Fase 6 (capas del mapa y mapa más realista), con una vista previa de los dos estilos de colores del terreno de Natural Earth.",
-    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 6, dividir f6-t3 en dos tareas (colores del terreno y profundidad del mar; efecto de volumen), anotar sus decisiones en el GDD y empezar por f6-t1 (sistema genérico de capas con leyenda).",
-    "pendienteDelJugador": [
-      "Aprobar (o cambiar) el plan de la Fase 6: capas del mapa y mapa más realista",
-      "Elegir el estilo de los colores del terreno (A1 Natural Earth II o A2 hipsométrico)",
-      "Elegir los atajos de teclado de las capas y si se añaden la densidad de población y las capas por región"
-    ]
+    "resumen": "Plan de la Fase 6 aprobado por el jugador: terreno de Natural Earth II (A1), capas en un desplegable con la tecla C (sin atajo por capa), población total o densidad y capas de riqueza y población también por región. Para seguir con 4 tareas por fase, las rampas van con el sistema de capas, los iconos con el desplegable y el efecto de volumen (opción C) con la tarea audiovisual.",
+    "siguientePaso": "Programar f6-t1: sistema genérico de capas con leyenda.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -450,33 +446,33 @@
       "objetivo": "Ver la información del mundo sobre el mapa, con capas y leyenda",
       "dependeDe": ["fase-5"],
       "hechoCuando": "Las capas funcionan con su leyenda",
-      "pruebaJugador": "Cambiar de capa y leer la leyenda; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.",
-      "estado": "pendiente",
+      "pruebaJugador": "Cambiar de capa con el desplegable (clic y tecla C) y leer la leyenda; acercarse con la capa de riqueza y ver las regiones; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f6-t1",
-          "titulo": "Sistema genérico de capas con leyenda",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Sistema genérico de capas con leyenda y rampas de color accesibles (aptas para daltónicos): color de cada país según su dato, con tramos redondos; gris neutro sin dato y rayado fino para los estimados; la ficha muestra el dato de la capa",
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f6-t2",
-          "titulo": "Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con un panel de capas y atajos de teclado",
+          "titulo": "Capas de política, riqueza (PIB per cápita), población (total o densidad), crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), elegidas en un desplegable con iconos que se abre con un clic o con la tecla C; riqueza y población también por región al acercarse",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f6-t3",
-          "titulo": "Mapa más realista (opciones A y C elegidas por el jugador): relieve con los colores del terreno y el mar más oscuro donde es más profundo, bajo los colores de los países; efecto de volumen sin pasar a 3D: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua.",
+          "titulo": "Mapa más realista (opción A): colores del terreno de Natural Earth II bajo los colores de los países, con deslizador de intensidad en Ajustes, y el mar más oscuro donde es más profundo",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f6-t4",
-          "titulo": "Audiovisual: rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa",
+          "titulo": "Audiovisual: efecto de volumen sin 3D (opción C: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua, manteniendo 60 fps), transición animada y sonido suave al cambiar de capa, y su muestra en la galería",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
