@@ -1,17 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.4.0",
-  "actualizado": "2026-11-12T01:17:36Z",
-  "faseActiva": "fase-3",
+  "actualizado": "2026-11-12T05:50:16Z",
+  "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 3 completa en su rama y versión 0.4.0: mapa del mundo a pantalla completa con la proyección Miller, relieve sombreado, ríos y lagos, navegación con el dedo, el ratón y el teclado, zoom animado, inercia y vuelta continua este-oeste.",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 3 como hecha y empezar la Fase 4 (selección de países, nombres y sonido).",
-    "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 3 (v0.4.0)",
-      "Prueba en el móvil: abrir «Explorar el mapa», moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, cruzar el Pacífico y ver el relieve y los ríos; con «?fps» al final de la dirección, comprobar que va a unos 60 fps",
-      "Decidir la plataforma: móvil y PC con niveles de calidad (propuesta) o solo PC"
-    ]
+    "resumen": "Fase 3 cerrada: el jugador ha probado el mapa (v0.4.0). No veía el medidor de fps. El jugador decide que el juego sea solo para PC.",
+    "siguientePaso": "Corregir el medidor de fps y adaptar el diseño a «solo PC»; después, la Fase 4.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -270,7 +266,7 @@
       "dependeDe": ["fase-2"],
       "hechoCuando": "El mapa llena la pantalla, se ve vivo y va a unos 60 fps en un móvil de gama media",
       "pruebaJugador": "Abrir el mapa desde la pantalla de inicio, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, cruzar el Pacífico sin chocar con un borde y ver el relieve y los ríos",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f3-t1",
