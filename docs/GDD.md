@@ -516,7 +516,9 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 1. **Inicio:** nueva partida, cargar, ajustes, enlace a la Hoja de ruta, versión del juego.
 2. **Nueva partida:** elegir país en el mapa, dificultad, eventos históricos sí o no, semilla.
 3. **Mapa principal:**
-   - **Mapa de juego (decisión del jugador, 12/11/2026):** un mapa grande, plano y rectangular a pantalla completa, como el modo plano de los simuladores geopolíticos del género, sin 3D. Se mueve con el dedo o el ratón, con zoom continuo desde el mundo entero hasta las regiones y las ciudades. Todo lo que se ve es clicable: países, regiones, capitales y ciudades y, más adelante, infraestructuras y unidades. La proyección se elige con el jugador (sección 13).
+   - **Mapa de juego (decisión del jugador, 12/11/2026):** un mapa grande, plano y rectangular a pantalla completa, como el modo plano de los simuladores geopolíticos del género, sin 3D. Se mueve con el dedo o el ratón, con zoom continuo desde el mundo entero hasta las regiones y las ciudades. Todo lo que se ve es clicable: países, regiones, capitales y ciudades y, más adelante, infraestructuras y unidades. Proyección Miller, con desplazamiento continuo este-oeste (sección 13).
+   - **Mapa vivo:** relieve sombreado y fondo oceánico, ríos y lagos, ciudades y, según avance el juego, infraestructuras, unidades, rutas comerciales y efectos (crisis, protestas, combates, desastres). Más detalle cuanto más se acerca el jugador.
+   - **Modos de mapa:** el mismo mapa con distintas capas, cada una con su leyenda. Riqueza (de más rico a más pobre), población, crecimiento, paro, deuda, inflación y recursos llegan con el sistema de capas (Fase 6); relaciones, organizaciones y alianzas, comercio, energía, independentismo, conflictos, militar y elecciones llegan con su sistema.
    - Barra superior: fecha, controles de tiempo, tesorería, popularidad, alertas.
    - Barra inferior (móvil): Gobierno · Economía · Política · Mundo · Ejército · Más.
    - **Capas del mapa:** político, alianzas, relaciones con mi país, PIB per cápita, crecimiento, paro, deuda, energía (mix y apagones), recursos, independentismo por región, conflictos, militar y elecciones.
@@ -729,17 +731,17 @@ interface EstadoPartida {
 **Prueba en el móvil:** abrir la galería y ver el mapa de 2010: Sudán unido, Crimea dentro de Ucrania y Hong Kong y Puerto Rico como territorios propios.
 **Hecho cuando:** todos los países y territorios de los datos tienen su frontera de 2010.
 
-#### Fase 3 — v0.4.0 · Mapa: dibujo y navegación
-**Objetivo:** un mapa del mundo grande, a pantalla completa, por el que moverse con fluidez.
+#### Fase 3 — v0.4.0 · Mapa: dibujo, relieve y navegación
+**Objetivo:** un mapa del mundo grande y vivo, a pantalla completa, por el que moverse con fluidez.
 **Tareas**
-1. Dibujar el mapa a pantalla completa en Canvas con la proyección rectangular elegida por el jugador (sección 13), cargando el nivel de detalle que toque según el zoom.
-2. Zoom con pellizco y rueda, arrastre, doble toque para acercar y límites del mundo (con desplazamiento continuo este-oeste si el jugador lo confirma).
-3. Medidor de rendimiento (fps) en modo desarrollo.
-4. **Audiovisual:** estilo visual del mapa (colores de países, océano y bordes) y animación suave del zoom.
+1. Mapa a pantalla completa en Canvas con la proyección Miller, con el nivel de detalle que toque según el zoom, abierto desde la pantalla de inicio.
+2. Navegación: pellizco, rueda, arrastre y doble toque para acercar, límites norte-sur y desplazamiento continuo este-oeste; medidor de fps en modo desarrollo.
+3. Relieve: imagen de relieve sombreado y fondo oceánico de Natural Earth reproyectada a Miller, en teselas por nivel de zoom.
+4. **Audiovisual:** ríos y lagos, colores de países y bordes, y animación suave del zoom.
 
-**Tests:** la proyección sitúa ciudades conocidas donde corresponde; el zoom no sale de sus límites.
-**Prueba en el móvil:** abrir el mapa a pantalla completa, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, sin tirones.
-**Hecho cuando:** el mapa llena la pantalla y va a unos 60 fps en un móvil de gama media.
+**Tests:** la proyección sitúa ciudades conocidas donde corresponde; el zoom no sale de sus límites; al dar la vuelta al mundo se vuelve al mismo sitio; las teselas cubren todo el mapa.
+**Prueba en el móvil:** abrir el mapa desde la pantalla de inicio, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, cruzar el Pacífico sin chocar con un borde y ver el relieve y los ríos.
+**Hecho cuando:** el mapa llena la pantalla, se ve vivo y va a unos 60 fps en un móvil de gama media.
 
 #### Fase 4 — v0.5.0 · Mapa: selección, nombres y sonido
 **Objetivo:** tocar un país para seleccionarlo y reconocer el mapa por sus nombres.
@@ -769,7 +771,7 @@ interface EstadoPartida {
 **Objetivo:** ver la información del mundo sobre el mapa, con capas y leyenda.
 **Tareas**
 1. Sistema genérico de capas con leyenda.
-2. Capas de política, población, PIB per cápita, crecimiento, paro, deuda e inflación, con selector de capas (menú desplegable en móvil).
+2. Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con selector de capas (menú desplegable en móvil).
 3. **Audiovisual:** rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa.
 
 **Tests:** cada capa da color a todos los países con dato y un color neutro a los que no lo tienen.
@@ -2077,6 +2079,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Territorios con independencia de hecho jugables | Decisión del jugador | 3, 9, 13 |
 | 12/11/2026 | Territorios dependientes con datos (Hong Kong, Puerto Rico…) jugables; Antillas Neerlandesas como en 2010 | Decisión del jugador | 3, 9, 13 |
 | 12/11/2026 | Mapa de juego grande, plano y rectangular a pantalla completa, con zoom y elementos clicables; Equal Earth descartada | Decisión del jugador | 7, 9, 13 |
+| 12/11/2026 | Proyección Miller con desplazamiento continuo este-oeste; mapa vivo (relieve, ríos, lagos) y modos de mapa con leyenda | Decisión del jugador | 7, 9, 13 |
 
 ---
 
@@ -2092,8 +2095,9 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Derrota al perder elecciones | Fin de partida / seguir como oposición | Fin de partida hasta la v1.2 |
 | Multijugador | No / por turnos / tiempo real | No hasta la v2.0 (requiere servidor y coste) |
 | Dificultad | Fácil / Normal / Realista | Las tres, cambiando la tolerancia de votantes, mercados e IA |
-| Proyección del mapa | Miller / Mercator / Equirectangular / Equal Earth | **Equal Earth descartada por el jugador (12/11/2026):** quiere un mapa grande y rectangular a pantalla completa. Propuesta: Miller (rectangular, llena la pantalla, poca deformación). Pendiente de que el jugador elija |
-| Desplazamiento este-oeste | Con borde / continuo (el mapa da la vuelta) | Continuo, como en los juegos de estrategia: al pasar el Pacífico se vuelve a América. Pendiente del jugador |
+| Proyección del mapa | Miller / Mercator / Equirectangular / Equal Earth | **Decidido por el jugador (12/11/2026):** Miller, rectangular y a pantalla completa (Equal Earth descartada) |
+| Desplazamiento este-oeste | Con borde / continuo (el mapa da la vuelta) | **Decidido por el jugador (12/11/2026):** continuo; al pasar el Pacífico se vuelve a América |
+| Plataforma | Móvil y PC / solo PC | Pendiente del jugador. Propuesta: móvil y PC con niveles de calidad (Bajo, Medio y Alto, elegidos según el dispositivo): el PC aprovecha su potencia con más detalle en el mapa y la simulación sin perder la partida en el móvil |
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 11 (reloj del juego) |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |

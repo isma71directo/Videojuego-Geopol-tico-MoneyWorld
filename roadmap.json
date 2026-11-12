@@ -1,15 +1,14 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.3.0",
-  "actualizado": "2026-11-12T01:00:00Z",
+  "actualizado": "2026-11-12T01:20:00Z",
   "faseActiva": "fase-3",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 2 cerrada (v0.3.0 publicada). El jugador descarta la proyección Equal Earth: quiere un mapa de juego grande, plano y rectangular a pantalla completa, con zoom y elementos clicables. Decisión anotada en el GDD y en la Fase 3; enviada una comparación de proyecciones.",
-    "siguientePaso": "Cuando el jugador elija la proyección y el desplazamiento este-oeste, empezar la Fase 3 (Mapa: dibujo y navegación).",
+    "resumen": "El jugador elige la proyección Miller con desplazamiento continuo este-oeste y pide un mapa vivo (relieve, ríos, detalle) y modos de mapa con leyenda. Anotado en el GDD; la Fase 3 incluye ahora el relieve. Empezada la Fase 3.",
+    "siguientePaso": "Mapa a pantalla completa en Canvas con proyección Miller (tarea f3-t1).",
     "pendienteDelJugador": [
-      "Elegir la proyección del mapa: A Miller (recomendada), B Mercator o C Equirectangular",
-      "Decir si el mapa debe dar la vuelta al pasar el Pacífico (desplazamiento continuo este-oeste)"
+      "Decidir la plataforma: móvil y PC con niveles de calidad (propuesta) o solo PC"
     ]
   },
   "etapas": [
@@ -264,37 +263,37 @@
       "id": "fase-3",
       "etapa": "A",
       "version": "0.4.0",
-      "nombre": "Mapa: dibujo y navegación",
-      "objetivo": "Un mapa del mundo grande, a pantalla completa, por el que moverse con fluidez",
+      "nombre": "Mapa: dibujo, relieve y navegación",
+      "objetivo": "Un mapa del mundo grande y vivo, a pantalla completa, por el que moverse con fluidez",
       "dependeDe": ["fase-2"],
-      "hechoCuando": "El mapa llena la pantalla y va a unos 60 fps en un móvil de gama media",
-      "pruebaJugador": "Abrir el mapa a pantalla completa, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, sin tirones",
-      "estado": "pendiente",
+      "hechoCuando": "El mapa llena la pantalla, se ve vivo y va a unos 60 fps en un móvil de gama media",
+      "pruebaJugador": "Abrir el mapa desde la pantalla de inicio, moverlo y acercarlo con los dedos desde el mundo entero hasta un país pequeño, cruzar el Pacífico sin chocar con un borde y ver el relieve y los ríos",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f3-t1",
-          "titulo": "Dibujar el mapa a pantalla completa en Canvas con la proyección rectangular elegida por el jugador (sección 13), cargando el nivel de detalle que toque según el zoom",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Mapa a pantalla completa en Canvas con la proyección Miller, con el nivel de detalle que toque según el zoom, abierto desde la pantalla de inicio",
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f3-t2",
-          "titulo": "Zoom con pellizco y rueda, arrastre, doble toque para acercar y límites del mundo (con desplazamiento continuo este-oeste si el jugador lo confirma)",
+          "titulo": "Navegación: pellizco, rueda, arrastre y doble toque para acercar, límites norte-sur y desplazamiento continuo este-oeste; medidor de fps en modo desarrollo",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f3-t3",
-          "titulo": "Medidor de rendimiento (fps) en modo desarrollo",
+          "titulo": "Relieve: imagen de relieve sombreado y fondo oceánico de Natural Earth reproyectada a Miller, en teselas por nivel de zoom",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f3-t4",
-          "titulo": "Audiovisual: estilo visual del mapa (colores de países, océano y bordes) y animación suave del zoom",
+          "titulo": "Audiovisual: ríos y lagos, colores de países y bordes, y animación suave del zoom",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -403,7 +402,7 @@
         },
         {
           "id": "f6-t2",
-          "titulo": "Capas de política, población, PIB per cápita, crecimiento, paro, deuda e inflación, con selector de capas (menú desplegable en móvil)",
+          "titulo": "Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con selector de capas (menú desplegable en móvil)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
