@@ -7,6 +7,39 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.7.0 - 2026-11-12
+
+Fase 6 · Capas del mapa.
+
+### Añadido
+
+- **Capas del mapa** en un desplegable de la barra superior, que se abre con un clic o con la
+  tecla C (decisión del jugador: sin un atajo por capa); se maneja también con las flechas,
+  Intro y Escape, y se recuerda la última capa elegida:
+  - Política (la de siempre), riqueza (PIB por habitante), población total, densidad de
+    población, crecimiento, paro, deuda pública, inflación y reservas de petróleo, gas natural
+    y carbón.
+  - Leyenda abajo a la izquierda con tramos redondos («1.000 a 2.500 $»), gris para los países
+    sin dato y rayado para los datos estimados. La ficha de cada país muestra primero el dato
+    de la capa.
+  - Riqueza, población y densidad también por regiones al acercarse; en las demás capas, la
+    ficha de una región da el dato de su país.
+- **Rampas de color accesibles**, creadas con código en OKLCH: dos tramos seguidos se
+  distinguen también con protanopia, deuteranopia y tritanopia (lo comprueban los tests).
+- **Densidad de población** con la superficie terrestre real de 2010 (FAO, vía Banco Mundial,
+  servida por Our World in Data; `scripts/datos/16-superficie.ts`). Los 10 territorios sin
+  dato usan la superficie medida en el mapa, marcada como estimación.
+- **Mapa más realista** (opciones A y C elegidas por el jugador):
+  - Colores del terreno de Natural Earth II (bosques, desiertos, hielo) bajo los colores de los
+    países y mar más oscuro cuanto más profundo (`scripts/datos/17-terreno.ts`).
+  - Deslizador «Intensidad del terreno» en Ajustes (0 % deja los colores lisos).
+  - Volumen sin 3D: luz y sombra en los bordes de los países, sombra de la costa sobre el mar,
+    país seleccionado levantado con su sombra y brillo suave del agua (se apaga con «reducir
+    movimiento» y en Ajustes).
+- **Audiovisual:** seis iconos nuevos (capas, política, densidad, petróleo, gas y carbón),
+  cambio de capa con fundido de colores y leyenda animada, sonido «capa» y rampas de las capas
+  en la galería.
+
 ## 0.6.1 - 2026-11-12
 
 Ajuste de la Fase 5 pedido por el jugador tras probar la v0.6.0.

@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T17:09:04Z",
+  "versionActual": "0.7.0",
+  "actualizado": "2026-11-12T17:09:51Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "f6-t4 hecha: efecto de volumen sin 3D (luz y sombra en los bordes de los países, sombra de la costa sobre el mar en las teselas del terreno, país seleccionado levantado con su sombra y brillo suave del agua, que se apaga con «reducir movimiento» y en Ajustes), cambio de capa con fundido de colores, leyenda animada y sonido propio, y rampas de las capas en la galería. Las cuatro tareas de la Fase 6 están hechas.",
-    "siguientePaso": "Cerrar la Fase 6 en su rama (versión 0.7.0, CHANGELOG e historial) y abrir el PR con la «Prueba en el PC».",
-    "pendienteDelJugador": []
+    "resumen": "Fase 6 completa en su rama y versión 0.7.0: capas del mapa con leyenda en un desplegable (tecla C), densidad con la superficie real de la FAO, capas por región, terreno de Natural Earth II con el mar profundo y efecto de volumen sin 3D.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 6 como hecha y presentar el plan de la Fase 7 (componentes de interfaz).",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la Fase 6 (v0.7.0)",
+      "Prueba en el PC: abrir el desplegable de capas con un clic y con la tecla C, cambiar de capa y leer la leyenda; acercarse a España con la capa de riqueza y ver sus comunidades coloreadas; ver el terreno (bosques, desiertos, hielo) bajo los países, el mar más oscuro en las zonas profundas y la sombra al seleccionar un país; probar el deslizador «Intensidad del terreno» y la casilla «Brillo animado del agua» en Ajustes"
+    ]
   },
   "etapas": [
     {
@@ -475,7 +478,7 @@
           "titulo": "Audiovisual: efecto de volumen sin 3D (opción C: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua, manteniendo 60 fps), transición animada y sonido suave al cambiar de capa, y su muestra en la galería",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/0ee5f0a"
         }
       ]
     },
@@ -4300,6 +4303,17 @@
       "cambios": [
         "Capitales de provincia en todos los países: 2035 ciudades nuevas y 1443 ya existentes marcadas como capital de su provincia (por ejemplo, en España las 50 capitales de provincia, Ceuta y Melilla)",
         "Las capitales de provincia aparecen antes al acercarse, con un punto algo mayor, y su ficha dice de qué provincia son capital"
+      ]
+    },
+    {
+      "version": "0.7.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Capas del mapa en un desplegable (clic o tecla C): política, riqueza, población total, densidad de población, crecimiento, paro, deuda pública, inflación y reservas de petróleo, gas y carbón, con su leyenda",
+        "Rampas de color aptas para daltónicos, gris para los países sin dato y rayado para los datos estimados; riqueza, población y densidad también por regiones al acercarse",
+        "Mapa más realista: colores del terreno de Natural Earth II bajo los países (intensidad en Ajustes) y mar más oscuro cuanto más profundo",
+        "Volumen sin 3D: luz y sombra en los bordes, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua",
+        "Cambio de capa con fundido de colores y sonido propio; rampas de las capas en la galería"
       ]
     }
   ]
