@@ -19,7 +19,7 @@ Ajuste de la Fase 4 pedido por el jugador tras probar la v0.5.1.
 - Ciudades renombradas después de 2010, con su nombre de entonces: Dnipropetrovsk,
   Kirovogrado, Xiangfan, Jessore y Almatý.
 - Transliteraciones con signos poco usados en español (Kunduz, Herat, Ludhiana…) y nombres
-  oficiales largos en lugar del habitual (Puebla, Toluca, Davao, Cebú…).
+  oficiales largos en lugar del habitual (Puebla, Acapulco, Querétaro, Davao, Cebú…).
 - Quitados dos lugares erróneos de Natural Earth que tenían la población de otra ciudad del
   mismo nombre («Arak» en Argelia y «Al Ḥilla» en Arabia Saudí).
 

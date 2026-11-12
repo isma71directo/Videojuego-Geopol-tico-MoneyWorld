@@ -61,7 +61,14 @@
     "ARG|San Fernando del Valle de Catamarca": "Catamarca",
     "ARG|San Miguel de Tucumán": "Tucumán",
     "COL|San Juan de Pasto": "Pasto",
-    "PAN|San José de David": "David"
+    "PAN|San José de David": "David",
+    "MEX|Santiago de Querétaro": "Querétaro",
+    "MEX|Heroica Matamoros": "Matamoros",
+    "MEX|Acapulco de Juárez": "Acapulco",
+    "MEX|Pachuca de Soto": "Pachuca",
+    "MEX|Poza Rica de Hidalgo": "Poza Rica",
+    "PAN|Ciudad de Colón": "Colón",
+    "KHM|Ciudad de Battambang": "Battambang"
   },
   "excluir": {
     "_nota": "Lugares de Natural Earth que no se usan por ser erróneos: «país|nombre de Natural Earth» → motivo.",
