@@ -1,13 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.2.0",
-  "actualizado": "2026-11-12T00:45:09Z",
+  "versionActual": "0.3.0",
+  "actualizado": "2026-11-12T00:45:17Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 2 casi completa: 223 países y territorios jugables o marcados, fronteras de 2010 corregidas y mapa en dos niveles de detalle (mundo, 340 KB, y detalle, 926 KB) sin perder los microestados.",
-    "siguientePaso": "Banderas de los territorios nuevos y vista previa del mapa de 2010 en la galería (tarea f2-t4); después, cerrar la fase.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 2 completa en su rama y versión 0.3.0: territorios dependientes y territorios de hecho jugables (223 países y territorios), fronteras de 2010 corregidas desde Natural Earth, mapa en dos niveles de detalle y vista previa en la galería.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 2 como hecha y empezar la Fase 3 (Mapa: dibujo y navegación), confirmando antes la proyección Equal Earth.",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la Fase 2 (v0.3.0)",
+      "Prueba en el móvil: abrir la galería y ver el mapa de 2010 (Sudán unido, Crimea dentro de Ucrania, Hong Kong y Puerto Rico como territorios propios) y las banderas de los territorios dependientes",
+      "Confirmar la proyección Equal Earth para el mapa del juego (Fase 3)"
+    ]
   },
   "etapas": [
     {
@@ -253,7 +257,7 @@
           "titulo": "Audiovisual: banderas de los territorios nuevos y vista previa del mapa del mundo de 2010 en la galería audiovisual",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7fab01c"
         }
       ]
     },
@@ -4151,6 +4155,18 @@
         "Banderas de todos los países tal como eran en 2010 e iconos de los indicadores",
         "Nueva galería audiovisual (/galeria/) para revisar banderas e iconos",
         "Contenido audiovisual añadido a todas las fases del diseño"
+      ]
+    },
+    {
+      "version": "0.3.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Fronteras del 1 de enero de 2010: Sudán unido, Crimea dentro de Ucrania, y Abjasia, Osetia del Sur, Transnistria y el Sáhara Occidental como territorios propios",
+        "21 territorios dependientes jugables (Hong Kong, Puerto Rico, Groenlandia…), con las Antillas Neerlandesas tal como eran en 2010",
+        "Jugables también Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte",
+        "Mapa en dos niveles de detalle, ligero para el móvil, sin perder los microestados",
+        "Vista previa del mapa de 2010 en la galería audiovisual y banderas de los territorios nuevos",
+        "Hoja de ruta dividida en 108 fases cortas, una versión cada una"
       ]
     }
   ]
