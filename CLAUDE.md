@@ -8,7 +8,7 @@ Al jugador se le llama «el jugador»: es quien dirige el proyecto y prueba cada
 
 1. **Leer al empezar:** `CLAUDE.md`, `docs/GDD.md`, `roadmap.json` y las _issues_ abiertas.
 2. **Idioma:** código, comentarios, textos, commits y documentación en español (los nombres de variables pueden ir en español sin tildes).
-3. **Orden:** trabajar solo en la fase activa de `roadmap.json`, en tareas pequeñas.
+3. **Orden:** trabajar solo en la fase activa de `roadmap.json`, en tareas pequeñas. Si una tarea no cabe en una sesión corta, dividirla en `roadmap.json` antes de empezarla.
 4. **Hoja de ruta siempre al día:** marcar la tarea "en curso" al empezar y "hecha" al terminar, con fecha y enlace; añadir al historial lo nuevo de cada versión.
 5. **Motor puro y probado:** toda la lógica de simulación en `/src/sim`, sin dependencias de la interfaz, con tests en Vitest. No se fusiona nada con tests en rojo.
 6. **Parámetros fuera del código:** constantes de equilibrado en `/src/sim/config/*.json`.
@@ -51,7 +51,8 @@ Los tests fallan si las tres cosas no coinciden.
 
 ## Dónde está cada cosa
 
-- `docs/GDD.md` — diseño del juego. La sección 9 es la hoja de ruta y la 10, el formato de `roadmap.json`.
+- `docs/GDD.md` — diseño del juego. La sección 9 es la hoja de ruta (108 fases cortas, una versión cada una)
+  y la 10, el formato de `roadmap.json`.
 - `roadmap.json` — estado de fases y tareas. Lo leen el juego y la Hoja de ruta; su esquema es
   `roadmap.schema.json` y los tests comprueban que sea válido y coherente.
 - `package.json` — única fuente de la versión. `versionActual` de `roadmap.json` debe coincidir

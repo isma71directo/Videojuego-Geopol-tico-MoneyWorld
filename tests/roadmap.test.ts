@@ -39,14 +39,41 @@ describe('roadmap.json', () => {
     expect(roadmap.etapas.map((etapa) => etapa.id)).toEqual([...'ABCDEFGHI']);
   });
 
-  it('contiene las 51 fases numeradas del GDD con su versión', () => {
-    for (let n = 0; n <= 50; n += 1) {
-      const fase = roadmap.fases.find((f) => f.id === `fase-${n}`);
-      expect(fase, `falta la fase ${n}`).toBeDefined();
-      expect(fase?.version).toBe(`0.${n + 1}.0`);
-      expect(fase?.tareas.length, `la fase ${n} no tiene tareas`).toBeGreaterThan(0);
-      expect(fase?.hechoCuando, `la fase ${n} no tiene «Hecho cuando»`).not.toBe('');
+  /** Fases numeradas («fase-0», «fase-1»…), en orden. */
+  const numeradas = roadmap.fases.filter((f) => /^fase-\d+$/.test(f.id));
+
+  it('numera las fases seguidas desde la 0, cada una con su versión 0.(n+1).0', () => {
+    expect(numeradas.length).toBeGreaterThanOrEqual(100);
+    numeradas.forEach((fase, n) => {
+      expect(fase.id).toBe(`fase-${n}`);
+      expect(fase.version).toBe(`0.${n + 1}.0`);
+      expect(fase.tareas.length, `la fase ${n} no tiene tareas`).toBeGreaterThan(0);
+      expect(fase.hechoCuando, `la fase ${n} no tiene «Hecho cuando»`).not.toBe('');
+    });
+  });
+
+  it('las fases son cortas: de la 2 en adelante, entre 2 y 4 tareas', () => {
+    for (const fase of numeradas.slice(2)) {
+      expect(fase.tareas.length, fase.id).toBeGreaterThanOrEqual(2);
+      expect(fase.tareas.length, fase.id).toBeLessThanOrEqual(4);
     }
+  });
+
+  it('cada fase tiene objetivo, prueba en el móvil y tarea audiovisual', () => {
+    for (const fase of numeradas.slice(1)) {
+      expect(fase.objetivo, fase.id).not.toBe('');
+      expect(fase.pruebaJugador, fase.id).not.toBe('');
+      expect(
+        fase.tareas.some((tarea) => tarea.titulo.startsWith('Audiovisual:')),
+        `${fase.id} sin tarea audiovisual`,
+      ).toBe(true);
+    }
+  });
+
+  it('cada fase depende de la anterior', () => {
+    numeradas.slice(1).forEach((fase, i) => expect(fase.dependeDe).toEqual([`fase-${i}`]));
+    const lanzamiento = roadmap.fases.find((f) => f.id === 'lanzamiento');
+    expect(lanzamiento?.dependeDe).toEqual([numeradas.at(-1)!.id]);
   });
 
   it('incluye el lanzamiento 1.0.0 y las ampliaciones hasta la 2.0.0', () => {

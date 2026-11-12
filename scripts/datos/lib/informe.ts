@@ -205,7 +205,7 @@ ${avisos.length === 0 ? 'Ninguno.' : avisos.map((aviso) => `- ${aviso}`).join('\
 
 ${[
   ...opciones.notas,
-  'Los territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) no están en este conjunto; su tratamiento se decide en las Fases 2 y 3 (mapa y regiones).',
+  'Los territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) no están en este conjunto; su tratamiento se decide en las Fases 2 y 5 (fronteras y regiones).',
   'El nivel de renta de los territorios sin RNB per cápita (y el de Corea del Norte) está fijado a mano.',
 ]
   .map((nota) => `- ${nota}`)

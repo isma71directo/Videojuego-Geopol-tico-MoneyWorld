@@ -2,7 +2,7 @@
 
 > **Documento de Diseño del Juego (GDD).** Este archivo es la referencia principal del proyecto.
 > Claude Code debe leerlo al inicio de cada sesión, junto con `CLAUDE.md` y `roadmap.json`.
-> Versión del documento: 1.2 · Fecha: 11/11/2026 · Idioma del proyecto: español.
+> Versión del documento: 1.3 · Fecha: 12/11/2026 · Idioma del proyecto: español.
 
 ---
 
@@ -557,7 +557,8 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 - **Personas, partidos y empresas reales:** no se usan fotografías ni logotipos registrados; se representan con retratos genéricos y emblemas propios (color y siglas).
 
 **Reglas del 3D**
-- El **mapa de juego sigue siendo 2D**. El 3D es para componentes complementarios: globo decorativo del inicio, hemiciclo, salas de votación, maquetas de edificios, centrales y equipamiento militar, efectos de combates y desastres.
+- **Donde sea posible y necesario:** el 3D se usa cuando muestra algo que el 2D no muestra igual de bien. No hay 3D solo decorativo: ni globo 3D ni salas ambientadas.
+- El **mapa de juego es 2D**. Usos previstos del 3D: maquetas de edificios y centrales en sus fichas, modelos del equipamiento militar y vista de un combate.
 - Cada uso de 3D figura en la sección 9 como **propuesta** y se confirma con el jugador al planificar esa fase.
 - Se carga **solo cuando se usa**, siempre hay una **alternativa en 2D** y se puede desactivar en Ajustes. Nunca es necesario para jugar.
 - Rendimiento en un móvil de gama media: el mapa mantiene sus 60 fps y una escena 3D no baja de unos 30 fps; si no se consigue, se muestra la alternativa en 2D.
@@ -648,9 +649,11 @@ interface EstadoPartida {
 
 > **Orden obligatorio.** Cada fase se apoya en las anteriores. Claude Code trabaja por **tareas pequeñas** dentro de la fase activa, actualiza `roadmap.json` y no empieza una fase nueva hasta cumplir el "Hecho cuando" de la anterior, salvo que el jugador lo autorice.
 >
+> **Fases cortas.** Cada fase tiene de 2 a 4 tareas, es una versión del juego y se cierra con su propio PR. Cada tarea debe caber en una sesión corta de Claude Code; si al empezarla resulta grande, se divide en `roadmap.json` antes de seguir.
+>
 > **Cómo leer cada fase**
 > - **Objetivo:** qué se consigue.
-> - **Depende de:** fases que deben estar terminadas.
+> - **Depende de:** cada fase depende de la anterior (no se repite en cada fase).
 > - **Tareas:** lista ordenada de trabajo.
 > - **Tests:** pruebas automáticas obligatorias.
 > - **Prueba en el móvil:** qué debe comprobar el jugador al publicarse la versión.
@@ -661,14 +664,14 @@ interface EstadoPartida {
 
 | Etapa | Versiones | Fases | Resultado |
 |---|---|---|---|
-| A · Prealfa: cimientos y mundo | 0.1 – 0.5 | 0 – 4 | Proyecto publicado, datos reales de 2010 y mapa 2D navegable |
-| B · Alfa 1: el país funciona | 0.6 – 0.12 | 5 – 11 | **Primera versión jugable:** gestionar la economía de un país en el tiempo |
-| C · Alfa 2: servicios e infraestructuras | 0.13 – 0.19 | 12 – 18 | Ministerios sociales, obras, transporte, energía y telecomunicaciones |
-| D · Alfa 3: economía real y mundo conectado | 0.20 – 0.25 | 19 – 24 | Recursos, industria, empresas, comercio, diplomacia y organizaciones |
-| E · Beta 1: política | 0.26 – 0.34 | 25 – 33 | Sociedad, partidos, parlamento, elecciones, leyes, regímenes, regiones e independentismo |
-| F · Beta 2: tecnología y poder | 0.35 – 0.42 | 34 – 41 | Árboles tecnológicos, ejército, guerra, seguridad y medio ambiente |
-| G · Beta 3: mundo vivo | 0.43 – 0.47 | 42 – 46 | IA de países, eventos, noticias y estadísticas |
-| H · Versión candidata | 0.48 – 0.51 | 47 – 50 | Tutorial, equilibrado, rendimiento y contenido completo |
+| A · Prealfa: cimientos y mundo | 0.1 – 0.11 | 0 – 10 | Proyecto publicado, datos reales de 2010 y mapa 2D navegable |
+| B · Alfa 1: el país funciona | 0.12 – 0.30 | 11 – 29 | **Primera versión jugable:** gestionar la economía de un país en el tiempo |
+| C · Alfa 2: servicios e infraestructuras | 0.31 – 0.43 | 30 – 42 | Ministerios sociales, obras, transporte, energía y telecomunicaciones |
+| D · Alfa 3: economía real y mundo conectado | 0.44 – 0.55 | 43 – 54 | Recursos, industria, empresas, comercio, diplomacia y organizaciones |
+| E · Beta 1: política | 0.56 – 0.74 | 55 – 73 | Sociedad, partidos, parlamento, elecciones, leyes, regímenes, regiones e independentismo |
+| F · Beta 2: tecnología y poder | 0.75 – 0.90 | 74 – 89 | Árboles tecnológicos, ejército, guerra, seguridad y medio ambiente |
+| G · Beta 3: mundo vivo | 0.91 – 0.100 | 90 – 99 | IA de países, eventos, noticias y estadísticas |
+| H · Versión candidata | 0.101 – 0.108 | 100 – 107 | Tutorial, equilibrado, rendimiento y contenido completo |
 | **Lanzamiento** | **1.0** | — | Juego completo como Jefe de Gobierno |
 | I · Ampliaciones | 1.1 – 2.0 | — | Oposición, espionaje, nuclear, espacio, mods, multijugador… |
 
@@ -713,165 +716,322 @@ interface EstadoPartida {
 **Prueba en el móvil:** abrir el informe de cobertura en GitHub y revisar 3 países conocidos.
 **Hecho cuando:** existen datos de al menos 190 países y el informe de cobertura está publicado.
 
-#### Fase 2 — v0.3.0 · Mapa 2D base
-**Objetivo:** mapa político del mundo en 2010, fluido en móvil.
-**Depende de:** Fase 1.
+#### Fase 2 — v0.3.0 · Mapa: fronteras de 2010
+**Objetivo:** las fronteras de todos los países y territorios tal como eran el 1 de enero de 2010.
 **Tareas**
-1. Procesar Natural Earth (admin-0) y aplicar las correcciones de 2010 (sección 3).
-2. Simplificar geometrías a varios niveles de detalle (TopoJSON) para móvil.
-3. Dibujar el mapa en Canvas con proyección adecuada para estrategia (p. ej. Robinson o Equal Earth; decidir con el jugador).
-4. Zoom con pellizco y rueda, arrastre, límites del mundo y doble toque para acercar.
-5. Selección de país al tocar, con resaltado del borde.
-6. Colores por país (estables y distinguibles) y nombres que aparecen según el zoom.
-7. Capitales y ciudades principales al acercar.
-8. Medidor de rendimiento interno (fps) en modo desarrollo.
-9. **Audiovisual:** estilo visual del mapa (colores de países, océano y bordes), animaciones de zoom y de selección, y motor de sonido (Web Audio) con los primeros efectos de interfaz y los ajustes de sonido. Propuesta de 3D: globo terráqueo decorativo en la pantalla de inicio (el mapa de juego sigue en 2D).
+1. Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania y territorios especiales marcados.
+2. Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil.
+3. Hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte) y revisar sus datos estimados (decisión del jugador).
+4. **Audiovisual:** vista previa del mapa del mundo de 2010 en la galería audiovisual.
 
-**Tests:** cada país de los datos tiene geometría y viceversa (salvo excepciones documentadas).
-**Prueba en el móvil:** mover y acercar el mapa sin tirones; tocar países pequeños (Luxemburgo, Singapur) y que se seleccionen.
-**Hecho cuando:** el mapa va a unos 60 fps en un móvil de gama media y todos los países son seleccionables.
+**Tests:** cada país de los datos tiene geometría y viceversa (salvo excepciones documentadas); el nivel de detalle para móvil pesa menos de 1 MB.
+**Prueba en el móvil:** abrir la galería y ver el mapa de 2010: Sudán unido y Crimea dentro de Ucrania.
+**Hecho cuando:** todos los países y territorios de los datos tienen su frontera de 2010.
 
-#### Fase 3 — v0.4.0 · Regiones y capas del mapa
-**Objetivo:** regiones dentro de cada país y capas temáticas de información.
-**Depende de:** Fase 2.
+#### Fase 3 — v0.4.0 · Mapa: dibujo y navegación
+**Objetivo:** ver el mapa del mundo en el juego y moverse por él con fluidez.
 **Tareas**
-1. Procesar regiones (admin-1) y agruparlas cuando un país tenga demasiadas (máx. orientativo: 30 por país).
+1. Dibujar el mapa en Canvas con la proyección Equal Earth (propuesta de la sección 13; confirmar con el jugador).
+2. Zoom con pellizco y rueda, arrastre, límites del mundo y doble toque para acercar.
+3. Medidor de rendimiento (fps) en modo desarrollo.
+4. **Audiovisual:** estilo visual del mapa (colores de países, océano y bordes) y animación suave del zoom.
+
+**Tests:** la proyección sitúa ciudades conocidas donde corresponde; el zoom no sale de sus límites.
+**Prueba en el móvil:** mover y acercar el mapa con los dedos sin tirones.
+**Hecho cuando:** el mapa va a unos 60 fps en un móvil de gama media.
+
+#### Fase 4 — v0.5.0 · Mapa: selección, nombres y sonido
+**Objetivo:** tocar un país para seleccionarlo y reconocer el mapa por sus nombres.
+**Tareas**
+1. Selección de país al tocar, con resaltado del borde (también los países pequeños).
+2. Colores por país estables y distinguibles, y nombres que aparecen según el zoom.
+3. Capitales y ciudades principales al acercar.
+4. **Audiovisual:** motor de sonido (Web Audio), primeros efectos de interfaz, botón de silencio y animación de la selección.
+
+**Tests:** tocar cualquier punto del interior de un país lo selecciona; dos países vecinos nunca tienen el mismo color.
+**Prueba en el móvil:** tocar Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo.
+**Hecho cuando:** todos los países son seleccionables y el sonido se puede activar y silenciar.
+
+#### Fase 5 — v0.6.0 · Regiones del mundo
+**Objetivo:** las regiones de cada país, visibles y seleccionables al acercar.
+**Tareas**
+1. Procesar las regiones (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país).
 2. Datos básicos por región: población y PIB estimado (reparto proporcional si no hay dato).
-3. Mostrar regiones al superar cierto zoom.
-4. Sistema genérico de **capas** con leyenda: político, población, PIB per cápita, crecimiento, paro, deuda, inflación.
-5. Selector de capas (menú desplegable en móvil).
-6. Buscador de países y regiones con autocompletado.
-7. **Audiovisual:** rampas de color accesibles para cada capa, iconos de las capas, leyendas y transición animada al cambiar de capa.
+3. Mostrar y seleccionar las regiones a partir de cierto zoom.
+4. **Audiovisual:** transición animada entre la vista de países y la de regiones.
 
-**Tests:** cada región pertenece a un país existente; la suma de población de regiones ≈ población del país.
-**Prueba en el móvil:** cambiar de capa, leer la leyenda, buscar "Cataluña" y "Texas".
-**Hecho cuando:** las capas funcionan y las regiones se ven y seleccionan al acercar.
+**Tests:** cada región pertenece a un país existente; la suma de población de las regiones ≈ la del país.
+**Prueba en el móvil:** acercarse a España y tocar Cataluña y Andalucía.
+**Hecho cuando:** las regiones se ven y se seleccionan al acercar.
 
-#### Fase 4 — v0.5.0 · Fichas de país y nueva partida
-**Objetivo:** consultar cualquier país y empezar una partida eligiendo uno.
-**Depende de:** Fase 3.
+#### Fase 6 — v0.7.0 · Capas del mapa
+**Objetivo:** ver la información del mundo sobre el mapa, con capas y leyenda.
 **Tareas**
-1. Ficha de país (hoja deslizable en móvil): bandera, régimen, jefe de Estado y de Gobierno de 2010, población, PIB, indicadores clave, con fuente y aviso de estimados.
-2. Ficha de región.
-3. Pantalla "Nueva partida": elegir país en el mapa o en una lista ordenable, dificultad, eventos históricos sí o no, semilla.
-4. Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería, popularidad provisional) y barra inferior de navegación (secciones vacías por ahora).
-5. Base de interfaz: tema oscuro, tipografía, componentes reutilizables (paneles, pestañas, deslizadores, tablas, gráficos).
-6. **Audiovisual:** iconos de los regímenes, retratos genéricos ilustrados para los cargos (sin fotografías de personas reales), animaciones de hojas y pestañas, sonidos de navegación y animación de la elección de país.
+1. Sistema genérico de capas con leyenda.
+2. Capas de política, población, PIB per cápita, crecimiento, paro, deuda e inflación, con selector de capas (menú desplegable en móvil).
+3. **Audiovisual:** rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa.
 
-**Tests:** la ficha muestra datos para todos los países sin errores.
-**Prueba en el móvil:** crear una partida con España y con otro país; navegar por las secciones vacías.
-**Hecho cuando:** se puede empezar una partida con cualquier país y ver su ficha completa.
+**Tests:** cada capa da color a todos los países con dato y un color neutro a los que no lo tienen.
+**Prueba en el móvil:** cambiar de capa y leer la leyenda.
+**Hecho cuando:** las capas funcionan con su leyenda.
+
+#### Fase 7 — v0.8.0 · Componentes de interfaz
+**Objetivo:** las piezas de interfaz que usarán todas las pantallas.
+**Tareas**
+1. Base de interfaz: tema oscuro, tipografía y componentes reutilizables (hoja deslizable, pestañas, tablas, deslizadores y gráficos básicos).
+2. Muestrario de los componentes en la galería audiovisual.
+3. **Audiovisual:** animaciones de hojas y pestañas y sonidos de navegación.
+
+**Tests:** cada componente se dibuja sin errores a 360 px y se puede usar con el teclado.
+**Prueba en el móvil:** abrir el muestrario de la galería y probar cada componente con el dedo.
+**Hecho cuando:** los componentes funcionan en móvil y en PC.
+
+#### Fase 8 — v0.9.0 · Ficha de país
+**Objetivo:** consultar los datos de cualquier país.
+**Tareas**
+1. Datos de 2010 de régimen político y jefes de Estado y de Gobierno (script con fuente).
+2. Ficha de país (hoja deslizable en móvil): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados.
+3. **Audiovisual:** iconos de los regímenes y retratos genéricos ilustrados para los cargos (sin fotografías de personas reales).
+
+**Tests:** la ficha muestra datos de todos los países sin errores.
+**Prueba en el móvil:** tocar España, Japón y Somalilandia y revisar sus fichas.
+**Hecho cuando:** todos los países tienen una ficha completa.
+
+#### Fase 9 — v0.10.0 · Buscador y ficha de región
+**Objetivo:** encontrar cualquier país o región y consultar sus datos.
+**Tareas**
+1. Buscador de países y regiones con autocompletado.
+2. Ficha de región.
+3. **Audiovisual:** resaltado animado del resultado en el mapa.
+
+**Tests:** el buscador encuentra países y regiones escritos con y sin tildes.
+**Prueba en el móvil:** buscar «Cataluña» y «Texas» y abrir sus fichas.
+**Hecho cuando:** cualquier país o región se encuentra en pocos toques.
+
+#### Fase 10 — v0.11.0 · Nueva partida
+**Objetivo:** empezar una partida eligiendo cualquier país.
+**Tareas**
+1. Pantalla «Nueva partida»: elegir país en el mapa o en una lista ordenable, dificultad, eventos históricos sí o no y semilla.
+2. Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería y popularidad provisional) y barra inferior de navegación (secciones vacías por ahora).
+3. **Audiovisual:** animación de la elección de país y transición al comienzo de la partida.
+
+**Tests:** se puede crear una partida con cualquier país jugable.
+**Prueba en el móvil:** crear una partida con España y otra con otro país; navegar por las secciones vacías.
+**Hecho cuando:** se puede empezar una partida con cualquier país jugable.
 
 ---
 
 ### ETAPA B · Alfa 1: el país funciona
 
-#### Fase 5 — v0.6.0 · Motor de tiempo y guardado
-**Objetivo:** el tiempo avanza y la partida se puede guardar.
-**Depende de:** Fase 4.
+#### Fase 11 — v0.12.0 · Reloj del juego
+**Objetivo:** el tiempo del juego avanza, se pausa y cambia de velocidad.
 **Tareas**
-1. Reloj con pausa y velocidades (×1, ×2, ×4, ×8) y ritmos diario, semanal, mensual y anual.
-2. Motor de simulación en un Web Worker con comunicación por mensajes.
-3. Generador aleatorio determinista con semilla guardada.
-4. Sistema genérico de **efectos y modificadores** (sección 8).
-5. Guardado en IndexedDB (manual, automático mensual y varias ranuras).
-6. Exportar e importar partida como `.json`, con número de versión y **migraciones**.
-7. Pausa automática configurable ante eventos importantes.
-8. **Audiovisual:** reloj animado del paso del tiempo, sonidos de pausa y de cambio de velocidad, indicador de guardado y primera música ambiental sintetizada.
+1. Reloj con pausa y velocidades (×1, ×2, ×4 y ×8) y ritmos diario, semanal, mensual y anual.
+2. Decidir con el jugador la unidad de tiempo visible (idea de la issue n.º 3: reloj por horas del día, como en Power & Revolution) y aplicarla.
+3. **Audiovisual:** reloj animado del paso del tiempo y sonidos de pausa y de cambio de velocidad.
 
-**Tests:** dos partidas con la misma semilla y las mismas acciones dan el mismo resultado; guardar y cargar no altera el estado.
+**Tests:** un año de juego produce 365 pasos diarios, 52 semanales, 12 mensuales y 1 anual.
+**Prueba en el móvil:** pausar, cambiar de velocidad y ver cómo avanza la fecha.
+**Hecho cuando:** el tiempo avanza a cada velocidad y se detiene al pausar.
+
+#### Fase 12 — v0.13.0 · Motor en segundo plano
+**Objetivo:** la simulación calcula sin bloquear la pantalla y de forma repetible.
+**Tareas**
+1. Motor de simulación en un Web Worker con comunicación por mensajes.
+2. Generador aleatorio determinista con semilla guardada.
+3. **Audiovisual:** primera música ambiental sintetizada, con su propio volumen.
+
+**Tests:** dos partidas con la misma semilla y las mismas acciones dan el mismo resultado.
+**Prueba en el móvil:** jugar a ×8 y comprobar que los menús siguen respondiendo al instante.
+**Hecho cuando:** el tiempo avanza sin bloquear la interfaz.
+
+#### Fase 13 — v0.14.0 · Efectos y pausa automática
+**Objetivo:** una forma común de aplicar consecuencias y de avisar de lo importante.
+**Tareas**
+1. Sistema genérico de efectos y modificadores (sección 8).
+2. Pausa automática configurable ante eventos importantes.
+3. **Audiovisual:** aviso visual y sonoro de la pausa automática.
+
+**Tests:** un modificador con retraso y duración empieza y termina en las fechas correctas.
+**Prueba en el móvil:** activar y desactivar la pausa automática en Ajustes.
+**Hecho cuando:** los efectos se aplican y caducan solos, y la pausa automática funciona.
+
+#### Fase 14 — v0.15.0 · Guardar y cargar partidas
+**Objetivo:** la partida no se pierde nunca.
+**Tareas**
+1. Guardado en IndexedDB: manual, automático mensual y varias ranuras.
+2. Exportar e importar la partida como archivo .json, con número de versión y migraciones.
+3. **Audiovisual:** indicador de guardado y pantalla de cargar partida con la bandera y la fecha de cada ranura.
+
+**Tests:** guardar y cargar no altera el estado; una partida de una versión anterior se migra.
 **Prueba en el móvil:** avanzar un año a ×8, guardar, cerrar el navegador, volver y cargar.
-**Hecho cuando:** el tiempo avanza sin bloquear la interfaz y las partidas se recuperan siempre.
+**Hecho cuando:** las partidas se recuperan siempre.
 
-#### Fase 6 — v0.7.0 · Economía macro
-**Objetivo:** cada país tiene una economía que evoluciona mes a mes.
-**Depende de:** Fase 5.
+#### Fase 15 — v0.16.0 · Economía: producción y demanda
+**Objetivo:** cada país produce, consume e invierte mes a mes.
 **Tareas**
 1. Modelo de producción y demanda (6.1).
-2. Inflación, paro (Okun), productividad y crecimiento potencial.
-3. Consumo, inversión, ahorro y confianza.
-4. Historial mensual de indicadores y pantalla **Economía** con gráficos.
-5. Capa del mapa con crecimiento e inflación en tiempo real.
-6. **Audiovisual:** gráficos históricos animados, iconos de los indicadores macroeconómicos y sonidos de las alertas económicas.
+2. Consumo, inversión, ahorro y confianza de consumidores y empresas.
+3. **Audiovisual:** iconos de los indicadores macroeconómicos que falten.
 
-**Tests:** simulación de 5 años sin intervención en los 20 mayores países con valores en rangos creíbles (crecimiento entre −10 % y +15 %, inflación entre −5 % y +30 %, salvo casos justificados).
+**Tests:** sin intervención, el PIB de los 20 mayores países evoluciona en rangos creíbles durante 5 años.
+**Prueba en el móvil:** avanzar un año y ver cambiar el PIB en la ficha de varios países.
+**Hecho cuando:** el PIB de todos los países evoluciona mes a mes.
+
+#### Fase 16 — v0.17.0 · Economía: inflación y paro
+**Objetivo:** los precios y el empleo responden a la economía.
+**Tareas**
+1. Inflación, paro (ley de Okun), productividad y crecimiento potencial.
+2. Test de credibilidad: 5 años sin intervención en los 20 mayores países.
+3. **Audiovisual:** sonidos de las alertas económicas.
+
+**Tests:** en 5 años sin intervención, crecimiento entre −10 % y +15 % e inflación entre −5 % y +30 %, salvo casos justificados.
+**Prueba en el móvil:** jugar un año y revisar el paro y la inflación de España.
+**Hecho cuando:** pasa el test de credibilidad.
+
+#### Fase 17 — v0.18.0 · Pantalla de Economía
+**Objetivo:** ver la evolución de la economía con gráficos.
+**Tareas**
+1. Historial mensual de indicadores.
+2. Pantalla «Economía» con gráficos y capa del mapa con crecimiento e inflación en tiempo real.
+3. **Audiovisual:** gráficos históricos animados.
+
+**Tests:** el historial guarda un valor por mes de cada indicador, sin huecos.
 **Prueba en el móvil:** jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido.
-**Hecho cuando:** pasa el test de credibilidad y los gráficos funcionan.
+**Hecho cuando:** los gráficos funcionan con los datos de la partida.
 
-#### Fase 7 — v0.8.0 · Banco central, moneda y sistema financiero
-**Objetivo:** política monetaria, tipos de cambio y crisis financieras.
-**Depende de:** Fase 6.
+#### Fase 18 — v0.19.0 · Banco central y tipos de interés
+**Objetivo:** política monetaria.
 **Tareas**
 1. Banco central (independiente o no) con regla tipo Taylor.
 2. Zona euro: el BCE decide para los 16 miembros de 2010.
-3. Regímenes de moneda: flotante, fijo, unión monetaria; devaluar y revaluar.
-4. Reservas de divisas y controles de capital.
-5. Sistema bancario simplificado: solvencia, crédito, rescates.
-6. Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio.
-7. **Audiovisual:** símbolos de las monedas, visualización de los tipos de interés y del tipo de cambio, y animación del contagio de una crisis en el mapa.
+3. **Audiovisual:** visualización de los tipos de interés y de su evolución.
 
-**Tests:** subir los tipos reduce la inflación y el crecimiento con retraso; una crisis bancaria se contagia a socios con mucha exposición.
+**Tests:** subir los tipos reduce la inflación y el crecimiento con retraso.
 **Prueba en el móvil:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses.
-**Hecho cuando:** la política monetaria funciona y puede producirse una crisis financiera.
+**Hecho cuando:** la política monetaria funciona.
 
-#### Fase 8 — v0.9.0 · Presupuesto y deuda
-**Objetivo:** el Estado tiene ingresos, gastos y deuda.
-**Depende de:** Fase 7.
+#### Fase 19 — v0.20.0 · Moneda y divisas
+**Objetivo:** tipos de cambio y regímenes de moneda.
+**Tareas**
+1. Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar.
+2. Reservas de divisas y controles de capital.
+3. **Audiovisual:** símbolos de las monedas y gráfico del tipo de cambio.
+
+**Tests:** devaluar abarata las exportaciones y encarece las importaciones.
+**Prueba en el móvil:** devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses.
+**Hecho cuando:** cada país tiene su régimen de moneda y se puede cambiar.
+
+#### Fase 20 — v0.21.0 · Bancos, bolsa y crisis
+**Objetivo:** crisis financieras con contagio.
+**Tareas**
+1. Sistema bancario simplificado: solvencia, crédito y rescates.
+2. Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio.
+3. **Audiovisual:** animación del contagio de una crisis en el mapa.
+
+**Tests:** una crisis bancaria se contagia a los socios con mucha exposición.
+**Prueba en el móvil:** seguir en el mapa el contagio de una crisis en una partida de prueba.
+**Hecho cuando:** puede producirse una crisis financiera y contagiarse.
+
+#### Fase 21 — v0.22.0 · Presupuesto: ingresos y gastos
+**Objetivo:** el Estado tiene ingresos y gastos por partida.
 **Tareas**
 1. Estructura de ingresos y gastos por partida y ministerio (6.2).
-2. Datos iniciales de 2010 (gasto por función y deuda real).
-3. Déficit, emisión de bonos, intereses, prima de riesgo y rating.
-4. Impago y petición de ayuda al FMI.
-5. Pantalla **Presupuesto** con deslizadores, previsión a 12 meses y comparación interanual.
-6. Prórroga presupuestaria (preparada para cuando exista el parlamento).
-7. **Audiovisual:** deslizadores con respuesta visual y sonora, gráfico de ingresos y gastos y distintivo animado del rating.
+2. Datos iniciales de 2010: gasto por función y deuda real.
+3. **Audiovisual:** gráfico de ingresos y gastos.
+
+**Tests:** la suma de las partidas es el total y el saldo coincide con el déficit.
+**Prueba en el móvil:** ver el presupuesto inicial de España y compararlo con el de Alemania.
+**Hecho cuando:** todos los países tienen su presupuesto de 2010.
+
+#### Fase 22 — v0.23.0 · Deuda, prima de riesgo y rating
+**Objetivo:** el déficit se convierte en deuda y los mercados reaccionan.
+**Tareas**
+1. Déficit, emisión de bonos, intereses, prima de riesgo y rating.
+2. Impago y petición de ayuda al FMI.
+3. **Audiovisual:** distintivo animado del rating.
 
 **Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo.
+**Prueba en el móvil:** ver la prima de riesgo de Grecia durante 2010.
+**Hecho cuando:** la deuda y el rating responden al déficit.
+
+#### Fase 23 — v0.24.0 · Pantalla de Presupuesto
+**Objetivo:** editar el presupuesto.
+**Tareas**
+1. Pantalla «Presupuesto» con deslizadores, previsión a 12 meses y comparación con el año anterior.
+2. Prórroga presupuestaria (preparada para cuando exista el parlamento).
+3. **Audiovisual:** deslizadores con respuesta visual y sonora.
+
+**Tests:** la previsión a 12 meses coincide con lo que pasa si no cambia nada más.
 **Prueba en el móvil:** subir mucho el gasto y comprobar que el rating baja.
 **Hecho cuando:** el presupuesto es editable y sus efectos son coherentes.
 
-#### Fase 9 — v0.10.0 · Impuestos
+#### Fase 24 — v0.25.0 · Impuestos: modelo
 **Objetivo:** sistema fiscal completo.
-**Depende de:** Fase 8.
 **Tareas**
 1. Todos los impuestos de la sección 6.3 con sus parámetros.
 2. Recaudación con curva de Laffer suave, economía sumergida y evasión.
-3. Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización.
-4. Pantalla **Impuestos** con simulador ("si subes el IVA un punto, recaudarás X").
-5. **Audiovisual:** iconos de cada impuesto, curva de Laffer animada y simulador visual de la recaudación.
+3. **Audiovisual:** iconos de cada impuesto.
 
 **Tests:** subir un impuesto aumenta la recaudación hasta un punto y después la reduce.
+**Prueba en el móvil:** revisar los impuestos de España en 2010.
+**Hecho cuando:** todos los impuestos recaudan.
+
+#### Fase 25 — v0.26.0 · Impuestos: efectos y simulador
+**Objetivo:** ver qué pasa al tocar los impuestos.
+**Tareas**
+1. Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización.
+2. Pantalla «Impuestos» con simulador («si subes el IVA un punto, recaudarás X»).
+3. **Audiovisual:** curva de Laffer animada y simulador visual de la recaudación.
+
+**Tests:** el simulador acierta la recaudación real a 6 meses con un margen razonable.
 **Prueba en el móvil:** subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses.
 **Hecho cuando:** todos los impuestos funcionan y el simulador acierta de forma aproximada.
 
-#### Fase 10 — v0.11.0 · Interfaz de gobierno
-**Objetivo:** gobernar desde un Consejo de Ministros.
-**Depende de:** Fase 9.
+#### Fase 26 — v0.27.0 · Consejo de Ministros
+**Objetivo:** gobernar desde los ministerios.
 **Tareas**
 1. Ministerios de la sección 6.4 con presupuesto, indicadores y alertas (las acciones se irán añadiendo en cada fase).
-2. Ministros: competencia, ideología, lealtad; nombrar y cesar.
-3. **Asesores:** avisos con propuestas de medidas.
-4. Centro de notificaciones y teletipo de noticias.
-5. Panel de resumen mensual ("Informe del mes").
-6. **Audiovisual:** iconos de los 20 ministerios, retratos genéricos de los ministros, teletipo animado, sonidos de notificación e ilustración del informe del mes. Propuesta de 3D: sala del Consejo de Ministros.
+2. Ministros: competencia, ideología y lealtad; nombrar y cesar.
+3. **Audiovisual:** iconos de los 20 ministerios y retratos genéricos de los ministros.
 
 **Tests:** cada ministerio tiene datos para todos los países.
-**Prueba en el móvil:** abrir el Consejo de Ministros, cesar a un ministro y leer el informe del mes.
+**Prueba en el móvil:** abrir el Consejo de Ministros y cesar a un ministro.
 **Hecho cuando:** todo lo construido hasta ahora se maneja desde los ministerios.
 
-#### Fase 11 — v0.12.0 · Demografía y población
+#### Fase 27 — v0.28.0 · Asesores, noticias e informe del mes
+**Objetivo:** estar informado sin tener que buscar.
+**Tareas**
+1. Asesores: avisos con propuestas de medidas.
+2. Centro de notificaciones y teletipo de noticias.
+3. Panel «Informe del mes».
+4. **Audiovisual:** teletipo animado, sonidos de notificación e ilustración del informe del mes.
+
+**Tests:** cada aviso de un asesor trae al menos una propuesta que se puede aplicar.
+**Prueba en el móvil:** leer el informe del mes y aplicar la propuesta de un asesor.
+**Hecho cuando:** el jugador se entera de lo importante sin buscarlo.
+
+#### Fase 28 — v0.29.0 · Demografía
 **Objetivo:** población viva.
-**Depende de:** Fase 10.
 **Tareas**
 1. Pirámide de edades, natalidad, mortalidad y envejecimiento.
-2. Migración entre países según renta, seguridad y leyes.
-3. Población por región y urbanización.
-4. Pantalla de población y capa del mapa.
-5. **Audiovisual:** pirámide de población animada y flujos migratorios animados en el mapa.
+2. Migración entre países según la renta, la seguridad y las leyes.
+3. **Audiovisual:** pirámide de población animada.
 
 **Tests:** 10 años de simulación dan cifras de población cercanas a las reales de 2020 (±5 % en los países grandes).
 **Prueba en el móvil:** ver la pirámide de Japón y la de Nigeria.
 **Hecho cuando:** la demografía evoluciona de forma creíble.
+
+#### Fase 29 — v0.30.0 · Población por región
+**Objetivo:** la población se reparte y se mueve dentro de cada país.
+**Tareas**
+1. Población por región y urbanización.
+2. Pantalla de población y capa del mapa.
+3. **Audiovisual:** flujos migratorios animados en el mapa.
+
+**Tests:** la suma de la población de las regiones es igual a la del país en todo momento.
+**Prueba en el móvil:** ver en la capa de población cómo crecen las capitales en 5 años.
+**Hecho cuando:** la población de cada región evoluciona.
 
 > 🎮 **HITO ALFA 1:** ya se puede jugar a gestionar la economía de un país en el tiempo. Partida de prueba recomendada: España 2010–2014.
 
@@ -879,107 +1039,150 @@ interface EstadoPartida {
 
 ### ETAPA C · Alfa 2: servicios e infraestructuras
 
-#### Fase 12 — v0.13.0 · Trabajo, pensiones y Seguridad Social
-**Objetivo:** mercado laboral y protección social (6.13).
-**Depende de:** Fase 11.
+#### Fase 30 — v0.31.0 · Mercado laboral
+**Objetivo:** salarios, contratos y protección por desempleo (6.13).
 **Tareas**
-1. Salario mínimo y medio, jornada, despido, temporalidad, convenios y poder sindical.
+1. Salario mínimo y medio, jornada, despido, temporalidad, convenios colectivos y poder sindical.
 2. Prestación por desempleo, renta mínima y dependencia.
-3. Pensiones: reparto o capitalización, edad de jubilación, fondo de reserva y sostenibilidad según la demografía.
-4. Huelgas sectoriales y generales (versión básica; se amplía en la Fase 26).
-5. Acciones del Ministerio de Trabajo.
-6. **Audiovisual:** iconos del mercado laboral y las prestaciones, gráfico de la proyección de pensiones y animación y sonido de las huelgas.
+3. **Audiovisual:** iconos del mercado laboral y de las prestaciones.
 
-**Tests:** subir la edad de jubilación mejora el saldo de pensiones y empeora la satisfacción de los mayores (preparado para la Fase 25).
+**Tests:** subir mucho el salario mínimo sube los salarios bajos y, por encima de cierto nivel, el paro.
+**Prueba en el móvil:** subir el salario mínimo y ver el paro al cabo de un año.
+**Hecho cuando:** el mercado laboral responde a las leyes y al salario mínimo.
+
+#### Fase 31 — v0.32.0 · Pensiones y huelgas
+**Objetivo:** sistema de pensiones y primeros conflictos laborales.
+**Tareas**
+1. Pensiones: reparto o capitalización, edad de jubilación, fondo de reserva y sostenibilidad según la demografía.
+2. Huelgas sectoriales y generales (versión básica; se amplía en la Fase 58) y acciones del Ministerio de Trabajo.
+3. **Audiovisual:** gráfico de la proyección de las pensiones y animación y sonido de las huelgas.
+
+**Tests:** subir la edad de jubilación mejora el saldo de las pensiones y empeora la satisfacción de los mayores.
 **Prueba en el móvil:** reformar las pensiones y ver la proyección a 20 años.
 **Hecho cuando:** el sistema de pensiones responde a la demografía y a las reformas.
 
-#### Fase 13 — v0.14.0 · Sanidad
+#### Fase 32 — v0.33.0 · Sanidad
 **Objetivo:** sistema sanitario (6.11).
-**Depende de:** Fase 12.
 **Tareas**
-1. Indicadores: esperanza de vida, mortalidad infantil, personal, camas, listas de espera.
-2. Modelos: público universal, mixto y privado; copago.
-3. Personal sanitario: formación (enlazada con educación en la Fase 14) y emigración.
-4. Epidemias básicas con contagio entre países.
-5. Acciones: contratar personal, vacunación, campañas de prevención.
-6. **Audiovisual:** iconos sanitarios, animación de la propagación de epidemias en el mapa y sonidos de alerta sanitaria.
+1. Indicadores: esperanza de vida, mortalidad infantil, personal, camas y listas de espera.
+2. Modelos público universal, mixto y privado; copago.
+3. Personal sanitario: formación (se enlaza con la educación en la Fase 34) y emigración.
+4. **Audiovisual:** iconos sanitarios.
 
 **Tests:** recortar el gasto sanitario empeora las listas de espera en meses y la esperanza de vida en años.
-**Prueba en el móvil:** recortar sanidad un 20 % y observar los avisos del asesor.
-**Hecho cuando:** la sanidad responde al gasto y a las decisiones con retrasos realistas.
+**Prueba en el móvil:** recortar la sanidad un 20 % y observar los avisos del asesor.
+**Hecho cuando:** la sanidad responde al gasto con retrasos realistas.
 
-#### Fase 14 — v0.15.0 · Educación
+#### Fase 33 — v0.34.0 · Epidemias
+**Objetivo:** brotes que se extienden entre países.
+**Tareas**
+1. Epidemias básicas con contagio entre países según el comercio y los viajes.
+2. Acciones: contratar personal, vacunación, cuarentenas y campañas de prevención.
+3. **Audiovisual:** animación de la propagación en el mapa y sonidos de alerta sanitaria.
+
+**Tests:** una epidemia se extiende más rápido entre países muy relacionados y la vacunación la frena.
+**Prueba en el móvil:** en una partida de prueba con una epidemia, seguirla en el mapa y vacunar.
+**Hecho cuando:** las epidemias se propagan y se pueden contener.
+
+#### Fase 34 — v0.35.0 · Educación
 **Objetivo:** sistema educativo (6.12).
-**Depende de:** Fase 13.
 **Tareas**
 1. Niveles educativos, escolarización, abandono, calidad y universitarios.
-2. Profesorado, becas, tasas.
-3. Efectos con retraso en productividad, paro estructural e investigadores.
-4. Acciones del Ministerio de Educación.
-5. **Audiovisual:** iconos de los niveles educativos y gráficos que muestren los efectos con retraso.
+2. Profesorado, becas, tasas y acciones del Ministerio de Educación.
+3. Efectos con retraso en la productividad, el paro estructural y los investigadores.
+4. **Audiovisual:** iconos de los niveles educativos y gráficos de los efectos con retraso.
 
 **Tests:** más gasto en educación mejora la productividad a 10–15 años, no antes.
 **Prueba en el móvil:** comparar la calidad educativa de varios países en una capa del mapa.
 **Hecho cuando:** la educación alimenta la economía a largo plazo.
 
-#### Fase 15 — v0.16.0 · Infraestructuras: base y cola de obras
-**Objetivo:** construir y mantener infraestructuras por región (6.5).
-**Depende de:** Fase 14.
+#### Fase 35 — v0.36.0 · Infraestructuras
+**Objetivo:** infraestructuras por región que envejecen (6.5).
 **Tareas**
 1. Modelo genérico de infraestructura: tipo, capacidad, estado, coste, plazo, mantenimiento y empleo.
-2. Infraestructuras iniciales de 2010 estimadas por región (hospitales, colegios, universidades, prisiones, comisarías).
-3. Cola de obras por ministerio, prioridades, retrasos por falta de presupuesto o corrupción.
-4. Degradación sin mantenimiento.
-5. Pantalla **Infraestructuras** y capa del mapa.
-6. **Audiovisual:** iconos de cada tipo de infraestructura, animación de la obra en curso y de la inauguración, y sonidos de construcción. Propuesta de 3D: maquetas sencillas de edificios en la ficha de región.
+2. Infraestructuras iniciales de 2010 estimadas por región (hospitales, colegios, universidades, prisiones y comisarías).
+3. Degradación sin mantenimiento.
+4. **Audiovisual:** iconos de cada tipo de infraestructura.
 
-**Tests:** una obra sin presupuesto se retrasa; una infraestructura sin mantenimiento pierde capacidad.
+**Tests:** una infraestructura sin mantenimiento pierde capacidad.
+**Prueba en el móvil:** ver los hospitales y colegios de varias regiones de España.
+**Hecho cuando:** cada región tiene sus infraestructuras de 2010.
+
+#### Fase 36 — v0.37.0 · Obras
+**Objetivo:** construir y mantener infraestructuras.
+**Tareas**
+1. Cola de obras por ministerio, prioridades y retrasos por falta de presupuesto o corrupción.
+2. Pantalla «Infraestructuras» y capa del mapa.
+3. **Audiovisual:** animación de la obra en curso y de la inauguración, sonidos de construcción y, si aporta al juego, maquetas 3D sencillas de los edificios en la ficha de región.
+
+**Tests:** una obra sin presupuesto se retrasa.
 **Prueba en el móvil:** construir un hospital en una región y seguirlo hasta su inauguración.
 **Hecho cuando:** las obras se construyen, cuestan y afectan a los indicadores regionales.
 
-#### Fase 16 — v0.17.0 · Transporte y logística
+#### Fase 37 — v0.38.0 · Transporte
 **Objetivo:** redes de transporte.
-**Depende de:** Fase 15.
 **Tareas**
-1. Carreteras, autopistas, ferrocarril convencional y alta velocidad, metro, puertos y aeropuertos por región.
-2. Índice de conectividad regional que afecta a la productividad, el turismo y el comercio.
-3. Conexiones entre regiones y con otros países (preparado para logística militar).
-4. Capa del mapa de transporte.
-5. **Audiovisual:** trazado de las redes de transporte en el mapa con animación del tráfico e iconos de cada medio.
+1. Carreteras, autopistas, ferrocarril convencional y de alta velocidad, metro, puertos y aeropuertos por región.
+2. Índice de conectividad regional (productividad, turismo y comercio) y conexiones entre regiones y con otros países.
+3. **Audiovisual:** trazado de las redes en el mapa con tráfico animado, iconos de cada medio y capa de transporte.
 
 **Tests:** mejorar la conectividad de una región aumenta su producción.
 **Prueba en el móvil:** ver la red de alta velocidad de España en 2010 en la capa de transporte.
 **Hecho cuando:** el transporte influye en la economía regional.
 
-#### Fase 17 — v0.18.0 · Energía y red eléctrica
-**Objetivo:** sistema energético completo (6.6).
-**Depende de:** Fase 16.
+#### Fase 38 — v0.39.0 · Energía: centrales y demanda
+**Objetivo:** producir la electricidad que se consume (6.6).
 **Tareas**
-1. Centrales por tipo y región con capacidad y factor de carga (datos de 2010).
+1. Centrales por tipo y región con su capacidad y su factor de carga (datos de 2010).
 2. Demanda eléctrica por sectores y hogares.
-3. Red de transporte entre regiones e interconexiones internacionales.
-4. Precios mayorista y minorista; apagones.
-5. Combustibles: petróleo y gas producidos o importados, gasoductos, gas natural licuado, reservas estratégicas.
-6. Pantalla **Energía** (mix, demanda, red, precios) y capa del mapa.
-7. Acciones del Ministerio de Energía.
-8. **Audiovisual:** iconos de las centrales por tipo, animación del flujo eléctrico en la red y efecto visual y sonoro de los apagones. Propuesta de 3D: maqueta de cada tipo de central.
+3. **Audiovisual:** iconos de las centrales por tipo y gráfico del mix eléctrico.
+
+**Tests:** la generación inicial de cada país cuadra con sus datos de 2010 (±5 %).
+**Prueba en el móvil:** ver el mix eléctrico de Francia y el de Polonia.
+**Hecho cuando:** cada país produce su electricidad de 2010.
+
+#### Fase 39 — v0.40.0 · Red eléctrica, precios y apagones
+**Objetivo:** la electricidad llega o no llega.
+**Tareas**
+1. Red de transporte entre regiones e interconexiones internacionales.
+2. Precios mayorista y minorista; apagones.
+3. **Audiovisual:** animación del flujo eléctrico en la red y efecto visual y sonoro de los apagones.
 
 **Tests:** cerrar centrales sin reponer capacidad provoca subida de precios y apagones.
 **Prueba en el móvil:** cerrar todas las nucleares y observar el resultado en un año.
 **Hecho cuando:** la energía limita y encarece la economía de forma realista.
 
-#### Fase 18 — v0.19.0 · Telecomunicaciones, vivienda y agua
-**Objetivo:** completar los servicios básicos.
-**Depende de:** Fase 17.
+#### Fase 40 — v0.41.0 · Combustibles y pantalla de Energía
+**Objetivo:** petróleo y gas, y gestión desde el Ministerio de Energía.
 **Tareas**
-1. Telecomunicaciones (6.7): fibra, 3G/4G, centros de datos, ciberseguridad, control de internet.
-2. Vivienda: precio, vivienda pública, regulación del alquiler, sinhogarismo.
-3. Agua: presas, depuradoras, desaladoras, regadíos, estrés hídrico.
-4. **Audiovisual:** iconos de telecomunicaciones, vivienda y agua, y animación del despliegue de cobertura en el mapa.
+1. Combustibles: petróleo y gas producidos o importados, gasoductos, gas natural licuado y reservas estratégicas.
+2. Pantalla «Energía» (mix, demanda, red y precios), capa del mapa y acciones del Ministerio de Energía.
+3. **Audiovisual:** gráficos animados de la pantalla de Energía y, si aporta al juego, maqueta 3D de cada tipo de central.
+
+**Tests:** cortar el gas importado sube el precio de la electricidad.
+**Prueba en el móvil:** construir una central y ver el cambio en el mix y en el precio.
+**Hecho cuando:** la energía se gestiona por completo desde su ministerio.
+
+#### Fase 41 — v0.42.0 · Telecomunicaciones
+**Objetivo:** red y telecomunicaciones (6.7).
+**Tareas**
+1. Fibra, 3G/4G, centros de datos, ciberseguridad y control de internet.
+2. Efectos en la productividad de los servicios, el sector TIC, la educación y los jóvenes.
+3. **Audiovisual:** iconos de telecomunicaciones y animación del despliegue de cobertura en el mapa.
 
 **Tests:** más cobertura de banda ancha mejora la productividad de los servicios.
 **Prueba en el móvil:** desplegar fibra en una región y comprobar el efecto.
+**Hecho cuando:** las telecomunicaciones influyen en la economía.
+
+#### Fase 42 — v0.43.0 · Vivienda y agua
+**Objetivo:** completar los servicios básicos.
+**Tareas**
+1. Vivienda: precio, vivienda pública, regulación del alquiler y sinhogarismo.
+2. Agua: presas, depuradoras, desaladoras, regadíos y estrés hídrico.
+3. **Audiovisual:** iconos de vivienda y agua.
+
+**Tests:** más vivienda pública reduce el sinhogarismo; sin agua suficiente baja la producción agraria.
+**Prueba en el móvil:** construir vivienda pública y ver el precio del alquiler.
 **Hecho cuando:** todos los ministerios de servicios tienen contenido real.
 
 > 🎮 **HITO ALFA 2:** el país completo funciona por dentro: servicios, obras, transporte y energía.
@@ -988,91 +1191,138 @@ interface EstadoPartida {
 
 ### ETAPA D · Alfa 3: economía real y mundo conectado
 
-#### Fase 19 — v0.20.0 · Recursos naturales y precios mundiales
-**Objetivo:** recursos con reservas, producción y mercado mundial (6.8).
-**Depende de:** Fase 18.
+#### Fase 43 — v0.44.0 · Recursos naturales
+**Objetivo:** recursos con reservas y producción (6.8).
 **Tareas**
-1. Reservas y producción por país y región (datos de 2010).
+1. Reservas y producción por país y región (datos de 2010), completando la producción de hierro, níquel y tierras raras que faltó en la Fase 1.
 2. Agotamiento, exploración y descubrimientos.
-3. Precios mundiales por oferta y demanda, con volatilidad.
-4. Acciones: licencias, regalías, nacionalización, prohibición de exportar, reservas estratégicas.
-5. Capa de recursos en el mapa.
-6. **Audiovisual:** iconos de los 18 recursos, gráfico de precios mundiales en movimiento y animación de los descubrimientos.
+3. **Audiovisual:** iconos de los 18 recursos y capa de recursos en el mapa.
+
+**Tests:** producir agota las reservas; ningún país produce un recurso del que no tiene reservas.
+**Prueba en el móvil:** ver en la capa de recursos dónde están el petróleo y el litio.
+**Hecho cuando:** cada país tiene sus recursos de 2010.
+
+#### Fase 44 — v0.45.0 · Precios mundiales de los recursos
+**Objetivo:** mercado mundial de recursos.
+**Tareas**
+1. Precios mundiales por oferta y demanda, con volatilidad.
+2. Acciones: licencias, regalías, nacionalización, prohibición de exportar y reservas estratégicas.
+3. **Audiovisual:** gráfico de precios mundiales en movimiento y animación de los descubrimientos.
 
 **Tests:** cortar la producción de un gran exportador sube el precio mundial.
 **Prueba en el móvil:** como Arabia Saudí, reducir la producción de petróleo y ver el precio.
 **Hecho cuando:** los recursos generan ingresos y dependencias reales.
 
-#### Fase 20 — v0.21.0 · Sectores productivos e industria
-**Objetivo:** economía dividida en unos 28 sectores (6.9).
-**Depende de:** Fase 19.
+#### Fase 45 — v0.46.0 · Sectores productivos
+**Objetivo:** la economía dividida en unos 28 sectores (6.9).
 **Tareas**
 1. Sectores con producción, empleo, salarios, productividad e inversión.
-2. Insumos entre sectores (tabla simplificada) y de recursos y energía.
-3. Subvenciones y planes industriales por sector.
-4. Pantalla de sectores dentro de **Economía**.
-5. **Audiovisual:** iconos de los 28 sectores y diagrama animado de los insumos entre sectores.
+2. Insumos entre sectores (tabla simplificada), de recursos y de energía.
+3. **Audiovisual:** iconos de los 28 sectores.
 
-**Tests:** una subida del petróleo encarece la energía, frena la industria y beneficia a los productores.
-**Prueba en el móvil:** lanzar un plan para el sector automoción y seguir su empleo.
+**Tests:** el PIB es la suma de los sectores; una subida del petróleo encarece la energía, frena la industria y beneficia a los productores.
+**Prueba en el móvil:** ver los sectores más grandes de Alemania y de Arabia Saudí.
 **Hecho cuando:** el PIB es la suma de sectores interconectados.
 
-#### Fase 21 — v0.22.0 · Empresas
+#### Fase 46 — v0.47.0 · Política industrial
+**Objetivo:** actuar sobre cada sector.
+**Tareas**
+1. Subvenciones y planes industriales por sector.
+2. Pantalla de sectores dentro de «Economía».
+3. **Audiovisual:** diagrama animado de los insumos entre sectores.
+
+**Tests:** subvencionar un sector aumenta su empleo y cuesta lo previsto.
+**Prueba en el móvil:** lanzar un plan para el sector automoción y seguir su empleo.
+**Hecho cuando:** el jugador puede impulsar cualquier sector.
+
+#### Fase 47 — v0.48.0 · Empresas
 **Objetivo:** empresas agregadas, públicas y privadas.
-**Depende de:** Fase 20.
 **Tareas**
 1. Empresas agregadas por sector y país (públicas y privadas).
-2. Nacionalizar, privatizar, rescatar, crear empresas públicas.
-3. Inversión extranjera directa y deslocalización.
-4. Autorizar o bloquear fusiones (básico).
-5. **Audiovisual:** emblemas genéricos de empresas por sector (sin logotipos reales) y animación de nacionalizaciones y privatizaciones.
+2. Nacionalizar, privatizar, rescatar y crear empresas públicas.
+3. **Audiovisual:** emblemas genéricos de empresas por sector (sin logotipos reales).
 
-**Tests:** subir mucho los impuestos de sociedades provoca deslocalización.
-**Prueba en el móvil:** nacionalizar el sector eléctrico y ver el impacto en presupuesto y precios.
+**Tests:** nacionalizar pasa los beneficios de la empresa al presupuesto.
+**Prueba en el móvil:** nacionalizar el sector eléctrico y ver el impacto en el presupuesto y los precios.
+**Hecho cuando:** el Estado puede ser empresario.
+
+#### Fase 48 — v0.49.0 · Inversión extranjera y fusiones
+**Objetivo:** las empresas responden al entorno.
+**Tareas**
+1. Inversión extranjera directa y deslocalización.
+2. Autorizar o bloquear fusiones (básico).
+3. **Audiovisual:** animación en el mapa de inversiones, nacionalizaciones y deslocalizaciones.
+
+**Tests:** subir mucho el impuesto de sociedades provoca deslocalización.
+**Prueba en el móvil:** bajar el impuesto de sociedades y ver llegar inversión extranjera.
 **Hecho cuando:** las empresas responden al entorno y al gobierno.
 
-#### Fase 22 — v0.23.0 · Comercio internacional
+#### Fase 49 — v0.50.0 · Comercio: flujos
 **Objetivo:** flujos comerciales entre países (6.10).
-**Depende de:** Fase 21.
 **Tareas**
 1. Matriz de comercio bilateral inicial (datos de 2010 o modelo de gravedad).
-2. Evolución según demanda, precios, distancia, aranceles y relaciones.
-3. Aranceles por categoría, cuotas, subvenciones a la exportación.
-4. Tratados de libre comercio y uniones aduaneras.
-5. Embargos y sanciones.
-6. Pantalla **Comercio** con socios principales y dependencias.
-7. **Audiovisual:** líneas animadas de los flujos comerciales en el mapa e iconos de los bienes.
+2. Evolución según la demanda, los precios, la distancia, los aranceles y las relaciones.
+3. **Audiovisual:** líneas animadas de los flujos comerciales en el mapa.
 
-**Tests:** sancionar a un socio reduce el comercio de ambos.
-**Prueba en el móvil:** poner aranceles a China y ver precios, exportaciones y reacción.
+**Tests:** el comercio inicial de cada país cuadra con su comercio de 2010 en % del PIB.
+**Prueba en el móvil:** ver en el mapa los principales socios de España.
 **Hecho cuando:** el comercio conecta las economías del mundo.
 
-#### Fase 23 — v0.24.0 · Diplomacia y relaciones
-**Objetivo:** relaciones entre países (6.19).
-**Depende de:** Fase 22.
+#### Fase 50 — v0.51.0 · Comercio: política comercial
+**Objetivo:** aranceles, tratados y sanciones.
 **Tareas**
-1. Relaciones bilaterales iniciales de 2010 (afinidad, alianzas, conflictos conocidos).
-2. Acciones: embajadas, visitas, cumbres, tratados, ayuda, préstamos, sanciones, expulsiones, reconocimiento de Estados.
-3. Imagen internacional.
-4. Pantalla **Diplomacia** y capa de relaciones en el mapa.
-5. **Audiovisual:** iconos de las acciones diplomáticas, animación de los cambios de relación, escenas ilustradas de visitas y cumbres, y sonidos de firma de tratados.
+1. Aranceles por categoría, cuotas y subvenciones a la exportación.
+2. Tratados de libre comercio y uniones aduaneras; embargos y sanciones.
+3. Pantalla «Comercio» con los socios principales y las dependencias.
+4. **Audiovisual:** iconos de los bienes comerciados.
 
-**Tests:** acciones hostiles bajan las relaciones y los aliados del afectado reaccionan.
-**Prueba en el móvil:** mejorar relaciones con un país mediante visitas y un tratado.
+**Tests:** sancionar a un socio reduce el comercio de ambos.
+**Prueba en el móvil:** poner aranceles a China y ver los precios, las exportaciones y su reacción.
+**Hecho cuando:** la política comercial tiene efectos visibles.
+
+#### Fase 51 — v0.52.0 · Relaciones internacionales
+**Objetivo:** relaciones entre países (6.19).
+**Tareas**
+1. Relaciones bilaterales iniciales de 2010 (afinidad, alianzas y conflictos conocidos).
+2. Imagen internacional.
+3. Pantalla «Diplomacia» y capa de relaciones en el mapa.
+4. **Audiovisual:** animación de los cambios de relación en el mapa.
+
+**Tests:** las relaciones iniciales reflejan las alianzas y los conflictos conocidos de 2010.
+**Prueba en el móvil:** ver en la capa de relaciones los aliados de EE. UU. y los de Rusia.
+**Hecho cuando:** las relaciones de 2010 son reconocibles.
+
+#### Fase 52 — v0.53.0 · Acciones diplomáticas
+**Objetivo:** hacer diplomacia.
+**Tareas**
+1. Embajadas, visitas oficiales y cumbres.
+2. Tratados, ayuda, préstamos, sanciones, expulsión de diplomáticos y reconocimiento de Estados.
+3. **Audiovisual:** iconos de las acciones, escenas ilustradas de visitas y cumbres y sonidos de firma de tratados.
+
+**Tests:** las acciones hostiles bajan las relaciones y los aliados del afectado reaccionan.
+**Prueba en el móvil:** mejorar las relaciones con un país mediante visitas y un tratado.
 **Hecho cuando:** la diplomacia tiene consecuencias económicas y políticas.
 
-#### Fase 24 — v0.25.0 · Organizaciones internacionales
+#### Fase 53 — v0.54.0 · Organizaciones internacionales
 **Objetivo:** el orden internacional de 2010.
-**Depende de:** Fase 23.
 **Tareas**
 1. ONU (Asamblea y Consejo de Seguridad con veto), UE, OTAN, OTSC, UA, ASEAN, Mercosur, OEA, Liga Árabe, OPEP, OCS, G8, G20, BRIC, FMI, Banco Mundial y OMC con sus miembros de 2010.
 2. Votaciones, adhesiones, salidas y expulsiones.
-3. Beneficios y obligaciones (fondos de la UE, defensa colectiva, cuotas de la OPEP, normas de la OMC).
-4. Capa de alianzas en el mapa.
-5. **Audiovisual:** emblemas de las organizaciones (los oficiales cuando su licencia lo permita; si no, versiones propias) y sala de votación animada. Propuesta de 3D: sala del Consejo de Seguridad.
+3. **Audiovisual:** emblemas de las organizaciones (los oficiales cuando su licencia lo permita; si no, versiones propias) y sala de votación animada.
 
-**Tests:** solicitar la entrada en la UE comprueba requisitos y requiere unanimidad.
+**Tests:** los miembros de cada organización coinciden con los de 2010.
 **Prueba en el móvil:** proponer sanciones en el Consejo de Seguridad y ver el veto.
+**Hecho cuando:** las organizaciones existen y votan.
+
+#### Fase 54 — v0.55.0 · Organizaciones: beneficios y obligaciones
+**Objetivo:** pertenecer a una organización tiene consecuencias.
+**Tareas**
+1. Beneficios y obligaciones (fondos de la UE, defensa colectiva, cuotas de la OPEP y normas de la OMC).
+2. Capa de alianzas en el mapa.
+3. **Audiovisual:** animación de adhesiones y salidas en el mapa.
+
+**Tests:** solicitar la entrada en la UE comprueba los requisitos y requiere unanimidad.
+**Prueba en el móvil:** ver la capa de alianzas y solicitar la entrada en una organización.
 **Hecho cuando:** las organizaciones influyen en las decisiones de los países.
 
 > 🎮 **HITO ALFA 3:** el mundo está conectado por la economía, el comercio y la diplomacia.
@@ -1081,140 +1331,215 @@ interface EstadoPartida {
 
 ### ETAPA E · Beta 1: política
 
-#### Fase 25 — v0.26.0 · Sociedad y grupos sociales
-**Objetivo:** la población opina según sus intereses (6.14).
-**Depende de:** Fase 24.
+#### Fase 55 — v0.56.0 · Grupos sociales
+**Objetivo:** la población se divide en grupos con intereses (6.14).
 **Tareas**
 1. Grupos sociales con tamaño estimado por país, prioridades e ideología media.
 2. Satisfacción de cada grupo calculada a partir de todos los sistemas anteriores.
-3. Temas de preocupación con peso cambiante.
-4. Popularidad del gobierno y del líder; valoración de ministros.
-5. Pantalla **Sociedad** con grupos y temas.
-6. **Audiovisual:** iconos de los 17 grupos sociales y gráficos animados de satisfacción y de temas de preocupación.
+3. **Audiovisual:** iconos de los 17 grupos sociales.
 
 **Tests:** una reforma impopular baja la satisfacción de los grupos afectados y no la de los demás.
 **Prueba en el móvil:** subir el salario mínimo y ver qué grupos mejoran y cuáles empeoran.
 **Hecho cuando:** cada decisión tiene ganadores y perdedores visibles.
 
-#### Fase 26 — v0.27.0 · Medios, protestas y estabilidad
-**Objetivo:** reacción social activa.
-**Depende de:** Fase 25.
+#### Fase 56 — v0.57.0 · Opinión pública
+**Objetivo:** popularidad y temas de preocupación.
 **Tareas**
-1. Medios de comunicación: libertad de prensa, medios públicos y privados, propaganda.
-2. Manifestaciones, huelgas (ampliación de la Fase 12), disturbios y revueltas.
-3. Gestión: diálogo, concesiones, policía, represión, con consecuencias.
-4. Estabilidad del régimen (6.14).
-5. **Audiovisual:** portadas de prensa y cabeceras de televisión generadas, animación de las protestas en el mapa y ambiente sonoro sintetizado de manifestación.
+1. Temas de preocupación con peso cambiante.
+2. Popularidad del gobierno y del líder; valoración de los ministros.
+3. Pantalla «Sociedad» con grupos y temas.
+4. **Audiovisual:** gráficos animados de satisfacción y de temas de preocupación.
 
-**Tests:** baja satisfacción prolongada desencadena protestas; la represión baja la imagen internacional.
+**Tests:** si el paro sube, el paro gana peso entre los temas de preocupación.
+**Prueba en el móvil:** ver cómo cambia la popularidad tras una medida impopular.
+**Hecho cuando:** el gobierno tiene una popularidad que responde a su gestión.
+
+#### Fase 57 — v0.58.0 · Medios de comunicación
+**Objetivo:** lo que se cuenta influye en lo que se piensa.
+**Tareas**
+1. Libertad de prensa, medios públicos y privados y propaganda en los regímenes autoritarios.
+2. Efecto de los medios en la opinión pública.
+3. **Audiovisual:** portadas de prensa y cabeceras de televisión generadas.
+
+**Tests:** con menos libertad de prensa, los escándalos afectan menos a la popularidad y más a la imagen internacional.
+**Prueba en el móvil:** leer las portadas del día tras una decisión importante.
+**Hecho cuando:** los medios reflejan y amplifican lo que pasa.
+
+#### Fase 58 — v0.59.0 · Protestas y estabilidad
+**Objetivo:** la sociedad puede presionar al gobierno.
+**Tareas**
+1. Manifestaciones, huelgas (ampliación de la Fase 31), disturbios y revueltas.
+2. Gestión de las protestas (diálogo, concesiones, policía y represión, con consecuencias) y estabilidad del régimen (6.14).
+3. **Audiovisual:** animación de las protestas en el mapa y ambiente sonoro sintetizado de manifestación.
+
+**Tests:** una baja satisfacción prolongada desencadena protestas; la represión baja la imagen internacional.
 **Prueba en el móvil:** provocar una huelga general y negociar su fin.
 **Hecho cuando:** la sociedad puede presionar al gobierno.
 
-#### Fase 27 — v0.28.0 · Partidos y personajes
-**Objetivo:** partidos y políticos (6.15).
-**Depende de:** Fase 26.
+#### Fase 59 — v0.60.0 · Partidos políticos
+**Objetivo:** los partidos de 2010 (6.15).
 **Tareas**
 1. Ideología en 4 ejes.
 2. Partidos reales de 2010 en unos 40 países (datos con fuente) y plantilla genérica para el resto.
-3. Líderes y personajes con carisma, competencia, edad, ideología, escándalos.
-4. Fundar, fusionar, dividir e ilegalizar partidos.
-5. Pantalla **Partidos**.
-6. **Audiovisual:** emblemas de los partidos a partir de su color y sus siglas (sin logotipos registrados), retratos genéricos de los líderes y brújula ideológica animada.
+3. **Audiovisual:** emblemas de los partidos a partir de su color y sus siglas (sin logotipos registrados).
 
-**Tests:** todos los países tienen al menos un partido o fuerza política coherente con su régimen.
+**Tests:** todos los países tienen al menos un partido o una fuerza política coherente con su régimen.
 **Prueba en el móvil:** revisar los partidos de España, Reino Unido y Alemania en 2010.
 **Hecho cuando:** el panorama político de 2010 es reconocible.
 
-#### Fase 28 — v0.29.0 · Parlamento y votaciones
-**Objetivo:** el parlamento decide.
-**Depende de:** Fase 27.
+#### Fase 60 — v0.61.0 · Líderes y vida de los partidos
+**Objetivo:** personajes políticos.
 **Tareas**
-1. Una o dos cámaras con escaños de 2010.
-2. Votación de leyes y presupuestos: disciplina de partido, ideología, presión y acuerdos.
-3. Negociación de apoyos (concesiones, inversiones regionales, cargos).
-4. Coaliciones y gobiernos en minoría.
-5. Moción de censura, cuestión de confianza y disolución.
-6. Pantalla **Parlamento** con hemiciclo.
-7. **Audiovisual:** hemiciclo animado con la votación escaño a escaño y sonidos de la votación. Propuesta de 3D: hemiciclo.
+1. Líderes y personajes con carisma, competencia, edad, ideología y escándalos.
+2. Fundar, fusionar, dividir e ilegalizar partidos; pantalla «Partidos».
+3. **Audiovisual:** retratos genéricos de los líderes y brújula ideológica animada.
 
-**Tests:** un gobierno en minoría no aprueba presupuestos sin apoyos.
-**Prueba en el móvil:** negociar los presupuestos con un partido regional.
+**Tests:** fusionar dos partidos suma sus militantes y mezcla su ideología.
+**Prueba en el móvil:** abrir la pantalla de partidos y comparar a sus líderes.
+**Hecho cuando:** los partidos tienen líderes y pueden cambiar.
+
+#### Fase 61 — v0.62.0 · Parlamento: votaciones
+**Objetivo:** el parlamento vota.
+**Tareas**
+1. Una o dos cámaras con los escaños de 2010.
+2. Votación de leyes y presupuestos: disciplina de partido, ideología, presión y acuerdos.
+3. **Audiovisual:** hemiciclo animado con la votación escaño a escaño y sonidos de la votación.
+
+**Tests:** un gobierno en minoría no aprueba los presupuestos sin apoyos.
+**Prueba en el móvil:** ver el hemiciclo de España y votar los presupuestos.
 **Hecho cuando:** el presupuesto y las leyes dependen del parlamento.
 
-#### Fase 29 — v0.30.0 · Elecciones y campañas
-**Objetivo:** ganar o perder el poder en las urnas.
-**Depende de:** Fase 28.
+#### Fase 62 — v0.63.0 · Parlamento: negociación y confianza
+**Objetivo:** negociar y sobrevivir en el parlamento.
 **Tareas**
-1. Sistemas electorales: D'Hondt, Sainte-Laguë, mayoritario, dos vueltas, mixto, presidencial; barreras y circunscripciones.
-2. Calendario electoral real (próximas elecciones desde 2010).
-3. Modelo de voto (6.15) y encuestas semanales con margen de error.
-4. Campaña: presupuesto, mítines por región, debates, promesas.
-5. Noche electoral con resultados en el mapa por circunscripción.
-6. Derrota del jugador al perder (de momento, fin de partida).
-7. **Audiovisual:** noche electoral con recuento animado y mapa por circunscripción, sintonía y sonidos propios, y carteles de campaña generados.
+1. Negociación de apoyos (concesiones, inversiones regionales y cargos).
+2. Coaliciones, gobiernos en minoría, moción de censura, cuestión de confianza y disolución.
+3. **Audiovisual:** escena ilustrada de la negociación y animación de la moción de censura.
 
-**Tests:** con la misma situación, el resultado varía poco entre semillas; con una mala gestión, el gobierno pierde.
+**Tests:** una moción de censura con mayoría cambia el gobierno.
+**Prueba en el móvil:** negociar los presupuestos con un partido regional.
+**Hecho cuando:** se puede gobernar en minoría negociando.
+
+#### Fase 63 — v0.64.0 · Sistemas electorales
+**Objetivo:** cómo se reparten los escaños.
+**Tareas**
+1. Sistemas D'Hondt, Sainte-Laguë, mayoritario, a dos vueltas, mixto y presidencial; barreras y circunscripciones.
+2. Calendario electoral real (próximas elecciones desde 2010).
+3. **Audiovisual:** capa de circunscripciones en el mapa.
+
+**Tests:** con los votos reales de unas elecciones conocidas, el reparto da los escaños reales.
+**Prueba en el móvil:** ver la fecha de las próximas elecciones de varios países.
+**Hecho cuando:** cada país tiene su sistema y su calendario electoral.
+
+#### Fase 64 — v0.65.0 · Voto y encuestas
+**Objetivo:** saber cómo votaría la gente.
+**Tareas**
+1. Modelo de voto (6.15).
+2. Encuestas semanales con margen de error.
+3. **Audiovisual:** gráfico animado de las encuestas.
+
+**Tests:** con la misma situación, la intención de voto varía poco entre semillas.
+**Prueba en el móvil:** seguir las encuestas durante 6 meses de gestión.
+**Hecho cuando:** las encuestas reflejan la gestión.
+
+#### Fase 65 — v0.66.0 · Campaña y noche electoral
+**Objetivo:** ganar o perder el poder en las urnas.
+**Tareas**
+1. Campaña: presupuesto, mítines por región, debates y promesas.
+2. Noche electoral con resultados en el mapa por circunscripción; derrota del jugador al perder (de momento, fin de partida).
+3. **Audiovisual:** recuento animado, sintonía y sonidos propios y carteles de campaña generados.
+
+**Tests:** con una mala gestión, el gobierno pierde.
 **Prueba en el móvil:** jugar hasta las elecciones generales españolas de 2011.
 **Hecho cuando:** se pueden ganar y perder elecciones en España y en 3 países más de prueba.
 
-#### Fase 30 — v0.31.0 · Leyes y constitución
+#### Fase 66 — v0.67.0 · Leyes: catálogo
 **Objetivo:** catálogo de leyes (6.16).
-**Depende de:** Fase 29.
 **Tareas**
 1. Formato de ley con opciones, efectos y reacciones.
-2. Situación legal inicial de cada país en 2010 (las leyes clave, con fuente cuando se pueda).
-3. Catálogo inicial de unas 60 leyes en todas las categorías.
-4. Mayorías y referéndums; leyes constitucionales.
-5. Gobierno por decreto en regímenes autoritarios.
-6. Pantalla **Leyes** con buscador, filtros y previsión de votos.
-7. **Audiovisual:** iconos de las categorías de leyes y animación de la aprobación y la derogación de una ley.
+2. Situación legal inicial de cada país en 2010 (leyes clave, con fuente cuando se pueda).
+3. Catálogo inicial de unas 60 leyes de todas las categorías.
+4. **Audiovisual:** iconos de las categorías de leyes.
 
-**Tests:** cada ley tiene efectos y reacciones definidos y se puede aprobar o derogar.
+**Tests:** cada ley tiene efectos y reacciones definidos.
+**Prueba en el móvil:** buscar las leyes vigentes en España en 2010.
+**Hecho cuando:** cada país tiene su situación legal de 2010.
+
+#### Fase 67 — v0.68.0 · Leyes: aprobación
+**Objetivo:** cambiar las leyes.
+**Tareas**
+1. Mayorías y referéndums; leyes constitucionales.
+2. Gobierno por decreto en los regímenes autoritarios.
+3. Pantalla «Leyes» con buscador, filtros y previsión de votos.
+4. **Audiovisual:** animación de la aprobación y la derogación de una ley.
+
+**Tests:** cada ley se puede aprobar o derogar con la mayoría que le corresponde.
 **Prueba en el móvil:** aprobar una reforma laboral y ver sus efectos en 6 meses.
 **Hecho cuando:** las leyes cambian el país de forma visible.
 
-#### Fase 31 — v0.32.0 · Regímenes y cambios de régimen
-**Objetivo:** distintos sistemas políticos y su caída.
-**Depende de:** Fase 30.
+#### Fase 68 — v0.69.0 · Regímenes políticos
+**Objetivo:** distintos sistemas políticos.
 **Tareas**
-1. Regímenes de 2010 (parlamentario, presidencial, monarquías, partido único, junta, teocracia) con poderes del jugador.
-2. Lealtad del ejército y las élites.
-3. Golpes de Estado, revoluciones y transiciones democráticas.
-4. Cambio de régimen por reforma constitucional.
-5. **Audiovisual:** iconos de los regímenes y secuencias ilustradas, con sonido, de golpe de Estado, revolución y transición.
+1. Regímenes de 2010 (parlamentario, presidencial, monarquías, partido único, junta y teocracia) con los poderes del jugador en cada uno.
+2. Lealtad del ejército y de las élites.
+3. **Audiovisual:** iconos de los regímenes en la ficha y en la interfaz.
 
-**Tests:** estabilidad muy baja durante meses puede producir un golpe o una revolución.
+**Tests:** en cada régimen, el jugador solo tiene los poderes que le corresponden.
+**Prueba en el móvil:** jugar con un régimen autoritario y gobernar por decreto.
+**Hecho cuando:** cada régimen funciona con sus reglas.
+
+#### Fase 69 — v0.70.0 · Cambios de régimen
+**Objetivo:** los regímenes pueden caer y transformarse.
+**Tareas**
+1. Golpes de Estado, revoluciones y transiciones democráticas.
+2. Cambio de régimen por reforma constitucional.
+3. **Audiovisual:** secuencias ilustradas, con sonido, de golpe de Estado, revolución y transición.
+
+**Tests:** una estabilidad muy baja durante meses puede producir un golpe o una revolución.
 **Prueba en el móvil:** como un régimen autoritario, reprimir protestas y vigilar la lealtad del ejército.
 **Hecho cuando:** los regímenes pueden caer y transformarse.
 
-#### Fase 32 — v0.33.0 · Regiones, autonomía y elecciones regionales
+#### Fase 70 — v0.71.0 · Autonomía regional
 **Objetivo:** el país por dentro (6.17, parte 1).
-**Depende de:** Fase 31.
 **Tareas**
 1. Nivel de autonomía por región y competencias transferidas.
-2. Gobiernos y parlamentos regionales en países descentralizados.
-3. Elecciones regionales.
-4. Financiación regional y agravios.
-5. Pantalla **Regiones**.
-6. **Audiovisual:** banderas de las principales regiones (licencia libre, script reproducible) y mapa animado de los resultados regionales.
+2. Financiación regional y agravios.
+3. **Audiovisual:** banderas de las principales regiones (licencia libre y script reproducible).
 
 **Tests:** transferir competencias cambia quién gestiona el gasto y la satisfacción regional.
-**Prueba en el móvil:** revisar las comunidades autónomas españolas y negociar financiación.
+**Prueba en el móvil:** revisar las comunidades autónomas españolas y negociar su financiación.
+**Hecho cuando:** cada región tiene su nivel de autonomía y su financiación.
+
+#### Fase 71 — v0.72.0 · Gobiernos y elecciones regionales
+**Objetivo:** las regiones tienen vida política propia.
+**Tareas**
+1. Gobiernos y parlamentos regionales en los países descentralizados.
+2. Elecciones regionales; pantalla «Regiones».
+3. **Audiovisual:** mapa animado de los resultados regionales.
+
+**Tests:** unas elecciones regionales cambian el gobierno de la región y no el nacional.
+**Prueba en el móvil:** seguir unas elecciones autonómicas en España.
 **Hecho cuando:** las regiones tienen vida política propia.
 
-#### Fase 33 — v0.34.0 · Independentismo y nuevos países
-**Objetivo:** secesión (6.17, parte 2).
-**Depende de:** Fase 32.
+#### Fase 72 — v0.73.0 · Independentismo
+**Objetivo:** movimientos de secesión (6.17, parte 2).
 **Tareas**
 1. Identidad, apoyo a la independencia y apoyo exterior por región, con los movimientos de 2010.
-2. Acciones del gobierno central (diálogo, referéndum, intervención de la autonomía, ilegalización, represión).
-3. Referéndum pactado o unilateral; declaración unilateral; reconocimiento internacional.
-4. **Creación de un país nuevo en el mapa** con su parte de población, deuda, ejército, infraestructuras, recursos y partidos.
-5. Apoyar movimientos independentistas en otros países.
-6. Capa de independentismo en el mapa.
-7. **Audiovisual:** animación del nacimiento de un país en el mapa (nueva frontera y bandera), banderas de los movimientos de 2010 y secuencia del referéndum.
+2. Acciones del gobierno central (diálogo, referéndum, intervención de la autonomía, ilegalización y represión) y capa de independentismo.
+3. **Audiovisual:** banderas de los movimientos de 2010.
 
-**Tests:** una independencia pactada crea un país válido y jugable; la suma de población se conserva.
+**Tests:** los agravios y la represión aumentan el apoyo a la independencia.
+**Prueba en el móvil:** ver Escocia, Cataluña y Quebec en la capa de independentismo.
+**Hecho cuando:** los movimientos de 2010 existen y reaccionan.
+
+#### Fase 73 — v0.74.0 · Referéndums y nuevos países
+**Objetivo:** pueden nacer países nuevos.
+**Tareas**
+1. Referéndum pactado o unilateral, declaración unilateral y reconocimiento internacional.
+2. Creación de un país nuevo en el mapa con su parte de población, deuda, ejército, infraestructuras, recursos y partidos; apoyar movimientos en otros países.
+3. **Audiovisual:** animación del nacimiento de un país en el mapa (nueva frontera y bandera) y secuencia del referéndum.
+
+**Tests:** una independencia pactada crea un país válido y jugable; la población total se conserva.
 **Prueba en el móvil:** autorizar un referéndum en Escocia y seguir el proceso.
 **Hecho cuando:** pueden nacer países nuevos en la partida.
 
@@ -1224,119 +1549,178 @@ interface EstadoPartida {
 
 ### ETAPA F · Beta 2: tecnología y poder
 
-#### Fase 34 — v0.35.0 · Importación de los árboles tecnológicos
+#### Fase 74 — v0.75.0 · Árboles tecnológicos: importación
 **Objetivo:** cargar las ~2.500 tecnologías del jugador (6.18).
-**Depende de:** Fase 33.
 **Tareas**
-1. Script que lee los `.docx` de `/fuentes/arboles/` (formato de `01_Energia.docx`) y genera JSON por rama.
-2. Validación: identificadores únicos, prerrequisitos existentes, sin ciclos, costes completos; informe de errores en `/docs/tecnologias-informe.md`.
-3. Asignación de efectos de juego a cada tecnología (propuesta automática por categoría, revisable por el jugador).
-4. Estado inicial de 2010 por país según su nivel tecnológico.
-5. **Audiovisual:** iconos de las 10 ramas y de las categorías de tecnología, generados de forma sistemática para las ~2.500 tecnologías.
+1. Script que lee los .docx de /fuentes/arboles/ (formato de 01_Energia.docx) y genera un JSON por rama.
+2. Validación (identificadores únicos, prerrequisitos existentes, sin ciclos y costes completos) e informe de errores en /docs/tecnologias-informe.md.
+3. **Audiovisual:** iconos de las 10 ramas.
 
 **Tests:** las 10 ramas cargan sin errores; ninguna tecnología es inalcanzable.
 **Prueba en el móvil:** revisar el informe y corregir los errores que señale en los documentos.
 **Hecho cuando:** todo el árbol está cargado y validado.
 
-#### Fase 35 — v0.36.0 · Investigación y efectos
-**Objetivo:** investigar y notar los resultados.
-**Depende de:** Fase 34.
+#### Fase 75 — v0.76.0 · Tecnologías: efectos y punto de partida
+**Objetivo:** cada tecnología hace algo y cada país empieza con las suyas.
 **Tareas**
-1. Puntos de investigación por rama (I+D público y privado, investigadores, centros, universidades).
+1. Asignación de efectos a cada tecnología (propuesta automática por categoría, revisable por el jugador).
+2. Estado inicial de 2010 de cada país según su nivel tecnológico.
+3. **Audiovisual:** iconos de las categorías de tecnología, generados de forma sistemática.
+
+**Tests:** cada tecnología tiene al menos un efecto; los países punteros empiezan con todo lo de 2010.
+**Prueba en el móvil:** comparar las tecnologías iniciales de EE. UU. y de Chad.
+**Hecho cuando:** todas las tecnologías tienen efectos y estado inicial.
+
+#### Fase 76 — v0.77.0 · Investigación
+**Objetivo:** investigar.
+**Tareas**
+1. Puntos de investigación por rama (I+D público y privado, investigadores, centros y universidades).
 2. Cola de proyectos y prioridades; consumo de dinero, personal, recursos e instalaciones.
 3. Difusión, licencias y cooperación.
-4. Aplicación de efectos (desbloqueos y mejoras).
-5. Pantalla **Investigación** con árbol navegable y zoom.
-6. **Audiovisual:** árbol tecnológico navegable y animado, y efecto visual y sonoro al completar una tecnología. Propuesta de 3D: maquetas de las tecnologías más destacadas.
+4. **Audiovisual:** efecto visual y sonoro al completar una tecnología.
 
-**Tests:** cada tecnología investigada aplica sus efectos; sin las instalaciones necesarias no se puede investigar.
+**Tests:** sin las instalaciones necesarias no se puede investigar.
+**Prueba en el móvil:** poner tres tecnologías en cola y ver avanzar la primera.
+**Hecho cuando:** se investiga con recursos reales.
+
+#### Fase 77 — v0.78.0 · Árbol de investigación
+**Objetivo:** ver y notar la tecnología.
+**Tareas**
+1. Aplicación de los efectos (desbloqueos y mejoras).
+2. Pantalla «Investigación» con el árbol navegable y zoom.
+3. **Audiovisual:** árbol tecnológico animado.
+
+**Tests:** cada tecnología investigada aplica sus efectos.
 **Prueba en el móvil:** investigar una tecnología energética y ver el efecto en el mix.
 **Hecho cuando:** la tecnología transforma la economía y desbloquea contenido.
 
-#### Fase 36 — v0.37.0 · Fuerzas armadas y equipamiento
+#### Fase 78 — v0.79.0 · Fuerzas armadas
 **Objetivo:** ejércitos de 2010 (6.20, parte 1).
-**Depende de:** Fase 35.
 **Tareas**
 1. Efectivos, presupuesto, preparación, moral y experiencia por país (datos reales y estimaciones).
-2. Catálogo de equipamiento por tipo y generación tecnológica.
-3. Compra a otros países y fabricación propia (industria de defensa y tecnología).
-4. Reclutamiento: profesional, servicio obligatorio, reservistas.
-5. Pantalla **Ejército**.
-6. **Audiovisual:** siluetas vectoriales del equipamiento por tipo y generación e insignias de cada rama de las fuerzas armadas. Propuesta de 3D: modelos del equipamiento en su ficha.
+2. Reclutamiento: profesional, servicio obligatorio y reservistas.
+3. **Audiovisual:** insignias de cada rama de las fuerzas armadas.
 
-**Tests:** la potencia militar inicial ordena a los países de forma creíble (EE. UU., Rusia, China en cabeza).
+**Tests:** la potencia militar inicial ordena a los países de forma creíble (EE. UU., Rusia y China en cabeza).
+**Prueba en el móvil:** ver las fuerzas armadas de varios países.
+**Hecho cuando:** cada país tiene sus fuerzas armadas de 2010.
+
+#### Fase 79 — v0.80.0 · Equipamiento militar
+**Objetivo:** comprar y fabricar armamento.
+**Tareas**
+1. Catálogo de equipamiento por tipo y generación tecnológica.
+2. Compra a otros países y fabricación propia; pantalla «Ejército».
+3. **Audiovisual:** siluetas vectoriales del equipamiento y, si aporta al juego, modelos 3D en su ficha.
+
+**Tests:** sin la tecnología y la industria necesarias no se puede fabricar.
 **Prueba en el móvil:** comprar aviones a un aliado y ver el coste y el plazo.
 **Hecho cuando:** cada país tiene un ejército gestionable.
 
-#### Fase 37 — v0.38.0 · Unidades en el mapa, bases y logística
+#### Fase 80 — v0.81.0 · Unidades en el mapa
 **Objetivo:** fuerzas visibles y desplegables.
-**Depende de:** Fase 36.
 **Tareas**
-1. Agrupaciones (brigadas o divisiones, flotas, escuadrones) en el mapa.
-2. Movimiento por regiones, rutas marítimas y aéreas.
-3. Bases propias y en el extranjero por acuerdo.
-4. Suministro y logística según el transporte (Fase 16).
-5. Capa militar del mapa.
-6. **Audiovisual:** símbolos militares estándar de las unidades, animación de movimientos y rutas en el mapa y sonidos de despliegue.
+1. Agrupaciones (brigadas o divisiones, flotas y escuadrones) en el mapa.
+2. Movimiento por regiones y rutas marítimas y aéreas.
+3. **Audiovisual:** símbolos militares estándar y animación de movimientos y rutas.
+
+**Tests:** una unidad tarda en llegar lo que marcan la distancia y el terreno.
+**Prueba en el móvil:** desplegar una flota y mover tropas entre regiones.
+**Hecho cuando:** las fuerzas se mueven por el mapa.
+
+#### Fase 81 — v0.82.0 · Bases y logística
+**Objetivo:** abastecer a las tropas.
+**Tareas**
+1. Bases propias y en el extranjero por acuerdo.
+2. Suministro y logística según el transporte (Fase 37); capa militar del mapa.
+3. **Audiovisual:** sonidos de despliegue e indicadores de suministro.
 
 **Tests:** una unidad sin suministro pierde preparación.
-**Prueba en el móvil:** desplegar una flota y mover tropas entre regiones.
+**Prueba en el móvil:** abrir una base en un país aliado.
 **Hecho cuando:** las fuerzas se mueven por el mapa con lógica.
 
-#### Fase 38 — v0.39.0 · Guerra y combate
-**Objetivo:** conflictos armados (6.20, parte 2).
-**Depende de:** Fase 37.
+#### Fase 82 — v0.83.0 · Guerra: declaración y frentes
+**Objetivo:** empezar y seguir una guerra.
 **Tareas**
-1. Causas de guerra y declaración (parlamento, opinión pública, ONU, alianzas).
-2. Combate por región: modelo tipo Lanchester con terreno, tecnología, aire, suministro y moral.
-3. Bombardeos e impacto en infraestructuras y población.
-4. Guerras en curso en 2010 (Afganistán, Irak) representadas.
-5. Pantalla de guerra con frentes y bajas.
-6. **Audiovisual:** animaciones de combate y de bombardeo en el mapa, líneas de frente, sonido de combate sintetizado y pantalla de guerra. Propuesta de 3D: vista de un combate.
+1. Causas de guerra y declaración (parlamento, opinión pública, ONU y alianzas).
+2. Guerras en curso en 2010 (Afganistán e Irak).
+3. **Audiovisual:** pantalla de guerra con frentes y bajas.
+
+**Tests:** no se puede declarar una guerra sin el apoyo parlamentario que exija el régimen.
+**Prueba en el móvil:** ver la guerra de Afganistán en curso al empezar.
+**Hecho cuando:** se puede declarar la guerra cumpliendo sus requisitos.
+
+#### Fase 83 — v0.84.0 · Combate
+**Objetivo:** conflictos armados (6.20, parte 2).
+**Tareas**
+1. Combate por región: modelo tipo Lanchester con terreno, tecnología, aire, suministro y moral.
+2. Bombardeos e impacto en infraestructuras y población.
+3. **Audiovisual:** animaciones de combate y bombardeo, líneas de frente, sonido de combate sintetizado y, si aporta al juego, vista 3D de un combate.
 
 **Tests:** el bando superior gana con más frecuencia, pero no siempre.
 **Prueba en el móvil:** iniciar un conflicto limitado y seguirlo en el mapa.
 **Hecho cuando:** se puede librar una guerra completa.
 
-#### Fase 39 — v0.40.0 · Ocupación, insurgencia y paz
-**Objetivo:** cerrar los conflictos.
-**Depende de:** Fase 38.
+#### Fase 84 — v0.85.0 · Ocupación e insurgencia
+**Objetivo:** lo que pasa después de ganar.
 **Tareas**
 1. Ocupación de regiones, resistencia e insurgencia.
-2. Alto el fuego, armisticio, negociación y tratados de paz (anexión, retirada, reparaciones, cambio de régimen, independencia).
-3. Refugiados y reconstrucción.
-4. Cambio de fronteras en el mapa.
-5. **Audiovisual:** animación del cambio de fronteras, escena ilustrada de la firma de la paz y flujos de refugiados en el mapa.
+2. Refugiados y reconstrucción.
+3. **Audiovisual:** flujos de refugiados en el mapa.
+
+**Tests:** ocupar una región hostil cuesta dinero y bajas cada mes.
+**Prueba en el móvil:** ocupar una región y ver la resistencia.
+**Hecho cuando:** la ocupación tiene costes.
+
+#### Fase 85 — v0.86.0 · Paz y fronteras
+**Objetivo:** cerrar los conflictos.
+**Tareas**
+1. Alto el fuego, armisticio, negociación y tratados de paz (anexión, retirada, reparaciones, cambio de régimen o independencia).
+2. Cambio de fronteras en el mapa.
+3. **Audiovisual:** animación del cambio de fronteras y escena ilustrada de la firma de la paz.
 
 **Tests:** un tratado de paz con anexión mueve la región al nuevo país y conserva sus datos.
 **Prueba en el móvil:** firmar una paz con cesión territorial.
 **Hecho cuando:** las guerras terminan y cambian el mapa.
 
-#### Fase 40 — v0.41.0 · Interior, justicia, corrupción y terrorismo
-**Objetivo:** seguridad interior (6.21).
-**Depende de:** Fase 39.
+#### Fase 86 — v0.87.0 · Interior y justicia
+**Objetivo:** seguridad interior (6.21, parte 1).
 **Tareas**
-1. Criminalidad, policía, prisiones.
-2. Corrupción: pérdidas de gasto, escándalos, lucha anticorrupción.
-3. Independencia judicial.
-4. Grupos terroristas activos en 2010 y atentados.
-5. Acciones de Interior y Justicia.
-6. **Audiovisual:** iconos de seguridad y justicia, y tratamiento visual y sonoro sobrio de atentados y escándalos.
+1. Criminalidad, policía y prisiones.
+2. Independencia judicial y acciones de Interior y Justicia.
+3. **Audiovisual:** iconos de seguridad y justicia.
+
+**Tests:** más policía reduce la criminalidad con rendimientos decrecientes.
+**Prueba en el móvil:** aumentar la policía y ver la criminalidad al cabo de un año.
+**Hecho cuando:** la seguridad interior responde a las decisiones.
+
+#### Fase 87 — v0.88.0 · Corrupción y terrorismo
+**Objetivo:** seguridad interior (6.21, parte 2).
+**Tareas**
+1. Corrupción: pérdidas de gasto, escándalos y lucha anticorrupción.
+2. Grupos terroristas activos en 2010 y atentados.
+3. **Audiovisual:** tratamiento visual y sonoro sobrio de atentados y escándalos.
 
 **Tests:** más corrupción reduce la eficacia del gasto en todos los ministerios.
 **Prueba en el móvil:** lanzar un plan anticorrupción y ver los escándalos que destapa.
 **Hecho cuando:** la seguridad interior influye en la política y la economía.
 
-#### Fase 41 — v0.42.0 · Medio ambiente, clima y desastres
-**Objetivo:** el planeta reacciona (6.22).
-**Depende de:** Fase 40.
+#### Fase 88 — v0.89.0 · Emisiones y clima
+**Objetivo:** el planeta reacciona (6.22, parte 1).
 **Tareas**
 1. Emisiones por sector y país; contaminación local y su efecto en la salud.
 2. Clima global simplificado.
-3. Desastres naturales con probabilidades según la geografía real.
-4. Ayuda internacional y acuerdos climáticos.
-5. Capa ambiental del mapa.
-6. **Audiovisual:** animaciones de cada tipo de desastre en el mapa, capa de temperatura global y sonidos de desastre. Propuesta de 3D: efectos de los desastres.
+3. **Audiovisual:** capa ambiental y de temperatura global.
+
+**Tests:** más emisiones globales suben la temperatura con los años.
+**Prueba en el móvil:** ver la capa de emisiones y la temperatura al cabo de 10 años.
+**Hecho cuando:** las emisiones calientan el planeta.
+
+#### Fase 89 — v0.90.0 · Desastres y acuerdos climáticos
+**Objetivo:** el planeta reacciona (6.22, parte 2).
+**Tareas**
+1. Desastres naturales con probabilidades según la geografía real.
+2. Ayuda internacional y acuerdos climáticos.
+3. **Audiovisual:** animaciones de cada tipo de desastre en el mapa y sonidos de desastre.
 
 **Tests:** más emisiones globales aumentan con los años la frecuencia de desastres climáticos.
 **Prueba en el móvil:** sufrir un desastre y gestionar la reconstrucción.
@@ -1348,70 +1732,114 @@ interface EstadoPartida {
 
 ### ETAPA G · Beta 3: mundo vivo
 
-#### Fase 42 — v0.43.0 · IA de países: política interior
-**Objetivo:** los países no jugadores se gobiernan solos (6.24).
-**Depende de:** Fase 41.
+#### Fase 90 — v0.91.0 · IA: personalidad y economía
+**Objetivo:** los países no jugadores se gobiernan solos (6.24, parte 1).
 **Tareas**
-1. Personalidad de cada país (régimen, ideología, historia).
-2. Decisiones mensuales: presupuesto, impuestos, leyes coherentes con su gobierno, obras, energía.
-3. Reacción a crisis (paro, deuda, protestas).
-4. **Audiovisual:** resumen visual de las decisiones de cada gobierno e iconos de las personalidades de los países.
+1. Personalidad de cada país (régimen, ideología e historia).
+2. Decisiones mensuales: presupuesto, impuestos, obras y energía.
+3. **Audiovisual:** iconos de las personalidades de los países y resumen visual de sus decisiones.
 
-**Tests:** 10 años sin jugador: ningún país entra en bancarrota absurda ni hace cambios incoherentes con su ideología.
+**Tests:** 10 años sin jugador: ningún país entra en una bancarrota absurda.
+**Prueba en el móvil:** observar cómo gestiona Francia su presupuesto durante 2 años.
+**Hecho cuando:** los países no jugadores gestionan su economía.
+
+#### Fase 91 — v0.92.0 · IA: leyes y crisis
+**Objetivo:** los países no jugadores hacen política.
+**Tareas**
+1. Leyes coherentes con su gobierno.
+2. Reacción a las crisis (paro, deuda y protestas).
+3. **Audiovisual:** noticias ilustradas de las decisiones de otros gobiernos.
+
+**Tests:** ningún país hace cambios incoherentes con su ideología.
 **Prueba en el móvil:** observar cómo gestiona Francia una crisis.
 **Hecho cuando:** los países no jugadores se gobiernan de forma creíble.
 
-#### Fase 43 — v0.44.0 · IA de países: exterior y militar
-**Objetivo:** los países actúan en el mundo.
-**Depende de:** Fase 42.
+#### Fase 92 — v0.93.0 · IA: diplomacia y comercio
+**Objetivo:** los países actúan en el mundo (6.24, parte 2).
 **Tareas**
-1. Diplomacia, comercio y tratados según intereses.
+1. Diplomacia, comercio y tratados según sus intereses.
 2. Reacción a las acciones del jugador.
-3. Decisiones militares: rearme, alianzas, intervenciones y guerras con motivo, capacidad y apoyo.
-4. Uso de las organizaciones internacionales.
-5. **Audiovisual:** animaciones en el mapa de las reacciones diplomáticas y de los movimientos militares de los demás países.
+3. **Audiovisual:** animaciones en el mapa de las reacciones diplomáticas.
 
-**Tests:** la IA no declara guerras sin motivo ni capacidad; responde a amenazas.
-**Prueba en el móvil:** amenazar a un vecino y ver la reacción de sus aliados.
+**Tests:** un país responde a una acción hostil del jugador.
+**Prueba en el móvil:** sancionar a un país y ver su respuesta.
 **Hecho cuando:** el mundo responde con lógica al jugador.
 
-#### Fase 44 — v0.45.0 · Eventos aleatorios y noticias
+#### Fase 93 — v0.94.0 · IA: ejército y organizaciones
+**Objetivo:** los países se defienden y se alían.
+**Tareas**
+1. Decisiones militares: rearme, alianzas, intervenciones y guerras con motivo, capacidad y apoyo.
+2. Uso de las organizaciones internacionales.
+3. **Audiovisual:** animaciones en el mapa de los movimientos militares de los demás países.
+
+**Tests:** la IA no declara guerras sin motivo ni capacidad, y responde a las amenazas.
+**Prueba en el móvil:** amenazar a un vecino y ver la reacción de sus aliados.
+**Hecho cuando:** los demás países usan el ejército y las organizaciones con lógica.
+
+#### Fase 94 — v0.95.0 · Motor de eventos
 **Objetivo:** imprevistos (6.23).
-**Depende de:** Fase 43.
 **Tareas**
 1. Motor de eventos: condiciones, probabilidad, opciones y efectos.
-2. Catálogo inicial de unos 100 eventos.
-3. Teletipo de noticias mundial filtrable.
-4. **Audiovisual:** ilustración o icono propio para cada evento del catálogo, teletipo animado, sintonía de noticias y sonidos según la gravedad.
+2. Teletipo de noticias mundial filtrable por país y tema.
+3. **Audiovisual:** sintonía de noticias y sonidos según la gravedad.
 
 **Tests:** cada evento se puede disparar en pruebas y sus opciones aplican efectos.
+**Prueba en el móvil:** filtrar el teletipo por un país.
+**Hecho cuando:** los eventos ocurren y se pueden responder.
+
+#### Fase 95 — v0.96.0 · Catálogo de eventos
+**Objetivo:** partidas con sorpresas.
+**Tareas**
+1. Unos 50 eventos económicos y sociales.
+2. Unos 50 eventos políticos, militares y naturales.
+3. **Audiovisual:** ilustración o icono propio para cada evento.
+
+**Tests:** cada evento del catálogo tiene condiciones, opciones y efectos válidos.
 **Prueba en el móvil:** jugar un año y responder a varios eventos.
 **Hecho cuando:** las partidas tienen sorpresas variadas.
 
-#### Fase 45 — v0.46.0 · Eventos históricos de 2010 en adelante
-**Objetivo:** historia opcional.
-**Depende de:** Fase 44.
+#### Fase 96 — v0.97.0 · Eventos históricos
+**Objetivo:** historia opcional desde 2010.
 **Tareas**
 1. Eventos históricos condicionados: rescates del euro, Primavera Árabe, Fukushima, Sudán del Sur, Crimea, etc.
 2. Opción de activarlos o desactivarlos al crear la partida.
-3. Tests de credibilidad 2010–2015 frente al histórico real.
-4. **Audiovisual:** ilustraciones propias de los eventos históricos (sin fotografías reales) y secuencias especiales para los más importantes.
+3. **Audiovisual:** ilustraciones propias de los eventos históricos (sin fotografías reales) y secuencias especiales para los más importantes.
 
-**Tests:** con eventos activados y sin jugador, 2010–2015 se parece a la realidad en las grandes cifras.
+**Tests:** un evento histórico no ocurre si no se dan sus condiciones.
 **Prueba en el móvil:** jugar con y sin eventos históricos y comparar.
+**Hecho cuando:** los eventos históricos ocurren sin forzar resultados.
+
+#### Fase 97 — v0.98.0 · Credibilidad histórica
+**Objetivo:** el periodo 2010–2015 se parece a la realidad.
+**Tareas**
+1. Tests de credibilidad 2010–2015 frente al histórico real.
+2. Ajuste de parámetros en /src/sim/config/.
+3. **Audiovisual:** gráfico que compara la partida con la historia real.
+
+**Tests:** con los eventos activados y sin jugador, 2010–2015 se parece a la realidad en las grandes cifras.
+**Prueba en el móvil:** ver el gráfico de la partida frente a la realidad para España.
 **Hecho cuando:** el modo histórico funciona sin forzar resultados.
 
-#### Fase 46 — v0.47.0 · Estadísticas, informes y comparador
-**Objetivo:** entender lo que pasa.
-**Depende de:** Fase 45.
+#### Fase 98 — v0.99.0 · Comparador y clasificaciones
+**Objetivo:** entender el mundo de un vistazo.
 **Tareas**
 1. Comparador de países con gráficos.
 2. Clasificaciones mundiales (PIB, potencia militar, felicidad, tecnología…).
-3. Informe anual del país.
-4. Historial de la partida (línea de tiempo con hechos clave).
-5. **Audiovisual:** gráficos comparativos animados, línea de tiempo ilustrada de la partida y opción de guardar un gráfico como imagen.
+3. **Audiovisual:** gráficos comparativos animados y opción de guardar un gráfico como imagen.
 
+**Tests:** las clasificaciones ordenan correctamente con datos de prueba.
 **Prueba en el móvil:** comparar España con Italia en 10 indicadores.
+**Hecho cuando:** el jugador puede comparar países con facilidad.
+
+#### Fase 99 — v0.100.0 · Informes e historial de la partida
+**Objetivo:** recordar lo que ha pasado.
+**Tareas**
+1. Informe anual del país.
+2. Historial de la partida (línea de tiempo con los hechos clave).
+3. **Audiovisual:** línea de tiempo ilustrada de la partida.
+
+**Tests:** la línea de tiempo recoge todos los hechos marcados como clave.
+**Prueba en el móvil:** revisar el informe anual y la línea de tiempo al cabo de 3 años.
 **Hecho cuando:** el jugador puede analizar el mundo con facilidad.
 
 > 🎮 **HITO BETA 3:** el mundo está vivo; el juego está completo en contenido base.
@@ -1420,33 +1848,92 @@ interface EstadoPartida {
 
 ### ETAPA H · Versión candidata
 
-#### Fase 47 — v0.48.0 · Tutorial y ayuda
-1. Tutorial interactivo por pasos.
-2. Tooltips en todos los indicadores ("qué es" y "qué lo afecta").
-3. Enciclopedia del juego.
-4. **Audiovisual:** animaciones guiadas y resaltados del tutorial e ilustraciones de la enciclopedia.
+#### Fase 100 — v0.101.0 · Tutorial
+**Objetivo:** aprender a jugar jugando.
+**Tareas**
+1. Guion del tutorial: primeros pasos y conceptos clave.
+2. Tutorial interactivo por pasos.
+3. **Audiovisual:** animaciones guiadas y resaltados del tutorial.
+
+**Tests:** cada paso del tutorial se puede completar y saltar.
+**Prueba en el móvil:** hacer el tutorial completo.
 **Hecho cuando:** un jugador nuevo entiende lo básico en 15 minutos.
 
-#### Fase 48 — v0.49.0 · Equilibrado
+#### Fase 101 — v0.102.0 · Ayuda y enciclopedia
+**Objetivo:** resolver dudas sin salir del juego.
+**Tareas**
+1. Tooltips en todos los indicadores («qué es» y «qué lo afecta»).
+2. Enciclopedia del juego.
+3. **Audiovisual:** ilustraciones de la enciclopedia.
+
+**Tests:** todos los indicadores tienen su explicación.
+**Prueba en el móvil:** consultar qué afecta al paro desde su tooltip.
+**Hecho cuando:** todo indicador se explica en el propio juego.
+
+#### Fase 102 — v0.103.0 · Equilibrado
+**Objetivo:** un mundo estable y creíble a largo plazo.
+**Tareas**
 1. Partidas automáticas de 20 años con distintas semillas.
-2. Ajuste de parámetros en `/src/sim/config/`.
-3. Niveles de dificultad.
-4. Revisión de todos los "Hecho cuando" anteriores.
-5. **Audiovisual:** mezcla y niveles de sonido, ritmo de las animaciones y revisión de la coherencia visual de todo el juego.
-**Hecho cuando:** ningún país diverge de forma absurda y la dificultad se nota.
+2. Ajuste de parámetros en /src/sim/config/.
+3. **Audiovisual:** mezcla y niveles de sonido y ritmo de las animaciones.
 
-#### Fase 49 — v0.50.0 · Rendimiento, accesibilidad e instalación
+**Tests:** ningún país diverge de forma absurda en 20 años.
+**Prueba en el móvil:** jugar 10 años a ×8 y revisar el mundo.
+**Hecho cuando:** ningún país diverge de forma absurda.
+
+#### Fase 103 — v0.104.0 · Dificultad y revisión final
+**Objetivo:** elegir el reto y comprobarlo todo.
+**Tareas**
+1. Niveles de dificultad.
+2. Revisión de todos los «Hecho cuando» anteriores.
+3. **Audiovisual:** revisión de la coherencia visual de todo el juego.
+
+**Tests:** la dificultad cambia la tolerancia de los votantes, los mercados y la IA.
+**Prueba en el móvil:** jugar el mismo año en Fácil y en Realista.
+**Hecho cuando:** la dificultad se nota y todo lo anterior se sigue cumpliendo.
+
+#### Fase 104 — v0.105.0 · Rendimiento
+**Objetivo:** fluido en un móvil de gama media.
+**Tareas**
 1. Optimización para móviles de gama media.
-2. **PWA:** instalable en el móvil como una app y jugable sin conexión.
-3. Accesibilidad (contraste, tamaño de texto, lectores de pantalla en menús).
-4. **Audiovisual:** optimización del peso y de la carga de los recursos audiovisuales, modo sin animaciones, alternativa visual para todo sonido e iconos y pantalla de arranque de la app instalada.
-**Hecho cuando:** se instala en el móvil y una partida de 10 años va fluida.
+2. Pruebas automáticas de rendimiento con tiempos máximos.
+3. **Audiovisual:** optimización del peso y de la carga de los recursos audiovisuales y modo sin animaciones.
 
-#### Fase 50 — v0.51.0 · Contenido completo
-1. Ampliar a unas 150 leyes.
-2. Partidos reales en más países.
-3. Más eventos y revisión de textos.
-4. **Audiovisual:** completar los iconos, ilustraciones y sonidos que falten, música ambiental según la situación (paz, crisis, guerra) y pantalla de créditos.
+**Tests:** las pruebas de rendimiento no superan los tiempos fijados.
+**Prueba en el móvil:** jugar 10 años a ×8 sin tirones.
+**Hecho cuando:** una partida de 10 años va fluida.
+
+#### Fase 105 — v0.106.0 · App instalable y accesibilidad
+**Objetivo:** instalar el juego y que todo el mundo pueda jugarlo.
+**Tareas**
+1. PWA: instalable en el móvil como una app y jugable sin conexión.
+2. Accesibilidad: contraste, tamaño de texto y lectores de pantalla en los menús.
+3. **Audiovisual:** alternativa visual para todo sonido, iconos y pantalla de arranque de la app instalada.
+
+**Tests:** el juego carga sin conexión tras la primera visita.
+**Prueba en el móvil:** instalar el juego en el móvil y abrirlo sin conexión.
+**Hecho cuando:** se instala en el móvil y funciona sin conexión.
+
+#### Fase 106 — v0.107.0 · Más leyes
+**Objetivo:** contenido completo: leyes.
+**Tareas**
+1. Ampliar el catálogo a unas 150 leyes.
+2. Revisar el equilibrio de las leyes nuevas.
+3. **Audiovisual:** iconos e ilustraciones que falten de las leyes nuevas.
+
+**Tests:** cada ley nueva tiene efectos y reacciones definidos.
+**Prueba en el móvil:** buscar leyes de varias categorías y aprobar alguna nueva.
+**Hecho cuando:** hay unas 150 leyes.
+
+#### Fase 107 — v0.108.0 · Más partidos, eventos y textos
+**Objetivo:** contenido completo.
+**Tareas**
+1. Partidos reales en más países.
+2. Más eventos y revisión de textos.
+3. **Audiovisual:** música ambiental según la situación (paz, crisis o guerra) y pantalla de créditos.
+
+**Tests:** todos los textos están en es.json y no quedan claves sin texto.
+**Prueba en el móvil:** escuchar cómo cambia la música en una crisis.
 **Hecho cuando:** se cumplen los objetivos de contenido del GDD.
 
 ### v1.0.0 · Lanzamiento
@@ -1546,7 +2033,7 @@ La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, 
 
 1. **Leer al empezar:** `CLAUDE.md`, `docs/GDD.md`, `roadmap.json` y las *issues* abiertas.
 2. **Idioma:** código, comentarios, textos, commits y documentación en español (los nombres de variables pueden ir en español sin tildes).
-3. **Orden:** trabajar solo en la fase activa de `roadmap.json`, en tareas pequeñas.
+3. **Orden:** trabajar solo en la fase activa de `roadmap.json`, en tareas pequeñas. Si una tarea no cabe en una sesión corta, dividirla en `roadmap.json` antes de empezarla.
 4. **Hoja de ruta siempre al día:** marcar la tarea "en curso" al empezar y "hecha" al terminar, con fecha y enlace; añadir al historial lo nuevo de cada versión.
 5. **Motor puro y probado:** toda la lógica de simulación en `/src/sim`, sin dependencias de la interfaz, con tests en Vitest. No se fusiona nada con tests en rojo.
 6. **Parámetros fuera del código:** constantes de equilibrado en `/src/sim/config/*.json`.
@@ -1584,6 +2071,9 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 11/11/2026 | Hoja de ruta ampliada a 51 fases en 9 etapas | Más detalle y orden | 9, 10, 11 |
 | 11/11/2026 | Precisado el formato de `roadmap.json`: estados, `fecha` nula en tareas pendientes, lanzamiento y ampliaciones como fases, versión ligada a `package.json` | Necesario para validar el archivo con un esquema (Fase 0) | 10 |
 | 11/11/2026 | Contenido audiovisual en todas las fases: nueva sección 7.1, tarea «Audiovisual» en las fases 1–50, 3D permitido en componentes complementarios (el mapa sigue en 2D) y regla 19 | Petición del jugador | 1, 2, 7, 9, 11, 13 |
+| 12/11/2026 | Hoja de ruta dividida en fases cortas: de 51 a 108 fases numeradas (0–107), de 2 a 4 tareas cada una, una versión por fase (v0.1 a v0.108) | Petición del jugador: sesiones de Code y actualizaciones más cortas | 9, 10, 11 |
+| 12/11/2026 | 3D solo donde sea posible y necesario; sin 3D decorativo (no hay globo 3D) | Decisión del jugador | 7.1, 9, 13 |
+| 12/11/2026 | Territorios con independencia de hecho jugables | Decisión del jugador | 3, 9, 13 |
 
 ---
 
@@ -1600,12 +2090,12 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Multijugador | No / por turnos / tiempo real | No hasta la v2.0 (requiere servidor y coste) |
 | Dificultad | Fácil / Normal / Realista | Las tres, cambiando la tolerancia de votantes, mercados e IA |
 | Proyección del mapa | Robinson / Equal Earth / Mercator | Equal Earth (proporciones reales, aspecto de mapa político) |
-| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 5 |
-| Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | Solo componentes complementarios, confirmados fase a fase; el mapa sigue en 2D |
+| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 11 (reloj del juego) |
+| Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
-| Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | Jugables Kosovo, Taiwán y Palestina (tienen datos reales); los demás, no, hasta tener datos fiables |
-| Territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) | Países aparte / regiones de su país soberano | No están en los datos de la Fase 1; decidir al hacer el mapa (Fases 2 y 3) |
+| Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |
+| Territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) | Países aparte / regiones de su país soberano | No están en los datos de la Fase 1; decidir al hacer el mapa (Fases 2 y 5) |
 
 ---
 

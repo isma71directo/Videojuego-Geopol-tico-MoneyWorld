@@ -1,7 +1,7 @@
 {
   "fuente": "Our World in Data: Energy Institute y EIA (reservas fósiles); USGS y BGS (minerales)",
   "url": "https://ourworldindata.org/explorers/minerals",
-  "descargado": "2026-11-11",
+  "descargado": "2026-11-12",
   "indicadores": {
     "reservasPetroleo": {
       "codigo": "oil-proved-reserves",
@@ -1196,7 +1196,7 @@
     }
   },
   "notas": [
-    "Sin producción por país en 2010 en las fuentes accesibles: mineral de hierro, níquel, tierras raras. Pendiente para la Fase 19 (recursos naturales).",
+    "Sin producción por país en 2010 en las fuentes accesibles: mineral de hierro, níquel, tierras raras. Pendiente para la Fase 43 (recursos naturales).",
     "Las reservas minerales por país solo se publican desde 2022; se guarda el primer año disponible."
   ]
 }
