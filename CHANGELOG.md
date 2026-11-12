@@ -7,6 +7,14 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.4.1 - 2026-11-12
+
+### Corregido
+
+- El medidor de rendimiento del mapa no se veía si no se añadía `?fps` a la dirección, y en
+  algunos navegadores quedaba tapado por la barra inferior. Ahora se activa en Ajustes o con la
+  tecla F en el mapa, se recuerda en el navegador y está arriba a la derecha.
+
 ## 0.4.0 - 2026-11-12
 
 Fase 3 · Mapa: dibujo, relieve y navegación.

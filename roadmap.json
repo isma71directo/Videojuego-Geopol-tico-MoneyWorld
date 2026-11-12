@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.4.0",
-  "actualizado": "2026-11-12T05:50:16Z",
+  "versionActual": "0.4.1",
+  "actualizado": "2026-11-12T05:51:32Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 3 cerrada: el jugador ha probado el mapa (v0.4.0). No veía el medidor de fps. El jugador decide que el juego sea solo para PC.",
-    "siguientePaso": "Corregir el medidor de fps y adaptar el diseño a «solo PC»; después, la Fase 4.",
+    "resumen": "Fase 3 cerrada. Corregido el medidor de fps (v0.4.1): ahora se activa en Ajustes o con la tecla F y está arriba a la derecha. El jugador decide que el juego sea solo para PC.",
+    "siguientePaso": "Adaptar el diseño a «solo PC» (GDD y hoja de ruta) y empezar la Fase 4.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -4174,6 +4174,13 @@
         "Mapa vivo: relieve sombreado, fondo oceánico, ríos y lagos, con más detalle al acercarse",
         "Zoom animado e inercia al soltar el mapa",
         "Medidor de rendimiento añadiendo «?fps» a la dirección"
+      ]
+    },
+    {
+      "version": "0.4.1",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Corregido: el medidor de rendimiento no se veía si no se añadía «?fps» a la dirección. Ahora se activa en Ajustes o con la tecla F en el mapa, y está arriba a la derecha"
       ]
     }
   ]
