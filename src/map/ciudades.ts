@@ -16,6 +16,10 @@ export interface Ciudad {
   lon: number;
   lat: number;
   capital: boolean;
+  /** Capital de una provincia o región de primer nivel (ajuste f5-a1). */
+  capitalRegional: boolean;
+  /** Nombre de la provincia o región de la que es capital, o null. */
+  capitalDe: string | null;
   /** Habitantes (null si no hay dato). */
   poblacion: number | null;
   /** Fuente y año de la población: «WD:2010», «ONU:2010», «WD:sin-fecha» o null. */
@@ -41,6 +45,10 @@ const ZOOM_DIEZ_MILLONES = 3.2;
 const ZOOM_POR_DECADA = 1.8;
 /** Las capitales aparecen como una ciudad este tanto más grande (en zoom). */
 const VENTAJA_CAPITAL = 1.5;
+/** Las capitales de provincia, algo antes que una ciudad de su tamaño… */
+const VENTAJA_CAPITAL_REGIONAL = 1;
+/** …y todas a partir de este zoom (escala web), aunque sean pequeñas (ajuste f5-a1). */
+export const ZOOM_TODAS_CAPITALES_REGIONALES = 6.3;
 
 /** Límite inferior de cada clase de población de Natural Earth (para ciudades sin dato). */
 const POBLACION_POR_RANGO: Record<number, number> = {
@@ -66,6 +74,12 @@ export function zoomDeAparicion(ciudad: Ciudad): number {
     return Math.min(
       ZOOM_TODAS_CAPITALES,
       Math.max(ZOOM_PRIMERAS_CAPITALES, zoom - VENTAJA_CAPITAL),
+    );
+  }
+  if (ciudad.capitalRegional) {
+    return Math.max(
+      ZOOM_PRIMERAS_CIUDADES,
+      Math.min(ZOOM_TODAS_CAPITALES_REGIONALES, zoom - VENTAJA_CAPITAL_REGIONAL),
     );
   }
   return Math.max(ZOOM_PRIMERAS_CIUDADES, zoom);
@@ -115,6 +129,7 @@ export function colocarCiudades(
   const orden = [...candidatos].sort(
     (a, b) =>
       Number(b.ciudad.capital) - Number(a.ciudad.capital) ||
+      Number(b.ciudad.capitalRegional) - Number(a.ciudad.capitalRegional) ||
       poblacionParaOrdenar(b.ciudad) - poblacionParaOrdenar(a.ciudad) ||
       a.ciudad.nombre.localeCompare(b.ciudad.nombre),
   );

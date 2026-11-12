@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "formato": "prettier --write .",
     "formato:comprobar": "prettier --check .",
-    "datos:descargar": "node scripts/datos/01-paises.ts && node scripts/datos/02-banco-mundial.ts && node scripts/datos/03-fmi.ts && node scripts/datos/04-owid.ts && node scripts/datos/05-recursos.ts && node scripts/datos/06-territorios.ts && node scripts/datos/07-banderas.ts && node scripts/datos/09-fronteras.ts && node scripts/datos/11-relieve.ts && node scripts/datos/12-agua.ts && node scripts/datos/13-ciudades.ts && node --max-old-space-size=6000 scripts/datos/14-regiones.ts",
+    "datos:descargar": "node scripts/datos/01-paises.ts && node scripts/datos/02-banco-mundial.ts && node scripts/datos/03-fmi.ts && node scripts/datos/04-owid.ts && node scripts/datos/05-recursos.ts && node scripts/datos/06-territorios.ts && node scripts/datos/07-banderas.ts && node scripts/datos/09-fronteras.ts && node scripts/datos/11-relieve.ts && node scripts/datos/12-agua.ts && node --max-old-space-size=6000 scripts/datos/14-regiones.ts && node scripts/datos/13-ciudades.ts",
     "datos:construir": "node scripts/datos/10-construir.ts && node scripts/datos/15-regiones-datos.ts && node scripts/datos/08-creditos.ts",
     "datos:mapa": "node scripts/datos/09-fronteras.ts",
     "datos:relieve": "node scripts/datos/11-relieve.ts",

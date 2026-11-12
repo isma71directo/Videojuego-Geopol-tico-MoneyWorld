@@ -898,7 +898,8 @@ export class MapaMundo {
       ctx.fillStyle = '#1b2436';
       ctx.fill();
     } else {
-      ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+      // Las capitales de provincia, con un punto algo mayor.
+      ctx.arc(x, y, ciudad.capitalRegional ? 3.1 : 2.4, 0, Math.PI * 2);
       ctx.fillStyle = '#e9edf5';
       ctx.fill();
       ctx.lineWidth = 1;

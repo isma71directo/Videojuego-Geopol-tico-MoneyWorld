@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.0",
-  "actualizado": "2026-11-12T11:16:05Z",
+  "actualizado": "2026-11-12T11:44:47Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 5 cerrada: el jugador ha probado la v0.6.0 y la da por buena. Pide añadir las capitales de todas las provincias de cada país (ajuste f5-a1, v0.6.1).",
-    "siguientePaso": "Añadir las capitales de provincia que falten (ajuste f5-a1) y publicar la v0.6.1; después, presentar el plan de la Fase 6.",
+    "resumen": "Capitales de provincia añadidas (ajuste f5-a1): 2035 ciudades nuevas y 1443 que ya estaban marcadas como capital de su provincia, en 198 países; en España, las 50 capitales de provincia, Ceuta, Melilla, Mérida y Santiago de Compostela.",
+    "siguientePaso": "Publicar la v0.6.1 y abrir su PR; después, presentar el plan de la Fase 6.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -432,7 +432,7 @@
           "titulo": "Capitales de todas las provincias y regiones de primer nivel en cada país (por ejemplo, Cáceres en España), sin repetir las ciudades que ya están",
           "version": "0.6.1",
           "origen": "Mensaje del jugador tras probar la v0.6.0",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         }

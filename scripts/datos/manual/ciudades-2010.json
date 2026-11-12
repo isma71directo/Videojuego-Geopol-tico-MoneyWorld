@@ -74,5 +74,25 @@
     "_nota": "Lugares de Natural Earth que no se usan por ser erróneos: «país|nombre de Natural Earth» → motivo.",
     "DZA|Arak": "Oasis del Sáhara con la población de Arak (Irán): no es una ciudad de más de 100 000 habitantes.",
     "SAU|Al Ḥilla": "Población de Hilla (Irak) atribuida a un lugar de Arabia Saudí."
+  },
+  "sinCapitalesDeUnidad": {
+    "_nota": "Países cuyas unidades de primer nivel en Natural Earth son municipios, no provincias: no se añaden sus capitales (serían cientos de pueblos). Ajuste f5-a1.",
+    "SVN": "193 municipios",
+    "MKD": "84 municipios",
+    "LVA": "110 municipios y 9 ciudades",
+    "MLT": "68 consejos locales",
+    "AZE": "78 distritos (rayones) y ciudades"
+  },
+  "asignarPais": {
+    "_nota": "Lugares de Natural Earth cuyo punto cae en otro país del mapa simplificado: «país por posición|nombre de Natural Earth (NAME)» → país de 2010.",
+    "MAR|Melilla": "ESP",
+    "MRT|Saint-Louis": "SEN",
+    "SEN|Kaédi": "MRT"
+  },
+  "capitalesExcluidas": {
+    "_nota": "Capitales de provincia de Wikidata que no se usan: «país|nombre» → motivo (ajuste f5-a1).",
+    "BEL|Luxemburgo": "Wikidata da la ciudad de Luxemburgo como capital de la provincia belga de Luxemburgo (es Arlon).",
+    "TGO|Uagadugú": "Wikidata da Uagadugú (Burkina Faso) como capital de una región de Togo.",
+    "CYP|Famagusta Municipality": "Famagusta estaba en 2010 en Chipre del Norte."
   }
 }

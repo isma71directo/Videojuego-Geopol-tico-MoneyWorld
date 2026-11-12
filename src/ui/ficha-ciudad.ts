@@ -28,10 +28,14 @@ function nombrePais(ciudad: Ciudad, conjunto: ConjuntoPaises | null): string {
   return conjunto?.paises[ciudad.pais]?.nombre ?? ciudad.pais;
 }
 
-/** «Capital de España» o «Ciudad de España». */
+/** «Capital de España», «Capital de Cáceres (España)» o «Ciudad de España». */
 export function subtituloCiudad(ciudad: Ciudad, conjunto: ConjuntoPaises | null): string {
   const pais = nombrePais(ciudad, conjunto);
-  return t(ciudad.capital ? 'juego.mapa.ciudad.capitalDe' : 'juego.mapa.ciudad.ciudadDe', { pais });
+  if (ciudad.capital) return t('juego.mapa.ciudad.capitalDe', { pais });
+  if (ciudad.capitalRegional && ciudad.capitalDe) {
+    return t('juego.mapa.ciudad.capitalRegionalDe', { region: ciudad.capitalDe, pais });
+  }
+  return t('juego.mapa.ciudad.ciudadDe', { pais });
 }
 
 /** «675.121 (2010)», «3,3 millones (2010)» o «Sin dato». */
