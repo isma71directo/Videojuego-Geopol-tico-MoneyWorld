@@ -26,11 +26,15 @@
  * Salida: public/data/ciudades-2010.json
  * Uso:    node scripts/datos/13-ciudades.ts
  */
-import type { Feature, FeatureCollection, MultiPolygon, Point, Polygon } from 'geojson';
-import { geoBounds, geoContains, geoDistance } from 'd3-geo';
-import { feature } from 'topojson-client';
+import type { Feature, FeatureCollection, Point } from 'geojson';
 import type { Topology } from 'topojson-specification';
 import { descargarJson, escribirJsonCompacto, leerJson } from './lib/comun.ts';
+import { crearLocalizador } from './lib/localizar.ts';
+import {
+  consultarPoblaciones,
+  elegirPoblacion,
+  poblacionSinFecha,
+} from './lib/poblacion-wikidata.ts';
 import { leerPaises } from './lib/paises.ts';
 
 const VERSION_NE = 'v5.1.2';
@@ -81,14 +85,7 @@ const excluidos = sinNotas<string>(manual.excluir);
 /** Entradas de la tabla manual que se han usado: si sobra alguna, la tabla está desfasada. */
 const usadas = new Set<string>();
 const paises = Object.fromEntries(leerPaises().map((pais) => [pais.id, pais]));
-const topo = leerJson<Topology>('public/data/mapa-2010-detalle.json');
-const formas = (
-  feature(topo, topo.objects.paises!) as unknown as FeatureCollection<Polygon | MultiPolygon>
-).features.map((forma) => {
-  const [[x0, y0], [x1, y1]] = geoBounds(forma);
-  // Si la caja cruza el antimeridiano (x0 > x1), se mira siempre el polígono.
-  return { id: String(forma.id), forma, caja: [x0, y0, x1, y1] as const };
-});
+const localizador = crearLocalizador(leerJson<Topology>('public/data/mapa-2010-detalle.json'));
 
 /** «Ciudad de México» → «ciudad de mexico»: sin tildes, mayúsculas ni signos. */
 const normalizar = (texto: string): string =>
@@ -99,36 +96,10 @@ const normalizar = (texto: string): string =>
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 
-function paisDe(lon: number, lat: number): string | null {
-  for (const { id, forma, caja } of formas) {
-    const [x0, y0, x1, y1] = caja;
-    const dentroCaja = lat >= y0 && lat <= y1 && (x0 > x1 || (lon >= x0 && lon <= x1));
-    if (dentroCaja && geoContains(forma, [lon, lat])) return id;
-  }
-  return null;
-}
-
+const paisDe = (lon: number, lat: number): string | null => localizador.paisDe(lon, lat);
 /** País más cercano a un lugar costero que, por la simplificación, cae en el mar. */
-function paisCercano(lon: number, lat: number): string | null {
-  let mejor: string | null = null;
-  let distanciaMejor = DISTANCIA_COSTA_KM / 6371;
-  for (const { id, forma } of formas) {
-    const anillos =
-      forma.geometry.type === 'Polygon'
-        ? forma.geometry.coordinates
-        : forma.geometry.coordinates.flat();
-    for (const anillo of anillos) {
-      for (const punto of anillo) {
-        const distancia = geoDistance([lon, lat], punto as [number, number]);
-        if (distancia < distanciaMejor) {
-          distanciaMejor = distancia;
-          mejor = id;
-        }
-      }
-    }
-  }
-  return mejor;
-}
+const paisCercano = (lon: number, lat: number): string | null =>
+  localizador.paisCercano(lon, lat, DISTANCIA_COSTA_KM);
 
 console.log('Descargando lugares poblados de Natural Earth…');
 const lugares = (await descargarJson<FeatureCollection<Point>>(URL_LUGARES)).features as Lugar[];
@@ -297,74 +268,26 @@ if (sobran.length > 0) {
   process.exit(1);
 }
 
-// Población de Wikidata: todas las declaraciones de P1082 con su fecha, por lotes.
-interface FilaPoblacion {
-  lugar: { value: string };
-  valor: { value: string };
-  fecha?: { value: string };
-  rango: { value: string };
-}
-const declaraciones = new Map<
-  string,
-  { valor: number; anio: number | null; preferida: boolean }[]
->();
-const qids = [...new Set(pendientes.map((p) => p.qid).filter((q) => /^Q\d+$/.test(q)))];
-console.log(`Consultando en Wikidata la población de ${qids.length} ciudades…`);
-for (let i = 0; i < qids.length; i += 200) {
-  const lote = qids.slice(i, i + 200);
-  const consultaPoblacion = `SELECT ?lugar ?valor ?fecha ?rango WHERE {
-    VALUES ?lugar { ${lote.map((q) => `wd:${q}`).join(' ')} }
-    ?lugar p:P1082 ?declaracion .
-    ?declaracion ps:P1082 ?valor ; wikibase:rank ?rango .
-    OPTIONAL { ?declaracion pq:P585 ?fecha }
-  }`;
-  const filasPoblacion = (
-    await descargarJson<{ results: { bindings: FilaPoblacion[] } }>(
-      `https://query.wikidata.org/sparql?format=json&query=${encodeURIComponent(consultaPoblacion)}`,
-      { cabeceras: { Accept: 'application/sparql-results+json' } },
-    )
-  ).results.bindings;
-  for (const fila of filasPoblacion) {
-    if (fila.rango.value.endsWith('DeprecatedRank')) continue;
-    const qid = fila.lugar.value.split('/').pop()!;
-    const anio =
-      fila.fecha && /^\d{4}-/.test(fila.fecha.value) ? Number(fila.fecha.value.slice(0, 4)) : null;
-    const lista = declaraciones.get(qid) ?? [];
-    lista.push({
-      valor: Math.round(Number(fila.valor.value)),
-      anio,
-      preferida: fila.rango.value.endsWith('PreferredRank'),
-    });
-    declaraciones.set(qid, lista);
-  }
-  // Una pausa corta entre lotes, por cortesía con el servicio.
-  await new Promise((resolver) => setTimeout(resolver, 300));
-}
+// Población de Wikidata: todas las declaraciones de P1082 con su fecha.
+console.log(`Consultando en Wikidata la población de ${pendientes.length} ciudades…`);
+const declaraciones = await consultarPoblaciones(pendientes.map((p) => p.qid));
 
-/** La población de 2010 o la de la fecha más cercana (en empate, la anterior a 2010). */
-function elegirPoblacion(pendiente: Pendiente): Pick<Ciudad, 'poblacion' | 'origenPoblacion'> {
-  const lista = (declaraciones.get(pendiente.qid) ?? []).filter((d) => d.valor > 0);
-  const conFecha = lista.filter((d) => d.anio !== null);
-  if (conFecha.length > 0) {
-    const [mejor] = [...conFecha].sort(
-      (a, b) =>
-        Math.abs(a.anio! - ANIO) - Math.abs(b.anio! - ANIO) ||
-        Number(a.anio! > ANIO) - Number(b.anio! > ANIO) ||
-        Number(b.preferida) - Number(a.preferida),
-    );
-    return { poblacion: mejor!.valor, origenPoblacion: `WD:${mejor!.anio}` };
-  }
+/** La población de 2010 o la de la fecha más cercana; si no, la de la ONU o la sin fecha. */
+function elegir(pendiente: Pendiente): Pick<Ciudad, 'poblacion' | 'origenPoblacion'> {
+  const lista = declaraciones.get(pendiente.qid) ?? [];
+  const conFecha = elegirPoblacion(lista, ANIO);
+  if (conFecha) return { poblacion: conFecha.valor, origenPoblacion: `WD:${conFecha.anio}` };
   if (pendiente.onu2010 > 0) {
     return { poblacion: Math.round(pendiente.onu2010 * 1000), origenPoblacion: `ONU:${ANIO}` };
   }
-  const sinFecha = lista.find((d) => d.preferida) ?? lista[0];
-  if (sinFecha) return { poblacion: sinFecha.valor, origenPoblacion: 'WD:sin-fecha' };
+  const sinFecha = poblacionSinFecha(lista);
+  if (sinFecha !== null) return { poblacion: sinFecha, origenPoblacion: 'WD:sin-fecha' };
   return { poblacion: null, origenPoblacion: null };
 }
 
 const ciudades: Ciudad[] = pendientes.map((pendiente) => ({
   ...pendiente.ciudad,
-  ...elegirPoblacion(pendiente),
+  ...elegir(pendiente),
 }));
 const recuento = (prueba: (ciudad: Ciudad) => boolean): number => ciudades.filter(prueba).length;
 console.log(

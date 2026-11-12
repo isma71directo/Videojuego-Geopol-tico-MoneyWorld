@@ -1,0 +1,321 @@
+{
+  "_nota": "Correspondencia entre las regiones de DOSE (Wenz et al., PIB subnacional, CC BY 4.0) y las nuestras de 2010 (tarea f5-t2). Por defecto se emparejan por nombre; aquí van las que no casan solas: país → región de DOSE → nombres de nuestras regiones (en español) o de sus unidades de Natural Earth. Si una región de DOSE corresponde a varias nuestras, su PIB se reparte entre ellas por población (estimado).",
+  "alias": {
+    "AZE": {
+      "Aran": ["Arán"],
+      "Daglig-Shirvan": ["Shirván Montañoso"],
+      "Ganja-Qazakh": ["Ganyá-Gazaj"],
+      "Kalbajar-Lachin": ["Kalbajar-Lachín"],
+      "Lankaran": ["Lankarán"],
+      "Nakhchivan": ["Najicheván"],
+      "Quba-Khachmaz": ["Guba-Jachmaz"],
+      "Shaki-Zaqatala": ["Shaki-Zagatala"],
+      "Yukhari-Karabakh": ["Alto Karabaj"]
+    },
+    "BEL": {
+      "Région de Bruxelles-Capitale": ["Bruselas-Capital"],
+      "Vlaams Gewest": [
+        "Amberes",
+        "Brabante Flamenco",
+        "Flandes Occidental",
+        "Flandes Oriental",
+        "Limburgo"
+      ],
+      "Région wallonne": ["Brabante Valón", "Henao", "Lieja", "Luxemburgo", "Namur"]
+    },
+    "BIH": {
+      "Brčko": ["Brčko"],
+      "Repuplika Srpska": [
+        "Bania Luka",
+        "Bijeljina",
+        "Doboj",
+        "Foča",
+        "Sarajevo-Romanija",
+        "Trebinje",
+        "Vlasenica"
+      ],
+      "Federacija Bosna i Hercegovina": [
+        "Bosnia Central",
+        "Bosnia Occidental",
+        "Herzegovina Occidental",
+        "Herzegovina-Neretva",
+        "Podrinje Bosnio",
+        "Posavina",
+        "Sarajevo",
+        "Tuzla",
+        "Una-Sana",
+        "Zenica-Doboj"
+      ]
+    },
+    "BLR": {
+      "Homyel'": ["Gómel"],
+      "Hrodna": ["Grodno"],
+      "Mahilyow": ["Maguilov"],
+      "Minsk": ["Minsk (ciudad)", "Óblast de Minsk"],
+      "Vitsyebsk": ["Vítebsk"]
+    },
+    "CHE": {
+      "Geneva": ["Ginebra"],
+      "St. Gallen": ["San Galo"]
+    },
+    "CHL": {
+      "Aisen Of General Carlos Ibanez Del Campo": ["Aysén del General Carlos Ibáñez del Campo"],
+      "Bernardo O Higgins": ["O'Higgins"],
+      "Magallanes": ["Magallanes y de la Antártica Chilena"],
+      "Rms Metropolitan Region": ["Santiago"]
+    },
+    "CZE": {
+      "Central Bohemia Region": ["Bohemia Central"],
+      "Prague": ["Praga"],
+      "South Bohemia Region": ["Bohemia Meridional"],
+      "The Hradec Kralove Region": ["Hradec Králové"],
+      "The Karlovy Vary Region": ["Karlovy Vary"],
+      "The Liberec Region": ["Liberec"],
+      "The Moravian-Silesian Region": ["Moravia-Silesia"],
+      "The Olomouc Region": ["Olomouc"],
+      "The Pardubice Region": ["Pardubice"],
+      "The Plzen Region": ["Pilsen"],
+      "The South Moravian Region": ["Moravia Meridional"],
+      "The Usti Region": ["Ústí nad Labem"],
+      "The Vysocina Region": ["Vysočina"],
+      "The Zlin Region": ["Zlín"]
+    },
+    "DEU": {
+      "Freistaat Sachsen": ["Sajonia"]
+    },
+    "DNK": {
+      "Sjælland": ["Selandia"]
+    },
+    "ESP": {
+      "Ceuta y Melilla": ["Ceuta", "Melilla"],
+      "Comunidad Foral de Navarra": ["Navarra"],
+      "Illes Balears": ["Islas Baleares"],
+      "Principado de Asturias": ["Asturias"]
+    },
+    "FRA": {
+      "Auvergne-Rhône-Alpes": ["Auvernia", "Ródano-Alpes"],
+      "Bourgogne-Franche-Comté": ["Borgoña", "Franco Condado"],
+      "Bretagne": ["Bretaña"],
+      "Centre-Val De Loire": ["Centro"],
+      "Corse": ["Córcega"],
+      "Grand Est": ["Alsacia", "Champaña-Ardenas", "Lorena"],
+      "Hauts-de-France": ["Norte-Paso de Calais", "Picardía"],
+      "Île-De-France": ["Isla de Francia"],
+      "Normandie": ["Alta Normandía", "Baja Normandía"],
+      "Nouvelle-Aquitaine": ["Aquitania", "Lemosín", "Poitou-Charentes"],
+      "Occitanie": ["Languedoc-Rosellón", "Mediodía-Pirineos"],
+      "Pays De La Loire": ["País del Loira"],
+      "Provence-Alpes-Côte D'azur": ["Provenza-Alpes-Costa Azul"]
+    },
+    "GBR": {
+      "England": [
+        "Londres",
+        "Sudeste de Inglaterra",
+        "Este de Inglaterra",
+        "Sudoeste de Inglaterra",
+        "Midlands Occidentales",
+        "Midlands Orientales",
+        "Yorkshire y Humber",
+        "Noroeste de Inglaterra",
+        "Nordeste de Inglaterra"
+      ],
+      "Scotland": ["Escocia"],
+      "Wales": ["Gales"],
+      "Northern Ireland": ["Irlanda del Norte"]
+    },
+    "GRC": {
+      "Aegean": ["Egeo Meridional", "Egeo Septentrional"],
+      "Attica": ["Ática"],
+      "Crete": ["Creta"],
+      "Epirus and Western Macedonia": ["Epiro", "Macedonia Occidental"],
+      "Macedonia and Thrace": ["Macedonia Central", "Macedonia Oriental y Tracia", "Monte Athos"],
+      "Peloponnese, Western Greece and the Ionian Islands": [
+        "Peloponeso",
+        "Grecia Occidental",
+        "Islas Jónicas"
+      ],
+      "Thessaly and Central Greece": ["Tesalia", "Grecia Central"]
+    },
+    "HRV": {
+      "Slavonskibrod-Posavina": ["Brod-Posavina"],
+      "Zagreb": ["Condado de Zagreb"],
+      "Zagreb City": ["Zagreb (ciudad)"],
+      "Vukovar-Sirmium": ["Vukovar-Srijem"]
+    },
+    "IRL": {
+      "Tipperary": ["Tipperary Norte", "Tipperary Sur"]
+    },
+    "IRN": {
+      "Ardabil": ["Ardebil"],
+      "Hamedan": ["Hamadán"],
+      "Kohgiloyeh Boyerahmad": ["Kohkiluyeh y Buyer Ahmad"]
+    },
+    "ITA": {
+      "Lazio": ["Lacio"],
+      "Marche": ["Marcas"],
+      "Sardegna": ["Cerdeña"],
+      "Puglia": ["Apulia"],
+      "Friuli-Venezia Giulia": ["Friuli-Venecia Julia"],
+      "Piemonte": ["Piamonte"]
+    },
+    "KGZ": {
+      "Biškek": ["Biskek"],
+      "Chui": ["Chuy"],
+      "Jalal-Abat": ["Jalal-Abad"],
+      "Osh сity": ["Osh"],
+      "Yssyk-Kul": ["Ysyk-Kol"]
+    },
+    "KOR": {
+      "Chungcheongbuk-do": ["Chungcheong del Norte"],
+      "Chungcheongnam-do": ["Chungcheong del Sur"],
+      "Gangwond-do": ["Gangwon"],
+      "Gyeonggi-do": ["Gyeonggi"],
+      "Gyeongsangbuk-do": ["Gyeongsang del Norte"],
+      "Gyeongsangnam-do": ["Gyeongsang del Sur"],
+      "Jeollabuk-do": ["Jeolla del Norte"],
+      "Jeollanam-do": ["Jeolla del Sur"],
+      "Seoul": ["Seúl"]
+    },
+    "LVA": {
+      "Kurzeme": ["Curlandia"],
+      "Latgale": ["Latgalia"],
+      "Zemgale": ["Semigalia"]
+    },
+    "MEX": {
+      "Michoacán De Ocampo": ["Michoacán"]
+    },
+    "MKD": {
+      "East": ["Este"],
+      "Northeast": ["Nordeste"],
+      "Skopje": ["Skopie"],
+      "Southeast": ["Sudeste"],
+      "Southwest": ["Sudoeste"]
+    },
+    "MNG": {
+      "Bayankhongor": ["Bayanhongor"],
+      "Darkhan-Uul": ["Darhan-Uul"],
+      "Govi-Altai": ["Govi-Altay"],
+      "Govisumber": ["Govisümber"],
+      "Khentii": ["Hentiy"],
+      "Khovd": ["Hovd"],
+      "Khuvsgul": ["Hövsgöl"],
+      "Orkhon": ["Orhon"],
+      "Sukhbaatar": ["Sühbaatar"],
+      "Tuv": ["Töv"],
+      "Ulaanbaatar": ["Ulán Bator"],
+      "Zavkhan": ["Zavhan"]
+    },
+    "MOZ": {
+      "Cidade de Maputo": ["Maputo"]
+    },
+    "NZL": {
+      "Tasman/nelson": ["Tasman", "Nelson"]
+    },
+    "PER": {
+      "Moquequa": ["Moquegua"]
+    },
+    "PHL": {
+      "ARMM": ["Mindanao Musulmán"],
+      "Bicol Region": ["Bícol"],
+      "Cagayan Valley": ["Valle del Cagayán"],
+      "Calabarzon": ["Calabarzón"],
+      "Central Luzon": ["Luzón Central"],
+      "Central Visayas": ["Bisayas Centrales"],
+      "Cordillera Administrative Region": ["Cordillera"],
+      "Davao Region": ["Región de Davao"],
+      "Eastern Visayas": ["Bisayas Orientales"],
+      "Ilocos Regions": ["Ilocos"],
+      "National Capital Region": ["Gran Manila"],
+      "Northern Mindanao": ["Mindanao del Norte"],
+      "Western Visayas": ["Bisayas Occidentales"],
+      "Zamboanga Peninsula": ["Península de Zamboanga"]
+    },
+    "POL": {
+      "Dolnośląskie": ["Baja Silesia"],
+      "Kujawsko-Pomorskie": ["Cuyavia y Pomerania"],
+      "Lubelskie": ["Lublin"],
+      "Lubuskie": ["Lubusz"],
+      "Mazowieckie": ["Mazovia"],
+      "Małopolskie": ["Pequeña Polonia"],
+      "Opolskie": ["Opole"],
+      "Podkarpackie": ["Subcarpacia"],
+      "Podlaskie": ["Podlaquia"],
+      "Pomorskie": ["Pomerania"],
+      "Warmińsko-Mazurskie": ["Varmia y Masuria"],
+      "Wielkopolskie": ["Gran Polonia"],
+      "Zachodniopomorskie": ["Pomerania Occidental"],
+      "Łódzkie": ["Łódź"],
+      "Śląskie": ["Silesia"],
+      "Świętokrzyskie": ["Santa Cruz"]
+    },
+    "RUS": {
+      "Adygea": ["Adygey"],
+      "Altai Krai": ["Altay"],
+      "Arhangelsk": ["Arkhangel'sk"],
+      "Astrakhan": ["Astrakhan'"],
+      "Buryatia": ["Buryat"],
+      "Chechen": ["Chechnya"],
+      "Chukotka": ["Chukchi Autonomous Okrug"],
+      "Ingushetia": ["Ingush"],
+      "Jewish Autonomous Region": ["Yevrey"],
+      "Kabardino-Balkar": ["Kabardin-Balkar"],
+      "Kalmykia": ["Kalmyk"],
+      "Khakassia": ["Khakass"],
+      "Magadan": ["Maga Buryatdan"],
+      "Mari El": ["Mariy-El"],
+      "Moscow city": ["Moskva"],
+      "Moscow region": ["Moskovskaya"],
+      "Nizhny Novgorod": ["Nizhegorod"],
+      "North Ossetia-Alania": ["North Ossetia"],
+      "Oryol": ["Orel"],
+      "Perm Krai": ["Perm'"],
+      "Primorsky": ["Primor'ye"],
+      "Ryazan": ["Ryazan'"],
+      "Saint Petersburg": ["City of St. Petersburg"],
+      "Sakha": ["Sakha (Yakutia)"],
+      "Stavropol": ["Stavropol'"],
+      "Transbaikal": ["Chita"],
+      "Tver": ["Tver'"],
+      "Tyumen": ["Tyumen'"],
+      "Tyva": ["Tuva"],
+      "Ulyanovsk": ["Ul'yanovsk"],
+      "Yaroslavl": ["Yaroslavl'"]
+    },
+    "SVN": {
+      "Jugovzhodna Slovenija": ["Eslovenia Sudoriental"],
+      "Koroška": ["Carintia"],
+      "Obalno-kraška": ["Litoral-Karst"],
+      "Osrednjeslovenska": ["Eslovenia Central"],
+      "Posavska": ["Spodnjeposavska"],
+      "Primorsko-notranjska": ["Notranjsko-kraška"]
+    },
+    "THA": {
+      "Nongbua Lamphu": ["Nong Bua Lam Phu"],
+      "Singburi": ["Sing Buri"]
+    },
+    "TUR": {
+      "Afyon": ["Egeo"],
+      "Elaz??": ["Anatolia Centro-oriental"],
+      "I?d?r": ["Anatolia Nororiental"]
+    },
+    "UKR": {
+      "Kyiv City": ["Kiev (ciudad)"],
+      "Khmelnytskiy": ["Jmelnitski"],
+      "Lviv": ["Leópolis"],
+      "Luhansk": ["Lugansk"]
+    },
+    "VNM": {
+      "Bắc Kạn": ["Noreste de Vietnam"],
+      "Đồng Nai": ["Sudeste de Vietnam"],
+      "Hưng Yên": ["Delta del río Rojo"]
+    }
+  },
+  "omitir": {
+    "_nota": "Países de DOSE que no se usan, y por qué (su PIB regional queda estimado por población).",
+    "ETH": "DOSE solo trae una región (Amhara).",
+    "LAO": "DOSE solo trae una provincia (Saravan).",
+    "PRY": "DOSE solo trae 6 de los 18 departamentos.",
+    "FIN": "DOSE usa las 5 grandes áreas (NUTS 2), que no siguen las regiones de 2010.",
+    "PRT": "DOSE usa regiones NUTS 3, que no coinciden con los distritos."
+  }
+}

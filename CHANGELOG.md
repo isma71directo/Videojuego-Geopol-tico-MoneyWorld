@@ -7,6 +7,36 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.6.0 - 2026-11-12
+
+Fase 5 · Regiones del mundo.
+
+### Añadido
+
+- 2974 regiones como eran en 2010, a partir de las divisiones de Natural Earth
+  (`scripts/datos/14-regiones.ts`):
+  - España por comunidades autónomas, con Ceuta y Melilla.
+  - Francia con sus 22 regiones de 2010 y Kenia con sus 8 provincias.
+  - Italia por regiones, Reino Unido por naciones y regiones inglesas y Rusia por regiones
+    económicas.
+  - Cambios posteriores deshechos: Telangana, Alborz, Sejong, las Darfur nuevas…
+  - Hasta unas 30 por país; Estados Unidos (51) y Argelia (48), como excepciones.
+- Población y PIB de 2010 de cada región (`scripts/datos/15-regiones-datos.ts`), con su fuente:
+  DOSE (Wenz y otros, CC BY 4.0) en 66 países y Wikidata. Lo que falta, estimado y marcado con
+  asterisco. Todo se ajusta para que las regiones sumen el total del país.
+- Al acercarse a un país, aparecen sus regiones con fronteras discontinuas, nombres en cursiva
+  y un tono algo distinto en cada una. Al pasar el ratón, ficha de la región (población y PIB
+  por habitante); con un clic, panel con población, PIB, PIB por habitante, la fuente de cada
+  dato y un botón para ver la ficha del país.
+- Transición animada: las regiones aparecen poco a poco según crece el país en pantalla y, la
+  primera vez, con un fundido.
+- Hoja de ruta: la idea del mapa más realista (opciones A y C) queda en la Fase 6.
+
+### Cambiado
+
+- La población de las ciudades se elige ahora de forma determinista cuando Wikidata tiene
+  varios datos del mismo año (cambian 31 ciudades).
+
 ## 0.5.2 - 2026-11-12
 
 Ajuste de la Fase 4 pedido por el jugador tras probar la v0.5.1.

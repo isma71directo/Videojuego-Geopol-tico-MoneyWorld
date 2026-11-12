@@ -1,12 +1,18 @@
 /** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
 import type { ConjuntoPaises } from '../datos/paises';
 import { t } from '../i18n';
-import { MapaMundo } from '../map/mapa';
+import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
 import { ESTILO_MAPA } from '../map/estilo';
 import { conectarGestos } from '../map/gestos';
 import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el, reemplazar } from './dom';
 import { contenidoPanelCiudad, contenidoRecuadroCiudad } from './ficha-ciudad';
+import {
+  contenidoPanelRegion,
+  contenidoRecuadroRegion,
+  type ConjuntoRegiones,
+  type DatosRegion,
+} from './ficha-region';
 import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
@@ -87,6 +93,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       relieve: './av/relieve/',
       agua: './data/mapa-agua.json',
       ciudades: './data/ciudades-2010.json',
+      regiones: './data/regiones-2010.json',
     },
     ESTILO_MAPA,
   );
@@ -107,21 +114,56 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
 
   let conjunto: ConjuntoPaises | null = null;
   let recuadroDe: unknown = null;
-  mapa.alSenalar = (objetivo, x, y) => {
-    // Lo que se señala: el código del país o la propia ciudad.
-    const clave = objetivo?.tipo === 'ciudad' ? objetivo.ciudad : (objetivo?.id ?? null);
+  // Datos de las regiones (Fase 5): se descargan la primera vez que se señala una región.
+  let datosRegiones: ConjuntoRegiones | null = null;
+  let cargandoDatosRegiones = false;
+  let senalado: { objetivo: Objetivo; x: number; y: number } | null = null;
+  let seleccion: Objetivo | null = null;
+  const datosDe = (region: RegionSenalada): DatosRegion | null =>
+    datosRegiones?.regiones[region.id] ?? null;
+  const cargarDatosRegiones = (): void => {
+    if (datosRegiones || cargandoDatosRegiones) return;
+    cargandoDatosRegiones = true;
+    fetch('./data/regiones-2010-datos.json')
+      .then((r) => (r.ok ? (r.json() as Promise<ConjuntoRegiones>) : Promise.reject(new Error())))
+      .then((datos) => {
+        datosRegiones = datos;
+        // Se repintan la ficha y el panel que esperaban los datos.
+        recuadroDe = null;
+        if (senalado?.objetivo.tipo === 'region') {
+          mostrarRecuadro(senalado.objetivo, senalado.x, senalado.y);
+        }
+        if (seleccion?.tipo === 'region') pintarPanel(seleccion);
+      })
+      .catch(() => {
+        cargandoDatosRegiones = false;
+      });
+  };
+
+  /** Recuadro al lado del ratón con la ficha breve de lo señalado (país, región o ciudad). */
+  const mostrarRecuadro = (objetivo: Objetivo | null, x: number, y: number): void => {
+    // Lo que se señala: el código del país, la región o la propia ciudad.
+    const clave =
+      objetivo?.tipo === 'ciudad'
+        ? objetivo.ciudad
+        : objetivo?.tipo === 'region'
+          ? objetivo.region.id
+          : (objetivo?.id ?? null);
     const pais = objetivo?.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
     if (objetivo === null || (objetivo.tipo === 'pais' && (!pais || !conjunto))) {
       recuadro.hidden = true;
       recuadroDe = null;
       return;
     }
+    if (objetivo.tipo === 'region') cargarDatosRegiones();
     if (recuadroDe !== clave) {
       reemplazar(
         recuadro,
         ...(objetivo.tipo === 'ciudad'
           ? contenidoRecuadroCiudad(objetivo.ciudad, conjunto)
-          : contenidoRecuadro(pais!, conjunto!)),
+          : objetivo.tipo === 'region'
+            ? contenidoRecuadroRegion(objetivo.region, conjunto, datosDe(objetivo.region))
+            : contenidoRecuadro(pais!, conjunto!)),
       );
       recuadroDe = clave;
     }
@@ -134,9 +176,34 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     const arriba = Math.min(y + margen, elemento.clientHeight - alto - 8);
     recuadro.style.transform = `translate(${Math.max(8, izquierda)}px, ${Math.max(8, arriba)}px)`;
   };
+  mapa.alSenalar = (objetivo, x, y) => {
+    senalado = objetivo ? { objetivo, x, y } : null;
+    mostrarRecuadro(objetivo, x, y);
+  };
+
+  /** Panel de la derecha con la ficha de lo seleccionado; devuelve si hay algo que mostrar. */
+  const pintarPanel = (objetivo: Objetivo): boolean => {
+    const pais = objetivo.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
+    if (objetivo.tipo === 'pais' && (!pais || !conjunto)) return false;
+    const quitar = (): void => mapa.seleccionar(null);
+    if (objetivo.tipo === 'region') cargarDatosRegiones();
+    reemplazar(
+      panel,
+      ...(objetivo.tipo === 'ciudad'
+        ? contenidoPanelCiudad(objetivo.ciudad, conjunto, quitar, () =>
+            mapa.seleccionar(objetivo.ciudad.pais),
+          )
+        : objetivo.tipo === 'region'
+          ? contenidoPanelRegion(objetivo.region, conjunto, datosDe(objetivo.region), quitar, () =>
+              mapa.seleccionar(objetivo.region.pais),
+            )
+          : contenidoPanel(pais!, conjunto!, quitar)),
+    );
+    return true;
+  };
   mapa.alSeleccionar = (objetivo) => {
-    const pais = objetivo?.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
-    if (objetivo === null || (objetivo.tipo === 'pais' && (!pais || !conjunto))) {
+    seleccion = objetivo;
+    if (objetivo === null || !pintarPanel(objetivo)) {
       if (!panel.hidden) reproducir('deseleccionar');
       panel.hidden = true;
       panel.replaceChildren();
@@ -144,15 +211,6 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     }
     if (panel.hidden) reproducir('abrirPanel');
     reproducir('seleccionar');
-    const quitar = (): void => mapa.seleccionar(null);
-    reemplazar(
-      panel,
-      ...(objetivo.tipo === 'ciudad'
-        ? contenidoPanelCiudad(objetivo.ciudad, conjunto, quitar, () =>
-            mapa.seleccionar(objetivo.ciudad.pais),
-          )
-        : contenidoPanel(pais!, conjunto!, quitar)),
-    );
     panel.hidden = false;
   };
   const alPulsarEscape = (evento: KeyboardEvent): void => {

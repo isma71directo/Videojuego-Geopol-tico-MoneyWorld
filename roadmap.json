@@ -1,17 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.5.2",
-  "actualizado": "2026-11-12T07:48:03Z",
+  "versionActual": "0.6.0",
+  "actualizado": "2026-11-12T11:08:20Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "v0.5.2 lista en su rama: nombres de ciudades corregidos (traducciones erróneas, nombres de 2010, transliteraciones raras) y dos lugares erróneos de Natural Earth quitados. Presentado al jugador el plan de la Fase 5 (regiones) y las opciones para un mapa más realista (idea-3).",
-    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 5, empezar la tarea f5-t1 (regiones de 2010 agrupadas hasta 30 por país). Asignar la idea-3 a la fase que elija el jugador.",
+    "resumen": "Fase 5 completa en su rama y versión 0.6.0: 2974 regiones como eran en 2010, con su población y su PIB (DOSE, Wikidata o estimados y marcados), visibles y seleccionables al acercarse, con transición animada.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 5 como hecha y presentar el plan de la Fase 6 (capas del mapa y mapa más realista).",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.5.2",
-      "Prueba en el PC: acercarse a México, Ucrania y Filipinas y ver Tlaxcala, Puebla, Dnipropetrovsk, Kirovogrado, Davao y Cebú con su nombre correcto",
-      "Aprobar (o cambiar) el plan de la Fase 5: regiones del mundo",
-      "Elegir las opciones para un mapa más realista (idea-3) y en qué fase hacerlas"
+      "Fusionar el PR de la Fase 5 (v0.6.0)",
+      "Prueba en el PC: acercarse a España hasta ver sus comunidades, pasar el ratón por varias y hacer clic en Cataluña y en Andalucía; comprobar su población y su PIB y el botón «Ver la ficha de España»; acercarse a Francia y ver sus 22 regiones de 2010"
     ]
   },
   "etapas": [
@@ -400,35 +398,35 @@
       "dependeDe": ["fase-4"],
       "hechoCuando": "Las regiones se ven y se seleccionan al acercar",
       "pruebaJugador": "Acercarse a España y hacer clic en Cataluña y en Andalucía",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f5-t1",
-          "titulo": "Procesar las regiones (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Procesar las regiones como eran en 2010 (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país): España con sus 17 comunidades autónomas, Ceuta y Melilla; Francia con sus 22 regiones de 2010; Kenia con sus 8 provincias de 2010.",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/57be7aa"
         },
         {
           "id": "f5-t2",
-          "titulo": "Datos básicos por región: población y PIB estimado (reparto proporcional si no hay dato)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Datos básicos por región: población (Wikidata, la de 2010 o la más cercana, ajustada al total del país) y PIB de 2010 donde haya fuente abierta (Eurostat, OCDE, DOSE); si no, reparto proporcional del dato del país, marcado como estimado.",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/1fca16e"
         },
         {
           "id": "f5-t3",
           "titulo": "Mostrar y seleccionar las regiones a partir de cierto zoom",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/11cdda8"
         },
         {
           "id": "f5-t4",
           "titulo": "Audiovisual: transición animada entre la vista de países y la de regiones",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6664032"
         }
       ]
     },
@@ -440,7 +438,7 @@
       "objetivo": "Ver la información del mundo sobre el mapa, con capas y leyenda",
       "dependeDe": ["fase-5"],
       "hechoCuando": "Las capas funcionan con su leyenda",
-      "pruebaJugador": "Cambiar de capa y leer la leyenda",
+      "pruebaJugador": "Cambiar de capa y leer la leyenda; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.",
       "estado": "pendiente",
       "tareas": [
         {
@@ -459,6 +457,13 @@
         },
         {
           "id": "f6-t3",
+          "titulo": "Mapa más realista (opciones A y C elegidas por el jugador): relieve con los colores del terreno y el mar más oscuro donde es más profundo, bajo los colores de los países; efecto de volumen sin pasar a 3D: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua.",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f6-t4",
           "titulo": "Audiovisual: rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa",
           "estado": "pendiente",
           "fecha": null,
@@ -4175,7 +4180,7 @@
       "id": "idea-3",
       "titulo": "Mapa más bonito y realista, con más sensación de relieve y de 3D (sin cambiar de concepto: el mismo mapa plano, mejor dibujado)",
       "origen": "Mensaje del jugador tras probar la v0.5.1",
-      "faseAsignada": null
+      "faseAsignada": "fase-6"
     }
   ],
   "historial": [
@@ -4269,6 +4274,16 @@
       "cambios": [
         "Nombres de ciudades corregidos: traducciones erróneas (Tlaxcala, Puerto Plata…), nombres de 2010 de las ciudades renombradas después (Dnipropetrovsk, Kirovogrado, Almatý…), transliteraciones raras y nombres oficiales largos",
         "Quitados dos lugares erróneos de Natural Earth con la población de otra ciudad homónima"
+      ]
+    },
+    {
+      "version": "0.6.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Regiones del mundo como eran en 2010 (2974): España por comunidades autónomas, Francia con sus 22 regiones de 2010, Kenia con sus 8 provincias, Sudán con el sur incluido… agrupadas hasta unas 30 por país",
+        "Población y PIB de 2010 de cada región: DOSE (66 países) y Wikidata, ajustados al total del país; lo que falta, estimado y marcado",
+        "Las regiones aparecen al acercarse, con sus fronteras, sus nombres y un tono propio; ficha al pasar el ratón y panel al hacer clic",
+        "Transición animada entre la vista de países y la de regiones"
       ]
     }
   ]

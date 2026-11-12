@@ -1,0 +1,559 @@
+{
+  "_nota": "Regiones de 2010 (tarea f5-t1). Las unidades son las de primer nivel (admin-1) de Natural Earth v5.1.2; aquí se dice cómo agruparlas y corregirlas para que sean las de 2010. Las claves son los nombres (campo «name») de Natural Earth.",
+  "maximo": 40,
+  "excepciones": {
+    "_nota": "Países que se quedan con más de «maximo» regiones, y por qué.",
+    "USA": "Los 50 estados y el distrito de Columbia son la unidad política básica del país.",
+    "DZA": "Las 48 wilayas eran la división de primer nivel y no había ninguna agrupación oficial."
+  },
+  "agruparPorCampo": {
+    "_nota": "País → campo de Natural Earth por el que se agrupan sus unidades, nombres en español de los grupos y grupo de las unidades sin ese campo.",
+    "ESP": {
+      "campo": "region",
+      "nombres": {
+        "Andalucía": "Andalucía",
+        "Aragón": "Aragón",
+        "Asturias": "Asturias",
+        "Canary Is.": "Canarias",
+        "Cantabria": "Cantabria",
+        "Castilla y León": "Castilla y León",
+        "Castilla-La Mancha": "Castilla-La Mancha",
+        "Cataluña": "Cataluña",
+        "Ceuta": "Ceuta",
+        "Extremadura": "Extremadura",
+        "Foral de Navarra": "Navarra",
+        "Galicia": "Galicia",
+        "Islas Baleares": "Islas Baleares",
+        "La Rioja": "La Rioja",
+        "Madrid": "Comunidad de Madrid",
+        "Melilla": "Melilla",
+        "Murcia": "Región de Murcia",
+        "País Vasco": "País Vasco",
+        "Valenciana": "Comunidad Valenciana"
+      }
+    },
+    "ITA": {
+      "campo": "region",
+      "nombres": {
+        "Abruzzo": "Abruzos",
+        "Apulia": "Apulia",
+        "Basilicata": "Basilicata",
+        "Calabria": "Calabria",
+        "Campania": "Campania",
+        "Emilia-Romagna": "Emilia-Romaña",
+        "Friuli-Venezia Giulia": "Friuli-Venecia Julia",
+        "Lazio": "Lacio",
+        "Liguria": "Liguria",
+        "Lombardia": "Lombardía",
+        "Marche": "Marcas",
+        "Molise": "Molise",
+        "Piemonte": "Piamonte",
+        "Sardegna": "Cerdeña",
+        "Sicily": "Sicilia",
+        "Toscana": "Toscana",
+        "Trentino-Alto Adige": "Trentino-Alto Adigio",
+        "Umbria": "Umbría",
+        "Valle d'Aosta": "Valle de Aosta",
+        "Veneto": "Véneto"
+      }
+    },
+    "RUS": {
+      "campo": "region_sub",
+      "nota": "Regiones económicas de Rusia (más Kaliningrado); Crimea y Sebastopol eran de Ucrania en 2010.",
+      "nombres": {
+        "Central": "Rusia Central",
+        "Central Black Earth": "Tierras Negras Centrales",
+        "East Siberian": "Siberia Oriental",
+        "Far Eastern": "Extremo Oriente",
+        "Kaliningrad": "Kaliningrado",
+        "North Caucasus": "Cáucaso Norte",
+        "Northern": "Norte de Rusia",
+        "Northwestern": "Noroeste de Rusia",
+        "Urals": "Urales",
+        "Volga": "Volga",
+        "Volga-Vyatka": "Volga-Viatka",
+        "West Siberian": "Siberia Occidental"
+      }
+    },
+    "SVN": {
+      "campo": "region",
+      "nombres": {
+        "Gorenjska": "Gorenjska",
+        "Goriška": "Goriška",
+        "Jugovzhodna Slovenija": "Eslovenia Sudoriental",
+        "Koroška": "Carintia",
+        "Notranjsko-kraška": "Notranjsko-kraška",
+        "Obalno-kraška": "Litoral-Karst",
+        "Osrednjeslovenska": "Eslovenia Central",
+        "Podravska": "Podravska",
+        "Pomurska": "Pomurska",
+        "Savinjska": "Savinjska",
+        "Spodnjeposavska": "Spodnjeposavska",
+        "Zasavska": "Zasavska"
+      }
+    },
+    "LVA": {
+      "campo": "region",
+      "nombres": {
+        "Kurzeme": "Curlandia",
+        "Latgale": "Latgalia",
+        "Riga": "Riga",
+        "Vidzeme": "Vidzeme",
+        "Zemgale": "Semigalia"
+      }
+    },
+    "PHL": {
+      "campo": "region",
+      "nombres": {
+        "Autonomous Region in Muslim Mindanao (ARMM)": "Mindanao Musulmán",
+        "Bicol (Region V)": "Bícol",
+        "CALABARZON (Region IV-A)": "Calabarzón",
+        "Cagayan Valley (Region II)": "Valle del Cagayán",
+        "Central Luzon (Region III)": "Luzón Central",
+        "Central Visayas (Region VII)": "Bisayas Centrales",
+        "Cordillera Administrative Region (CAR)": "Cordillera",
+        "Davao (Region XI)": "Región de Davao",
+        "Dinagat Islands (Region XIII)": "Caraga",
+        "Eastern Visayas (Region VIII)": "Bisayas Orientales",
+        "Ilocos (Region I)": "Ilocos",
+        "MIMAROPA (Region IV-B)": "Mimaropa",
+        "National Capital Region": "Gran Manila",
+        "Northern Mindanao (Region X)": "Mindanao del Norte",
+        "SOCCSKSARGEN (Region XII)": "Soccsksargen",
+        "Western Visayas (Region VI)": "Bisayas Occidentales",
+        "Zamboanga Peninsula (Region IX)": "Península de Zamboanga"
+      }
+    },
+    "UGA": {
+      "campo": "region",
+      "nombres": {
+        "Central": "Región Central",
+        "Eastern": "Región Oriental",
+        "Northern": "Región Norte",
+        "Western": "Región Occidental"
+      }
+    },
+    "AZE": {
+      "campo": "region",
+      "nombres": {
+        "Absheron Economic Region": "Absheron",
+        "Aran Economic Region": "Arán",
+        "Daghlig Shirvan Economic Region": "Shirván Montañoso",
+        "Ganja-Gazakh Economic Region": "Ganyá-Gazaj",
+        "Guba-Khachmaz Economic Region": "Guba-Jachmaz",
+        "Kalbajar-Lachin Economic Region": "Kalbajar-Lachín",
+        "Lankaran Economic Region": "Lankarán",
+        "Naxçıvan Autonomous Republic": "Najicheván",
+        "Shaki-Zaqatala Economic Region": "Shaki-Zagatala",
+        "Yukhari Garabakh Economic Region": "Alto Karabaj"
+      }
+    },
+    "THA": {
+      "campo": "region",
+      "nombres": {
+        "Central": "Tailandia Central",
+        "Eastern": "Tailandia Oriental",
+        "Northeastern": "Isán",
+        "Northern": "Tailandia del Norte",
+        "Southern": "Tailandia del Sur",
+        "Western": "Tailandia Occidental"
+      }
+    },
+    "MLT": {
+      "campo": "region",
+      "nombres": {
+        "Gozo": "Gozo",
+        "Malta Majjistral": "Malta Noroeste",
+        "Malta Xlokk": "Malta Sudeste"
+      }
+    },
+    "BFA": {
+      "campo": "region",
+      "nombres": {
+        "Boucle du Mouhoun": "Boucle du Mouhoun",
+        "Cascades": "Cascadas",
+        "Centre": "Centro",
+        "Centre-Est": "Centro-Este",
+        "Centre-Nord": "Centro-Norte",
+        "Centre-Ouest": "Centro-Oeste",
+        "Centre-Sud": "Centro-Sur",
+        "Est": "Este",
+        "Hauts-Bassins": "Hauts-Bassins",
+        "Nord": "Norte",
+        "Plateau-Central": "Meseta Central",
+        "Sahel": "Sahel",
+        "Sud-Ouest": "Sudoeste"
+      }
+    },
+    "VNM": {
+      "campo": "region",
+      "sinCampo": {
+        "Quàng Nam": "Nam Trung Bộ",
+        "Hau Giang": "đồng bằng sông Cửu Long",
+        "Đông Nam Bộ": "Đông Nam Bộ",
+        "Đông Bắc": "Đông Bắc",
+        "Đồng Bằng Sông Hồng": "Đồng Bằng Sông Hồng",
+        "Can Tho": "đồng bằng sông Cửu Long"
+      },
+      "equivalentes": {
+        "Ðông B?c": "Đông Bắc"
+      },
+      "nombres": {
+        "Bắc Trung Bộ": "Costa Centro-Norte",
+        "Nam Trung Bộ": "Costa Centro-Sur",
+        "Tây Bắc": "Noroeste de Vietnam",
+        "Tây Nguyên": "Altiplano Central",
+        "Đông Bắc": "Noreste de Vietnam",
+        "Đông Nam Bộ": "Sudeste de Vietnam",
+        "Đồng Bằng Sông Hồng": "Delta del río Rojo",
+        "đồng bằng sông Cửu Long": "Delta del Mekong"
+      }
+    },
+    "JPN": {
+      "campo": "region",
+      "sinCampo": {
+        "Saga": "Kyushu",
+        "Nagasaki": "Kyushu"
+      },
+      "nombres": {
+        "Chubu": "Chubu",
+        "Chugoku": "Chugoku",
+        "Hokkaido": "Hokkaido",
+        "Kanto": "Kanto",
+        "Kinki": "Kinki",
+        "Kyushu": "Kyushu",
+        "Okinawa": "Okinawa",
+        "Shikoku": "Shikoku",
+        "Tohoku": "Tohoku"
+      }
+    },
+    "MKD": {
+      "campo": "region",
+      "sinCampo": {
+        "Strumitsa": "Southeastern",
+        "Gevgelija": "Southeastern",
+        "Jegunovce": "Polog",
+        "Tearce": "Polog",
+        "Tetovo": "Polog",
+        "Vrapcište": "Polog",
+        "Staro Nagoričane": "Northeastern",
+        "Oslomej": "Southwestern",
+        "Mogila": "Pelagonia",
+        "Rosoman": "Vardar",
+        "Drugovo": "Southwestern",
+        "Plasnica": "Southwestern",
+        "Skopje": "Skopje",
+        "Zrnovci": "Eastern",
+        "Bosilovo": "Southeastern"
+      },
+      "equivalentes": {
+        "Greater Skopje": "Skopje"
+      },
+      "nombres": {
+        "Eastern": "Este",
+        "Northeastern": "Nordeste",
+        "Pelagonia": "Pelagonia",
+        "Polog": "Polog",
+        "Skopje": "Skopie",
+        "Southeastern": "Sudeste",
+        "Southwestern": "Sudoeste",
+        "Vardar": "Vardar"
+      }
+    },
+    "HUN": {
+      "campo": "region_sub",
+      "nota": "Los 19 condados y Budapest: las ciudades con rango de condado se unen a su condado.",
+      "sinCampo": {
+        "Csongrád": "Csongrád",
+        "Baranya": "Baranya"
+      },
+      "porNombre": ["Budapest"],
+      "nombres": {
+        "Baranya": "Baranya",
+        "Borsod-Abaúj-Zemplén": "Borsod-Abaúj-Zemplén",
+        "Bács-Kiskun": "Bács-Kiskun",
+        "Békés": "Békés",
+        "Csongrád": "Csongrád",
+        "Fejér": "Fejér",
+        "Gyor-Moson-Sopron": "Győr-Moson-Sopron",
+        "Hajdú-Bihar": "Hajdú-Bihar",
+        "Heves": "Heves",
+        "Jász-Nagykun-Szolnok": "Jász-Nagykun-Szolnok",
+        "Komárom-Esztergom": "Komárom-Esztergom",
+        "Nógrád": "Nógrád",
+        "Pest": "Pest",
+        "Somogy": "Somogy",
+        "Szabolcs-Szatmár-Bereg": "Szabolcs-Szatmár-Bereg",
+        "Tolna": "Tolna",
+        "Vas": "Vas",
+        "Veszprém": "Veszprém",
+        "Zala": "Zala",
+        "Budapest": "Budapest"
+      }
+    },
+    "GBR": {
+      "campo": "region",
+      "nota": "Inglaterra por sus 9 regiones; Escocia, Gales e Irlanda del Norte enteras.",
+      "porNacion": {
+        "Scotland": "Escocia",
+        "Wales": "Gales",
+        "Northern Ireland": "Irlanda del Norte"
+      },
+      "nombres": {
+        "Greater London": "Londres",
+        "North West": "Noroeste de Inglaterra",
+        "South East": "Sudeste de Inglaterra",
+        "South West": "Sudoeste de Inglaterra",
+        "Yorkshire and the Humber": "Yorkshire y Humber",
+        "West Midlands": "Midlands Occidentales",
+        "North East": "Nordeste de Inglaterra",
+        "East": "Este de Inglaterra",
+        "East Midlands": "Midlands Orientales"
+      }
+    }
+  },
+  "agruparPorLista": {
+    "_nota": "País → grupos de 2010 con las unidades de Natural Earth (campo «name», o el código ISO 3166-2 si se indica «porCodigo»).",
+    "FRA": {
+      "porCodigo": true,
+      "nota": "Las 22 regiones metropolitanas de 2010 (antes de la reforma de 2016) y los departamentos de ultramar.",
+      "grupos": {
+        "Alsacia": ["FR-67", "FR-68"],
+        "Aquitania": ["FR-24", "FR-33", "FR-40", "FR-47", "FR-64"],
+        "Auvernia": ["FR-03", "FR-15", "FR-43", "FR-63"],
+        "Baja Normandía": ["FR-14", "FR-50", "FR-61"],
+        "Borgoña": ["FR-21", "FR-58", "FR-71", "FR-89"],
+        "Bretaña": ["FR-22", "FR-29", "FR-35", "FR-56"],
+        "Centro": ["FR-18", "FR-28", "FR-36", "FR-37", "FR-41", "FR-45"],
+        "Champaña-Ardenas": ["FR-08", "FR-10", "FR-51", "FR-52"],
+        "Córcega": ["FR-2A", "FR-2B"],
+        "Franco Condado": ["FR-25", "FR-39", "FR-70", "FR-90"],
+        "Alta Normandía": ["FR-27", "FR-76"],
+        "Isla de Francia": ["FR-75", "FR-77", "FR-78", "FR-91", "FR-92", "FR-93", "FR-94", "FR-95"],
+        "Languedoc-Rosellón": ["FR-11", "FR-30", "FR-34", "FR-48", "FR-66"],
+        "Lemosín": ["FR-19", "FR-23", "FR-87"],
+        "Lorena": ["FR-54", "FR-55", "FR-57", "FR-88"],
+        "Mediodía-Pirineos": [
+          "FR-09",
+          "FR-12",
+          "FR-31",
+          "FR-32",
+          "FR-46",
+          "FR-65",
+          "FR-81",
+          "FR-82"
+        ],
+        "Norte-Paso de Calais": ["FR-59", "FR-62"],
+        "País del Loira": ["FR-44", "FR-49", "FR-53", "FR-72", "FR-85"],
+        "Picardía": ["FR-02", "FR-60", "FR-80"],
+        "Poitou-Charentes": ["FR-16", "FR-17", "FR-79", "FR-86"],
+        "Provenza-Alpes-Costa Azul": ["FR-04", "FR-05", "FR-06", "FR-13", "FR-83", "FR-84"],
+        "Ródano-Alpes": ["FR-01", "FR-07", "FR-26", "FR-38", "FR-42", "FR-69", "FR-73", "FR-74"],
+        "Guadalupe": ["FR-GP"],
+        "Martinica": ["FR-MQ"],
+        "Guayana Francesa": ["FR-GF"],
+        "Reunión": ["FR-RE"],
+        "Mayotte": ["FR-YT"]
+      }
+    },
+    "TUR": {
+      "nota": "Las 12 regiones estadísticas (NUTS 1) de Turquía.",
+      "grupos": {
+        "Estambul": ["Istanbul"],
+        "Mármara Occidental": ["Tekirdag", "Edirne", "Kirklareli", "Balikesir", "Çanakkale"],
+        "Egeo": [
+          "Izmir",
+          "Aydin",
+          "Denizli",
+          "Mugla",
+          "Manisa",
+          "Afyonkarahisar",
+          "Kütahya",
+          "Usak"
+        ],
+        "Mármara Oriental": [
+          "Bursa",
+          "Eskisehir",
+          "Bilecik",
+          "Kocaeli",
+          "Sakarya",
+          "Düzce",
+          "Bolu",
+          "Yalova"
+        ],
+        "Anatolia Occidental": ["Ankara", "Konya", "Karaman"],
+        "Mediterráneo": [
+          "Antalya",
+          "Isparta",
+          "Burdur",
+          "Adana",
+          "Mersin",
+          "Hatay",
+          "K. Maras",
+          "Osmaniye"
+        ],
+        "Anatolia Central": [
+          "Kinkkale",
+          "Aksaray",
+          "Nigde",
+          "Nevsehir",
+          "Kirsehir",
+          "Kayseri",
+          "Sivas",
+          "Yozgat"
+        ],
+        "Mar Negro Occidental": [
+          "Zinguldak",
+          "Karabük",
+          "Bartın",
+          "Kastamonu",
+          "Çankiri",
+          "Sinop",
+          "Samsun",
+          "Tokat",
+          "Çorum",
+          "Amasya"
+        ],
+        "Mar Negro Oriental": ["Trabzon", "Ordu", "Giresun", "Rize", "Artvin", "Gümüshane"],
+        "Anatolia Nororiental": [
+          "Erzurum",
+          "Erzincan",
+          "Bayburt",
+          "Agri",
+          "Kars",
+          "Iğdir",
+          "Ardahan"
+        ],
+        "Anatolia Centro-oriental": [
+          "Malatya",
+          "Elazig",
+          "Bingöl",
+          "Tunceli",
+          "Van",
+          "Mus",
+          "Bitlis",
+          "Hakkari"
+        ],
+        "Anatolia Suroriental": [
+          "Gaziantep",
+          "Adiyaman",
+          "Kilis",
+          "Sanliurfa",
+          "Diyarbakir",
+          "Mardin",
+          "Batman",
+          "Sirnak",
+          "Siirt"
+        ]
+      }
+    },
+    "ROU": {
+      "nota": "Las 8 regiones de desarrollo (NUTS 2) de Rumanía.",
+      "grupos": {
+        "Noroeste de Rumanía": [
+          "Bihor",
+          "Bistrita-Nasaud",
+          "Cluj",
+          "Maramures",
+          "Satu Mare",
+          "Salaj"
+        ],
+        "Centro de Rumanía": ["Alba", "Brasov", "Covasna", "Harghita", "Mures", "Sibiu"],
+        "Noreste de Rumanía": ["Bacau", "Botosani", "Iasi", "Neamt", "Suceava", "Vaslui"],
+        "Sudeste de Rumanía": ["Braila", "Buzau", "Constanta", "Galati", "Tulcea", "Vrancea"],
+        "Muntenia Sur": [
+          "Arges",
+          "Calarasi",
+          "Dâmbovita",
+          "Giurgiu",
+          "Ialomita",
+          "Prahova",
+          "Teleorman"
+        ],
+        "Bucarest-Ilfov": ["Bucharest", "Ilfov"],
+        "Oltenia": ["Dolj", "Gorj", "Mehedinti", "Olt", "Vâlcea"],
+        "Oeste de Rumanía": ["Arad", "Caras-Severin", "Hunedoara", "Timis"]
+      }
+    }
+  },
+  "unir": {
+    "_nota": "Unidades creadas después de 2010 que se unen a aquella de la que salieron: «país|unidad» → unidad con la que se une.",
+    "IND|Telangana": "Andhra Pradesh",
+    "IND|Ladakh": "Jammu and Kashmir",
+    "IRN|Alborz": "Tehran",
+    "SDN|Central Darfur": "Western Darfur",
+    "SDN|Eastern Darfur": "Southern Darfur",
+    "CHL|Ñuble": "Bío-Bío",
+    "TZA|Njombe": "Iringa",
+    "TZA|Katavi": "Rukwa",
+    "TZA|Simiyu": "Shinyanga",
+    "TZA|Geita": "Mwanza",
+    "TTO|Eastern Tobago": "Western Tobago",
+    "MUS|Port Louis city": "Port Louis",
+    "SYR|UNDOF": "Quneitra",
+    "KOR|Sejong": "South Chungcheong"
+  },
+  "nombres": {
+    "_nota": "Nombres en español de Natural Earth que se corrigen: «país|unidad» → nombre.",
+    "ETH|Southern Nations, Nationalities and Peoples": "Naciones, Nacionalidades y Pueblos del Sur",
+    "SDN|Western Darfur": "Darfur Occidental",
+    "UKR|Crimea": "República Autónoma de Crimea",
+    "IND|Dadra and Nagar Haveli and Daman and Diu": "Dadra y Nagar Haveli y Damán y Diu",
+    "UKR|Kiev City": "Kiev (ciudad)",
+    "UKR|Kiev": "Óblast de Kiev",
+    "XKX|Prizren": "Prizren",
+    "XKX|Priština": "Pristina",
+    "SYR|Rif Dimashq": "Damasco Rural",
+    "NIC|Atlántico Sur": "Atlántico Sur",
+    "NIC|Atlántico Norte": "Atlántico Norte",
+    "TWN|Chiayi": "Condado de Chiayi",
+    "TWN|Chiayi City": "Chiayi (ciudad)",
+    "TWN|Hsinchu": "Condado de Hsinchu",
+    "TWN|Hsinchu City": "Hsinchu (ciudad)",
+    "TWN|New Taipei City": "Condado de Taipéi",
+    "TWN|Taichung City": "Taichung",
+    "IND|Meghalaya": "Meghalaya",
+    "TTO|Western Tobago": "Tobago",
+    "BLR|City of Minsk": "Minsk (ciudad)",
+    "BLR|Minsk": "Óblast de Minsk",
+    "HRV|Grad Zagreb": "Zagreb (ciudad)",
+    "HRV|Zagrebacka": "Condado de Zagreb",
+    "LAO|Vientiane [prefecture]": "Vientián (prefectura)",
+    "LAO|Vientiane": "Provincia de Vientián",
+    "PER|Lima Province": "Lima Metropolitana",
+    "PER|Lima": "Región Lima",
+    "SYC|Grand'Anse": "Grand'Anse Mahé",
+    "SYC|Grand'Anse Praslin": "Grand'Anse Praslin",
+    "YEM|Sana'a": "Gobernación de Saná",
+    "YEM|Amanat Al Asimah": "Saná (ciudad)",
+    "IRL|North Tipperary": "Tipperary Norte",
+    "IRL|South Tipperary": "Tipperary Sur",
+    "MEX|Distrito Federal": "Distrito Federal",
+    "ARG|Ciudad de Buenos Aires": "Ciudad de Buenos Aires",
+    "ARG|Buenos Aires": "Provincia de Buenos Aires",
+    "NZL|The Snares": "Islas Snares",
+    "BRA|Distrito Federal": "Distrito Federal",
+    "DNK|Hovedstaden": "Región Capital"
+  },
+  "asignar": {
+    "_nota": "Unidades cuyo punto de etiqueta cae en otro país del mapa de 2010: «código de Natural Earth|unidad» → país.",
+    "GEO|Shida Kartli": "GEO",
+    "SVN|Hodoš": "SVN",
+    "SVN|Kostel": "SVN",
+    "ESP|Melilla": "ESP"
+  },
+  "excluir": {
+    "_nota": "Unidades que no se usan: «código de Natural Earth|unidad» → motivo.",
+    "KAS|Kashmir": "Zona en disputa sin país en el mapa de 2010."
+  },
+  "unaRegion": {
+    "_nota": "Países que son una sola región aunque Natural Earth los divida, y por qué.",
+    "PMR": "Transnistria: las unidades de Natural Earth no siguen sus distritos de 2010 y tienen nombres erróneos.",
+    "CHI": "Islas del Canal: Natural Earth solo trae Jersey y Sark, sin Guernsey."
+  },
+  "nombreOriginal": {
+    "_nota": "Países en los que se usa el nombre original de Natural Earth porque su nombre en español es el de la división antigua, no el de la región.",
+    "MDG": "Las 22 regiones llevan en español el nombre de su provincia antigua (Antananarivo, Toamasina…).",
+    "GUY": "Las regiones llevan en español nombres de otras regiones."
+  }
+}

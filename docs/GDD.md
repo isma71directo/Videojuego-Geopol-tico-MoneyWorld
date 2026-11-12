@@ -146,6 +146,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | UN Comtrade / CEPII BACI / WITS | Comercio bilateral por productos | Comercio. Si no es accesible, se aproxima con un modelo de gravedad. |
 | SIPRI (vía Banco Mundial) | Gasto militar | Ejército |
 | Natural Earth | Fronteras de países y regiones (admin-1), capitales, ciudades | Mapa |
+| DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | ParlGov / Wikipedia | Partidos, escaños, gobiernos y sistemas electorales en 2010 | Política (detallado en unos 40 países principales; plantilla genérica en el resto) |
 | Listas Fortune Global 500 (2010) | Grandes empresas reales | Empresas con nombre (fase posterior) |
 
@@ -758,8 +759,8 @@ interface EstadoPartida {
 #### Fase 5 — v0.6.0 · Regiones del mundo
 **Objetivo:** las regiones de cada país, visibles y seleccionables al acercar.
 **Tareas**
-1. Procesar las regiones (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país).
-2. Datos básicos por región: población y PIB estimado (reparto proporcional si no hay dato).
+1. Procesar las regiones como eran en 2010 (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país): España con sus 17 comunidades autónomas, Ceuta y Melilla; Francia con sus 22 regiones de 2010; Kenia con sus 8 provincias de 2010. Excepciones al máximo: Estados Unidos (50 estados y el Distrito de Columbia) y Argelia (48 wilayas, sin agrupación oficial).
+2. Datos básicos por región: población (Wikidata, la de 2010 o la más cercana, ajustada al total del país) y PIB de 2010 donde haya fuente abierta (Eurostat, OCDE, DOSE); si no, reparto proporcional del dato del país, marcado como estimado.
 3. Mostrar y seleccionar las regiones a partir de cierto zoom.
 4. **Audiovisual:** transición animada entre la vista de países y la de regiones.
 
@@ -772,10 +773,11 @@ interface EstadoPartida {
 **Tareas**
 1. Sistema genérico de capas con leyenda.
 2. Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con un panel de capas y atajos de teclado.
-3. **Audiovisual:** rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa.
+3. Mapa más realista (opciones A y C elegidas por el jugador): relieve con los colores del terreno y el mar más oscuro donde es más profundo, bajo los colores de los países; efecto de volumen sin pasar a 3D: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua.
+4. **Audiovisual:** rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa.
 
 **Tests:** cada capa da color a todos los países con dato y un color neutro a los que no lo tienen.
-**Prueba en el PC:** cambiar de capa y leer la leyenda.
+**Prueba en el PC:** cambiar de capa y leer la leyenda; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.
 **Hecho cuando:** las capas funcionan con su leyenda.
 
 #### Fase 7 — v0.8.0 · Componentes de interfaz
@@ -2084,6 +2086,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Mapa de juego grande, plano y rectangular a pantalla completa, con zoom y elementos clicables; Equal Earth descartada | Decisión del jugador | 7, 9, 13 |
 | 12/11/2026 | Proyección Miller con desplazamiento continuo este-oeste; mapa vivo (relieve, ríos, lagos) y modos de mapa con leyenda | Decisión del jugador | 7, 9, 13 |
 | 12/11/2026 | Juego solo para PC (ratón y teclado, interfaz densa, más detalle); «Prueba en el móvil» pasa a «Prueba en el PC» en las fases pendientes | Decisión del jugador | 1, 2, 7, 9, 11, 13 |
+| 12/11/2026 | Fase 5 concretada con el jugador: regiones como eran en 2010 (España por comunidades autónomas, Francia con sus 22 regiones de 2010, Kenia con sus 8 provincias) y datos de población y PIB de fuentes abiertas, ajustados al total del país | Plan de la Fase 5 aprobado por el jugador | 9, 13 |
+| 12/11/2026 | Mapa más realista (idea-3): relieve con los colores del terreno, profundidad del mar y efecto de volumen sin pasar a 3D, en la Fase 6 (nueva tarea 3). La vista inclinada en 3D real queda para más adelante, como opción | Decisión del jugador (opciones A y C) | 7, 9, 13 |
 | 12/11/2026 | «Ajustes tras la prueba» en `roadmap.json`: lo que el jugador pide cambiar de una fase ya probada sale en una versión de corrección (x.y.Z). Primeros ajustes de la Fase 4 (v0.5.1): más colores, nombres de países y ciudades por tamaño y población de las ciudades con su ficha | Petición del jugador tras probar la v0.5.0 | 10, 11, 12 |
 
 ---
@@ -2105,6 +2109,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Plataforma | Móvil y PC / solo PC | **Decidido por el jugador (12/11/2026):** solo PC, en el navegador, con ratón y teclado; los recursos y la jugabilidad están pensados para PC. Niveles de calidad para PC modestos y potentes |
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 11 (reloj del juego) |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
+| Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
+| Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer clic o tecla, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 | Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |
