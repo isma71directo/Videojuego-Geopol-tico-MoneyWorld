@@ -2,6 +2,7 @@
 import { t } from '../i18n';
 import { MapaMundo } from '../map/mapa';
 import { ESTILO_MAPA } from '../map/estilo';
+import { conectarGestos } from '../map/gestos';
 import { el } from './dom';
 import './estilos/mapa.css';
 
@@ -27,6 +28,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   const lienzo = el('div', {
     class: 'mapa__contenedor',
     role: 'application',
+    tabindex: 0,
     'aria-label': t('juego.mapa.etiqueta'),
   });
   const medidor = medidorActivo() ? el('p', { class: 'mapa__fps', 'aria-hidden': 'true' }) : null;
@@ -50,7 +52,12 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       estado.textContent = t('juego.mapa.error');
     });
 
+  const desconectar = conectarGestos(lienzo, mapa);
+  // El mapa recibe el teclado nada más abrirse (flechas y +/−).
+  lienzo.focus({ preventScroll: true });
+
   const cerrar = (): void => {
+    desconectar();
     mapa.destruir();
     elemento.remove();
   };

@@ -109,3 +109,23 @@ export function copiasVisibles(camara: Camara): number[] {
 export function zoomRelativo(camara: Camara): number {
   return camara.k / zoomMinimo(camara.ancho, camara.alto);
 }
+
+type Punto = readonly [number, number];
+
+/**
+ * Pellizco con dos dedos: el zoom sigue la distancia entre los dedos y el mapa sigue su punto
+ * medio, de modo que lo que había bajo los dedos sigue bajo los dedos.
+ */
+export function pellizcar(
+  camara: Camara,
+  antes: readonly [Punto, Punto],
+  despues: readonly [Punto, Punto],
+): Camara {
+  const distancia = ([a, b]: readonly [Punto, Punto]): number =>
+    Math.hypot(a[0] - b[0], a[1] - b[1]);
+  const medio = ([a, b]: readonly [Punto, Punto]): Punto => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  const factor = distancia(antes) > 0 ? distancia(despues) / distancia(antes) : 1;
+  const [mx0, my0] = medio(antes);
+  const [mx1, my1] = medio(despues);
+  return desplazar(zoomEn(camara, factor, mx0, my0), mx1 - mx0, my1 - my0);
+}

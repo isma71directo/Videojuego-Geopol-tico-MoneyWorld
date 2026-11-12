@@ -7,6 +7,7 @@ import {
   envolverX,
   limitar,
   mundoAPantalla,
+  pellizcar,
   pantallaAMundo,
   zoomEn,
   zoomMinimo,
@@ -84,6 +85,23 @@ describe('cámara del mapa', () => {
     const [px, py] = mundoAPantalla(despues, ...antes);
     expect(px).toBeCloseTo(300, 6);
     expect(py).toBeCloseTo(200, 6);
+  });
+
+  it('al pellizcar, lo que hay entre los dedos se queda entre los dedos', () => {
+    const antes: [[number, number], [number, number]] = [
+      [500, 400],
+      [700, 400],
+    ];
+    const despues: [[number, number], [number, number]] = [
+      [450, 380],
+      [850, 380],
+    ];
+    const medio = pantallaAMundo(pc, 600, 400);
+    const camara = pellizcar(pc, antes, despues);
+    expect(camara.k / pc.k).toBeCloseTo(2, 6);
+    const [px, py] = mundoAPantalla(camara, ...medio);
+    expect(px).toBeCloseTo(650, 6);
+    expect(py).toBeCloseTo(380, 6);
   });
 
   it('da la vuelta al mundo en horizontal: un mundo entero de desplazamiento vuelve al mismo sitio', () => {

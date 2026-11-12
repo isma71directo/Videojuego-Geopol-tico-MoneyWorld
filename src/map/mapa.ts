@@ -12,7 +12,6 @@ import {
   type Camara,
 } from './camara';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
-import { ALTO_MUNDO, ANCHO_MUNDO } from './proyeccion';
 
 /** A partir de este zoom (relativo al mundo entero) se usa el nivel de detalle. */
 export const ZOOM_DETALLE = 2.5;
@@ -154,7 +153,9 @@ export class MapaMundo {
     const inicio = performance.now();
     const { ctx, camara, dpr, estilo } = this;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = estilo.fondo;
+    // El océano se pinta de una vez en todo el lienzo: pintarlo por copias del mundo dejaba
+    // una línea fina donde se juntan al cruzar el Pacífico.
+    ctx.fillStyle = this.mundo ? estilo.oceano : estilo.fondo;
     ctx.fillRect(0, 0, this.lienzo.width, this.lienzo.height);
 
     const nivel = this.nivelParaZoom();
@@ -172,8 +173,6 @@ export class MapaMundo {
           dpr * ((0 - camara.cy) * camara.k + camara.alto / 2),
         );
         const visible = [vx0 - desplazamiento, vy0, vx1 - desplazamiento, vy1];
-        ctx.fillStyle = estilo.oceano;
-        ctx.fillRect(0, 0, ANCHO_MUNDO, ALTO_MUNDO);
 
         const zonas = nivel.figuras.zonas.filter((f) => cajasSeCruzan(f.caja, visible));
         const paises = nivel.figuras.paises.filter((f) => cajasSeCruzan(f.caja, visible));
