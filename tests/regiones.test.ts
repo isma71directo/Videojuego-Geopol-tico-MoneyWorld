@@ -242,3 +242,34 @@ describe('regiones en el mapa (f5-t3)', async () => {
     }
   });
 });
+
+describe('transición entre países y regiones (f5-t4)', async () => {
+  const { prepararRegiones, opacidadRegiones, TAMANO_REGIONES_PX, TAMANO_REGIONES_COMPLETAS_PX } =
+    await import('../src/map/regiones');
+  const { neighbors } = await import('topojson-client');
+  const capa = prepararRegiones(topo as unknown as Parameters<typeof prepararRegiones>[0]);
+
+  it('las regiones aparecen poco a poco según crece el país en pantalla', () => {
+    expect(opacidadRegiones(TAMANO_REGIONES_PX)).toBe(0);
+    const mitad = (TAMANO_REGIONES_PX + TAMANO_REGIONES_COMPLETAS_PX) / 2;
+    expect(opacidadRegiones(mitad)).toBeCloseTo(0.5);
+    expect(opacidadRegiones(TAMANO_REGIONES_COMPLETAS_PX)).toBe(1);
+    expect(opacidadRegiones(5000)).toBe(1);
+  });
+
+  it('dos regiones vecinas del mismo país nunca tienen el mismo tono', () => {
+    const geometrias = topo.objects.regiones.geometries;
+    const props = geometrias.map((g) => g.properties as PropiedadesRegion);
+    const vecinos = neighbors(geometrias as unknown as Parameters<typeof neighbors>[0]);
+    let comprobadas = 0;
+    props.forEach((a, i) => {
+      for (const j of vecinos[i]!) {
+        const b = props[j]!;
+        if (j === i || b.pais !== a.pais) continue;
+        expect(capa.tono.get(a.id), `${a.id} y ${b.id}`).not.toBe(capa.tono.get(b.id));
+        comprobadas++;
+      }
+    });
+    expect(comprobadas).toBeGreaterThan(1000);
+  });
+});

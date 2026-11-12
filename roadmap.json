@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.2",
-  "actualizado": "2026-11-12T11:03:35Z",
+  "actualizado": "2026-11-12T11:07:48Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 5 en curso. Hechas f5-t1 (regiones de 2010), f5-t2 (población y PIB por región) y f5-t3 (regiones en el mapa al acercarse: fronteras interiores, nombres, ficha al pasar el ratón y panel al hacer clic).",
-    "siguientePaso": "Transición animada entre la vista de países y la de regiones (tarea f5-t4); después, cerrar la fase (v0.6.0) y abrir el PR.",
+    "resumen": "Fase 5 completa en su rama: regiones de 2010, su población y PIB, en el mapa al acercarse con ficha y panel, y transición animada entre países y regiones.",
+    "siguientePaso": "Cerrar la Fase 5: versión 0.6.0, CHANGELOG, historial y PR con la Prueba en el PC.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -416,12 +416,12 @@
           "titulo": "Mostrar y seleccionar las regiones a partir de cierto zoom",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/11cdda8"
         },
         {
           "id": "f5-t4",
           "titulo": "Audiovisual: transición animada entre la vista de países y la de regiones",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         }

@@ -38,7 +38,9 @@ import {
 import {
   colocarNombresRegiones,
   prepararRegiones,
+  opacidadRegiones,
   regionEnPunto,
+  VELOS_TONO,
   regionesVisibles,
   type CandidatoNombreRegion,
   type CapaRegionesPreparada,
@@ -69,6 +71,7 @@ export type Objetivo =
 const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const DURACION_PULSO_MS = 520;
+const DURACION_FUNDIDO_REGIONES_MS = 400;
 const LETRA_CAPITAL = 12;
 const LETRA_CIUDAD = 11;
 const LETRA_REGION = 11;
@@ -145,8 +148,10 @@ export class MapaMundo {
   private cargandoRegiones = false;
   private readonly caminosRegion = new Map<string, Path2D>();
   private readonly fronterasRegion = new Map<string, Path2D>();
-  /** Países que muestran sus regiones en el último fotograma. */
-  private paisesConRegiones = new Set<string>();
+  /** Países que muestran sus regiones en el último fotograma, con su opacidad (0 a 1). */
+  private paisesConRegiones = new Map<string, number>();
+  /** Momento en que se cargaron las regiones, para que aparezcan con un fundido. */
+  private inicioRegiones = 0;
   private regionSenalada: RegionMapa | null = null;
   private regionSeleccionada: RegionMapa | null = null;
   /** Ciudades dibujadas en el último fotograma, con su posición en pantalla. */
@@ -456,6 +461,7 @@ export class MapaMundo {
         )
         .then((topo) => {
           this.regiones = prepararRegiones(topo);
+          this.inicioRegiones = performance.now();
           this.pedirDibujo();
         })
         .catch(() => {
@@ -476,17 +482,55 @@ export class MapaMundo {
   }
 
   /**
+   * Opacidad de las regiones de cada país visible (transición de la tarea f5-t4): aparecen poco
+   * a poco según crece el país en pantalla y, la primera vez, con un fundido de 0,4 s.
+   */
+  private calcularPaisesConRegiones(paises: Figura[], camara: Camara): void {
+    const capa = this.capaRegiones();
+    if (!capa) return;
+    const fundido = this.sinMovimiento
+      ? 1
+      : Math.min(1, (performance.now() - this.inicioRegiones) / DURACION_FUNDIDO_REGIONES_MS);
+    if (fundido < 1) this.pedirDibujoSiguiente = true;
+    for (const figura of paises) {
+      const tamano = Math.sqrt(figura.area) * camara.k;
+      if (!regionesVisibles(tamano)) continue;
+      if ((capa.porPais.get(figura.id)?.length ?? 0) < 2) continue;
+      this.paisesConRegiones.set(figura.id, opacidadRegiones(tamano) * fundido);
+    }
+  }
+
+  /** Cada región con un tono algo más claro u oscuro que su país (distinto de sus vecinas). */
+  private tintarRegiones(nivel: Nivel, paises: Figura[]): void {
+    const capa = this.regiones;
+    if (!capa) return;
+    const { ctx } = this;
+    for (const figura of paises) {
+      const opacidad = this.paisesConRegiones.get(figura.id);
+      if (!opacidad) continue;
+      ctx.save();
+      ctx.clip(this.camino(nivel, figura));
+      for (const region of capa.porPais.get(figura.id) ?? []) {
+        const [color, alfa] = VELOS_TONO[capa.tono.get(region.id) ?? 2]!;
+        if (alfa === 0) continue;
+        ctx.fillStyle = `rgba(${color}, ${alfa * opacidad})`;
+        ctx.fill(this.caminoRegion(region));
+      }
+      ctx.restore();
+    }
+  }
+
+  /**
    * Fronteras interiores de los países grandes en pantalla (líneas discontinuas y claras),
    * recortadas al contorno del país para que no se salgan por la costa.
    */
   private dibujarRegiones(nivel: Nivel, paises: Figura[], camara: Camara): void {
-    const capa = this.capaRegiones();
+    const capa = this.regiones;
     if (!capa) return;
     const { ctx } = this;
     for (const figura of paises) {
-      if (!regionesVisibles(Math.sqrt(figura.area) * camara.k)) continue;
-      if ((capa.porPais.get(figura.id)?.length ?? 0) < 2) continue;
-      this.paisesConRegiones.add(figura.id);
+      const opacidad = this.paisesConRegiones.get(figura.id);
+      if (!opacidad) continue;
       let fronteras = this.fronterasRegion.get(figura.id);
       if (!fronteras) {
         fronteras = new Path2D(capa.fronteras(figura.id));
@@ -494,7 +538,7 @@ export class MapaMundo {
       }
       ctx.save();
       ctx.clip(this.camino(nivel, figura));
-      ctx.strokeStyle = 'rgba(240, 244, 252, 0.38)';
+      ctx.strokeStyle = `rgba(240, 244, 252, ${0.42 * opacidad})`;
       ctx.lineWidth = 0.9 / camara.k;
       ctx.setLineDash([4 / camara.k, 3 / camara.k]);
       ctx.stroke(fronteras);
@@ -730,7 +774,9 @@ export class MapaMundo {
     const candidatosRegiones: CandidatoNombreRegion[] = [];
     if (this.regiones) {
       for (const desplazamiento of copiasVisibles(camara)) {
-        for (const pais of this.paisesConRegiones) {
+        for (const [pais, opacidad] of this.paisesConRegiones) {
+          // Los nombres salen cuando las regiones ya se ven bien.
+          if (opacidad < 0.35) continue;
           for (const region of this.regiones.porPais.get(pais) ?? []) {
             const [px, py] = aPantalla(region.etiqueta[0], region.etiqueta[1], desplazamiento);
             if (px < -50 || px > ancho + 50 || py < -20 || py > alto + 20) continue;
@@ -887,7 +933,7 @@ export class MapaMundo {
     const nivel = this.nivelParaZoom();
     if (nivel) {
       this.nivelActual = nivel === this.detalle ? 'detalle' : 'mundo';
-      this.paisesConRegiones = new Set();
+      this.paisesConRegiones = new Map();
       const [vx0, vy0, vx1, vy1] = rectanguloVisible(camara);
       for (const desplazamiento of copiasVisibles(camara)) {
         // Cada copia del mundo se dibuja con su propio desplazamiento horizontal.
@@ -909,6 +955,8 @@ export class MapaMundo {
           ctx.fillStyle = this.colores.get(figura.id) ?? estilo.paleta[0]!;
           ctx.fill(this.camino(nivel, figura));
         }
+        this.calcularPaisesConRegiones(paises, camara);
+        this.tintarRegiones(nivel, paises);
         // Lagos antes del relieve, para que también tengan su sombreado.
         const z = zoomWeb(camara.k);
         const lagos = (this.agua?.lagos ?? []).filter(

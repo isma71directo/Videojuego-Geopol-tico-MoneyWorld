@@ -5,7 +5,7 @@
  */
 import type { Feature, MultiLineString, MultiPolygon } from 'geojson';
 import { geoContains, geoPath } from 'd3-geo';
-import { feature, mesh } from 'topojson-client';
+import { feature, mesh, neighbors } from 'topojson-client';
 import type { GeometryCollection, Topology } from 'topojson-specification';
 import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
 import { cajasSeSolapan, type Caja } from './rotulos';
@@ -36,16 +36,78 @@ export interface RegionMapa {
   forma: Feature<MultiPolygon, PropiedadesRegion>;
 }
 
-/** Las regiones de un país se dibujan cuando el país mide al menos esto en pantalla (px). */
+/** Las regiones de un país se dibujan cuando el país mide al menos esto en pantalla (px)… */
 export const TAMANO_REGIONES_PX = 240;
+/** …y se ven del todo a partir de este tamaño: entre los dos aparecen poco a poco (f5-t4). */
+export const TAMANO_REGIONES_COMPLETAS_PX = 380;
 
 export function regionesVisibles(tamanoPaisPx: number): boolean {
   return tamanoPaisPx >= TAMANO_REGIONES_PX;
 }
 
+/** Opacidad de las regiones de un país según lo grande que se ve (de 0 a 1). */
+export function opacidadRegiones(tamanoPaisPx: number): number {
+  const t =
+    (tamanoPaisPx - TAMANO_REGIONES_PX) / (TAMANO_REGIONES_COMPLETAS_PX - TAMANO_REGIONES_PX);
+  return Math.min(1, Math.max(0, t));
+}
+
+/**
+ * Tonos de las regiones: dos algo más claros, uno igual y dos algo más oscuros que su país. Con
+ * cinco nunca coinciden dos vecinas, aunque las divisiones de Natural Earth se solapen un poco.
+ */
+export const TONOS_REGION = 5;
+/** Velo de cada tono sobre el color del país: [color, opacidad máxima]. */
+export const VELOS_TONO: readonly (readonly [string, number])[] = [
+  ['255, 255, 255', 0.13],
+  ['255, 255, 255', 0.06],
+  ['0, 0, 0', 0],
+  ['0, 0, 0', 0.06],
+  ['0, 0, 0', 0.12],
+];
+
+/**
+ * Coloreado DSatur: en cada paso se colorea la región con más tonos distintos ya usados entre
+ * sus vecinas (en empate, la de más vecinas) con el tono libre más bajo. Si alguna región no tuviera tono libre, se le da el menos repetido
+ * entre sus vecinas (los tests vigilan que no ocurra).
+ */
+export function colorearDSatur(
+  vecinos: readonly (readonly number[])[],
+  numTonos: number,
+): number[] {
+  const tonos = new Array<number>(vecinos.length).fill(-1);
+  const saturacion = vecinos.map(() => new Set<number>());
+  for (let paso = 0; paso < vecinos.length; paso++) {
+    let elegido = -1;
+    for (let i = 0; i < vecinos.length; i++) {
+      if (tonos[i] !== -1) continue;
+      if (
+        elegido === -1 ||
+        saturacion[i]!.size > saturacion[elegido]!.size ||
+        (saturacion[i]!.size === saturacion[elegido]!.size &&
+          vecinos[i]!.length > vecinos[elegido]!.length)
+      ) {
+        elegido = i;
+      }
+    }
+    let tono = 0;
+    while (tono < numTonos && saturacion[elegido]!.has(tono)) tono++;
+    if (tono === numTonos) {
+      const usos = new Array<number>(numTonos).fill(0);
+      for (const j of vecinos[elegido]!) if (tonos[j]! >= 0) usos[tonos[j]!]!++;
+      tono = usos.indexOf(Math.min(...usos));
+    }
+    tonos[elegido] = tono;
+    for (const j of vecinos[elegido]!) saturacion[j]!.add(tono);
+  }
+  return tonos;
+}
+
 export interface CapaRegionesPreparada {
   porPais: Map<string, RegionMapa[]>;
   porId: Map<string, RegionMapa>;
+  /** Tono de cada región (0 a TONOS_REGION − 1); dos regiones vecinas nunca tienen el mismo. */
+  tono: Map<string, number>;
   /** Fronteras interiores de un país (trazado SVG en coordenadas de mundo), con memoria. */
   fronteras(pais: string): string;
 }
@@ -79,10 +141,20 @@ export function prepararRegiones(topo: TopologiaRegiones): CapaRegionesPreparada
     lista.push(region);
     porPais.set(pais, lista);
   }
+  // Tonos: como los colores de país, pero con tres valores y solo entre regiones del mismo país.
+  const geometrias = topo.objects.regiones.geometries;
+  const propiedades = geometrias.map((g) => g.properties as PropiedadesRegion);
+  const vecinos = neighbors(geometrias as unknown as Parameters<typeof neighbors>[0]).map(
+    (lista, i) => lista.filter((j) => j !== i && propiedades[j]!.pais === propiedades[i]!.pais),
+  );
+  const ids = propiedades.map((p) => p.id);
+  const indices = colorearDSatur(vecinos, TONOS_REGION);
+  const tono = new Map(ids.map((id, i) => [id, indices[i]!]));
   const memoria = new Map<string, string>();
   return {
     porPais,
     porId,
+    tono,
     fronteras(pais) {
       let trazado = memoria.get(pais);
       if (trazado === undefined) {
