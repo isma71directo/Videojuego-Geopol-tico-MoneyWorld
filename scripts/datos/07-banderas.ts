@@ -35,6 +35,22 @@ const DE_COMMONS: Record<string, { archivo: string; motivo: string }> = {
   PMR: { archivo: 'Flag of Transnistria (state).svg', motivo: 'Territorio sin código ISO' },
   SOL: { archivo: 'Flag of Somaliland.svg', motivo: 'Territorio sin código ISO' },
   SOS: { archivo: 'Flag of South Ossetia.svg', motivo: 'Territorio sin código ISO' },
+  ANT: {
+    archivo: 'Flag of the Netherlands Antilles (1986–2010).svg',
+    motivo: 'Bandera de 1986 a 2010 (las Antillas se disolvieron en octubre de 2010)',
+  },
+};
+
+/**
+ * Territorios sin bandera propia común: se usa la bandera de flag-icons indicada
+ * (normalmente la de su país soberano) y se explica en los créditos.
+ */
+const SIN_BANDERA_PROPIA: Record<string, { iso2: string; motivo: string }> = {
+  CHI: {
+    iso2: 'gb',
+    motivo:
+      'Las Islas del Canal no tienen bandera común (Jersey y Guernsey tienen la suya): se usa la del Reino Unido',
+  },
 };
 
 const pausa = (ms: number): Promise<void> => new Promise((resolver) => setTimeout(resolver, ms));
@@ -94,8 +110,9 @@ for (const pais of paises) {
     // Commons limita las descargas seguidas.
     await pausa(1500);
   } else {
-    if (!pais.iso2) throw new Error(`${pais.nombre} no tiene ISO2 ni bandera en Commons`);
-    svg = await descargarTexto(`${URL_FLAG_ICONS}/flags/4x3/${pais.iso2.toLowerCase()}.svg`);
+    const iso2 = SIN_BANDERA_PROPIA[pais.id]?.iso2 ?? pais.iso2?.toLowerCase();
+    if (!iso2) throw new Error(`${pais.nombre} no tiene ISO2 ni bandera en Commons`);
+    svg = await descargarTexto(`${URL_FLAG_ICONS}/flags/4x3/${iso2}.svg`);
     deFlagIcons += 1;
   }
   escribirTexto(`public/av/banderas/${pais.id}.svg`, comprobarSvg(pais.id, svg));
@@ -113,8 +130,9 @@ escribirJson('public/av/banderas/creditos.json', {
     banderas: deFlagIcons,
   },
   commons,
+  sinBanderaPropia: SIN_BANDERA_PROPIA,
   diferenciasConocidas: [
-    'Las banderas de flag-icons son las actuales. Se han sustituido las que cambiaron de forma visible desde 2010 (Afganistán, Kirguistán, Libia, Birmania, Mauritania y Siria).',
+    'Las banderas de flag-icons son las actuales. Se han sustituido las que cambiaron de forma visible desde 2010 (Afganistán, Kirguistán, Libia, Birmania, Mauritania y Siria) y se ha añadido la de las Antillas Neerlandesas, que dejó de usarse en 2010.',
     'No se han corregido cambios menores posteriores a 2010: tono del azul de Honduras (2022), escudo de Paraguay (2013) y Serbia (noviembre de 2010) y cenefa de Bielorrusia (2012).',
   ],
 });

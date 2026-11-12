@@ -20,13 +20,15 @@ export interface PaisDatos {
   id: string;
   iso2: string | null;
   nombre: string;
-  tipo: 'pais' | 'especial';
+  tipo: 'pais' | 'especial' | 'dependiente';
   /** Si se puede elegir para jugar. */
   jugable: boolean;
   capital: string;
   region: string;
   regionNombre: string;
   nivelRenta: NivelRenta;
+  /** Solo en territorios dependientes: país soberano. */
+  soberano?: string;
   /** Solo en territorios de estatus especial o en disputa. */
   estatus?: string;
   reclamadoPor?: string | null;

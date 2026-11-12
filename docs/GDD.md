@@ -127,7 +127,7 @@
 - El petróleo ronda los 75–80 $ por barril.
 - Potencias nucleares: EE. UU., Rusia, China, Francia, Reino Unido, India, Pakistán, Corea del Norte e Israel (no declarado).
 
-**Mapa de 2010.** Se usan las fronteras de Natural Earth corregidas a 2010: Sudán del Sur fusionado con Sudán, Crimea dentro de Ucrania, y Kosovo, Taiwán, Palestina, Sáhara Occidental, Somalilandia, Chipre del Norte, Transnistria, Abjasia y Osetia del Sur marcados como territorios de estatus especial o en disputa.
+**Mapa de 2010.** Se usan las fronteras de Natural Earth corregidas a 2010: Sudán del Sur fusionado con Sudán, Crimea dentro de Ucrania, y Kosovo, Taiwán, Palestina, Sáhara Occidental, Somalilandia, Chipre del Norte, Transnistria, Abjasia y Osetia del Sur marcados como territorios de estatus especial o en disputa. Los territorios dependientes con datos propios (Hong Kong, Puerto Rico, Groenlandia…) son entidades jugables, cada una con su país soberano; las Antillas Neerlandesas aparecen unidas, como eran hasta octubre de 2010. Los territorios dependientes sin datos (Malvinas, Anguila, Santa Elena…) se dibujan como parte de su país soberano.
 
 **Eventos históricos opcionales** (se activan o desactivan al crear la partida): rescate de Grecia (2010), Primavera Árabe (desde diciembre de 2010), Fukushima (2011), referéndum e independencia de Sudán del Sur (2011), crisis de Crimea (2014), etc. Si están activados, ocurren con una probabilidad que depende del estado real de la simulación, no de forma fija.
 
@@ -716,16 +716,16 @@ interface EstadoPartida {
 **Prueba en el móvil:** abrir el informe de cobertura en GitHub y revisar 3 países conocidos.
 **Hecho cuando:** existen datos de al menos 190 países y el informe de cobertura está publicado.
 
-#### Fase 2 — v0.3.0 · Mapa: fronteras de 2010
-**Objetivo:** las fronteras de todos los países y territorios tal como eran el 1 de enero de 2010.
+#### Fase 2 — v0.3.0 · Mapa: fronteras y territorios de 2010
+**Objetivo:** las fronteras de todos los países y territorios tal como eran el 1 de enero de 2010, y todos ellos jugables.
 **Tareas**
-1. Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania y territorios especiales marcados.
-2. Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil.
-3. Hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte) y revisar sus datos estimados (decisión del jugador).
-4. **Audiovisual:** vista previa del mapa del mundo de 2010 en la galería audiovisual.
+1. Territorios jugables (decisión del jugador): añadir a los datos los territorios dependientes con datos del Banco Mundial (Hong Kong, Puerto Rico, Groenlandia…), con las Antillas Neerlandesas tal como eran en 2010, y hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte).
+2. Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas, y Antillas Neerlandesas e Islas del Canal unidas.
+3. Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil.
+4. **Audiovisual:** banderas de los territorios nuevos y vista previa del mapa del mundo de 2010 en la galería audiovisual.
 
 **Tests:** cada país de los datos tiene geometría y viceversa (salvo excepciones documentadas); el nivel de detalle para móvil pesa menos de 1 MB.
-**Prueba en el móvil:** abrir la galería y ver el mapa de 2010: Sudán unido y Crimea dentro de Ucrania.
+**Prueba en el móvil:** abrir la galería y ver el mapa de 2010: Sudán unido, Crimea dentro de Ucrania y Hong Kong y Puerto Rico como territorios propios.
 **Hecho cuando:** todos los países y territorios de los datos tienen su frontera de 2010.
 
 #### Fase 3 — v0.4.0 · Mapa: dibujo y navegación
@@ -2074,6 +2074,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Hoja de ruta dividida en fases cortas: de 51 a 108 fases numeradas (0–107), de 2 a 4 tareas cada una, una versión por fase (v0.1 a v0.108) | Petición del jugador: sesiones de Code y actualizaciones más cortas | 9, 10, 11 |
 | 12/11/2026 | 3D solo donde sea posible y necesario; sin 3D decorativo (no hay globo 3D) | Decisión del jugador | 7.1, 9, 13 |
 | 12/11/2026 | Territorios con independencia de hecho jugables | Decisión del jugador | 3, 9, 13 |
+| 12/11/2026 | Territorios dependientes con datos (Hong Kong, Puerto Rico…) jugables; Antillas Neerlandesas como en 2010 | Decisión del jugador | 3, 9, 13 |
 
 ---
 
@@ -2095,7 +2096,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 | Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |
-| Territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) | Países aparte / regiones de su país soberano | No están en los datos de la Fase 1; decidir al hacer el mapa (Fases 2 y 5) |
+| Territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) | Países aparte / regiones de su país soberano | **Decidido por el jugador (12/11/2026):** jugables, como entidades propias con su país soberano, los que tienen datos del Banco Mundial; los demás, casi deshabitados, forman parte de su país soberano en el mapa. Se hace en la Fase 2 |
 
 ---
 

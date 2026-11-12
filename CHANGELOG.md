@@ -7,6 +7,28 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.3.0 - 2026-11-12
+
+Fase 2 · Mapa: fronteras y territorios de 2010.
+
+### Añadido
+
+- Fronteras del 1 de enero de 2010 a partir de Natural Earth 1:10m (`scripts/datos/09-fronteras.ts`),
+  con las correcciones de `scripts/datos/manual/mapa-2010.json`: Sudán unido, Crimea dentro de
+  Ucrania, Abjasia, Osetia del Sur, Transnistria y el Sáhara Occidental como territorios propios,
+  Antillas Neerlandesas e Islas del Canal unidas.
+- Mapa en TopoJSON en dos niveles: «mundo» (340 KB) para el móvil y «detalle» (926 KB) para
+  acercarse. Los microestados conservan su forma.
+- 21 territorios dependientes jugables (Hong Kong, Macao, Puerto Rico, Groenlandia, Islas Feroe…),
+  cada uno con su país soberano, y las Antillas Neerlandesas tal como eran en 2010.
+- Vista previa del mapa de 2010 en la galería audiovisual y banderas de los territorios nuevos.
+
+### Cambiado
+
+- Jugables también Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte.
+- Hoja de ruta dividida en 108 fases cortas de 2 a 4 tareas, una versión cada una.
+- 3D solo donde sea posible y necesario para el juego (sin globo 3D).
+
 ## 0.2.0 - 2026-11-11
 
 Fase 1 · Datos reales de 2010.

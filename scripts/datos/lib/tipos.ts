@@ -1,6 +1,6 @@
 /** Tipos compartidos por los scripts de datos y sus tests. */
 
-export type TipoPais = 'pais' | 'especial';
+export type TipoPais = 'pais' | 'especial' | 'dependiente';
 
 /** Fila de la tabla de países y territorios del escenario de 2010 (fuentes/datos/paises.json). */
 export interface PaisBase {
@@ -18,6 +18,8 @@ export interface PaisBase {
   /** Código de región del Banco Mundial (EAS, ECS…). */
   region: string;
   regionNombre: string;
+  /** Solo en territorios dependientes: país soberano (id). */
+  soberano?: string;
   /** Solo en territorios especiales. */
   estatus?: string;
   reclamadoPor?: string | null;

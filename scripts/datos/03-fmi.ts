@@ -10,7 +10,7 @@
  * Uso:    node scripts/datos/03-fmi.ts
  */
 import { descargarTextoConCurl, escribirJsonCompacto } from './lib/comun.ts';
-import { hoy, leerPaises } from './lib/paises.ts';
+import { codigosFuente, hoy, leerPaises } from './lib/paises.ts';
 import type { ArchivoFuente, SeriePorPais } from './lib/tipos.ts';
 
 const INDICADORES_FMI: Record<string, { codigo: string; descripcion: string; unidad: string }> = {
@@ -48,13 +48,7 @@ const INDICADORES_FMI: Record<string, { codigo: string; descripcion: string; uni
 const ANIOS = ['2008', '2009', '2010'];
 const URL_BASE = 'https://www.imf.org/external/datamapper/api/v1';
 
-const codigos = new Set(
-  leerPaises()
-    .map((pais) => pais.codigos.fmi)
-    .filter((codigo): codigo is string => codigo !== null),
-);
-// Sudán del Sur, para reconstruir el Sudán unido de 2010.
-codigos.add('SSD');
+const codigos = codigosFuente(leerPaises(), 'fmi');
 
 const salida: ArchivoFuente = {
   fuente: 'FMI, Perspectivas de la economía mundial (WEO), vía DataMapper API',

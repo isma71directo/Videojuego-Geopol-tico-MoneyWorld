@@ -1,13 +1,13 @@
 {
   "descripcion": "Procedencia y licencia de las banderas de public/av/banderas/.",
-  "descargado": "2026-11-11",
+  "descargado": "2026-11-12",
   "flagIcons": {
     "proyecto": "flag-icons",
     "version": "v7.6.0",
     "url": "https://github.com/lipis/flag-icons",
     "licencia": "MIT",
     "autor": "Panayiotis Lipiridis",
-    "banderas": 191
+    "banderas": 211
   },
   "commons": {
     "ABK": {
@@ -23,6 +23,13 @@
       "url": "https://commons.wikimedia.org/wiki/File:Flag_of_Afghanistan_(2004%E2%80%932021,_variant).svg",
       "licencia": "Public domain",
       "autor": "'Fry1989 '"
+    },
+    "ANT": {
+      "archivo": "Flag of the Netherlands Antilles (1986–2010).svg",
+      "motivo": "Bandera de 1986 a 2010 (las Antillas se disolvieron en octubre de 2010)",
+      "url": "https://commons.wikimedia.org/wiki/File:Flag_of_the_Netherlands_Antilles_(1986%E2%80%932010).svg",
+      "licencia": "Public domain",
+      "autor": "sin indicar"
     },
     "CYN": {
       "archivo": "Flag of the Turkish Republic of Northern Cyprus.svg",
@@ -88,8 +95,14 @@
       "autor": "See File history below for details. For further informations, see also: en:Syrian Arab Republic and the en:United Arab R"
     }
   },
+  "sinBanderaPropia": {
+    "CHI": {
+      "iso2": "gb",
+      "motivo": "Las Islas del Canal no tienen bandera común (Jersey y Guernsey tienen la suya): se usa la del Reino Unido"
+    }
+  },
   "diferenciasConocidas": [
-    "Las banderas de flag-icons son las actuales. Se han sustituido las que cambiaron de forma visible desde 2010 (Afganistán, Kirguistán, Libia, Birmania, Mauritania y Siria).",
+    "Las banderas de flag-icons son las actuales. Se han sustituido las que cambiaron de forma visible desde 2010 (Afganistán, Kirguistán, Libia, Birmania, Mauritania y Siria) y se ha añadido la de las Antillas Neerlandesas, que dejó de usarse en 2010.",
     "No se han corregido cambios menores posteriores a 2010: tono del azul de Honduras (2022), escudo de Paraguay (2013) y Serbia (noviembre de 2010) y cenefa de Bielorrusia (2012)."
   ]
 }

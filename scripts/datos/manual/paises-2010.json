@@ -1,32 +1,46 @@
 {
   "_nota": "Tabla manual de la Fase 1: lo que ninguna fuente da tal como lo necesita el escenario del 1 de enero de 2010 (GDD, sección 3). Se edita a mano; el script 01-paises.ts la combina con el Banco Mundial y Wikidata.",
 
-  "dependenciasExcluidas": {
-    "_nota": "Territorios dependientes que el Banco Mundial lista como economías. No son países en la Fase 1; su tratamiento en el mapa se decide en las Fases 2 y 5.",
-    "codigos": [
-      "ABW",
-      "ASM",
-      "BMU",
-      "CHI",
-      "CUW",
-      "CYM",
-      "FRO",
-      "GIB",
-      "GRL",
-      "GUM",
-      "HKG",
-      "IMN",
-      "MAC",
-      "MAF",
-      "MNP",
-      "NCL",
-      "PRI",
-      "PYF",
-      "SXM",
-      "TCA",
-      "VGB",
-      "VIR"
-    ]
+  "dependientes": {
+    "_nota": "Territorios dependientes jugables (decisión del jugador del 12/11/2026): los que tienen datos propios del Banco Mundial, con su país soberano. Los dependientes sin datos (Malvinas, Anguila, Santa Elena…) se dibujan como parte de su país soberano.",
+    "soberanos": {
+      "ABW": "NLD",
+      "ASM": "USA",
+      "BMU": "GBR",
+      "CHI": "GBR",
+      "CYM": "GBR",
+      "FRO": "DNK",
+      "GIB": "GBR",
+      "GRL": "DNK",
+      "GUM": "USA",
+      "HKG": "CHN",
+      "IMN": "GBR",
+      "MAC": "CHN",
+      "MAF": "FRA",
+      "MNP": "USA",
+      "NCL": "FRA",
+      "PRI": "USA",
+      "PYF": "FRA",
+      "TCA": "GBR",
+      "VGB": "GBR",
+      "VIR": "USA"
+    },
+    "compuestos": [
+      {
+        "id": "ANT",
+        "iso2": "AN",
+        "nombre": "Antillas Neerlandesas",
+        "capital": "Willemstad",
+        "region": "LCN",
+        "soberano": "NLD",
+        "componentes": ["CUW", "SXM"],
+        "nota": "Existieron hasta el 10 de octubre de 2010: Curazao y Sint Maarten (más Bonaire, Saba y San Eustaquio, sin datos propios)."
+      }
+    ],
+    "sinIso2": {
+      "_nota": "Códigos que el Banco Mundial usa pero que no son ISO 3166 (no sirven para banderas ni nombres).",
+      "CHI": "Islas del Canal"
+    }
   },
 
   "fusiones": {
@@ -53,6 +67,10 @@
   "nombres": {
     "_nota": "Nombres en español usados en 2010 o más habituales que el que da la base de nombres (CLDR).",
     "BHS": "Bahamas",
+    "HKG": "Hong Kong",
+    "MAC": "Macao",
+    "MAF": "San Martín (Francia)",
+    "VIR": "Islas Vírgenes de EE. UU.",
     "CIV": "Costa de Marfil",
     "COG": "República del Congo",
     "CZE": "República Checa",
@@ -66,13 +84,19 @@
   },
 
   "nivelesRenta": {
-    "_nota": "Nivel de renta de 2010 fijado a mano donde no hay RNB per cápita (aproximación, a revisar con el jugador). El resto se calcula con los umbrales del Banco Mundial para 2010.",
-    "PRK": "bajo"
+    "_nota": "Nivel de renta de 2010 fijado a mano donde no hay RNB per cápita ni PIB (aproximación; en los territorios dependientes, la clasificación del Banco Mundial). El resto se calcula con los umbrales del Banco Mundial para 2010.",
+    "GIB": "alto",
+    "MAF": "alto",
+    "PRK": "bajo",
+    "VGB": "alto"
   },
 
   "capitales": {
     "_nota": "Capital el 1 de enero de 2010 cuando Wikidata da varias a la vez o ninguna. En países con varias capitales se usa la sede del gobierno.",
     "BOL": "La Paz",
+    "CHI": "Saint Helier y Saint Peter Port",
+    "HKG": "Hong Kong",
+    "MAC": "Macao",
     "LKA": "Colombo",
     "SWZ": "Mbabane",
     "YEM": "Saná",
@@ -146,7 +170,7 @@
       "region": "SSF",
       "estatus": "Independencia declarada en 1991; sin reconocimiento internacional",
       "reclamadoPor": "SOM",
-      "jugable": false,
+      "jugable": true,
       "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q34754" }
     },
     {
@@ -158,7 +182,7 @@
       "region": "ECS",
       "estatus": "Independencia declarada en 1983; reconocido solo por Turquía",
       "reclamadoPor": "CYP",
-      "jugable": false,
+      "jugable": true,
       "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q23681" }
     },
     {
@@ -170,7 +194,7 @@
       "region": "ECS",
       "estatus": "Independencia declarada en 1990; sin reconocimiento internacional",
       "reclamadoPor": "MDA",
-      "jugable": false,
+      "jugable": true,
       "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q907112" }
     },
     {
@@ -182,7 +206,7 @@
       "region": "ECS",
       "estatus": "Reconocida por Rusia desde 2008",
       "reclamadoPor": "GEO",
-      "jugable": false,
+      "jugable": true,
       "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q23334" }
     },
     {
@@ -194,7 +218,7 @@
       "region": "ECS",
       "estatus": "Reconocida por Rusia desde 2008",
       "reclamadoPor": "GEO",
-      "jugable": false,
+      "jugable": true,
       "codigos": { "bm": null, "fmi": null, "owid": null, "wikidata": "Q23427" }
     }
   ]

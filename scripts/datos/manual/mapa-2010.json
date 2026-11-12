@@ -1,0 +1,119 @@
+{
+  "_nota": "Correcciones para dibujar el mapa del 1 de enero de 2010 a partir de Natural Earth (GDD, sección 3). La usa scripts/datos/09-fronteras.ts; cada unidad de Natural Earth tiene que estar clasificada aquí o tener el mismo código que un país de los datos.",
+
+  "equivalencias": {
+    "_nota": "Unidad de Natural Earth (ADM0_A3) → país o territorio de los datos.",
+    "KOS": "XKX",
+    "PSX": "PSE",
+    "SAH": "ESH",
+    "SDS": "SDN",
+    "CUW": "ANT",
+    "SXM": "ANT",
+    "JEY": "CHI",
+    "GGY": "CHI",
+    "ALD": "FIN"
+  },
+
+  "soberanos": {
+    "_nota": "Código de soberanía de Natural Earth (SOV_A3) → país de los datos.",
+    "AU1": "AUS",
+    "CH1": "CHN",
+    "CU1": "CUB",
+    "DN1": "DNK",
+    "FI1": "FIN",
+    "FR1": "FRA",
+    "GB1": "GBR",
+    "IS1": "ISR",
+    "KA1": "KAZ",
+    "NL1": "NLD",
+    "NZ1": "NZL",
+    "US1": "USA"
+  },
+
+  "aSoberano": {
+    "_nota": "Territorios sin datos propios que se dibujan como parte de su país soberano (decisión del jugador). Baikonur (arrendado a Rusia) y Guantánamo (arrendado a EE. UU.) van con el país que tiene la soberanía.",
+    "unidades": [
+      "AIA",
+      "ATC",
+      "ATF",
+      "BLM",
+      "CLP",
+      "COK",
+      "CSI",
+      "ESB",
+      "FLK",
+      "HMD",
+      "IOA",
+      "IOT",
+      "KAB",
+      "MSR",
+      "NFK",
+      "NIU",
+      "PCN",
+      "SGS",
+      "SHN",
+      "SPM",
+      "UMI",
+      "USG",
+      "WLF",
+      "WSB"
+    ]
+  },
+
+  "zonasNeutras": {
+    "_nota": "Zonas sin país: se dibujan en un color neutro y no se pueden jugar.",
+    "ATA": "Antártida",
+    "BJN": "Banco Bajo Nuevo",
+    "BRI": "Isla Brasileña",
+    "BRT": "Bir Tawil",
+    "CNM": "Zona de amortiguación de la ONU en Chipre",
+    "KAS": "Glaciar de Siachen",
+    "PGA": "Islas Spratly",
+    "SCR": "Arrecife Scarborough",
+    "SER": "Banco Serranilla",
+    "SPI": "Campo de Hielo Patagónico Sur"
+  },
+
+  "separar": [
+    {
+      "zona": "Crimea",
+      "de": "RUS",
+      "a": "UKR",
+      "nota": "En 2010 Crimea era parte de Ucrania."
+    },
+    {
+      "zona": "Abkhazia",
+      "de": "GEO",
+      "a": "ABK",
+      "nota": "Independencia de hecho, reconocida por Rusia desde 2008."
+    },
+    {
+      "zona": "South Ossetia",
+      "de": "GEO",
+      "a": "SOS",
+      "nota": "Independencia de hecho, reconocida por Rusia desde 2008."
+    },
+    {
+      "zona": "W. Sahara",
+      "unidadZona": "MAR",
+      "de": "MAR",
+      "a": "ESH",
+      "nota": "Natural Earth da a Marruecos la parte que administra; en los datos el Sáhara Occidental es un territorio en disputa aparte, con toda su población."
+    },
+    {
+      "zona": "Transnistria",
+      "de": "MDA",
+      "a": "PMR",
+      "nota": "Independencia de hecho desde 1990."
+    }
+  ],
+
+  "partesAlOeste": [
+    {
+      "de": "NLD",
+      "a": "ANT",
+      "longitudMaxima": -50,
+      "nota": "Bonaire, Saba y San Eustaquio formaban parte de las Antillas Neerlandesas en 2010."
+    }
+  ]
+}
