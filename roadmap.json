@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.6.0",
-  "actualizado": "2026-11-12T11:08:20Z",
-  "faseActiva": "fase-5",
+  "versionActual": "0.6.1",
+  "actualizado": "2026-11-12T11:45:30Z",
+  "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 5 completa en su rama y versión 0.6.0: 2974 regiones como eran en 2010, con su población y su PIB (DOSE, Wikidata o estimados y marcados), visibles y seleccionables al acercarse, con transición animada.",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 5 como hecha y presentar el plan de la Fase 6 (capas del mapa y mapa más realista).",
+    "resumen": "v0.6.1 lista en su rama: capitales de provincia en todos los países (ajuste f5-a1), 2035 ciudades nuevas y 1443 marcadas; en España, las 50 capitales de provincia, Ceuta, Melilla, Mérida y Santiago de Compostela.",
+    "siguientePaso": "Cuando el jugador dé por buena la v0.6.1, presentar el plan de la Fase 6 (capas del mapa, mapa más realista f6-t3 con las opciones A + C y su audiovisual) antes de programar.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 5 (v0.6.0)",
-      "Prueba en el PC: acercarse a España hasta ver sus comunidades, pasar el ratón por varias y hacer clic en Cataluña y en Andalucía; comprobar su población y su PIB y el botón «Ver la ficha de España»; acercarse a Francia y ver sus 22 regiones de 2010"
+      "Fusionar el PR de la v0.6.1",
+      "Prueba en el PC: acercarse a España y ver Cáceres, Teruel, Soria, Cuenca, Ávila y las demás capitales de provincia; pasar el ratón por Cáceres y leer «Capital de Cáceres (España)»; mirar también otro país grande (Francia, Italia o Turquía)"
     ]
   },
   "etapas": [
@@ -398,7 +398,7 @@
       "dependeDe": ["fase-4"],
       "hechoCuando": "Las regiones se ven y se seleccionan al acercar",
       "pruebaJugador": "Acercarse a España y hacer clic en Cataluña y en Andalucía",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f5-t1",
@@ -427,6 +427,17 @@
           "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6664032"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f5-a1",
+          "titulo": "Capitales de todas las provincias y regiones de primer nivel en cada país (por ejemplo, Cáceres en España), sin repetir las ciudades que ya están",
+          "version": "0.6.1",
+          "origen": "Mensaje del jugador tras probar la v0.6.0",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3de147b"
         }
       ]
     },
@@ -4284,6 +4295,14 @@
         "Población y PIB de 2010 de cada región: DOSE (66 países) y Wikidata, ajustados al total del país; lo que falta, estimado y marcado",
         "Las regiones aparecen al acercarse, con sus fronteras, sus nombres y un tono propio; ficha al pasar el ratón y panel al hacer clic",
         "Transición animada entre la vista de países y la de regiones"
+      ]
+    },
+    {
+      "version": "0.6.1",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Capitales de provincia en todos los países: 2035 ciudades nuevas y 1443 ya existentes marcadas como capital de su provincia (por ejemplo, en España las 50 capitales de provincia, Ceuta y Melilla)",
+        "Las capitales de provincia aparecen antes al acercarse, con un punto algo mayor, y su ficha dice de qué provincia son capital"
       ]
     }
   ]

@@ -147,7 +147,8 @@
         },
         "notaAnio": "No hay dato de 2010: es el más cercano que hay.",
         "verPais": "Ver la ficha de {pais}",
-        "cerrar": "Cerrar ficha de la ciudad"
+        "cerrar": "Cerrar ficha de la ciudad",
+        "capitalRegionalDe": "Capital de {region} ({pais})"
       },
       "region": {
         "regionDe": "Región de {pais}",

@@ -8,6 +8,7 @@ import {
   ciudadVisible,
   colocarCiudades,
   zoomDeAparicion,
+  ZOOM_TODAS_CAPITALES_REGIONALES,
   ZOOM_TODAS_CAPITALES,
   type CandidatoCiudad,
   type CiudadColocada,
@@ -79,7 +80,8 @@ describe('datos de capitales y ciudades', () => {
 
   it('guarda la población de 2010 o la más cercana, con su fuente y su año', () => {
     const conDato = ciudades.filter((c) => c.poblacion !== null);
-    expect(conDato.length / ciudades.length).toBeGreaterThan(0.9);
+    // Las capitales de provincia pequeñas añadidas de Wikidata tienen menos datos de población.
+    expect(conDato.length / ciudades.length).toBeGreaterThan(0.85);
     for (const ciudad of conDato) {
       expect(ciudad.origenPoblacion, ciudad.nombre).toMatch(/^(WD:(\d{4}|sin-fecha)|ONU:2010)$/);
       expect(ciudad.poblacion!, ciudad.nombre).toBeGreaterThan(0);
@@ -99,7 +101,9 @@ describe('datos de capitales y ciudades', () => {
     expect(zoomDeAparicion(zaragoza!)).toBeLessThan(zoomDeAparicion(cordoba!));
     expect(zoomDeAparicion(cordoba!)).toBeLessThan(zoomDeAparicion(oviedo!));
     // En general: una ciudad más poblada nunca aparece después que otra menos poblada.
-    const normales = ciudades.filter((c) => !c.capital && c.poblacion !== null);
+    const normales = ciudades.filter(
+      (c) => !c.capital && !c.capitalRegional && c.poblacion !== null,
+    );
     const ordenadas = [...normales].sort((a, b) => b.poblacion! - a.poblacion!);
     for (let i = 1; i < ordenadas.length; i++) {
       expect(zoomDeAparicion(ordenadas[i - 1]!)).toBeLessThanOrEqual(
@@ -116,6 +120,8 @@ describe('cuándo y dónde se dibujan', () => {
     lon: 29.36,
     lat: -3.38,
     capital: true,
+    capitalRegional: false,
+    capitalDe: null,
     poblacion: null,
     origenPoblacion: null,
     rango: 10,
@@ -126,6 +132,8 @@ describe('cuándo y dónde se dibujan', () => {
     lon: 25.9,
     lat: -2.9,
     capital: false,
+    capitalRegional: false,
+    capitalDe: null,
     poblacion: 170_000,
     origenPoblacion: 'WD:2010',
     rango: 9,
@@ -188,6 +196,8 @@ describe('ficha de la ciudad (ajuste f4-a4)', () => {
     lon: -0.88,
     lat: 41.66,
     capital: false,
+    capitalRegional: false,
+    capitalDe: null,
     poblacion: 675_121,
     origenPoblacion: 'WD:2010',
     rango: 11,
@@ -277,5 +287,66 @@ describe('nombres de las ciudades (ajuste f4-a5)', () => {
   it('no incluye los lugares erróneos de Natural Earth', () => {
     expect(ciudades.some((c) => c.pais === 'DZA' && c.nombre === 'Arak')).toBe(false);
     expect(ciudades.some((c) => c.pais === 'SAU' && c.nombre.startsWith('Al Ḥ'))).toBe(false);
+  });
+});
+
+describe('capitales de provincia (ajuste f5-a1)', () => {
+  it('España tiene la capital de todas sus provincias, también las pequeñas como Cáceres', () => {
+    const espana = new Map(
+      ciudades.filter((c) => c.pais === 'ESP' && c.capitalRegional).map((c) => [c.nombre, c]),
+    );
+    for (const nombre of [
+      'Cáceres',
+      'Badajoz',
+      'Teruel',
+      'Huesca',
+      'Soria',
+      'Segovia',
+      'Ávila',
+      'Zamora',
+      'Palencia',
+      'Cuenca',
+      'Guadalajara',
+      'Toledo',
+      'Ciudad Real',
+      'Lugo',
+      'Orense',
+      'Pontevedra',
+      'Gerona',
+      'Lérida',
+      'Ceuta',
+      'Melilla',
+      'Zaragoza',
+      'Oviedo',
+    ]) {
+      expect(espana.has(nombre), nombre).toBe(true);
+    }
+    expect(espana.size).toBeGreaterThanOrEqual(52);
+    expect(espana.get('Cáceres')!.capitalDe).toBe('Cáceres');
+  });
+
+  it('no repite ciudades: dos ciudades del mismo país nunca están a menos de 1 km', () => {
+    const porPais = new Map<string, Ciudad[]>();
+    for (const c of ciudades) porPais.set(c.pais, [...(porPais.get(c.pais) ?? []), c]);
+    const repetidas: string[] = [];
+    for (const lista of porPais.values()) {
+      for (let i = 0; i < lista.length; i++) {
+        for (let j = i + 1; j < lista.length; j++) {
+          const [a, b] = [lista[i]!, lista[j]!];
+          if (geoDistance([a.lon, a.lat], [b.lon, b.lat]) * 6371 < 1) {
+            repetidas.push(`${a.nombre} / ${b.nombre}`);
+          }
+        }
+      }
+    }
+    expect(repetidas).toEqual([]);
+  });
+
+  it('hay capitales de provincia en todo el mundo y aparecen, como tarde, con un zoom medio', () => {
+    const regionales = ciudades.filter((c) => c.capitalRegional);
+    expect(regionales.length).toBeGreaterThan(3000);
+    for (const c of regionales) {
+      expect(zoomDeAparicion(c), c.nombre).toBeLessThanOrEqual(ZOOM_TODAS_CAPITALES_REGIONALES);
+    }
   });
 });
