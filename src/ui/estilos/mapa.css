@@ -254,3 +254,85 @@
   width: 100%;
   margin-top: 12px;
 }
+
+/* Dato de la capa activa en la ficha (Fase 6). */
+.ficha__dato--capa {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+/* Leyenda de la capa del mapa, abajo a la izquierda (tarea f6-t1). */
+.leyenda {
+  position: absolute;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  left: calc(10px + env(safe-area-inset-left));
+  min-width: 190px;
+  max-width: 260px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: rgb(14 22 38 / 90%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  color: var(--texto);
+  font-size: 13px;
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+.leyenda[hidden] {
+  display: none;
+}
+
+.leyenda__titulo {
+  margin: 0;
+  font-size: 15px;
+}
+
+.leyenda__unidad {
+  margin: 2px 0 8px;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.leyenda__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leyenda__extras {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--borde);
+}
+
+.leyenda__linea {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.leyenda__muestra {
+  flex: none;
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 18%);
+}
+
+/* El mismo rayado que el mapa pone a los datos estimados. */
+.leyenda__muestra--rayada {
+  background:
+    repeating-linear-gradient(-45deg, rgb(8 12 22 / 55%) 0 1.3px, transparent 1.3px 5px), #8b97a8;
+}
+
+.leyenda__pie {
+  margin: 8px 0 0;
+  color: var(--texto-suave);
+  font-size: 11px;
+}

@@ -1,0 +1,89 @@
+{
+  "$comentario": "Capas del mapa (Fase 6). Tramos: cortes de menor a mayor; un valor igual a un corte va a la clase de arriba. Colores en OKLCH [luminosidad, croma, tono]. En el tema oscuro, más claro = más (o más lejos del centro en las divergentes).",
+  "sinDatos": [0.3, 0.005, 260],
+  "sinReservas": [0.42, 0.02, 255],
+  "capas": [
+    {
+      "id": "riqueza",
+      "campo": "pibPerCapita",
+      "formato": "dolaresPorPersona",
+      "tramos": [1000, 2500, 5000, 10000, 20000, 40000],
+      "rampa": { "tipo": "secuencial", "desde": [0.45, 0.11, 285], "hasta": [0.92, 0.17, 110] }
+    },
+    {
+      "id": "poblacion",
+      "campo": "poblacion",
+      "formato": "personas",
+      "escalaLeyenda": 1000000,
+      "tramos": [1000000, 5000000, 10000000, 30000000, 100000000, 300000000],
+      "rampa": { "tipo": "secuencial", "desde": [0.45, 0.13, 330], "hasta": [0.92, 0.08, 420] }
+    },
+    {
+      "id": "crecimiento",
+      "campo": "crecimientoPib",
+      "formato": "porcentaje",
+      "tramos": [-5, -2, 0, 2, 5, 8],
+      "centro": 0,
+      "rampa": {
+        "tipo": "divergente",
+        "centro": [0.46, 0.01, 260],
+        "bajo": { "extremo": [0.84, 0.15, 55] },
+        "alto": { "extremo": [0.85, 0.15, 305] }
+      }
+    },
+    {
+      "id": "paro",
+      "campo": "paro",
+      "formato": "porcentaje",
+      "tramos": [3, 5, 7.5, 10, 15, 20],
+      "rampa": { "tipo": "secuencial", "desde": [0.45, 0.1, 310], "hasta": [0.92, 0.15, 455] }
+    },
+    {
+      "id": "deuda",
+      "campo": "deudaPib",
+      "formato": "porcentaje",
+      "tramos": [20, 40, 60, 80, 100, 150],
+      "rampa": { "tipo": "secuencial", "desde": [0.45, 0.1, 310], "hasta": [0.92, 0.15, 455] }
+    },
+    {
+      "id": "inflacion",
+      "campo": "inflacion",
+      "formato": "porcentaje",
+      "tramos": [0, 2, 4, 7, 10, 20],
+      "centro": 0,
+      "rampa": {
+        "tipo": "divergente",
+        "centro": [0.4, 0.01, 260],
+        "bajo": { "extremo": [0.78, 0.12, 230] },
+        "alto": { "extremo": [0.92, 0.15, 455], "tonoInicial": 320 }
+      }
+    },
+    {
+      "id": "petroleo",
+      "grupo": "recursos",
+      "campo": "reservasPetroleo",
+      "formato": "reservas",
+      "cero": true,
+      "tramos": [1000, 5000, 20000, 50000, 100000],
+      "rampa": { "tipo": "secuencial", "desde": [0.52, 0.07, 55], "hasta": [0.9, 0.16, 92] }
+    },
+    {
+      "id": "gas",
+      "grupo": "recursos",
+      "campo": "reservasGas",
+      "formato": "reservas",
+      "cero": true,
+      "tramos": [100, 500, 1000, 5000, 10000],
+      "rampa": { "tipo": "secuencial", "desde": [0.52, 0.07, 55], "hasta": [0.9, 0.16, 92] }
+    },
+    {
+      "id": "carbon",
+      "grupo": "recursos",
+      "campo": "reservasCarbon",
+      "formato": "reservas",
+      "cero": true,
+      "tramos": [1000, 5000, 20000, 50000, 100000],
+      "rampa": { "tipo": "secuencial", "desde": [0.52, 0.07, 55], "hasta": [0.9, 0.16, 92] }
+    }
+  ]
+}

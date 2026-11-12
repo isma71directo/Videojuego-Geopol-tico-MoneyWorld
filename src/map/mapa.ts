@@ -20,6 +20,7 @@ import {
   zoomRelativo,
   type Camara,
 } from './camara';
+import type { Coloreado } from './capas';
 import { coloresDelMapa } from './colores';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
 import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
@@ -164,6 +165,10 @@ export class MapaMundo {
   private camaraSenalada: Camara | null = null;
   private seleccionado: string | null = null;
   private readonly proyeccion = crearProyeccion();
+  /** Capa de datos activa (Fase 6); null es la capa política, con un color por país. */
+  private coloreado: Coloreado | null = null;
+  /** Rayado de los datos estimados, con el mismo tamaño en pantalla a cualquier zoom. */
+  private rayado: CanvasPattern | null = null;
 
   constructor(
     private readonly contenedor: HTMLElement,
@@ -342,6 +347,17 @@ export class MapaMundo {
     return ciudadEnPunto(this.ciudadesDibujadas, px, py)?.ciudad ?? null;
   }
 
+  /** ¿Hay en el mapa algún país sin color en esta capa? (para la muestra «sin datos»). */
+  hayPaisesSinDatos(coloreado: Coloreado): boolean {
+    return (this.mundo?.figuras.paises ?? []).some((figura) => !coloreado.colores.has(figura.id));
+  }
+
+  /** Capa de datos que se pinta (o null para volver a la capa política). */
+  set capa(coloreado: Coloreado | null) {
+    this.coloreado = coloreado;
+    this.pedirDibujo();
+  }
+
   set nombres(nombres: Map<string, string>) {
     this.nombresPaises = nombres;
     this.pedirDibujo();
@@ -501,6 +517,32 @@ export class MapaMundo {
   }
 
   /** Cada región con un tono algo más claro u oscuro que su país (distinto de sus vecinas). */
+  /** Rayado fino en diagonal sobre los países cuyo dato de la capa es una estimación. */
+  private rayarEstimados(nivel: Nivel, paises: Figura[], capa: Coloreado, camara: Camara): void {
+    const rayados = paises.filter((figura) => capa.rayados.has(figura.id));
+    if (rayados.length === 0) return;
+    if (!this.rayado) {
+      const lado = 7;
+      const tesela = document.createElement('canvas');
+      tesela.width = tesela.height = lado;
+      const pincel = tesela.getContext('2d')!;
+      pincel.strokeStyle = 'rgba(8, 12, 22, 0.5)';
+      pincel.lineWidth = 1.3;
+      pincel.beginPath();
+      // Tres tramos para que la diagonal siga sin cortes de una tesela a la siguiente.
+      for (const d of [-lado, 0, lado]) {
+        pincel.moveTo(d, lado);
+        pincel.lineTo(d + lado, 0);
+      }
+      pincel.stroke();
+      this.rayado = this.ctx.createPattern(tesela, 'repeat');
+    }
+    if (!this.rayado) return;
+    this.rayado.setTransform(new DOMMatrix([1 / camara.k, 0, 0, 1 / camara.k, 0, 0]));
+    this.ctx.fillStyle = this.rayado;
+    for (const figura of rayados) this.ctx.fill(this.camino(nivel, figura));
+  }
+
   private tintarRegiones(nivel: Nivel, paises: Figura[]): void {
     const capa = this.regiones;
     if (!capa) return;
@@ -952,12 +994,17 @@ export class MapaMundo {
         const paises = nivel.figuras.paises.filter((f) => cajasSeCruzan(f.caja, visible));
         ctx.fillStyle = estilo.zona;
         for (const figura of zonas) ctx.fill(this.camino(nivel, figura));
+        const capa = this.coloreado;
         for (const figura of paises) {
-          ctx.fillStyle = this.colores.get(figura.id) ?? estilo.paleta[0]!;
+          ctx.fillStyle = capa
+            ? (capa.colores.get(figura.id) ?? capa.sinDatos)
+            : (this.colores.get(figura.id) ?? estilo.paleta[0]!);
           ctx.fill(this.camino(nivel, figura));
         }
+        if (capa) this.rayarEstimados(nivel, paises, capa, camara);
         this.calcularPaisesConRegiones(paises, camara);
-        this.tintarRegiones(nivel, paises);
+        // En las capas de datos, los tonos de las regiones sugerirían diferencias que no hay.
+        if (!capa) this.tintarRegiones(nivel, paises);
         // Lagos antes del relieve, para que también tengan su sombreado.
         const z = zoomWeb(camara.k);
         const lagos = (this.agua?.lagos ?? []).filter(

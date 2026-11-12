@@ -172,6 +172,59 @@
         "ajustado": "Datos de 2010, ajustados para que las regiones sumen el total del país.",
         "verPais": "Ver la ficha de {pais}",
         "cerrar": "Cerrar ficha de la región"
+      },
+      "capas": {
+        "politica": {
+          "nombre": "Política",
+          "unidad": "Un color por país"
+        },
+        "riqueza": {
+          "nombre": "Riqueza",
+          "unidad": "PIB por habitante, en dólares de 2010"
+        },
+        "poblacion": {
+          "nombre": "Población",
+          "unidad": "Millones de habitantes"
+        },
+        "crecimiento": {
+          "nombre": "Crecimiento",
+          "unidad": "Crecimiento del PIB real en 2010"
+        },
+        "paro": {
+          "nombre": "Paro",
+          "unidad": "Porcentaje de la población activa"
+        },
+        "deuda": {
+          "nombre": "Deuda pública",
+          "unidad": "Porcentaje del PIB"
+        },
+        "inflacion": {
+          "nombre": "Inflación",
+          "unidad": "Subida de los precios en 2010"
+        },
+        "petroleo": {
+          "nombre": "Reservas de petróleo",
+          "unidad": "Millones de barriles",
+          "valor": "{valor} millones de barriles"
+        },
+        "gas": {
+          "nombre": "Reservas de gas natural",
+          "unidad": "Miles de millones de m³",
+          "valor": "{valor} miles de millones de m³"
+        },
+        "carbon": {
+          "nombre": "Reservas de carbón",
+          "unidad": "Millones de toneladas",
+          "valor": "{valor} millones de toneladas"
+        },
+        "menosDe": "Menos de {valor}",
+        "entre": "{desde} a {hasta}",
+        "oMas": "{valor} o más",
+        "sinReservas": "Sin reservas",
+        "estimado": "Dato estimado",
+        "sinDatos": "Sin datos",
+        "datos2010": "Datos de 2010",
+        "leyenda": "Leyenda de la capa del mapa"
       }
     }
   },

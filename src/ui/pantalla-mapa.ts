@@ -1,6 +1,7 @@
 /** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
 import type { ConjuntoPaises } from '../datos/paises';
 import { t } from '../i18n';
+import { capaPorId, colorearCapa, type CapaDatos } from '../map/capas';
 import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
 import { ESTILO_MAPA } from '../map/estilo';
 import { conectarGestos } from '../map/gestos';
@@ -14,6 +15,7 @@ import {
   type DatosRegion,
 } from './ficha-region';
 import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
+import { contenidoLeyenda } from './leyenda';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
@@ -73,6 +75,12 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     'aria-live': 'polite',
     hidden: true,
   });
+  // Leyenda de la capa de datos activa (Fase 6); la capa política no la necesita.
+  const leyenda = el('aside', {
+    class: 'leyenda',
+    'aria-labelledby': 'leyenda-titulo',
+    hidden: true,
+  });
   const elemento = el(
     'section',
     { class: 'mapa' },
@@ -80,6 +88,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     barra,
     estado,
     medidor,
+    leyenda,
     recuadro,
     panel,
   );
@@ -114,6 +123,32 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
 
   let conjunto: ConjuntoPaises | null = null;
   let recuadroDe: unknown = null;
+  /** Capa de datos activa; null es la capa política. «?capa=paro» la elige al abrir. */
+  const capa: CapaDatos | null = capaPorId(new URLSearchParams(location.search).get('capa') ?? '');
+  const pintarCapa = (): void => {
+    if (!capa || !conjunto) {
+      mapa.capa = null;
+      leyenda.hidden = true;
+      leyenda.replaceChildren();
+      return;
+    }
+    const coloreado = colorearCapa(capa, conjunto.paises);
+    mapa.capa = coloreado;
+    reemplazar(
+      leyenda,
+      ...contenidoLeyenda(
+        capa,
+        coloreado.rayados.size > 0,
+        mapa.hayPaisesSinDatos(coloreado),
+        coloreado.sinDatos,
+      ),
+    );
+    leyenda.hidden = false;
+    // La ficha que está a la vista cambia de dato.
+    recuadroDe = null;
+    if (senalado) mostrarRecuadro(senalado.objetivo, senalado.x, senalado.y);
+  };
+
   // Datos de las regiones (Fase 5): se descargan la primera vez que se señala una región.
   let datosRegiones: ConjuntoRegiones | null = null;
   let cargandoDatosRegiones = false;
@@ -163,7 +198,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
           ? contenidoRecuadroCiudad(objetivo.ciudad, conjunto)
           : objetivo.tipo === 'region'
             ? contenidoRecuadroRegion(objetivo.region, conjunto, datosDe(objetivo.region))
-            : contenidoRecuadro(pais!, conjunto!)),
+            : contenidoRecuadro(pais!, conjunto!, capa)),
       );
       recuadroDe = clave;
     }
@@ -236,6 +271,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
           return corto === clave ? [] : [[id, corto] as [string, string]];
         }),
       );
+      pintarCapa();
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.

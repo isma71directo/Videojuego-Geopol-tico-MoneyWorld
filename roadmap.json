@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T13:09:35Z",
+  "actualizado": "2026-11-12T13:20:12Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Plan de la Fase 6 aprobado por el jugador: terreno de Natural Earth II (A1), capas en un desplegable con la tecla C (sin atajo por capa), población total o densidad y capas de riqueza y población también por región. Para seguir con 4 tareas por fase, las rampas van con el sistema de capas, los iconos con el desplegable y el efecto de volumen (opción C) con la tarea audiovisual.",
-    "siguientePaso": "Programar f6-t1: sistema genérico de capas con leyenda.",
+    "resumen": "f6-t1 hecha: sistema de capas con leyenda (src/map/capas.ts y config/capas.json), rampas de color en OKLCH comprobadas con los tres tipos de daltonismo (src/map/rampas.ts), rayado de los datos estimados, gris para los países sin dato y el dato de la capa en la ficha. Nueve capas de datos ya definidas (riqueza, población, crecimiento, paro, deuda, inflación, petróleo, gas y carbón); de momento se eligen con «?capa=…» en la dirección.",
+    "siguientePaso": "f6-t2: desplegable de capas con iconos (clic y tecla C), población total o densidad y capas de riqueza y población por región al acercarse.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -452,7 +452,7 @@
         {
           "id": "f6-t1",
           "titulo": "Sistema genérico de capas con leyenda y rampas de color accesibles (aptas para daltónicos): color de cada país según su dato, con tramos redondos; gris neutro sin dato y rayado fino para los estimados; la ficha muestra el dato de la capa",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
