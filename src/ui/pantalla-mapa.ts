@@ -1,6 +1,7 @@
 /** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
 import type { ConjuntoPaises } from '../datos/paises';
 import { t } from '../i18n';
+import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
 import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
 import { ESTILO_MAPA } from '../map/estilo';
 import { conectarGestos } from '../map/gestos';
@@ -14,6 +15,8 @@ import {
   type DatosRegion,
 } from './ficha-region';
 import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
+import { contenidoLeyenda } from './leyenda';
+import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
@@ -51,7 +54,23 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   };
   pintarBotonSonido();
   botonSonido.addEventListener('click', alternarSonido);
-  const barra = el('div', { class: 'mapa__barra' }, volver, botonSonido);
+  // Desplegable de capas (tarea f6-t2): un clic o la tecla C lo abren; al elegir, cambia el mapa.
+  const selector = crearSelectorCapas(
+    POLITICA,
+    (id) => {
+      capa = capaPorId(id);
+      guardarAjuste('capaMapa', capa?.id ?? POLITICA);
+      reproducir('capa');
+      pintarCapa();
+      // La leyenda nueva entra con una animación corta.
+      leyenda.classList.remove('leyenda--cambio');
+      void leyenda.offsetWidth;
+      leyenda.classList.add('leyenda--cambio');
+      lienzo.focus({ preventScroll: true });
+    },
+    () => reproducir('boton'),
+  );
+  const barra = el('div', { class: 'mapa__barra' }, volver, botonSonido, selector.elemento);
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -73,13 +92,28 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     'aria-live': 'polite',
     hidden: true,
   });
+  // Leyenda de la capa de datos activa (Fase 6); la capa política no la necesita.
+  const leyenda = el('aside', {
+    class: 'leyenda',
+    'aria-labelledby': 'leyenda-titulo',
+    hidden: true,
+  });
+  // Brillo suave del agua (tarea f6-t4): una capa CSS animada encima del mapa, que no obliga a
+  // redibujarlo. Con «reducir movimiento» no se ve (mapa.css).
+  const brillo = el('div', {
+    class: 'mapa__brillo',
+    'aria-hidden': 'true',
+    hidden: !leerAjuste('brilloAgua'),
+  });
   const elemento = el(
     'section',
     { class: 'mapa' },
     lienzo,
+    brillo,
     barra,
     estado,
     medidor,
+    leyenda,
     recuadro,
     panel,
   );
@@ -91,18 +125,27 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       mundo: './data/mapa-2010-mundo.json',
       detalle: './data/mapa-2010-detalle.json',
       relieve: './av/relieve/',
+      terreno: './av/terreno/',
       agua: './data/mapa-agua.json',
       ciudades: './data/ciudades-2010.json',
       regiones: './data/regiones-2010.json',
     },
     ESTILO_MAPA,
   );
+  // Cuánto se ve el terreno bajo los países (Ajustes, tarea f6-t3).
+  mapa.terrenoVisible = leerAjuste('intensidadTerreno');
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
   const alternarMedidor = (evento: KeyboardEvent): void => {
     if (evento.key === 'm' || evento.key === 'M') {
       alternarSonido();
+      return;
+    }
+    if (evento.key === 'c' || evento.key === 'C') {
+      // Desplegable de capas (decisión del jugador: una tecla para abrirlo, no una por capa).
+      evento.preventDefault();
+      selector.alternar();
       return;
     }
     if (evento.key !== 'f' && evento.key !== 'F') return;
@@ -114,6 +157,43 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
 
   let conjunto: ConjuntoPaises | null = null;
   let recuadroDe: unknown = null;
+  /**
+   * Capa de datos activa; null es la capa política. Se recuerda la última elegida; «?capa=paro»
+   * en la dirección elige otra al abrir.
+   */
+  let capa: CapaDatos | null = capaPorId(
+    new URLSearchParams(location.search).get('capa') ?? leerAjuste('capaMapa'),
+  );
+  selector.marcar(capa?.id ?? POLITICA);
+  const pintarCapa = (): void => {
+    if (!capa || !conjunto) {
+      mapa.capa = null;
+      leyenda.hidden = true;
+      leyenda.replaceChildren();
+      recuadroDe = null;
+      if (senalado) mostrarRecuadro(senalado.objetivo, senalado.x, senalado.y);
+      return;
+    }
+    // Las capas por región necesitan los datos de las regiones; al llegar, se vuelve a pintar.
+    if (capa.porRegion) cargarDatosRegiones();
+    const coloreado = colorearCapa(capa, conjunto.paises);
+    if (datosRegiones) coloreado.region = colorearRegiones(capa, datosRegiones.regiones);
+    mapa.capa = coloreado;
+    reemplazar(
+      leyenda,
+      ...contenidoLeyenda(
+        capa,
+        coloreado.rayados.size > 0,
+        mapa.hayPaisesSinDatos(coloreado),
+        coloreado.sinDatos,
+      ),
+    );
+    leyenda.hidden = false;
+    // La ficha que está a la vista cambia de dato.
+    recuadroDe = null;
+    if (senalado) mostrarRecuadro(senalado.objetivo, senalado.x, senalado.y);
+  };
+
   // Datos de las regiones (Fase 5): se descargan la primera vez que se señala una región.
   let datosRegiones: ConjuntoRegiones | null = null;
   let cargandoDatosRegiones = false;
@@ -128,6 +208,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       .then((r) => (r.ok ? (r.json() as Promise<ConjuntoRegiones>) : Promise.reject(new Error())))
       .then((datos) => {
         datosRegiones = datos;
+        if (capa?.porRegion) pintarCapa();
         // Se repintan la ficha y el panel que esperaban los datos.
         recuadroDe = null;
         if (senalado?.objetivo.tipo === 'region') {
@@ -162,8 +243,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
         ...(objetivo.tipo === 'ciudad'
           ? contenidoRecuadroCiudad(objetivo.ciudad, conjunto)
           : objetivo.tipo === 'region'
-            ? contenidoRecuadroRegion(objetivo.region, conjunto, datosDe(objetivo.region))
-            : contenidoRecuadro(pais!, conjunto!)),
+            ? contenidoRecuadroRegion(objetivo.region, conjunto, datosDe(objetivo.region), capa)
+            : contenidoRecuadro(pais!, conjunto!, capa)),
       );
       recuadroDe = clave;
     }
@@ -236,13 +317,18 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
           return corto === clave ? [] : [[id, corto] as [string, string]];
         }),
       );
+      pintarCapa();
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.
     });
   mapa
     .iniciar()
-    .then(() => estado.remove())
+    .then(() => {
+      estado.remove();
+      // Con los países del mapa ya cargados, la leyenda sabe si alguno se queda sin dato.
+      pintarCapa();
+    })
     .catch(() => {
       estado.textContent = t('juego.mapa.error');
     });

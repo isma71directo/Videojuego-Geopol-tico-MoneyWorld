@@ -146,6 +146,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | UN Comtrade / CEPII BACI / WITS | Comercio bilateral por productos | Comercio. Si no es accesible, se aproxima con un modelo de gravedad. |
 | SIPRI (vía Banco Mundial) | Gasto militar | Ejército |
 | Natural Earth | Fronteras de países y regiones (admin-1), capitales, ciudades | Mapa |
+| FAO, vía Banco Mundial (servida por Our World in Data) | Superficie terrestre de cada país (la API del Banco Mundial no responde desde el entorno de trabajo; es el mismo indicador). Los territorios sin dato usan la superficie medida en el mapa, marcada como estimada | Densidad de población (Fase 6) |
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | ParlGov / Wikipedia | Partidos, escaños, gobiernos y sistemas electorales en 2010 | Política (detallado en unos 40 países principales; plantilla genérica en el resto) |
 | Listas Fortune Global 500 (2010) | Grandes empresas reales | Empresas con nombre (fase posterior) |
@@ -519,7 +520,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 3. **Mapa principal:**
    - **Mapa de juego (decisión del jugador, 12/11/2026):** un mapa grande, plano y rectangular a pantalla completa, como el modo plano de los simuladores geopolíticos del género, sin 3D. Se mueve con el dedo o el ratón, con zoom continuo desde el mundo entero hasta las regiones y las ciudades. Todo lo que se ve es clicable: países, regiones, capitales y ciudades y, más adelante, infraestructuras y unidades. Proyección Miller, con desplazamiento continuo este-oeste (sección 13).
    - **Mapa vivo:** relieve sombreado y fondo oceánico, ríos y lagos, ciudades y, según avance el juego, infraestructuras, unidades, rutas comerciales y efectos (crisis, protestas, combates, desastres). Más detalle cuanto más se acerca el jugador.
-   - **Modos de mapa:** el mismo mapa con distintas capas, cada una con su leyenda. Riqueza (de más rico a más pobre), población, crecimiento, paro, deuda, inflación y recursos llegan con el sistema de capas (Fase 6); relaciones, organizaciones y alianzas, comercio, energía, independentismo, conflictos, militar y elecciones llegan con su sistema.
+   - **Modos de mapa:** el mismo mapa con distintas capas, cada una con su leyenda. Riqueza (de más rico a más pobre), población (total o densidad), crecimiento, paro, deuda, inflación y recursos llegan con el sistema de capas (Fase 6); la capa se elige en un desplegable que se abre con un clic o con la tecla C, y al acercarse, las de riqueza y población colorean también las regiones; relaciones, organizaciones y alianzas, comercio, energía, independentismo, conflictos, militar y elecciones llegan con su sistema.
    - Barra superior: fecha, controles de tiempo, tesorería, popularidad, alertas.
    - Barra de menú: Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado para cada sección.
    - **Capas del mapa:** político, alianzas, relaciones con mi país, PIB per cápita, crecimiento, paro, deuda, energía (mix y apagones), recursos, independentismo por región, conflictos, militar y elecciones.
@@ -539,7 +540,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 16. **Ajustes:** velocidad, pausa automática, sonido (música y efectos), gráficos (animaciones y 3D), accesibilidad, idioma.
 
 **Experiencia de uso**
-- Ratón y teclado: rueda para el zoom, arrastre, clic derecho para acciones y atajos (espacio para pausar, 1 a 4 para la velocidad, F para el medidor de rendimiento…). Se adapta desde 1280 × 720 hasta pantallas grandes. El mapa conserva los gestos táctiles para los portátiles con pantalla táctil.
+- Ratón y teclado: rueda para el zoom, arrastre, clic derecho para acciones y atajos (espacio para pausar, 1 a 4 para la velocidad, F para el medidor de rendimiento, C para elegir la capa del mapa…). Se adapta desde 1280 × 720 hasta pantallas grandes. El mapa conserva los gestos táctiles para los portátiles con pantalla táctil.
 - **Asesores:** cada ministro avisa de los problemas y propone medidas ("El paro juvenil supera el 40 %. Propuesta: plan de empleo joven").
 - Tooltips que explican cada indicador y qué lo afecta.
 - Tema oscuro por defecto, con colores accesibles.
@@ -771,13 +772,13 @@ interface EstadoPartida {
 #### Fase 6 — v0.7.0 · Capas del mapa
 **Objetivo:** ver la información del mundo sobre el mapa, con capas y leyenda.
 **Tareas**
-1. Sistema genérico de capas con leyenda.
-2. Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con un panel de capas y atajos de teclado.
-3. Mapa más realista (opciones A y C elegidas por el jugador): relieve con los colores del terreno y el mar más oscuro donde es más profundo, bajo los colores de los países; efecto de volumen sin pasar a 3D: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua.
-4. **Audiovisual:** rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa.
+1. Sistema genérico de capas con leyenda y rampas de color accesibles (aptas para daltónicos): cada capa da a cada país un color según su dato, con tramos redondos; gris neutro para los países sin dato y rayado fino para los datos estimados; la ficha al pasar el ratón muestra el dato de la capa.
+2. Capas de política, riqueza (PIB per cápita), población (total o densidad), crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón). Se eligen en un desplegable con iconos que se abre con un clic o con la tecla C (decisión del jugador: sin un atajo por capa). Al acercarse, las capas de riqueza y población colorean también las regiones.
+3. Mapa más realista (opción A): colores del terreno de Natural Earth II (vegetación: bosques, desiertos, hielo; elegido por el jugador) bajo los colores de los países, con un deslizador de intensidad del terreno en Ajustes, y el mar más oscuro donde es más profundo.
+4. **Audiovisual:** efecto de volumen sin pasar a 3D (opción C): luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua (se apaga con «reducir movimiento» y en Ajustes), manteniendo los 60 fps; transición animada y sonido suave al cambiar de capa, y su muestra en la galería.
 
 **Tests:** cada capa da color a todos los países con dato y un color neutro a los que no lo tienen.
-**Prueba en el PC:** cambiar de capa y leer la leyenda; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.
+**Prueba en el PC:** cambiar de capa con el desplegable (clic y tecla C) y leer la leyenda; acercarse con la capa de riqueza y ver las regiones; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.
 **Hecho cuando:** las capas funcionan con su leyenda.
 
 #### Fase 7 — v0.8.0 · Componentes de interfaz
@@ -2089,6 +2090,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Fase 5 concretada con el jugador: regiones como eran en 2010 (España por comunidades autónomas, Francia con sus 22 regiones de 2010, Kenia con sus 8 provincias) y datos de población y PIB de fuentes abiertas, ajustados al total del país | Plan de la Fase 5 aprobado por el jugador | 9, 13 |
 | 12/11/2026 | Mapa más realista (idea-3): relieve con los colores del terreno, profundidad del mar y efecto de volumen sin pasar a 3D, en la Fase 6 (nueva tarea 3). La vista inclinada en 3D real queda para más adelante, como opción | Decisión del jugador (opciones A y C) | 7, 9, 13 |
 | 12/11/2026 | «Ajustes tras la prueba» en `roadmap.json`: lo que el jugador pide cambiar de una fase ya probada sale en una versión de corrección (x.y.Z). Primeros ajustes de la Fase 4 (v0.5.1): más colores, nombres de países y ciudades por tamaño y población de las ciudades con su ficha | Petición del jugador tras probar la v0.5.0 | 10, 11, 12 |
+| 12/11/2026 | Fase 6 concretada con el jugador: terreno de Natural Earth II (A1), capas en un desplegable con la tecla C (sin atajo por capa), población total o densidad, capas de riqueza y población también por región; las rampas van con el sistema de capas, los iconos con el desplegable y el efecto de volumen (C) con la tarea audiovisual | Plan de la Fase 6 aprobado por el jugador | 7, 9, 13 |
+| 12/11/2026 | Densidad de población con la superficie terrestre real (FAO, vía Banco Mundial) en lugar de la medida en el mapa, que falla en los archipiélagos (Feroe, Polinesia, Maldivas); el mapa solo se usa para los territorios sin dato y para las regiones | Mejora de la propuesta aprobada por el jugador (no inventar datos) | 4, 9 |
 
 ---
 
@@ -2111,6 +2114,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
+| Colores del terreno | A1: Natural Earth II (vegetación) / A2: hipsométrico (altitud) | **Decidido por el jugador (12/11/2026):** A1, Natural Earth II |
+| Elegir la capa del mapa | Un atajo por capa / Mayús + número / desplegable | **Decidido por el jugador (12/11/2026):** un desplegable que se abre con un clic o con la tecla C; sin atajo por capa |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer clic o tecla, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 | Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |

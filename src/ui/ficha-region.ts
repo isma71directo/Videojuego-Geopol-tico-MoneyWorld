@@ -7,8 +7,10 @@ import { urlBandera } from '../av/banderas';
 import { dolares, dolaresPorPersona, enteros, personas } from '../compartido/formato';
 import type { ConjuntoPaises } from '../datos/paises';
 import { t } from '../i18n';
+import { valorPais, valorRegion, type CapaDatos } from '../map/capas';
 import type { RegionSenalada } from '../map/mapa';
 import { el, type Hijo } from './dom';
+import { nombreCapa, textoValorCapa } from './leyenda';
 
 /** Datos de una región en /public/data/regiones-2010-datos.json. */
 export interface DatosRegion {
@@ -54,13 +56,41 @@ function bandera(region: RegionSenalada, clase: string): HTMLImageElement {
   return el('img', { class: clase, src: urlBandera(region.pais), alt: '', width: 36, height: 27 });
 }
 
+/**
+ * Dato de la capa activa para la ficha de una región (Fase 6): el de la propia región en las
+ * capas por región (riqueza y población) y, en las demás, el de su país, que se nombra.
+ */
+export function lineaCapaRegion(
+  region: RegionSenalada,
+  paises: ConjuntoPaises | null,
+  datos: DatosRegion | null,
+  capa: CapaDatos,
+): string {
+  if (capa.porRegion) {
+    const dato = valorRegion(capa, datos, region.superficie);
+    const texto = dato
+      ? conMarca(textoValorCapa(capa, dato.valor), dato.estimado)
+      : t('juego.mapa.region.sinDato');
+    return `${nombreCapa(capa)}: ${texto}`;
+  }
+  const pais = paises?.paises[region.pais];
+  const dato = pais ? valorPais(capa, pais) : null;
+  const texto = dato
+    ? conMarca(textoValorCapa(capa, dato.valor), dato.estimado)
+    : t('juego.mapa.region.sinDato');
+  return `${nombreCapa(capa)} (${nombrePais(region, paises)}): ${texto}`;
+}
+
 /** Contenido del recuadro que aparece al pasar el ratón por una región. */
 export function contenidoRecuadroRegion(
   region: RegionSenalada,
   paises: ConjuntoPaises | null,
   datos: DatosRegion | null,
+  capa: CapaDatos | null = null,
 ): Hijo[] {
-  const porHabitante = datos ? pibPorHabitante(datos) : null;
+  // Con una capa por región, su dato va arriba y no se repite debajo.
+  const enCapa = capa?.porRegion ? capa.campo : null;
+  const porHabitante = datos && enCapa !== 'pibPerCapita' ? pibPorHabitante(datos) : null;
   return [
     el(
       'div',
@@ -73,7 +103,14 @@ export function contenidoRecuadroRegion(
       { class: 'ficha__dato' },
       t('juego.mapa.region.regionDe', { pais: nombrePais(region, paises) }),
     ),
-    datos?.poblacion
+    capa && datos
+      ? el(
+          'span',
+          { class: 'ficha__dato ficha__dato--capa' },
+          lineaCapaRegion(region, paises, datos, capa),
+        )
+      : null,
+    datos?.poblacion && enCapa !== 'poblacion'
       ? el(
           'span',
           { class: 'ficha__dato' },

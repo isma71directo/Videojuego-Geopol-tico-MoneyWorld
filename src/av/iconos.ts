@@ -2,14 +2,20 @@
  * Iconos vectoriales de los indicadores y de la interfaz (GDD, sección 7.1). Son SVG propios, dibujados con
  * trazo y `currentColor`, así que toman el color del texto que los rodea.
  */
+import capas from './iconos/capas.svg?raw';
+import carbon from './iconos/carbon.svg?raw';
 import crecimiento from './iconos/crecimiento.svg?raw';
+import densidad from './iconos/densidad.svg?raw';
 import deuda from './iconos/deuda.svg?raw';
 import emisiones from './iconos/emisiones.svg?raw';
 import energia from './iconos/energia.svg?raw';
+import gas from './iconos/gas.svg?raw';
 import inflacion from './iconos/inflacion.svg?raw';
 import paro from './iconos/paro.svg?raw';
+import petroleo from './iconos/petroleo.svg?raw';
 import pib from './iconos/pib.svg?raw';
 import poblacion from './iconos/poblacion.svg?raw';
+import politica from './iconos/politica.svg?raw';
 import silencio from './iconos/silencio.svg?raw';
 import sonido from './iconos/sonido.svg?raw';
 
@@ -24,6 +30,13 @@ const ICONOS = {
   emisiones,
   sonido,
   silencio,
+  // Capas del mapa (tarea f6-t2).
+  capas,
+  politica,
+  densidad,
+  petroleo,
+  gas,
+  carbon,
 };
 
 export type NombreIcono = keyof typeof ICONOS;

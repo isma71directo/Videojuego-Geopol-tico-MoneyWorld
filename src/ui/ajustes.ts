@@ -14,6 +14,12 @@ export interface Ajustes {
   volumenEfectos: number;
   /** Volumen de la música, de 0 a 1 (la música llegará más adelante). */
   volumenMusica: number;
+  /** Capa del mapa que se ve al abrirlo (Fase 6): «politica», «riqueza», «paro»… */
+  capaMapa: string;
+  /** Cuánto se ve el terreno bajo los colores de los países, de 0 a 1 (tarea f6-t3). */
+  intensidadTerreno: number;
+  /** Brillo suave y animado sobre el mar (tarea f6-t4); con «reducir movimiento» no se ve. */
+  brilloAgua: boolean;
 }
 
 const POR_DEFECTO: Ajustes = {
@@ -21,6 +27,9 @@ const POR_DEFECTO: Ajustes = {
   sonidoSilenciado: false,
   volumenEfectos: 0.7,
   volumenMusica: 0.5,
+  capaMapa: 'politica',
+  intensidadTerreno: 0.7,
+  brilloAgua: true,
 };
 
 export function leerAjuste<K extends keyof Ajustes>(clave: K): Ajustes[K] {

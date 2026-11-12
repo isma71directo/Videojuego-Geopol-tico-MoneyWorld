@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.6.1",
-  "actualizado": "2026-11-12T11:45:30Z",
+  "versionActual": "0.7.0",
+  "actualizado": "2026-11-12T17:09:51Z",
   "faseActiva": "fase-6",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "v0.6.1 lista en su rama: capitales de provincia en todos los países (ajuste f5-a1), 2035 ciudades nuevas y 1443 marcadas; en España, las 50 capitales de provincia, Ceuta, Melilla, Mérida y Santiago de Compostela.",
-    "siguientePaso": "Cuando el jugador dé por buena la v0.6.1, presentar el plan de la Fase 6 (capas del mapa, mapa más realista f6-t3 con las opciones A + C y su audiovisual) antes de programar.",
+    "resumen": "Fase 6 completa en su rama y versión 0.7.0: capas del mapa con leyenda en un desplegable (tecla C), densidad con la superficie real de la FAO, capas por región, terreno de Natural Earth II con el mar profundo y efecto de volumen sin 3D.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 6 como hecha y presentar el plan de la Fase 7 (componentes de interfaz).",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.6.1",
-      "Prueba en el PC: acercarse a España y ver Cáceres, Teruel, Soria, Cuenca, Ávila y las demás capitales de provincia; pasar el ratón por Cáceres y leer «Capital de Cáceres (España)»; mirar también otro país grande (Francia, Italia o Turquía)"
+      "Fusionar el PR de la Fase 6 (v0.7.0)",
+      "Prueba en el PC: abrir el desplegable de capas con un clic y con la tecla C, cambiar de capa y leer la leyenda; acercarse a España con la capa de riqueza y ver sus comunidades coloreadas; ver el terreno (bosques, desiertos, hielo) bajo los países, el mar más oscuro en las zonas profundas y la sombra al seleccionar un país; probar el deslizador «Intensidad del terreno» y la casilla «Brillo animado del agua» en Ajustes"
     ]
   },
   "etapas": [
@@ -449,36 +449,36 @@
       "objetivo": "Ver la información del mundo sobre el mapa, con capas y leyenda",
       "dependeDe": ["fase-5"],
       "hechoCuando": "Las capas funcionan con su leyenda",
-      "pruebaJugador": "Cambiar de capa y leer la leyenda; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.",
-      "estado": "pendiente",
+      "pruebaJugador": "Cambiar de capa con el desplegable (clic y tecla C) y leer la leyenda; acercarse con la capa de riqueza y ver las regiones; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f6-t1",
-          "titulo": "Sistema genérico de capas con leyenda",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Sistema genérico de capas con leyenda y rampas de color accesibles (aptas para daltónicos): color de cada país según su dato, con tramos redondos; gris neutro sin dato y rayado fino para los estimados; la ficha muestra el dato de la capa",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/26fc244"
         },
         {
           "id": "f6-t2",
-          "titulo": "Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con un panel de capas y atajos de teclado",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Capas de política, riqueza (PIB per cápita), población (total o densidad), crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), elegidas en un desplegable con iconos que se abre con un clic o con la tecla C; riqueza y población también por región al acercarse",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ebba593"
         },
         {
           "id": "f6-t3",
-          "titulo": "Mapa más realista (opciones A y C elegidas por el jugador): relieve con los colores del terreno y el mar más oscuro donde es más profundo, bajo los colores de los países; efecto de volumen sin pasar a 3D: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua.",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Mapa más realista (opción A): colores del terreno de Natural Earth II bajo los colores de los países, con deslizador de intensidad en Ajustes, y el mar más oscuro donde es más profundo",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/20bddb8"
         },
         {
           "id": "f6-t4",
-          "titulo": "Audiovisual: rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Audiovisual: efecto de volumen sin 3D (opción C: luz y sombra en los bordes de los países, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua, manteniendo 60 fps), transición animada y sonido suave al cambiar de capa, y su muestra en la galería",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/0ee5f0a"
         }
       ]
     },
@@ -4303,6 +4303,17 @@
       "cambios": [
         "Capitales de provincia en todos los países: 2035 ciudades nuevas y 1443 ya existentes marcadas como capital de su provincia (por ejemplo, en España las 50 capitales de provincia, Ceuta y Melilla)",
         "Las capitales de provincia aparecen antes al acercarse, con un punto algo mayor, y su ficha dice de qué provincia son capital"
+      ]
+    },
+    {
+      "version": "0.7.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Capas del mapa en un desplegable (clic o tecla C): política, riqueza, población total, densidad de población, crecimiento, paro, deuda pública, inflación y reservas de petróleo, gas y carbón, con su leyenda",
+        "Rampas de color aptas para daltónicos, gris para los países sin dato y rayado para los datos estimados; riqueza, población y densidad también por regiones al acercarse",
+        "Mapa más realista: colores del terreno de Natural Earth II bajo los países (intensidad en Ajustes) y mar más oscuro cuanto más profundo",
+        "Volumen sin 3D: luz y sombra en los bordes, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua",
+        "Cambio de capa con fundido de colores y sonido propio; rampas de las capas en la galería"
       ]
     }
   ]

@@ -33,7 +33,11 @@
       "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
       "silenciar": "Silenciar el sonido",
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
-      "volumenEfectos": "Volumen de los efectos"
+      "volumenEfectos": "Volumen de los efectos",
+      "intensidadTerreno": "Intensidad del terreno",
+      "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos).",
+      "brilloAgua": "Brillo animado del agua",
+      "brilloAguaAyuda": "Un reflejo de luz suave que se mueve despacio sobre el mar. No se ve si el sistema pide reducir el movimiento."
     },
     "hoja": {
       "cerrar": "Cerrar"
@@ -63,7 +67,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, C para elegir la capa del mapa, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -172,6 +176,73 @@
         "ajustado": "Datos de 2010, ajustados para que las regiones sumen el total del país.",
         "verPais": "Ver la ficha de {pais}",
         "cerrar": "Cerrar ficha de la región"
+      },
+      "capas": {
+        "politica": {
+          "nombre": "Política",
+          "unidad": "Un color por país",
+          "opcion": "Política"
+        },
+        "riqueza": {
+          "nombre": "Riqueza",
+          "unidad": "PIB por habitante, en dólares de 2010"
+        },
+        "poblacion": {
+          "nombre": "Población",
+          "unidad": "Millones de habitantes",
+          "opcion": "Población total"
+        },
+        "densidad": {
+          "nombre": "Densidad de población",
+          "unidad": "Habitantes por km² de tierra",
+          "valor": "{valor} hab./km²"
+        },
+        "crecimiento": {
+          "nombre": "Crecimiento",
+          "unidad": "Crecimiento del PIB real en 2010"
+        },
+        "paro": {
+          "nombre": "Paro",
+          "unidad": "Porcentaje de la población activa"
+        },
+        "deuda": {
+          "nombre": "Deuda pública",
+          "unidad": "Porcentaje del PIB"
+        },
+        "inflacion": {
+          "nombre": "Inflación",
+          "unidad": "Subida de los precios en 2010"
+        },
+        "petroleo": {
+          "nombre": "Reservas de petróleo",
+          "unidad": "Millones de barriles",
+          "valor": "{valor} millones de barriles"
+        },
+        "gas": {
+          "nombre": "Reservas de gas natural",
+          "unidad": "Miles de millones de m³",
+          "valor": "{valor} miles de millones de m³"
+        },
+        "carbon": {
+          "nombre": "Reservas de carbón",
+          "unidad": "Millones de toneladas",
+          "valor": "{valor} millones de toneladas"
+        },
+        "menosDe": "Menos de {valor}",
+        "entre": "{desde} a {hasta}",
+        "oMas": "{valor} o más",
+        "sinReservas": "Sin reservas",
+        "estimado": "Dato estimado",
+        "sinDatos": "Sin datos",
+        "datos2010": "Datos de 2010",
+        "leyenda": "Leyenda de la capa del mapa",
+        "selector": {
+          "boton": "Capa del mapa: {capa}. Pulsa C para elegir otra",
+          "titulo": "Capa del mapa (C)",
+          "menu": "Capas del mapa"
+        },
+        "porRegiones": "Al acercarte, también por regiones.",
+        "regionesDensidad": "La superficie de las regiones se mide en el mapa."
       }
     }
   },
@@ -251,7 +322,13 @@
       "energia": "Energía",
       "emisiones": "Emisiones",
       "sonido": "Sonido",
-      "silencio": "Silencio"
+      "silencio": "Silencio",
+      "capas": "Capas del mapa",
+      "politica": "Mapa político",
+      "densidad": "Densidad de población",
+      "petroleo": "Petróleo",
+      "gas": "Gas natural",
+      "carbon": "Carbón"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -278,11 +355,16 @@
       "deseleccionar": "Quitar la selección",
       "abrirPanel": "Abrir un panel",
       "boton": "Pulsar un botón",
-      "escuchar": "Escuchar: {efecto}"
+      "escuchar": "Escuchar: {efecto}",
+      "capa": "Cambiar la capa del mapa"
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
       "nota": "Doce tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo, nunca el de un vecino y, en lo posible, tampoco el de los países de su entorno."
+    },
+    "capas": {
+      "titulo": "Capas del mapa",
+      "nota": "Rampas de color de cada capa, creadas con código. Van de oscuro a claro: más claro es más (en crecimiento e inflación, más lejos de cero). Se distinguen también con los tres tipos de daltonismo. En el mapa, el rayado marca los datos estimados."
     }
   }
 }

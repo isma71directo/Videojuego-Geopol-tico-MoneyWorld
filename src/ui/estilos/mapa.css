@@ -254,3 +254,242 @@
   width: 100%;
   margin-top: 12px;
 }
+
+/* Dato de la capa activa en la ficha (Fase 6). */
+.ficha__dato--capa {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+/* Leyenda de la capa del mapa, abajo a la izquierda (tarea f6-t1). */
+.leyenda {
+  position: absolute;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  left: calc(10px + env(safe-area-inset-left));
+  min-width: 190px;
+  max-width: 260px;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: rgb(14 22 38 / 90%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  color: var(--texto);
+  font-size: 13px;
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+.leyenda[hidden] {
+  display: none;
+}
+
+.leyenda__titulo {
+  margin: 0;
+  font-size: 15px;
+}
+
+.leyenda__unidad {
+  margin: 2px 0 8px;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.leyenda__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leyenda__extras {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--borde);
+}
+
+.leyenda__linea {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.leyenda__muestra {
+  flex: none;
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 18%);
+}
+
+/* El mismo rayado que el mapa pone a los datos estimados. */
+.leyenda__muestra--rayada {
+  background:
+    repeating-linear-gradient(-45deg, rgb(8 12 22 / 55%) 0 1.3px, transparent 1.3px 5px), #8b97a8;
+}
+
+.leyenda__pie {
+  margin: 8px 0 0;
+  color: var(--texto-suave);
+  font-size: 11px;
+}
+
+/* Desplegable de las capas del mapa (tarea f6-t2), en la barra superior. */
+.capas {
+  position: relative;
+}
+
+.capas__boton {
+  gap: 8px;
+  background: rgb(18 27 45 / 85%);
+  backdrop-filter: blur(6px);
+}
+
+.capas__boton .icono,
+.capas__opcion .icono {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.capas__flecha {
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.capas__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: rgb(14 22 38 / 96%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 45%);
+  animation: capas-abrir 140ms ease-out;
+}
+
+.capas__menu[hidden] {
+  display: none;
+}
+
+@keyframes capas-abrir {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capas__menu {
+    animation: none;
+  }
+}
+
+.capas__separador {
+  height: 1px;
+  margin: 5px 6px;
+  background: var(--borde);
+}
+
+.capas__opcion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.capas__opcion:hover,
+.capas__opcion:focus-visible {
+  background: rgb(255 255 255 / 8%);
+  outline: none;
+}
+
+.capas__opcion:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--acento, #ffd678);
+}
+
+.capas__opcion[aria-checked='true'] {
+  background: rgb(255 214 120 / 14%);
+  color: #ffe3a1;
+  font-weight: 600;
+}
+
+/* La leyenda nueva entra al cambiar de capa (tarea f6-t4). */
+.leyenda--cambio {
+  animation: leyenda-entrar 260ms ease-out;
+}
+
+@keyframes leyenda-entrar {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/*
+ * Brillo suave del agua (tarea f6-t4): dos reflejos de luz muy tenues que se mueven despacio.
+ * Con «trama» (screen) apenas cambian los colores claros de la tierra y sí el mar oscuro. Solo
+ * se anima la posición (transform), que no obliga a repintar el mapa.
+ */
+.mapa__brillo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.11;
+}
+
+.mapa__brillo[hidden] {
+  display: none;
+}
+
+.mapa__brillo::before {
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(38% 30% at 32% 36%, rgb(150 200 255 / 80%), transparent 70%),
+    radial-gradient(30% 24% at 70% 66%, rgb(150 200 255 / 60%), transparent 70%);
+  content: '';
+  animation: mapa-brillo 34s ease-in-out infinite alternate;
+}
+
+@keyframes mapa-brillo {
+  from {
+    transform: translate(-8%, -5%) rotate(-2deg);
+  }
+
+  to {
+    transform: translate(8%, 6%) rotate(2deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa__brillo {
+    display: none;
+  }
+
+  .leyenda--cambio {
+    animation: none;
+  }
+}

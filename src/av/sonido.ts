@@ -18,7 +18,7 @@ export interface Nota {
   volumen: number;
 }
 
-export type Efecto = 'seleccionar' | 'deseleccionar' | 'abrirPanel' | 'boton';
+export type Efecto = 'seleccionar' | 'deseleccionar' | 'abrirPanel' | 'boton' | 'capa';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -42,6 +42,19 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
       frecuenciaFinal: 2600,
       volumen: 0.1,
     },
+  ],
+  // Cambiar la capa del mapa (tarea f6-t4): una hoja de atlas que pasa y una nota suave.
+  capa: [
+    {
+      forma: 'ruido',
+      inicio: 0,
+      duracion: 0.16,
+      frecuencia: 1800,
+      frecuenciaFinal: 600,
+      volumen: 0.06,
+    },
+    { forma: 'sine', inicio: 0.05, duracion: 0.2, frecuencia: 784, volumen: 0.11 },
+    { forma: 'sine', inicio: 0.09, duracion: 0.19, frecuencia: 1174.7, volumen: 0.06 },
   ],
   // Un toque seco y corto.
   boton: [

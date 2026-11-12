@@ -53,3 +53,28 @@ describe('relieve del mapa', () => {
     expect(nivelPara(manifiesto, 1e6).ancho).toBe(anchos.at(-1));
   });
 });
+
+describe('terreno del mapa (tarea f6-t3)', () => {
+  const terreno = JSON.parse(
+    readFileSync(new URL('../public/av/terreno/terreno.json', import.meta.url), 'utf8'),
+  ) as ManifiestoRelieve;
+
+  it('tiene los mismos niveles y teselas que el relieve, todas en su sitio', () => {
+    expect(terreno.niveles).toEqual(manifiesto.niveles);
+    expect(terreno.tesela).toBe(manifiesto.tesela);
+    for (const nivel of terreno.niveles) {
+      for (let fila = 0; fila < nivel.filas; fila += 1) {
+        for (let columna = 0; columna < nivel.columnas; columna += 1) {
+          const ruta = `../public/av/terreno/${nivel.ancho}/${columna}_${fila}.${terreno.formato}`;
+          expect(existsSync(new URL(ruta, import.meta.url)), ruta).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('con menos nitidez pide teselas más pequeñas (menos memoria gráfica)', () => {
+    const nitido = nivelPara(terreno, 3000).ancho;
+    const suave = nivelPara(terreno, 3000, 0.4).ancho;
+    expect(suave).toBeLessThan(nitido);
+  });
+});

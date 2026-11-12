@@ -1,6 +1,7 @@
 /**
- * Relieve sombreado del mapa (tarea f3-t3): teselas por nivel de zoom que se descargan cuando
- * hacen falta y se dibujan con el modo de fusión «luz suave» sobre los países y el océano.
+ * Teselas del mapa por nivel de zoom, que se descargan cuando hacen falta: el relieve sombreado
+ * (tarea f3-t3), que se dibuja con «luz suave» sobre los países y el océano, y el terreno
+ * (tarea f6-t3), que se dibuja debajo de ellos.
  */
 import { ALTO_MUNDO, ANCHO_MUNDO } from './proyeccion';
 
@@ -31,9 +32,13 @@ export interface TeselaVisible {
  * Nivel adecuado para un mundo que ocupa `anchoPx` píxeles reales de pantalla: el más pequeño
  * que no se vea borroso (se admite estirar un poco) o, si no hay, el más grande.
  */
-export function nivelPara(manifiesto: ManifiestoRelieve, anchoPx: number): NivelRelieve {
+export function nivelPara(
+  manifiesto: ManifiestoRelieve,
+  anchoPx: number,
+  nitidez = 0.75,
+): NivelRelieve {
   const niveles = [...manifiesto.niveles].sort((a, b) => a.ancho - b.ancho);
-  return niveles.find((nivel) => nivel.ancho >= anchoPx * 0.75) ?? niveles.at(-1)!;
+  return niveles.find((nivel) => nivel.ancho >= anchoPx * nitidez) ?? niveles.at(-1)!;
 }
 
 /** Teselas de un nivel que se cruzan con un rectángulo [x0, y0, x1, y1] del mundo. */
@@ -75,6 +80,8 @@ export class Relieve {
     private readonly carpeta: string,
     private readonly manifiesto: ManifiestoRelieve,
     private readonly alCargar: () => void,
+    /** Píxeles de tesela por píxel de pantalla que se piden (menos = teselas más pequeñas). */
+    private readonly nitidez: number,
   ) {
     this.base = [...manifiesto.niveles].sort((a, b) => a.ancho - b.ancho)[0]!;
     // El nivel más pequeño se descarga entero: sirve de reserva mientras llegan los demás.
@@ -83,10 +90,15 @@ export class Relieve {
     }
   }
 
-  static async cargar(carpeta: string, alCargar: () => void): Promise<Relieve> {
-    const respuesta = await fetch(`${carpeta}relieve.json`);
+  static async cargar(
+    carpeta: string,
+    alCargar: () => void,
+    manifiesto = 'relieve.json',
+    nitidez = 0.75,
+  ): Promise<Relieve> {
+    const respuesta = await fetch(`${carpeta}${manifiesto}`);
     if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status} en el relieve`);
-    return new Relieve(carpeta, (await respuesta.json()) as ManifiestoRelieve, alCargar);
+    return new Relieve(carpeta, (await respuesta.json()) as ManifiestoRelieve, alCargar, nitidez);
   }
 
   private imagen(nivel: NivelRelieve, tesela: TeselaVisible): HTMLImageElement {
@@ -116,7 +128,7 @@ export class Relieve {
     anchoPx: number,
     margen: number,
   ): void {
-    const nivel = nivelPara(this.manifiesto, anchoPx);
+    const nivel = nivelPara(this.manifiesto, anchoPx, this.nitidez);
     for (const tesela of teselasVisibles(this.manifiesto, nivel, visible)) {
       const imagen = this.imagen(nivel, tesela);
       if (Relieve.lista(imagen)) {

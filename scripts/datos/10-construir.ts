@@ -3,13 +3,16 @@
  * (no usa la red): une las fuentes, aplica los valores de respaldo, valida y escribe el
  * archivo que carga el juego y el informe de cobertura.
  *
- * Entrada: fuentes/datos/*.json (los generan los scripts 01 a 06)
+ * Entrada: fuentes/datos/*.json (los generan los scripts 01 a 06 y 16) y, para la superficie
+ *          de los territorios sin dato oficial, public/data/mapa-2010-detalle.json (09).
  * Salida:  public/data/paises-2010.json y docs/datos-cobertura.md
  * Uso:     node scripts/datos/10-construir.ts
  */
 import { existsSync } from 'node:fs';
+import type { GeometryCollection, Topology } from 'topojson-specification';
 import { escribirJsonCompacto, escribirTexto, leerJson, ruta } from './lib/comun.ts';
 import { construir, type Entradas } from './lib/construir.ts';
+import { superficiesDelMapa } from './lib/geometria.ts';
 import { informeCobertura } from './lib/informe.ts';
 import { leerPaises } from './lib/paises.ts';
 import type { ArchivoFuente } from './lib/tipos.ts';
@@ -17,6 +20,11 @@ import { validar } from './lib/validar.ts';
 
 const archivo = (nombre: string): ArchivoFuente =>
   leerJson<ArchivoFuente>(`fuentes/datos/${nombre}.json`);
+
+/** Superficie de cada país medida en el mapa de detalle (Natural Earth 1:10m), en km². */
+const superficiesMapa = superficiesDelMapa(
+  leerJson<Topology<{ paises: GeometryCollection }>>('public/data/mapa-2010-detalle.json'),
+);
 
 const entradas: Entradas = {
   paises: leerPaises(),
@@ -26,9 +34,11 @@ const entradas: Entradas = {
     energia: archivo('owid-energia'),
     emisiones: archivo('owid-emisiones'),
     recursos: archivo('recursos'),
+    superficie: archivo('superficie'),
   },
   territorios: leerJson<{ territorios: Entradas['territorios'] }>('fuentes/datos/territorios.json')
     .territorios,
+  superficiesMapa,
 };
 
 const { conjunto, incidencias } = construir(entradas);
@@ -49,7 +59,11 @@ escribirTexto(
     descargas: Object.fromEntries(
       Object.values(entradas.archivos).map((a) => [a.fuente, a.descargado]),
     ),
-    notas: [...incidencias, ...(entradas.archivos.recursos.notas ?? [])],
+    notas: [
+      ...incidencias,
+      ...(entradas.archivos.recursos.notas ?? []),
+      ...(entradas.archivos.superficie.notas ?? []),
+    ],
     // Las banderas se ven en GitHub al abrir el informe (las descarga 07-banderas.ts).
     bandera: (pais) =>
       existsSync(ruta(`public/av/banderas/${pais.id}.svg`))

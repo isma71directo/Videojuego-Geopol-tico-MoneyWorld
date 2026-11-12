@@ -7,7 +7,9 @@ import { urlBandera } from '../av/banderas';
 import { dolares, dolaresPorPersona, personas, porcentaje } from '../compartido/formato';
 import { esEstimado, type ConjuntoPaises, type PaisDatos } from '../datos/paises';
 import { t } from '../i18n';
+import type { CapaDatos } from '../map/capas';
 import { el, type Hijo } from './dom';
+import { nombreCapa, textoValorCapa } from './leyenda';
 
 type Formato = (valor: number) => string;
 
@@ -62,9 +64,29 @@ function nombreCampo(campo: string, conjunto: ConjuntoPaises): string {
   return texto === clave ? (conjunto.campos[campo]?.nombre ?? campo) : texto;
 }
 
-/** Contenido del recuadro que aparece al pasar el ratón. */
-export function contenidoRecuadro(pais: PaisDatos, conjunto: ConjuntoPaises): Hijo[] {
-  const lineas = CAMPOS_RECUADRO.map(([campo, formato]) => {
+/**
+ * Contenido del recuadro que aparece al pasar el ratón. Con una capa de datos activa (Fase 6),
+ * su dato va primero y destacado.
+ */
+export function contenidoRecuadro(
+  pais: PaisDatos,
+  conjunto: ConjuntoPaises,
+  capa: CapaDatos | null = null,
+): Hijo[] {
+  const datoCapa = capa ? valorCampo(pais, capa.campo, (v) => textoValorCapa(capa, v)) : null;
+  const lineaCapa = capa
+    ? el(
+        'span',
+        { class: 'ficha__dato ficha__dato--capa' },
+        `${nombreCapa(capa)}: ${
+          datoCapa
+            ? `${datoCapa.texto}${datoCapa.estimado ? '*' : ''}`
+            : t('juego.mapa.pais.sinDato')
+        }`,
+      )
+    : null;
+  const campos = CAMPOS_RECUADRO.filter(([campo]) => campo !== capa?.campo);
+  const lineas = campos.map(([campo, formato]) => {
     const valor = valorCampo(pais, campo, formato);
     return valor
       ? el(
@@ -83,6 +105,7 @@ export function contenidoRecuadro(pais: PaisDatos, conjunto: ConjuntoPaises): Hi
       el('strong', {}, pais.nombre),
     ),
     estatus ? el('span', { class: 'ficha__estatus' }, estatus) : null,
+    lineaCapa,
     el('span', { class: 'ficha__dato' }, `${t('juego.mapa.pais.capital')}: ${pais.capital}`),
     ...lineas,
   ];

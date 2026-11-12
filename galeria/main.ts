@@ -8,6 +8,8 @@ import './estilos.css';
 import { urlBandera } from '../src/av/banderas';
 import { NOMBRES_ICONOS, icono } from '../src/av/iconos';
 import { EFECTOS, MotorSonido, type Efecto } from '../src/av/sonido';
+import { capaPorId, COLOR_SIN_RESERVAS } from '../src/map/capas';
+import { etiquetaCapa, opcionesCapas, POLITICA } from '../src/ui/selector-capas';
 import { PALETA } from '../src/map/estilo';
 import type { ConjuntoPaises, PaisDatos } from '../src/datos/paises';
 import { vistaPreviaMapa, type TopologiaMapa } from '../src/map/vista-previa';
@@ -107,6 +109,43 @@ function paleta(): HTMLElement {
   );
 }
 
+/** Rampas de color de las capas del mapa (tarea f6-t4). */
+function capas(): HTMLElement {
+  return seccion(
+    t('galeria.capas.titulo'),
+    t('galeria.capas.nota'),
+    el(
+      'ul',
+      { class: 'galeria__capas' },
+      ...opcionesCapas()
+        .filter((opcion) => opcion.id !== POLITICA)
+        .map((opcion) => {
+          const capa = capaPorId(opcion.id)!;
+          const colores = capa.cero ? [COLOR_SIN_RESERVAS, ...capa.colores] : [...capa.colores];
+          return el(
+            'li',
+            {},
+            el(
+              'span',
+              { class: 'galeria__capa-nombre' },
+              icono(opcion.icono),
+              etiquetaCapa(opcion.id),
+            ),
+            el(
+              'span',
+              { class: 'galeria__rampa', 'aria-hidden': 'true' },
+              ...colores.map((color) => {
+                const muestra = el('span', {});
+                muestra.style.background = color;
+                return muestra;
+              }),
+            ),
+          );
+        }),
+    ),
+  );
+}
+
 function bandera(pais: PaisDatos): HTMLElement {
   return el(
     'li',
@@ -198,6 +237,7 @@ async function iniciar(): Promise<void> {
       cabecera(),
       mapa(topo, conjunto),
       paleta(),
+      capas(),
       iconos(),
       sonidos(),
       ...banderas(conjunto),

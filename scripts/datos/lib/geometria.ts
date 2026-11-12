@@ -1,4 +1,28 @@
 /** Utilidades de geometría para los scripts del mapa. Lógica pura, con tests. */
+import { geoArea } from 'd3-geo';
+import type { Feature } from 'geojson';
+import { feature } from 'topojson-client';
+import type { GeometryCollection, Topology } from 'topojson-specification';
+
+/** Radio medio de la Tierra, en km. */
+export const RADIO_TIERRA_KM = 6371.0088;
+
+/**
+ * Superficie de cada país del mapa (km², con un decimal). Sirve de respaldo para los
+ * territorios sin dato oficial de superficie (tarea f6-t2).
+ */
+export function superficiesDelMapa(
+  topo: Topology<{ paises: GeometryCollection }>,
+): Record<string, number> {
+  const formas = (feature(topo, topo.objects.paises) as unknown as { features: Feature[] })
+    .features;
+  return Object.fromEntries(
+    formas.map((forma) => [
+      String(forma.id),
+      Math.round(geoArea(forma) * RADIO_TIERRA_KM ** 2 * 10) / 10,
+    ]),
+  );
+}
 
 export type Anillo = [number, number][];
 export type Poligono = Anillo[];
