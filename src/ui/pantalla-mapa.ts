@@ -37,7 +37,11 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
 
   const mapa = new MapaMundo(
     lienzo,
-    { mundo: './data/mapa-2010-mundo.json', detalle: './data/mapa-2010-detalle.json' },
+    {
+      mundo: './data/mapa-2010-mundo.json',
+      detalle: './data/mapa-2010-detalle.json',
+      relieve: './av/relieve/',
+    },
     ESTILO_MAPA,
   );
   if (medidor) {

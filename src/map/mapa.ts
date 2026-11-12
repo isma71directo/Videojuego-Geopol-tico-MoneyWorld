@@ -12,6 +12,8 @@ import {
   type Camara,
 } from './camara';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
+import { ANCHO_MUNDO } from './proyeccion';
+import { Relieve } from './relieve';
 
 /** A partir de este zoom (relativo al mundo entero) se usa el nivel de detalle. */
 export const ZOOM_DETALLE = 2.5;
@@ -48,6 +50,7 @@ export class MapaMundo {
   private camara: Camara;
   private dpr = 1;
   private mundo: Nivel | null = null;
+  private relieve: Relieve | null = null;
   private detalle: Nivel | null = null;
   private cargandoDetalle = false;
   private dibujoPendiente = false;
@@ -60,7 +63,7 @@ export class MapaMundo {
 
   constructor(
     private readonly contenedor: HTMLElement,
-    private readonly urls: { mundo: string; detalle: string },
+    private readonly urls: { mundo: string; detalle: string; relieve?: string },
     private readonly estilo: Estilo,
   ) {
     this.lienzo = document.createElement('canvas');
@@ -75,6 +78,15 @@ export class MapaMundo {
 
   /** Descarga el nivel «mundo» y dibuja. El de detalle se descarga cuando hace falta. */
   async iniciar(): Promise<void> {
+    if (this.urls.relieve) {
+      // El relieve es decorativo: si no carga, el mapa funciona igual.
+      Relieve.cargar(this.urls.relieve, () => this.pedirDibujo())
+        .then((relieve) => {
+          this.relieve = relieve;
+          this.pedirDibujo();
+        })
+        .catch(() => undefined);
+    }
     this.mundo = crearNivel(await this.descargar(this.urls.mundo));
     this.pedirDibujo();
   }
@@ -181,6 +193,13 @@ export class MapaMundo {
         for (const figura of paises) {
           ctx.fillStyle = estilo.colorPais(figura.id);
           ctx.fill(this.camino(nivel, figura));
+        }
+        if (this.relieve) {
+          // «Luz suave»: el gris medio no cambia nada; más claro ilumina y más oscuro sombrea.
+          ctx.globalCompositeOperation = 'soft-light';
+          ctx.imageSmoothingQuality = 'high';
+          this.relieve.dibujar(ctx, visible, ANCHO_MUNDO * camara.k * dpr, 0.6 / camara.k);
+          ctx.globalCompositeOperation = 'source-over';
         }
         ctx.strokeStyle = estilo.borde;
         ctx.lineWidth = 0.9 / camara.k;

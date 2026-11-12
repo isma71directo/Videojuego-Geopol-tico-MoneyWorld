@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.3.0",
-  "actualizado": "2026-11-12T01:08:25Z",
+  "actualizado": "2026-11-12T01:13:46Z",
   "faseActiva": "fase-3",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 3 en marcha: mapa a pantalla completa con la proyección Miller, que se mueve con el dedo, el ratón y el teclado, con pellizco, rueda, doble toque, vuelta este-oeste y medidor de fps (?fps).",
-    "siguientePaso": "Relieve sombreado y fondo oceánico de Natural Earth reproyectados a Miller, en teselas (tarea f3-t3).",
+    "resumen": "Fase 3 en marcha: mapa a pantalla completa con la proyección Miller, navegación táctil, con ratón y teclado, vuelta este-oeste y relieve sombreado con fondo oceánico en teselas (1,5 MB en total).",
+    "siguientePaso": "Ríos y lagos, colores y bordes definitivos y animación suave del zoom (tarea f3-t4); después, cerrar la fase.",
     "pendienteDelJugador": [
       "Decidir la plataforma: móvil y PC con niveles de calidad (propuesta) o solo PC"
     ]
@@ -282,20 +282,20 @@
           "titulo": "Navegación: pellizco, rueda, arrastre y doble toque para acercar, límites norte-sur y desplazamiento continuo este-oeste; medidor de fps en modo desarrollo",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/09e53dc"
         },
         {
           "id": "f3-t3",
           "titulo": "Relieve: imagen de relieve sombreado y fondo oceánico de Natural Earth reproyectada a Miller, en teselas por nivel de zoom",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f3-t4",
           "titulo": "Audiovisual: ríos y lagos, colores de países y bordes, y animación suave del zoom",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         }
       ]
