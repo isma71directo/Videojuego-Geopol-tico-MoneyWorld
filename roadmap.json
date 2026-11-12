@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.5.0",
-  "actualizado": "2026-11-12T07:24:35Z",
+  "versionActual": "0.5.1",
+  "actualizado": "2026-11-12T07:25:15Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 cerrada (v0.5.0 probada por el jugador). Hechos los cuatro ajustes de la v0.5.1: 12 colores sin repeticiones cerca, nombres de países siempre que no se pisen, población de las ciudades con orden de aparición por población y ficha de la ciudad.",
-    "siguientePaso": "Publicar la v0.5.1 y abrir el PR.",
-    "pendienteDelJugador": []
+    "resumen": "v0.5.1 lista en su rama con los ajustes que pidió el jugador tras probar la Fase 4: 12 colores sin repeticiones cerca, nombres de países siempre que no se pisen (con forma corta si hace falta), población de las ciudades (2010 o la más cercana) con orden de aparición por población, y ficha y panel de cada ciudad.",
+    "siguientePaso": "Cuando el jugador confirme la prueba de la v0.5.1, empezar la Fase 5 (regiones del mundo) presentando antes su plan.",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la v0.5.1",
+      "Prueba en el PC: ver que los colores no se repiten cerca; con el mundo entero a la vista, ver el nombre de Marruecos y, con poco zoom, el de República Checa; acercarse a España y ver que salen primero Zaragoza, luego Córdoba y luego Oviedo; pasar el ratón por una ciudad y hacer clic en ella para ver su población y su año"
+    ]
   },
   "etapas": [
     {
@@ -373,7 +376,7 @@
           "origen": "Mensaje del jugador tras probar la v0.5.0",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7c88035"
         }
       ]
     },
@@ -4230,6 +4233,17 @@
         "Nombres de países que aparecen según el zoom sin pisarse; capitales de 2010 y ciudades principales al acercarse",
         "Sonido de interfaz sintetizado, botón de silencio (y tecla M), volumen de los efectos en Ajustes y pulso dorado al seleccionar",
         "Galería: paleta del mapa y sonidos de la interfaz"
+      ]
+    },
+    {
+      "version": "0.5.1",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Ajustes del mapa pedidos por el jugador tras probar la v0.5.0",
+        "12 colores de país; además de los vecinos, tampoco repiten color los países cercanos ni los vecinos de vecinos",
+        "Nombres de países siempre que no se pisen (Marruecos con el mundo entero a la vista); forma corta si el nombre entero no cabe («Rep. Checa»)",
+        "Población de cada ciudad (la de 2010 o la más cercana, con su año) y ciudades que aparecen al acercarse por orden de población; 2214 ciudades",
+        "Ficha de la ciudad al pasar el ratón y panel al hacer clic"
       ]
     }
   ]

@@ -1,6 +1,6 @@
 {
   "name": "geopolitica-2010",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Simulador geopolítico en el navegador que arranca el 1 de enero de 2010 (nombre provisional: «Geopolítica 2010»).",
   "private": true,
   "type": "module",
