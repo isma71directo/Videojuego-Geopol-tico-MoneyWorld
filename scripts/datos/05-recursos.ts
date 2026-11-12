@@ -223,7 +223,7 @@ for (const [mineral, { owid, nombre, produccion: origen }] of Object.entries(MIN
 }
 
 salida.notas = [
-  `Sin producción por país en 2010 en las fuentes accesibles: ${sinProduccion.join(', ')}. Pendiente para la Fase 19 (recursos naturales).`,
+  `Sin producción por país en 2010 en las fuentes accesibles: ${sinProduccion.join(', ')}. Pendiente para la Fase 43 (recursos naturales).`,
   'Las reservas minerales por país solo se publican desde 2022; se guarda el primer año disponible.',
 ];
 escribirJsonCompacto('fuentes/datos/recursos.json', salida, 4);

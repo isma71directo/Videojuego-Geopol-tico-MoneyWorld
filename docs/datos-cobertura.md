@@ -18,7 +18,7 @@
 - FMI, Perspectivas de la economía mundial (WEO), vía DataMapper API — descargado el 11/11/2026
 - Our World in Data, energy-data (Ember, Energy Institute, EIA) — descargado el 11/11/2026
 - Our World in Data, co2-data (Global Carbon Project y otros) — descargado el 11/11/2026
-- Our World in Data: Energy Institute y EIA (reservas fósiles); USGS y BGS (minerales) — descargado el 11/11/2026
+- Our World in Data: Energy Institute y EIA (reservas fósiles); USGS y BGS (minerales) — descargado el 12/11/2026
 - Wikidata y Banco Mundial (población de los territorios sin datos oficiales).
 
 ## Cómo leer este informe
@@ -381,9 +381,9 @@ Datos que están dentro de lo posible pero fuera de lo habitual. Conviene compro
 ## Huecos conocidos
 
 - Venezuela: los sectores de la fuente suman 0.0 % del PIB; se descartan y se estiman.
-- Sin producción por país en 2010 en las fuentes accesibles: mineral de hierro, níquel, tierras raras. Pendiente para la Fase 19 (recursos naturales).
+- Sin producción por país en 2010 en las fuentes accesibles: mineral de hierro, níquel, tierras raras. Pendiente para la Fase 43 (recursos naturales).
 - Las reservas minerales por país solo se publican desde 2022; se guarda el primer año disponible.
-- Los territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) no están en este conjunto; su tratamiento se decide en las Fases 2 y 3 (mapa y regiones).
+- Los territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) no están en este conjunto; su tratamiento se decide en las Fases 2 y 5 (fronteras y regiones).
 - El nivel de renta de los territorios sin RNB per cápita (y el de Corea del Norte) está fijado a mano.
 
 ## Métodos de estimación

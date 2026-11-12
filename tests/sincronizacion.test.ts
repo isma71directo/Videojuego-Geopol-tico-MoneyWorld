@@ -39,7 +39,7 @@ describe('textos de la Hoja de ruta', () => {
 
   it('resume el rango de versiones de una etapa', () => {
     const etapaA = roadmap.fases.filter((fase) => fase.etapa === 'A');
-    expect(rangoVersiones(etapaA)).toBe('0.1 – 0.5');
+    expect(rangoVersiones(etapaA)).toBe('0.1 – 0.11');
     expect(rangoVersiones(etapaA.slice(0, 1))).toBe('0.1');
     expect(rangoVersiones([])).toBe('');
   });

@@ -2,7 +2,7 @@
   "_nota": "Tabla manual de la Fase 1: lo que ninguna fuente da tal como lo necesita el escenario del 1 de enero de 2010 (GDD, sección 3). Se edita a mano; el script 01-paises.ts la combina con el Banco Mundial y Wikidata.",
 
   "dependenciasExcluidas": {
-    "_nota": "Territorios dependientes que el Banco Mundial lista como economías. No son países en la Fase 1; su tratamiento en el mapa se decide en las Fases 2 y 3.",
+    "_nota": "Territorios dependientes que el Banco Mundial lista como economías. No son países en la Fase 1; su tratamiento en el mapa se decide en las Fases 2 y 5.",
     "codigos": [
       "ABW",
       "ASM",
