@@ -1,18 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.2.0",
-  "actualizado": "2026-11-12T00:16:10Z",
+  "actualizado": "2026-11-12T00:40:00Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 1 cerrada. Hoja de ruta dividida en fases cortas (petición del jugador): 108 fases numeradas de 2 a 4 tareas, una versión cada una (v0.1 a v0.108), todas con su tarea audiovisual. Decisiones del jugador anotadas en el GDD: 3D solo donde sea posible y necesario (sin globo 3D) y territorios con independencia de hecho jugables.",
-    "siguientePaso": "Empezar la Fase 2 (Mapa: fronteras de 2010) cuando el jugador lo pida, presentándole antes el plan.",
-    "pendienteDelJugador": [
-      "Fusionar el PR de la nueva hoja de ruta",
-      "Decidir qué hacer con los territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…): países aparte o regiones de su país",
-      "Confirmar que el Sáhara Occidental sigue sin ser jugable",
-      "Confirmar o corregir las propuestas sobre el sonido al abrir el juego y la música generada con código (GDD, sección 13)"
-    ]
+    "resumen": "Empezada la Fase 2. El jugador ha decidido que también sean jugables los territorios dependientes (Hong Kong, Puerto Rico…) y que el Sáhara Occidental siga sin serlo; la decisión se ha añadido a la Fase 2.",
+    "siguientePaso": "Añadir los territorios dependientes a los datos (tarea f2-t1).",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -225,37 +220,37 @@
       "id": "fase-2",
       "etapa": "A",
       "version": "0.3.0",
-      "nombre": "Mapa: fronteras de 2010",
-      "objetivo": "Las fronteras de todos los países y territorios tal como eran el 1 de enero de 2010",
+      "nombre": "Mapa: fronteras y territorios de 2010",
+      "objetivo": "Las fronteras de todos los países y territorios tal como eran el 1 de enero de 2010, y todos ellos jugables",
       "dependeDe": ["fase-1"],
       "hechoCuando": "Todos los países y territorios de los datos tienen su frontera de 2010",
-      "pruebaJugador": "Abrir la galería y ver el mapa de 2010: Sudán unido y Crimea dentro de Ucrania",
-      "estado": "pendiente",
+      "pruebaJugador": "Abrir la galería y ver el mapa de 2010: Sudán unido, Crimea dentro de Ucrania y Hong Kong y Puerto Rico como territorios propios",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f2-t1",
-          "titulo": "Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania y territorios especiales marcados",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Territorios jugables (decisión del jugador): añadir a los datos los territorios dependientes con datos del Banco Mundial (Hong Kong, Puerto Rico, Groenlandia…), con las Antillas Neerlandesas tal como eran en 2010, y hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte)",
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f2-t2",
-          "titulo": "Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil",
+          "titulo": "Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas, y Antillas Neerlandesas e Islas del Canal unidas",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f2-t3",
-          "titulo": "Hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte) y revisar sus datos estimados (decisión del jugador)",
+          "titulo": "Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f2-t4",
-          "titulo": "Audiovisual: vista previa del mapa del mundo de 2010 en la galería audiovisual",
+          "titulo": "Audiovisual: banderas de los territorios nuevos y vista previa del mapa del mundo de 2010 en la galería audiovisual",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
