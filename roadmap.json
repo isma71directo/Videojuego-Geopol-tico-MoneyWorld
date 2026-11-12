@@ -1,16 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.1",
-  "actualizado": "2026-11-12T07:25:15Z",
+  "actualizado": "2026-11-12T07:41:03Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "v0.5.1 lista en su rama con los ajustes que pidió el jugador tras probar la Fase 4: 12 colores sin repeticiones cerca, nombres de países siempre que no se pisen (con forma corta si hace falta), población de las ciudades (2010 o la más cercana) con orden de aparición por población, y ficha y panel de cada ciudad.",
-    "siguientePaso": "Cuando el jugador confirme la prueba de la v0.5.1, empezar la Fase 5 (regiones del mundo) presentando antes su plan.",
-    "pendienteDelJugador": [
-      "Fusionar el PR de la v0.5.1",
-      "Prueba en el PC: ver que los colores no se repiten cerca; con el mundo entero a la vista, ver el nombre de Marruecos y, con poco zoom, el de República Checa; acercarse a España y ver que salen primero Zaragoza, luego Córdoba y luego Oviedo; pasar el ratón por una ciudad y hacer clic en ella para ver su población y su año"
-    ]
+    "resumen": "El jugador ha probado la v0.5.1 y la da por buena. Pide corregir los nombres de ciudades mal traducidos (ajuste f4-a5, v0.5.2) y un mapa más bonito, realista y con más sensación de 3D (idea-3, por decidir con el jugador).",
+    "siguientePaso": "Corregir los nombres de las ciudades (f4-a5) y publicar la v0.5.2; después, presentar el plan de la Fase 5 (regiones del mundo) y las opciones para la idea-3.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -377,6 +374,15 @@
           "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7c88035"
+        },
+        {
+          "id": "f4-a5",
+          "titulo": "Corregir los nombres de ciudades mal traducidos o mal identificados (p. ej. «Señorío de Tlaxcala» en lugar de Tlaxcala)",
+          "version": "0.5.2",
+          "origen": "Mensaje del jugador tras probar la v0.5.1",
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
+          "enlace": ""
         }
       ]
     },
@@ -4159,6 +4165,12 @@
       "titulo": "Completar los recursos de 2010 que la fuente de la Fase 1 no da: producción por país de hierro, níquel y tierras raras, y reservas minerales de 2010 (solo se publican desde 2022)",
       "origen": "Fase 1, tarea f1-t3",
       "faseAsignada": "fase-43"
+    },
+    {
+      "id": "idea-3",
+      "titulo": "Mapa más bonito y realista, con más sensación de relieve y de 3D (sin cambiar de concepto: el mismo mapa plano, mejor dibujado)",
+      "origen": "Mensaje del jugador tras probar la v0.5.1",
+      "faseAsignada": null
     }
   ],
   "historial": [
