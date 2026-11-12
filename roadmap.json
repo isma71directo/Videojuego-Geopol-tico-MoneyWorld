@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.4.1",
-  "actualizado": "2026-11-12T05:51:32Z",
+  "actualizado": "2026-11-12T05:53:44Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 3 cerrada. Corregido el medidor de fps (v0.4.1): ahora se activa en Ajustes o con la tecla F y está arriba a la derecha. El jugador decide que el juego sea solo para PC.",
-    "siguientePaso": "Adaptar el diseño a «solo PC» (GDD y hoja de ruta) y empezar la Fase 4.",
+    "resumen": "Fase 3 cerrada y medidor de fps corregido (v0.4.1). El jugador decide que el juego sea solo para PC: GDD 1.4, CLAUDE.md y hoja de ruta adaptados (ratón y teclado, interfaz densa, «Prueba en el PC»).",
+    "siguientePaso": "Fase 4 (Mapa: selección, nombres y sonido), ya pensada para ratón: señalar países al pasar el ratón, clic para seleccionar, colores distintos entre vecinos, nombres, capitales y sonido.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -303,22 +303,22 @@
       "etapa": "A",
       "version": "0.5.0",
       "nombre": "Mapa: selección, nombres y sonido",
-      "objetivo": "Tocar un país para seleccionarlo y reconocer el mapa por sus nombres",
+      "objetivo": "Señalar y elegir países con el ratón y reconocer el mapa por sus nombres",
       "dependeDe": ["fase-3"],
-      "hechoCuando": "Todos los países son seleccionables y el sonido se puede activar y silenciar",
-      "pruebaJugador": "Tocar Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo",
+      "hechoCuando": "Todos los países se pueden señalar y seleccionar con el ratón y el sonido se puede activar y silenciar",
+      "pruebaJugador": "Pasar el ratón por varios países y ver su nombre; hacer clic en Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f4-t1",
-          "titulo": "Selección de país al tocar, con resaltado del borde (también los países pequeños)",
+          "titulo": "Selección de país con clic y resaltado al pasar el ratón, con su nombre y sus datos clave (también los países pequeños, por su punto de etiqueta)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f4-t2",
-          "titulo": "Colores por país estables y distinguibles, y nombres que aparecen según el zoom",
+          "titulo": "Colores por país estables y distintos de los de sus vecinos, y nombres de países que aparecen según el zoom",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -347,7 +347,7 @@
       "objetivo": "Las regiones de cada país, visibles y seleccionables al acercar",
       "dependeDe": ["fase-4"],
       "hechoCuando": "Las regiones se ven y se seleccionan al acercar",
-      "pruebaJugador": "Acercarse a España y tocar Cataluña y Andalucía",
+      "pruebaJugador": "Acercarse a España y hacer clic en Cataluña y en Andalucía",
       "estado": "pendiente",
       "tareas": [
         {
@@ -400,7 +400,7 @@
         },
         {
           "id": "f6-t2",
-          "titulo": "Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con selector de capas (menú desplegable en móvil)",
+          "titulo": "Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con un panel de capas y atajos de teclado",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -421,13 +421,13 @@
       "nombre": "Componentes de interfaz",
       "objetivo": "Las piezas de interfaz que usarán todas las pantallas",
       "dependeDe": ["fase-6"],
-      "hechoCuando": "Los componentes funcionan en móvil y en PC",
-      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el dedo",
+      "hechoCuando": "Los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes",
+      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f7-t1",
-          "titulo": "Base de interfaz: tema oscuro, tipografía y componentes reutilizables (hoja deslizable, pestañas, tablas, deslizadores y gráficos básicos)",
+          "titulo": "Base de interfaz para PC: tema oscuro, tipografía y componentes reutilizables (paneles laterales y ventanas, pestañas, tablas, deslizadores, menús contextuales, información al pasar el ratón y gráficos básicos)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -456,7 +456,7 @@
       "objetivo": "Consultar los datos de cualquier país",
       "dependeDe": ["fase-7"],
       "hechoCuando": "Todos los países tienen una ficha completa",
-      "pruebaJugador": "Tocar España, Japón y Somalilandia y revisar sus fichas",
+      "pruebaJugador": "Hacer clic en España, Japón y Somalilandia y revisar sus fichas",
       "estado": "pendiente",
       "tareas": [
         {
@@ -468,7 +468,7 @@
         },
         {
           "id": "f8-t2",
-          "titulo": "Ficha de país (hoja deslizable en móvil): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
+          "titulo": "Ficha de país (panel lateral): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -489,7 +489,7 @@
       "nombre": "Buscador y ficha de región",
       "objetivo": "Encontrar cualquier país o región y consultar sus datos",
       "dependeDe": ["fase-8"],
-      "hechoCuando": "Cualquier país o región se encuentra en pocos toques",
+      "hechoCuando": "Cualquier país o región se encuentra en pocos clics",
       "pruebaJugador": "Buscar «Cataluña» y «Texas» y abrir sus fichas",
       "estado": "pendiente",
       "tareas": [
@@ -1031,7 +1031,7 @@
       "etapa": "B",
       "version": "0.26.0",
       "nombre": "Impuestos: efectos y simulador",
-      "objetivo": "Ver qué pasa al tocar los impuestos",
+      "objetivo": "Ver qué pasa al cambiar los impuestos",
       "dependeDe": ["fase-24"],
       "hechoCuando": "Todos los impuestos funcionan y el simulador acierta de forma aproximada",
       "pruebaJugador": "Subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses",
@@ -3787,7 +3787,7 @@
       "etapa": "H",
       "version": "0.105.0",
       "nombre": "Rendimiento",
-      "objetivo": "Fluido en un móvil de gama media",
+      "objetivo": "Fluido en un PC de gama media",
       "dependeDe": ["fase-103"],
       "hechoCuando": "Una partida de 10 años va fluida",
       "pruebaJugador": "Jugar 10 años a ×8 sin tirones",
@@ -3795,7 +3795,7 @@
       "tareas": [
         {
           "id": "f104-t1",
-          "titulo": "Optimización para móviles de gama media",
+          "titulo": "Optimización para PC de gama media (gráficos integrados) y niveles de calidad Bajo, Medio y Alto",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -3823,13 +3823,13 @@
       "nombre": "App instalable y accesibilidad",
       "objetivo": "Instalar el juego y que todo el mundo pueda jugarlo",
       "dependeDe": ["fase-104"],
-      "hechoCuando": "Se instala en el móvil y funciona sin conexión",
-      "pruebaJugador": "Instalar el juego en el móvil y abrirlo sin conexión",
+      "hechoCuando": "Se instala en el PC y funciona sin conexión",
+      "pruebaJugador": "Instalar el juego en el PC y abrirlo sin conexión",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f105-t1",
-          "titulo": "PWA: instalable en el móvil como una app y jugable sin conexión",
+          "titulo": "PWA: instalable en el PC como una aplicación y jugable sin conexión",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""

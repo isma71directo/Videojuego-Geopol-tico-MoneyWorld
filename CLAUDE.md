@@ -2,7 +2,8 @@
 
 Simulador geopolítico en el navegador (nombre provisional: «Geopolítica 2010»).
 El documento de diseño `docs/GDD.md` es la referencia principal; estas reglas son su sección 11.
-Al jugador se le llama «el jugador»: es quien dirige el proyecto y prueba cada versión en el móvil.
+Al jugador se le llama «el jugador»: es quien dirige el proyecto y prueba cada versión en el PC.
+El juego es solo para PC (navegador, ratón y teclado); la Hoja de ruta y la galería siguen funcionando en el móvil.
 
 ## Reglas
 
@@ -13,14 +14,14 @@ Al jugador se le llama «el jugador»: es quien dirige el proyecto y prueba cada
 5. **Motor puro y probado:** toda la lógica de simulación en `/src/sim`, sin dependencias de la interfaz, con tests en Vitest. No se fusiona nada con tests en rojo.
 6. **Parámetros fuera del código:** constantes de equilibrado en `/src/sim/config/*.json`.
 7. **Datos reproducibles:** todo dato real procede de un script en `/scripts` que indica fuente y año; los datos estimados se marcan.
-8. **Pensado para móvil:** probar cada pantalla a 360 px de ancho y con controles táctiles.
+8. **Pensado para PC:** probar cada pantalla en el navegador del PC a 1280 × 720 y a 1920 × 1080, con ratón y teclado. La Hoja de ruta y la galería siguen siendo usables en el móvil.
 9. **Compatibilidad de partidas:** si cambia el formato de guardado, incluir migración.
 10. **Versiones:** subir la versión (semver) al cerrar cada fase y actualizar `versionActual`.
 11. **Dudas de diseño:** si algo no está en el GDD, proponer opciones al jugador en lugar de inventar; anotar la decisión en el GDD.
 12. **No romper el GDD:** cualquier cambio de diseño se refleja también en `docs/GDD.md` y en el registro de cambios de diseño (sección 12).
 13. **Guardar el trabajo a menudo:** hacer commit y push al terminar **cada tarea**, sin acumular cambios. Si la sesión se detiene (límite de uso, inactividad o cierre), lo subido a GitHub no se pierde.
 14. **Dejar la sesión lista para retomar:** al terminar cada tarea, actualizar `ultimaSesion` en `roadmap.json` (qué se hizo, siguiente paso y qué tiene pendiente el jugador). Al empezar una sesión nueva o retomar una, leer ese bloque y continuar desde ahí.
-15. **Una fase, una rama y un PR:** trabajar cada fase en su rama. Al cerrarla, abrir el PR con un resumen en español de lo nuevo y la "Prueba en el móvil" para que el jugador sepa qué comprobar.
+15. **Una fase, una rama y un PR:** trabajar cada fase en su rama. Al cerrarla, abrir el PR con un resumen en español de lo nuevo y la "Prueba en el PC" para que el jugador sepa qué comprobar.
 16. **Peticiones nuevas del jugador:** toda idea o corrección (mensaje o _issue_) se añade a `roadmap.json`: a la fase activa si es pequeña o un fallo; a la fase que corresponda si es un sistema; o a `ideasPendientes` si no encaja. Avisar al jugador de dónde ha ido.
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
