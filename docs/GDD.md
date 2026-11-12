@@ -758,7 +758,7 @@ interface EstadoPartida {
 #### Fase 5 — v0.6.0 · Regiones del mundo
 **Objetivo:** las regiones de cada país, visibles y seleccionables al acercar.
 **Tareas**
-1. Procesar las regiones como eran en 2010 (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país): España con sus 17 comunidades autónomas, Ceuta y Melilla; Francia con sus 22 regiones de 2010; Kenia con sus 8 provincias de 2010.
+1. Procesar las regiones como eran en 2010 (admin-1) y agruparlas cuando un país tenga demasiadas (máximo orientativo: 30 por país): España con sus 17 comunidades autónomas, Ceuta y Melilla; Francia con sus 22 regiones de 2010; Kenia con sus 8 provincias de 2010. Excepciones al máximo: Estados Unidos (50 estados y el Distrito de Columbia) y Argelia (48 wilayas, sin agrupación oficial).
 2. Datos básicos por región: población (Wikidata, la de 2010 o la más cercana, ajustada al total del país) y PIB de 2010 donde haya fuente abierta (Eurostat, OCDE, DOSE); si no, reparto proporcional del dato del país, marcado como estimado.
 3. Mostrar y seleccionar las regiones a partir de cierto zoom.
 4. **Audiovisual:** transición animada entre la vista de países y la de regiones.
