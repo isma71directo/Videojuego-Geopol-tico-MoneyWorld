@@ -15,6 +15,8 @@ export interface DestinoGestos {
   alSoltar?: (vx: number, vy: number) => void;
   /** Al empezar cualquier gesto (para detener animaciones). */
   alEmpezarGesto?: () => void;
+  /** El ratón se mueve sin pulsar sobre el mapa (null al salir). */
+  alPasar?: (x: number | null, y: number | null) => void;
 }
 
 /** Por debajo de esta distancia (px) un toque no cuenta como arrastre. */
@@ -42,6 +44,8 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
 
   const alBajar = (evento: PointerEvent): void => {
     destino.alEmpezarGesto?.();
+    // Mientras se arrastra no se señala nada; vuelve al mover el ratón sin pulsar.
+    destino.alPasar?.(null, null);
     huella = [];
     elemento.setPointerCapture(evento.pointerId);
     punteros.set(evento.pointerId, posicion(evento));
@@ -56,7 +60,11 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
 
   const alMover = (evento: PointerEvent): void => {
     const anterior = punteros.get(evento.pointerId);
-    if (!anterior) return;
+    if (!anterior) {
+      // Ratón sin pulsar: señalar lo que hay debajo.
+      if (evento.pointerType === 'mouse') destino.alPasar?.(...posicion(evento));
+      return;
+    }
     const actual = posicion(evento);
     if (punteros.size === 1) {
       if (
@@ -110,6 +118,8 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
     punteros.delete(evento.pointerId);
   };
 
+  const alSalir = (): void => destino.alPasar?.(null, null);
+
   const alRueda = (evento: WheelEvent): void => {
     evento.preventDefault();
     destino.alEmpezarGesto?.();
@@ -141,6 +151,7 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
   elemento.addEventListener('pointermove', alMover);
   elemento.addEventListener('pointerup', alSubir);
   elemento.addEventListener('pointercancel', alCancelar);
+  elemento.addEventListener('pointerleave', alSalir);
   elemento.addEventListener('wheel', alRueda, { passive: false });
   elemento.addEventListener('keydown', alTeclear);
   return () => {
@@ -148,6 +159,7 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
     elemento.removeEventListener('pointermove', alMover);
     elemento.removeEventListener('pointerup', alSubir);
     elemento.removeEventListener('pointercancel', alCancelar);
+    elemento.removeEventListener('pointerleave', alSalir);
     elemento.removeEventListener('wheel', alRueda);
     elemento.removeEventListener('keydown', alTeclear);
   };

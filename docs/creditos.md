@@ -3,7 +3,7 @@
 > Generado por `npm run datos:construir`. No se edita a mano.
 
 Procedencia y licencia de todo el material de terceros que usa el juego. Lo que no figura aquí
-(iconos, interfaz, código) está hecho para el proyecto.
+(iconos, sonidos sintetizados, interfaz, código) está hecho para el proyecto.
 
 ## Datos
 
@@ -12,9 +12,9 @@ Procedencia y licencia de todo el material de terceros que usa el juego. Lo que 
 | [Banco Mundial, World Development Indicators](https://data.worldbank.org) | Población, PIB, paro, inflación, gasto público, sociedad | CC BY 4.0 |
 | [FMI, Perspectivas de la economía mundial (WEO)](https://www.imf.org/external/datamapper) | Deuda, saldo fiscal, cuenta corriente y datos de respaldo | Reutilización con atribución, según las condiciones del FMI |
 | [Our World in Data](https://ourworldindata.org) | Energía, emisiones y recursos (datos de Ember, Energy Institute, EIA, Global Carbon Project, USGS y BGS) | CC BY 4.0 para lo elaborado por OWID; los datos de terceros, según las condiciones de cada productor |
-| [Wikidata](https://www.wikidata.org) | Capitales de 2010 y población de territorios sin datos oficiales | CC0 |
+| [Wikidata](https://www.wikidata.org) | Capitales de 2010 (nombre y, si no están en Natural Earth, posición) y población de territorios sin datos oficiales | CC0 |
 | [CLDR](https://cldr.unicode.org) | Nombres de los países en español | Licencia Unicode |
-| [Natural Earth](https://www.naturalearthdata.com) | Fronteras (1:10m), tierra firme, ríos, lagos y relieve sombreado con fondo oceánico (1:50m) | Dominio público |
+| [Natural Earth](https://www.naturalearthdata.com) | Fronteras y ciudades (1:10m), tierra firme, ríos, lagos y relieve sombreado con fondo oceánico (1:50m) | Dominio público |
 
 El detalle de cada dato (fuente y año) está en `public/data/paises-2010.json` y en el
 [informe de cobertura](datos-cobertura.md).

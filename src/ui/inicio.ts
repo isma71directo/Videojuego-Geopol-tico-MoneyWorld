@@ -5,6 +5,7 @@ import { t } from '../i18n';
 import { guardarAjuste, leerAjuste } from './ajustes';
 import { el } from './dom';
 import { abrirHoja } from './hoja';
+import { cambiarVolumenEfectos, reproducir, silenciar, sonido } from './sonido';
 import './estilos/inicio.css';
 
 /** Dirección de la Hoja de ruta vista desde el juego. */
@@ -56,10 +57,51 @@ function casillaMedidorFps(): HTMLElement {
   );
 }
 
+function ajustesSonido(): HTMLElement[] {
+  const casilla = el('input', { type: 'checkbox', checked: sonido.silenciado });
+  casilla.addEventListener('change', () => silenciar(casilla.checked));
+  const volumen = el('input', {
+    type: 'range',
+    min: 0,
+    max: 100,
+    step: 5,
+    value: Math.round(sonido.volumenEfectos * 100),
+    'aria-label': t('juego.ajustes.volumenEfectos'),
+  });
+  const valor = el('output', {}, `${volumen.value} %`);
+  volumen.addEventListener('input', () => {
+    valor.textContent = `${volumen.value} %`;
+    cambiarVolumenEfectos(Number(volumen.value) / 100);
+  });
+  // Al soltar el control suena un efecto de prueba con el volumen elegido.
+  volumen.addEventListener('change', () => reproducir('seleccionar'));
+  return [
+    el(
+      'label',
+      { class: 'ajuste' },
+      casilla,
+      el(
+        'span',
+        {},
+        el('strong', {}, t('juego.ajustes.silenciar')),
+        el('small', {}, t('juego.ajustes.silenciarAyuda')),
+      ),
+    ),
+    el(
+      'label',
+      { class: 'ajuste ajuste--deslizador' },
+      el('strong', {}, t('juego.ajustes.volumenEfectos')),
+      volumen,
+      valor,
+    ),
+  ];
+}
+
 function abrirAjustes(): void {
   abrirHoja(
     t('juego.ajustes.titulo'),
     casillaMedidorFps(),
+    ...ajustesSonido(),
     el('p', { class: 'hoja__nota' }, t('juego.ajustes.vacio')),
     el(
       'p',

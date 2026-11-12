@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.4.1",
-  "actualizado": "2026-11-12T05:53:44Z",
+  "versionActual": "0.5.0",
+  "actualizado": "2026-11-12T06:39:37Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 3 cerrada y medidor de fps corregido (v0.4.1). El jugador decide que el juego sea solo para PC: GDD 1.4, CLAUDE.md y hoja de ruta adaptados (ratón y teclado, interfaz densa, «Prueba en el PC»).",
-    "siguientePaso": "Fase 4 (Mapa: selección, nombres y sonido), ya pensada para ratón: señalar países al pasar el ratón, clic para seleccionar, colores distintos entre vecinos, nombres, capitales y sonido.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 4 completa en su rama y versión 0.5.0: países que se señalan y seleccionan con el ratón (ficha y panel con sus datos de 2010), colores sin repetir entre vecinos, nombres de países, capitales de 2010 y ciudades según el zoom, sonido de interfaz con botón de silencio y pulso de selección.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 4 como hecha y empezar la Fase 5.",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la Fase 4 (v0.5.0)",
+      "Prueba en el PC: pasar el ratón por varios países y ver su ficha; hacer clic en Luxemburgo y Singapur y que se abra su panel; acercarse y ver nombres, capitales (Buyumbura en Burundi) y ciudades; oír el sonido de selección y silenciarlo con el altavoz o la tecla M"
+    ]
   },
   "etapas": [
     {
@@ -307,35 +310,35 @@
       "dependeDe": ["fase-3"],
       "hechoCuando": "Todos los países se pueden señalar y seleccionar con el ratón y el sonido se puede activar y silenciar",
       "pruebaJugador": "Pasar el ratón por varios países y ver su nombre; hacer clic en Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f4-t1",
           "titulo": "Selección de país con clic y resaltado al pasar el ratón, con su nombre y sus datos clave (también los países pequeños, por su punto de etiqueta)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7e0ae83"
         },
         {
           "id": "f4-t2",
           "titulo": "Colores por país estables y distintos de los de sus vecinos, y nombres de países que aparecen según el zoom",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ac1ac17"
         },
         {
           "id": "f4-t3",
           "titulo": "Capitales y ciudades principales al acercar",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2ba5faa"
         },
         {
           "id": "f4-t4",
           "titulo": "Audiovisual: motor de sonido (Web Audio), primeros efectos de interfaz, botón de silencio y animación de la selección",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ddc1840"
         }
       ]
     },
@@ -4181,6 +4184,17 @@
       "fecha": "2026-11-12",
       "cambios": [
         "Corregido: el medidor de rendimiento no se veía si no se añadía «?fps» a la dirección. Ahora se activa en Ajustes o con la tecla F en el mapa, y está arriba a la derecha"
+      ]
+    },
+    {
+      "version": "0.5.0",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Países que se señalan con el ratón (resaltado y ficha con bandera, capital, población y PIB por habitante) y se seleccionan con un clic, con un panel de sus datos de 2010; también los microestados",
+        "Cada país con su color fijo, nunca el mismo que el de un vecino (paleta nueva de 8 tonos)",
+        "Nombres de países que aparecen según el zoom sin pisarse; capitales de 2010 y ciudades principales al acercarse",
+        "Sonido de interfaz sintetizado, botón de silencio (y tecla M), volumen de los efectos en Ajustes y pulso dorado al seleccionar",
+        "Galería: paleta del mapa y sonidos de la interfaz"
       ]
     }
   ]

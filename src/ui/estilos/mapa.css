@@ -24,12 +24,34 @@
   display: block;
 }
 
-.mapa__volver {
+.mapa__barra {
   position: absolute;
   top: calc(10px + env(safe-area-inset-top));
   left: calc(10px + env(safe-area-inset-left));
+  display: flex;
+  gap: 8px;
+}
+
+.mapa__volver,
+.mapa__sonido {
   background: rgb(18 27 45 / 85%);
   backdrop-filter: blur(6px);
+}
+
+/* Botón de silencio (tarea f4-t4): cuadrado, con el icono del altavoz. */
+.mapa__sonido {
+  width: var(--tactil);
+  padding: 0;
+  justify-content: center;
+}
+
+.mapa__sonido .icono {
+  width: 22px;
+  height: 22px;
+}
+
+.mapa__sonido[aria-pressed='true'] {
+  color: var(--texto-suave);
 }
 
 .mapa__estado {
@@ -59,4 +81,164 @@
 
 .mapa__fps[hidden] {
   display: none;
+}
+
+/* Recuadro que sigue al ratón (tarea f4-t1). */
+.ficha {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 280px;
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: rgb(12 19 33 / 92%);
+  color: var(--texto);
+  font-size: 13px;
+  line-height: 1.35;
+  pointer-events: none;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 35%);
+}
+
+.ficha[hidden] {
+  display: none;
+}
+
+.ficha__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+  font-size: 15px;
+}
+
+.ficha__bandera {
+  width: 28px;
+  height: auto;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
+}
+
+.ficha__estatus {
+  color: var(--en-curso);
+  font-size: 12px;
+}
+
+.ficha__dato {
+  color: var(--texto-suave);
+}
+
+/* Panel del país seleccionado, a la derecha (tarea f4-t1). */
+.panel-pais {
+  position: absolute;
+  top: calc(56px + env(safe-area-inset-top));
+  right: calc(10px + env(safe-area-inset-right));
+  width: 300px;
+  max-height: calc(100% - 76px);
+  overflow-y: auto;
+  padding: 14px 16px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: rgb(14 22 38 / 94%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 40%);
+  animation: panel-pais-entrar 180ms ease-out;
+}
+
+.panel-pais[hidden] {
+  display: none;
+}
+
+@keyframes panel-pais-entrar {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-pais {
+    animation: none;
+  }
+}
+
+.panel-pais__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-pais__bandera {
+  width: 40px;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
+}
+
+.panel-pais__nombre {
+  flex: 1;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.panel-pais__cerrar {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--texto-suave);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.panel-pais__cerrar:hover,
+.panel-pais__cerrar:focus-visible {
+  background: var(--superficie-2);
+  color: var(--texto);
+}
+
+.panel-pais__estatus {
+  margin: 8px 0 0;
+  color: var(--en-curso);
+  font-size: 13px;
+}
+
+.panel-pais__datos {
+  margin: 12px 0 0;
+}
+
+.panel-pais__fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 6%);
+  font-size: 14px;
+}
+
+.panel-pais__fila dt {
+  color: var(--texto-suave);
+}
+
+.panel-pais__fila dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-pais__fila dd.es-estimado {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.panel-pais__pie {
+  margin: 10px 0 0;
+  color: var(--texto-suave);
+  font-size: 12px;
 }

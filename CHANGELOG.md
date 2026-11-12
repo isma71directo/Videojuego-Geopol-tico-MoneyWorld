@@ -7,6 +7,31 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.5.0 - 2026-11-12
+
+Fase 4 · Mapa: selección, nombres y sonido.
+
+### Añadido
+
+- Al pasar el ratón, el país se resalta y aparece una ficha con su bandera, su capital, su
+  población y su PIB por habitante. Con un clic queda seleccionado y se abre un panel a la
+  derecha con sus datos clave de 2010 (los estimados, con asterisco). Escape o un clic en el mar
+  quitan la selección. Los microestados (Vaticano, Mónaco, Singapur…) se señalan por su punto.
+- Cada país tiene siempre el mismo color y nunca el de un vecino, con una paleta nueva de ocho
+  tonos bien distintos.
+- Nombres de los países que aparecen según el zoom (primero los grandes) sin pisarse; los de
+  las islas y países pequeños, debajo de su contorno al acercarse.
+- Capitales de 2010 (Buyumbura en Burundi, Sujumi en Abjasia…) y ciudades principales al
+  acercarse, con un script nuevo (`scripts/datos/13-ciudades.ts`) que usa Natural Earth y,
+  para las capitales que faltan, Wikidata.
+- Motor de sonido con Web Audio y efectos de interfaz sintetizados: seleccionar, quitar la
+  selección, abrir un panel y pulsar un botón. Empieza con el primer clic o la primera tecla.
+- Botón de silencio junto a «Volver» y tecla M en el mapa; silencio y volumen de los efectos en
+  Ajustes.
+- Pulso dorado al seleccionar un país (sin animación si el dispositivo pide reducir el
+  movimiento).
+- Galería audiovisual: paleta del mapa político y botones para escuchar los sonidos.
+
 ## 0.4.1 - 2026-11-12
 
 ### Corregido

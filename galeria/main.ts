@@ -1,12 +1,14 @@
 /**
  * Galería audiovisual: muestra el contenido gráfico del juego para poder revisarlo en el
- * móvil al cerrar cada fase (GDD, sección 7.1): mapa de 2010, iconos y banderas.
+ * móvil al cerrar cada fase (GDD, sección 7.1): mapa de 2010, paleta, iconos, sonidos y banderas.
  */
 import '../src/ui/estilos/base.css';
 import './estilos.css';
 
 import { urlBandera } from '../src/av/banderas';
 import { NOMBRES_ICONOS, icono } from '../src/av/iconos';
+import { EFECTOS, MotorSonido, type Efecto } from '../src/av/sonido';
+import { PALETA } from '../src/map/estilo';
 import type { ConjuntoPaises, PaisDatos } from '../src/datos/paises';
 import { vistaPreviaMapa, type TopologiaMapa } from '../src/map/vista-previa';
 import { t } from '../src/i18n';
@@ -53,6 +55,54 @@ function iconos(): HTMLElement {
       ...NOMBRES_ICONOS.map((nombre) =>
         el('li', {}, icono(nombre), el('span', {}, t(`galeria.iconos.${nombre}`))),
       ),
+    ),
+  );
+}
+
+const sonido = new MotorSonido({ silenciado: false, volumenEfectos: 0.8, volumenMusica: 0.5 });
+
+function sonidos(): HTMLElement {
+  return seccion(
+    t('galeria.sonidos.titulo'),
+    t('galeria.sonidos.nota'),
+    el(
+      'ul',
+      { class: 'galeria__sonidos' },
+      ...(Object.keys(EFECTOS) as Efecto[]).map((efecto) => {
+        const nombre = t(`galeria.sonidos.${efecto}`);
+        const boton = el(
+          'button',
+          {
+            class: 'boton',
+            type: 'button',
+            'aria-label': t('galeria.sonidos.escuchar', { efecto: nombre }),
+          },
+          icono('sonido'),
+          nombre,
+        );
+        boton.addEventListener('click', () => {
+          // El clic es la interacción que el navegador pide para poder sonar.
+          sonido.activar();
+          sonido.reproducir(efecto);
+        });
+        return el('li', {}, boton);
+      }),
+    ),
+  );
+}
+
+function paleta(): HTMLElement {
+  return seccion(
+    t('galeria.paleta.titulo'),
+    t('galeria.paleta.nota'),
+    el(
+      'ul',
+      { class: 'galeria__paleta' },
+      ...PALETA.map((color) => {
+        const muestra = el('span', { class: 'galeria__color', 'aria-hidden': 'true' });
+        muestra.style.background = color;
+        return el('li', {}, muestra, el('code', {}, color));
+      }),
     ),
   );
 }
@@ -143,7 +193,15 @@ async function iniciar(): Promise<void> {
       descargar<ConjuntoPaises>('data/paises-2010.json'),
       descargar<TopologiaMapa>('data/mapa-2010-mundo.json'),
     ]);
-    reemplazar(raiz, cabecera(), mapa(topo, conjunto), iconos(), ...banderas(conjunto));
+    reemplazar(
+      raiz,
+      cabecera(),
+      mapa(topo, conjunto),
+      paleta(),
+      iconos(),
+      sonidos(),
+      ...banderas(conjunto),
+    );
   } catch {
     reemplazar(
       raiz,

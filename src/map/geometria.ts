@@ -18,6 +18,10 @@ export interface Figura {
   caja: [number, number, number, number];
   /** Punto de etiqueta en coordenadas de mundo (si lo hay). */
   etiqueta?: [number, number];
+  /** Área en unidades de mundo al cuadrado (para ordenar etiquetas por tamaño). */
+  area: number;
+  /** Geometría original (longitud y latitud), para saber qué país hay bajo el ratón. */
+  forma: Feature<Geometry>;
 }
 
 export interface CapaFiguras {
@@ -42,6 +46,8 @@ function figuras(topo: TopologiaMapa, objeto: GeometryCollection): Figura[] {
         camino: d,
         caja: [x0, y0, x1, y1] as [number, number, number, number],
         ...(etiqueta ? { etiqueta: etiqueta as [number, number] } : {}),
+        area: camino.area(f),
+        forma: f,
       };
     })
     .filter((figura) => figura.camino !== '');

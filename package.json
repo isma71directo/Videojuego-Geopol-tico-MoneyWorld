@@ -1,6 +1,6 @@
 {
   "name": "geopolitica-2010",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Simulador geopolítico en el navegador que arranca el 1 de enero de 2010 (nombre provisional: «Geopolítica 2010»).",
   "private": true,
   "type": "module",
@@ -20,11 +20,12 @@
     "lint": "eslint .",
     "formato": "prettier --write .",
     "formato:comprobar": "prettier --check .",
-    "datos:descargar": "node scripts/datos/01-paises.ts && node scripts/datos/02-banco-mundial.ts && node scripts/datos/03-fmi.ts && node scripts/datos/04-owid.ts && node scripts/datos/05-recursos.ts && node scripts/datos/06-territorios.ts && node scripts/datos/07-banderas.ts && node scripts/datos/09-fronteras.ts && node scripts/datos/11-relieve.ts && node scripts/datos/12-agua.ts",
+    "datos:descargar": "node scripts/datos/01-paises.ts && node scripts/datos/02-banco-mundial.ts && node scripts/datos/03-fmi.ts && node scripts/datos/04-owid.ts && node scripts/datos/05-recursos.ts && node scripts/datos/06-territorios.ts && node scripts/datos/07-banderas.ts && node scripts/datos/09-fronteras.ts && node scripts/datos/11-relieve.ts && node scripts/datos/12-agua.ts && node scripts/datos/13-ciudades.ts",
     "datos:construir": "node scripts/datos/10-construir.ts && node scripts/datos/08-creditos.ts",
     "datos:mapa": "node scripts/datos/09-fronteras.ts",
     "datos:relieve": "node scripts/datos/11-relieve.ts",
     "datos:agua": "node scripts/datos/12-agua.ts",
+    "datos:ciudades": "node scripts/datos/13-ciudades.ts",
     "datos": "npm run datos:descargar && npm run datos:construir",
     "comprobar": "npm run lint && npm run formato:comprobar && npm run test && npm run compilar"
   },

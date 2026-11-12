@@ -1,29 +1,24 @@
 /**
- * Estilo visual del mapa (tarea audiovisual de la Fase 3): océano, agua, bordes y una paleta
- * de colores de país suaves que combinan con el relieve. Cada país recibe siempre el mismo
- * color; en la Fase 4 se ajustará para que dos vecinos nunca coincidan.
+ * Estilo visual del mapa (tareas audiovisuales de las Fases 3 y 4): océano, agua, bordes y una
+ * paleta de colores de país suaves que combinan con el relieve. Qué color lleva cada país lo
+ * decide colores.ts (siempre el mismo y nunca el de un vecino).
  */
 import type { Estilo } from './mapa';
 
-/** Tonos de mapa político, apagados para el tema oscuro y para que se lea el relieve. */
+/**
+ * Tonos de mapa político, apagados para el tema oscuro y para que se lea el relieve.
+ * Ocho tonos bien distintos entre sí: dos vecinos nunca se confunden.
+ */
 export const PALETA = [
-  '#6f8fb5',
-  '#83a56f',
-  '#c39a62',
-  '#9a80b6',
-  '#6ba5a0',
-  '#b97d72',
-  '#a9a669',
-  '#7f8fb0',
-  '#c08aa0',
-  '#8db394',
+  '#6f8fb5', // azul
+  '#7fa66b', // verde
+  '#cc9459', // ocre
+  '#9b7fb8', // violeta
+  '#4fae96', // turquesa
+  '#b86b6b', // teja
+  '#a9ae5c', // oliva
+  '#c587a5', // rosa
 ];
-
-export function colorEstable(id: string, paleta: readonly string[] = PALETA): string {
-  let h = 0;
-  for (const caracter of id) h = (h * 31 + caracter.charCodeAt(0)) >>> 0;
-  return paleta[h % paleta.length]!;
-}
 
 export const ESTILO_MAPA: Estilo = {
   fondo: '#060b14',
@@ -31,5 +26,5 @@ export const ESTILO_MAPA: Estilo = {
   agua: '#2f6595',
   zona: '#9aa3b4',
   borde: 'rgba(10, 16, 28, 0.8)',
-  colorPais: (id) => colorEstable(id),
+  paleta: PALETA,
 };
