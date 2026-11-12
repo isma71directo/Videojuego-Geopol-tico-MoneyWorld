@@ -155,6 +155,13 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     .then((datos) => {
       conjunto = datos;
       mapa.nombres = new Map(Object.values(datos.paises).map((pais) => [pais.id, pais.nombre]));
+      mapa.nombresAbreviados = new Map(
+        Object.keys(datos.paises).flatMap((id) => {
+          const clave = `juego.mapa.nombresCortos.${id}`;
+          const corto = t(clave);
+          return corto === clave ? [] : [[id, corto] as [string, string]];
+        }),
+      );
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.

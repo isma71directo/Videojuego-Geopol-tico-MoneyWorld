@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.0",
-  "actualizado": "2026-11-12T07:08:17Z",
+  "actualizado": "2026-11-12T07:13:23Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 cerrada (v0.5.0 probada por el jugador). Ajustes de la v0.5.1 en marcha: hecho f4-a1 (12 colores y sin repeticiones cerca).",
-    "siguientePaso": "Nombres de países visibles siempre que no se pisen (ajuste f4-a2).",
+    "resumen": "Fase 4 cerrada (v0.5.0 probada por el jugador). Ajustes de la v0.5.1 en marcha: hechos f4-a1 (12 colores, sin repeticiones cerca) y f4-a2 (nombres de países siempre que no se pisen).",
+    "siguientePaso": "Población de las ciudades (la de 2010 o la más cercana) y orden de aparición por población (ajuste f4-a3).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -346,15 +346,15 @@
           "origen": "Mensaje del jugador tras probar la v0.5.0",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f63cd17"
         },
         {
           "id": "f4-a2",
           "titulo": "Nombres de países visibles siempre que no se pisen (Marruecos, República Checa con el mundo entero a la vista); solo los muy pequeños, como Hong Kong, esperan al zoom",
           "version": "0.5.1",
           "origen": "Mensaje del jugador tras probar la v0.5.0",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

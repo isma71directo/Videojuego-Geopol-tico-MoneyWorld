@@ -1,9 +1,9 @@
 /**
  * Nombres de los países sobre el mapa (tarea f4-t2). Lógica pura, con tests.
- * Al alejarse solo caben los nombres de los países grandes; al acercarse van apareciendo
- * los demás. Un nombre se pone dentro de su país si cabe más o menos y no pisa a otro ya
- * colocado (los países grandes van primero). Los países pequeños que ya se ven bien (islas,
- * Luxemburgo…) llevan el nombre debajo, después de todos los demás.
+ * Cada país muestra su nombre siempre que no pise a otro ya colocado (los grandes van primero),
+ * aunque el nombre sea más ancho que el país (ajuste f4-a2: Marruecos o República Checa se ven
+ * con el mundo entero a la vista). Solo los países diminutos en pantalla (Hong Kong,
+ * Luxemburgo…) esperan a que el jugador se acerque.
  */
 
 /** Caja en píxeles de pantalla: [x0, y0, x1, y1]. */
@@ -12,6 +12,8 @@ export type Caja = [number, number, number, number];
 export interface CandidatoRotulo {
   id: string;
   texto: string;
+  /** Forma corta («Rep. Checa») que se prueba si el nombre entero no cabe. */
+  textoCorto?: string;
   /** Punto de etiqueta en pantalla. */
   x: number;
   y: number;
@@ -31,11 +33,21 @@ export interface Rotulo {
 
 export const LETRA_MINIMA = 10;
 export const LETRA_MAXIMA = 22;
-/** Un nombre puede salirse un poco de su país, pero no mucho. */
-const HOLGURA = 1.6;
-/** Tamaño en pantalla (px) desde el que un país pequeño lleva el nombre debajo. */
-export const TAMANO_NOMBRE_DEBAJO = 22;
+/** Tamaño en pantalla (px, raíz de su área) desde el que un país muestra su nombre. */
+export const TAMANO_MINIMO_NOMBRE = 6;
 const INTERLINEA = 1.15;
+/** Sitios que se prueban para un nombre, en este orden: centro, arriba, abajo, lados… */
+const DESPLAZAMIENTOS: readonly [number, number][] = [
+  [0, 0],
+  [0, -1],
+  [0, 1],
+  [-1, 0],
+  [1, 0],
+  [-1, -1],
+  [1, -1],
+  [-1, 1],
+  [1, 1],
+];
 
 /** Tamaño de letra según lo grande que se ve el país. */
 export function tamanoLetra(tamanoPais: number): number {
@@ -76,39 +88,39 @@ export function colocarRotulos(
   const orden = [...candidatos].sort(
     (a, b) => b.tamanoPais - a.tamanoPais || a.id.localeCompare(b.id),
   );
-  const colocar = (candidato: CandidatoRotulo, debajo: boolean): void => {
-    const tamano = tamanoLetra(candidato.tamanoPais);
-    const lineas = partirNombre(candidato.texto.toLocaleUpperCase('es'));
+  /**
+   * Intenta colocar unas líneas de texto en el punto del país o, si está tapado, algo más
+   * arriba, abajo o a un lado (sin dejar de cubrir el punto del país).
+   */
+  const colocar = (candidato: CandidatoRotulo, lineas: string[], tamano: number): boolean => {
     const anchoTexto = Math.max(...lineas.map((linea) => medir(linea, tamano)));
     const altoTexto = lineas.length * tamano * INTERLINEA;
-    const x = candidato.x;
-    // Dentro del país, si el sitio está tapado (p. ej. por su capital), se prueba un poco
-    // más arriba y un poco más abajo.
-    const posiciones = debajo
-      ? [candidato.y + candidato.tamanoPais / 2 + altoTexto / 2 + 3]
-      : [candidato.y, candidato.y - altoTexto * 1.1, candidato.y + altoTexto * 1.1];
-    for (const y of posiciones) {
+    const dx = anchoTexto * 0.35;
+    const dy = altoTexto * 1.1;
+    for (const [mx, my] of DESPLAZAMIENTOS) {
+      const x = candidato.x + mx * dx;
+      const y = candidato.y + my * dy;
       const caja: Caja = [
         x - anchoTexto / 2 - 3,
         y - altoTexto / 2 - 2,
         x + anchoTexto / 2 + 3,
         y + altoTexto / 2 + 2,
       ];
-      if (caja[2] < 0 || caja[0] > ancho || caja[3] < 0 || caja[1] > alto) return;
+      if (caja[2] < 0 || caja[0] > ancho || caja[3] < 0 || caja[1] > alto) continue;
       if (tapadas.some((otra) => cajasSeSolapan(caja, otra))) continue;
       colocados.push({ id: candidato.id, lineas, x, y, tamano, caja });
       tapadas.push(caja);
-      return;
+      return true;
     }
+    return false;
   };
-  const pequenos: CandidatoRotulo[] = [];
   for (const candidato of orden) {
+    if (candidato.tamanoPais < TAMANO_MINIMO_NOMBRE) continue;
     const tamano = tamanoLetra(candidato.tamanoPais);
-    const lineas = partirNombre(candidato.texto.toLocaleUpperCase('es'));
-    const anchoTexto = Math.max(...lineas.map((linea) => medir(linea, tamano)));
-    if (anchoTexto <= candidato.tamanoPais * HOLGURA) colocar(candidato, false);
-    else if (candidato.tamanoPais >= TAMANO_NOMBRE_DEBAJO) pequenos.push(candidato);
+    const mayusculas = (texto: string): string => texto.toLocaleUpperCase('es');
+    // Primero el nombre entero (en dos líneas si es largo); si no cabe, la forma corta en una.
+    if (colocar(candidato, partirNombre(mayusculas(candidato.texto)), tamano)) continue;
+    if (candidato.textoCorto) colocar(candidato, [mayusculas(candidato.textoCorto)], tamano);
   }
-  for (const candidato of pequenos) colocar(candidato, true);
   return colocados;
 }

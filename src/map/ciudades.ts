@@ -50,10 +50,10 @@ export interface CiudadColocada {
   ciudad: Ciudad;
   x: number;
   y: number;
-  /** El nombre va a la derecha del punto o a la izquierda si no cabía. */
-  lado: 'derecha' | 'izquierda';
+  /** El nombre va a la derecha del punto, a la izquierda si no cabía, o no va (null). */
+  lado: 'derecha' | 'izquierda' | null;
   cajaPunto: Caja;
-  cajaTexto: Caja;
+  cajaTexto: Caja | null;
 }
 
 /** Distancia entre el punto y el nombre. */
@@ -61,7 +61,8 @@ const SEPARACION = 6;
 
 /**
  * Coloca puntos y nombres de ciudades sin pisarse entre sí ni con lo ya ocupado: primero las
- * capitales y después las ciudades más grandes. Una ciudad sin sitio para su nombre no se dibuja.
+ * capitales y después las ciudades más grandes. Una ciudad sin sitio para su nombre no se dibuja,
+ * salvo si `puntoSinNombre` (capitales): entonces queda solo su punto.
  */
 export function colocarCiudades(
   candidatos: readonly CandidatoCiudad[],
@@ -70,6 +71,7 @@ export function colocarCiudades(
   ancho: number,
   alto: number,
   ocupadas: readonly Caja[] = [],
+  puntoSinNombre = false,
 ): CiudadColocada[] {
   const tapadas: Caja[] = [...ocupadas];
   const colocadas: CiudadColocada[] = [];
@@ -95,7 +97,13 @@ export function colocarCiudades(
       ([, caja]) =>
         caja[0] >= 0 && caja[2] <= ancho && !tapadas.some((otra) => cajasSeSolapan(caja, otra)),
     );
-    if (!libre) continue;
+    if (!libre) {
+      if (puntoSinNombre) {
+        colocadas.push({ ciudad, x, y, lado: null, cajaPunto, cajaTexto: null });
+        tapadas.push(cajaPunto);
+      }
+      continue;
+    }
     const [lado, cajaTexto] = libre;
     colocadas.push({ ciudad, x, y, lado, cajaPunto, cajaTexto });
     tapadas.push(cajaPunto, cajaTexto);

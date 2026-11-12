@@ -84,6 +84,7 @@ export class MapaMundo {
   private colores = new Map<string, string>();
   /** Nombres de los países (los pone la pantalla del mapa al cargar los datos). */
   private nombresPaises = new Map<string, string>();
+  private nombresCortos = new Map<string, string>();
   private readonly anchosTexto = new Map<string, number>();
   private relieve: Relieve | null = null;
   private agua: CapaAgua | null = null;
@@ -254,6 +255,12 @@ export class MapaMundo {
 
   set nombres(nombres: Map<string, string>) {
     this.nombresPaises = nombres;
+    this.pedirDibujo();
+  }
+
+  /** Formas cortas de los nombres largos («Rep. Checa»), para cuando el entero no cabe. */
+  set nombresAbreviados(nombres: Map<string, string>) {
+    this.nombresCortos = nombres;
     this.pedirDibujo();
   }
 
@@ -435,7 +442,9 @@ export class MapaMundo {
 
   /**
    * Nombres de países (tarea f4-t2) y capitales y ciudades (tarea f4-t3), sin pisarse.
-   * Orden de preferencia: capitales, nombres de países y, por último, las demás ciudades.
+   * Orden de preferencia (ajuste f4-a2): nombres de países, que esquivan los puntos de las
+   * capitales; después, los nombres de las capitales (si no caben, queda solo su punto) y, por
+   * último, las demás ciudades.
    */
   private dibujarRotulos(camara: Camara): void {
     if (!this.mundo) return;
@@ -458,9 +467,11 @@ export class MapaMundo {
         const texto = this.nombresPaises.get(figura.id);
         if (!texto || !figura.etiqueta) continue;
         const [px, py] = aPantalla(figura.etiqueta[0], figura.etiqueta[1], desplazamiento);
+        const textoCorto = this.nombresCortos.get(figura.id);
         candidatos.push({
           id: figura.id,
           texto,
+          ...(textoCorto ? { textoCorto } : {}),
           x: px,
           y: py,
           tamanoPais: Math.sqrt(figura.area) * camara.k,
@@ -473,8 +484,8 @@ export class MapaMundo {
       this.medirTexto(texto, fuenteCiudad(capital));
     const alturaCiudad = (capital: boolean): number => (capital ? LETRA_CAPITAL : LETRA_CIUDAD);
     const { ancho, alto } = camara;
-    const colocadasCapitales = colocarCiudades(capitales, medirCiudad, alturaCiudad, ancho, alto);
-    const ocupadas: Caja[] = colocadasCapitales.flatMap((c) => [c.cajaPunto, c.cajaTexto]);
+    // Los puntos de las capitales se reservan antes, para que ningún nombre de país los tape.
+    const puntosCapitales: Caja[] = capitales.map(({ x, y }) => [x - 5, y - 5, x + 5, y + 5]);
 
     ctx.letterSpacing = '0.05em';
     const fuentePais = (tamano: number): string => `600 ${tamano}px ${FUENTE_ROTULOS}`;
@@ -483,13 +494,23 @@ export class MapaMundo {
       (texto, tamano) => this.medirTexto(texto, fuentePais(tamano)),
       ancho,
       alto,
-      ocupadas,
+      puntosCapitales,
     );
     ctx.letterSpacing = '0px';
-    const colocadasOtras = colocarCiudades(otras, medirCiudad, alturaCiudad, ancho, alto, [
-      ...ocupadas,
-      ...rotulos.map((r) => r.caja),
-    ]);
+    const ocupadas: Caja[] = rotulos.map((r) => r.caja);
+    const colocadasCapitales = colocarCiudades(
+      capitales,
+      medirCiudad,
+      alturaCiudad,
+      ancho,
+      alto,
+      ocupadas,
+      true,
+    );
+    ocupadas.push(
+      ...colocadasCapitales.flatMap((c) => [c.cajaPunto, ...(c.cajaTexto ? [c.cajaTexto] : [])]),
+    );
+    const colocadasOtras = colocarCiudades(otras, medirCiudad, alturaCiudad, ancho, alto, ocupadas);
 
     ctx.textBaseline = 'middle';
     ctx.lineJoin = 'round';
@@ -534,6 +555,7 @@ export class MapaMundo {
       ctx.strokeStyle = 'rgba(6, 12, 24, 0.85)';
       ctx.stroke();
     }
+    if (lado === null) return;
     ctx.font = fuenteCiudad(ciudad.capital);
     ctx.textAlign = lado === 'derecha' ? 'left' : 'right';
     const tx = lado === 'derecha' ? x + SEPARACION_NOMBRE : x - SEPARACION_NOMBRE;

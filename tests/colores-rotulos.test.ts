@@ -6,13 +6,16 @@ import type { MultiPolygon, Polygon } from 'geojson';
 import { feature } from 'topojson-client';
 import { asignarColores, coloresDelMapa, indiceEstable, paisesCercanos } from '../src/map/colores';
 import { PALETA } from '../src/map/estilo';
-import type { TopologiaMapa } from '../src/map/geometria';
+import { prepararFiguras, type TopologiaMapa } from '../src/map/geometria';
+import { camaraInicial } from '../src/map/camara';
+import type { ConjuntoPaises } from '../src/datos/paises';
 import {
   cajasSeSolapan,
   colocarRotulos,
   partirNombre,
   tamanoLetra,
   LETRA_MAXIMA,
+  TAMANO_MINIMO_NOMBRE,
   LETRA_MINIMA,
   type CandidatoRotulo,
 } from '../src/map/rotulos';
@@ -163,15 +166,72 @@ describe('nombres de los países', () => {
     }
   });
 
-  it('un país pequeño que ya se ve lleva el nombre debajo', () => {
+  it('un país pequeño que ya se ve muestra su nombre aunque no quepa dentro', () => {
     const [rotulo] = colocarRotulos(
-      [{ id: 'JAM', texto: 'Jamaica', x: 200, y: 200, tamanoPais: 24 }],
+      [{ id: 'CZE', texto: 'República Checa', x: 200, y: 200, tamanoPais: 12 }],
       medir,
       1280,
       720,
     );
-    expect(rotulo?.id).toBe('JAM');
-    expect(rotulo!.y).toBeGreaterThan(200);
+    expect(rotulo?.id).toBe('CZE');
+    expect(rotulo!.lineas).toEqual(['REPÚBLICA', 'CHECA']);
+  });
+
+  it('los países diminutos (Hong Kong) esperan al zoom', () => {
+    const rotulos = colocarRotulos(
+      [{ id: 'HKG', texto: 'Hong Kong', x: 200, y: 200, tamanoPais: TAMANO_MINIMO_NOMBRE - 1 }],
+      medir,
+      1280,
+      720,
+    );
+    expect(rotulos).toEqual([]);
+  });
+
+  it('si el nombre entero no cabe, se prueba su forma corta', () => {
+    const checa: CandidatoRotulo = {
+      id: 'CZE',
+      texto: 'República Checa',
+      textoCorto: 'Rep. Checa',
+      x: 200,
+      y: 200,
+      tamanoPais: 12,
+    };
+    // Entre dos nombres de vecinos solo queda un hueco de una línea: las dos líneas de
+    // «REPÚBLICA CHECA» no caben, pero «REP. CHECA» sí.
+    const vecinos: [number, number, number, number][] = [
+      [0, 0, 400, 192],
+      [0, 208, 400, 400],
+    ];
+    const [rotulo] = colocarRotulos([checa], medir, 1280, 720, vecinos);
+    expect(rotulo?.lineas).toEqual(['REP. CHECA']);
+  });
+
+  it('con el mundo entero a la vista se ve el nombre de Marruecos, y no el de Hong Kong', () => {
+    const topo = topologia('mundo');
+    const figuras = prepararFiguras(topo).paises;
+    const { paises } = JSON.parse(
+      readFileSync(new URL('../public/data/paises-2010.json', import.meta.url), 'utf8'),
+    ) as ConjuntoPaises;
+    const camara = camaraInicial(1280, 720);
+    const candidatos: CandidatoRotulo[] = figuras.flatMap((f) =>
+      f.etiqueta
+        ? [
+            {
+              id: f.id,
+              texto: paises[f.id]!.nombre,
+              x: (f.etiqueta[0] - camara.cx) * camara.k + camara.ancho / 2,
+              y: (f.etiqueta[1] - camara.cy) * camara.k + camara.alto / 2,
+              tamanoPais: Math.sqrt(f.area) * camara.k,
+            },
+          ]
+        : [],
+    );
+    // Medida algo generosa (mayúsculas con espaciado) para no depender del tipo de letra.
+    const medirMayusculas = (texto: string, tamano: number): number => texto.length * tamano * 0.7;
+    const ids = colocarRotulos(candidatos, medirMayusculas, 1280, 720).map((r) => r.id);
+    expect(ids).toContain('MAR');
+    expect(ids).not.toContain('HKG');
+    expect(ids.length).toBeGreaterThan(90);
   });
 
   it('no se colocan nombres fuera de la pantalla', () => {
