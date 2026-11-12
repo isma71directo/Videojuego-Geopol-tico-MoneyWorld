@@ -6,6 +6,7 @@ import { VERSION, etiquetaVersion } from './compartido/version';
 import { t } from './i18n';
 import { el, reemplazar } from './ui/dom';
 import { crearPantallaInicio } from './ui/inicio';
+import { abrirPantallaMapa, type PantallaMapa } from './ui/pantalla-mapa';
 import { botonReportar } from './ui/reportar';
 
 /** Cada cuánto comprueba el juego si se ha publicado una versión nueva. */
@@ -37,6 +38,36 @@ function mostrarAvisoVersion(version: string): void {
   );
   avisoVersion.hidden = false;
 }
+
+// Navegación sencilla por el «#» de la dirección: «#mapa» abre el mapa a pantalla completa
+// y el botón «atrás» del navegador vuelve a la pantalla de inicio.
+let pantallaMapa: PantallaMapa | null = null;
+/** Si el mapa se abrió desde el juego, «Volver» equivale al botón «atrás» del navegador. */
+let mapaAbiertoDesdeElJuego = false;
+
+function volverAlInicio(): void {
+  if (mapaAbiertoDesdeElJuego) {
+    history.back();
+  } else {
+    // Se entró directamente con «#mapa»: volver no debe sacar al jugador de la web.
+    history.replaceState(null, '', location.pathname + location.search);
+    mostrarSegunDireccion();
+  }
+}
+
+function mostrarSegunDireccion(): void {
+  if (location.hash === '#mapa') {
+    pantallaMapa ??= abrirPantallaMapa(volverAlInicio);
+  } else if (pantallaMapa) {
+    pantallaMapa.cerrar();
+    pantallaMapa = null;
+  }
+}
+window.addEventListener('hashchange', () => {
+  mapaAbiertoDesdeElJuego = location.hash === '#mapa';
+  mostrarSegunDireccion();
+});
+mostrarSegunDireccion();
 
 // La Hoja de ruta abierta en otra pestaña avisa al instante de una versión nueva.
 const canal = abrirCanal((mensaje) => mostrarAvisoVersion(mensaje.version));

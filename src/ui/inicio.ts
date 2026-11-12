@@ -95,7 +95,13 @@ export function crearPantallaInicio(): PantallaInicio {
       ),
       el(
         'a',
-        { class: 'boton boton--principal boton--menu', href: URL_HOJA_DE_RUTA },
+        { class: 'boton boton--principal boton--menu', href: '#mapa' },
+        el('span', {}, t('juego.inicio.mapa')),
+        el('small', {}, t('juego.inicio.mapaAviso')),
+      ),
+      el(
+        'a',
+        { class: 'boton boton--menu', href: URL_HOJA_DE_RUTA },
         el('span', {}, t('juego.inicio.hojaDeRuta')),
         el('small', {}, t('juego.inicio.hojaDeRutaAviso')),
       ),

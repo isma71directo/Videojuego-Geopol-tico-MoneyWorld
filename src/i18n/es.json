@@ -21,7 +21,9 @@
       "menu": "Menú principal",
       "version": "Versión {version}",
       "nombreProvisional": "nombre provisional",
-      "enDesarrollo": "En desarrollo: {fase}"
+      "enDesarrollo": "En desarrollo: {fase}",
+      "mapa": "Explorar el mapa",
+      "mapaAviso": "El mundo del 1 de enero de 2010"
     },
     "ajustes": {
       "titulo": "Ajustes",
@@ -53,6 +55,12 @@
       "copiar": "Copiar datos del juego",
       "copiado": "Copiados.",
       "noCopiado": "No se han podido copiar."
+    },
+    "mapa": {
+      "volver": "Volver",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte y pellizca o usa la rueda para acercar.",
+      "cargando": "Cargando el mapa…",
+      "error": "No se ha podido cargar el mapa. Comprueba la conexión."
     }
   },
   "hojaDeRuta": {

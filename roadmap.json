@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.3.0",
-  "actualizado": "2026-11-12T01:20:00Z",
+  "actualizado": "2026-11-12T01:04:59Z",
   "faseActiva": "fase-3",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "El jugador elige la proyección Miller con desplazamiento continuo este-oeste y pide un mapa vivo (relieve, ríos, detalle) y modos de mapa con leyenda. Anotado en el GDD; la Fase 3 incluye ahora el relieve. Empezada la Fase 3.",
-    "siguientePaso": "Mapa a pantalla completa en Canvas con proyección Miller (tarea f3-t1).",
+    "resumen": "Fase 3 en marcha: el mapa del mundo ya se abre a pantalla completa desde la pantalla de inicio, en Canvas y con la proyección Miller, con dos niveles de detalle según el zoom.",
+    "siguientePaso": "Navegación con el dedo y el ratón, vuelta este-oeste y medidor de fps (tarea f3-t2).",
     "pendienteDelJugador": [
       "Decidir la plataforma: móvil y PC con niveles de calidad (propuesta) o solo PC"
     ]
@@ -273,15 +273,15 @@
         {
           "id": "f3-t1",
           "titulo": "Mapa a pantalla completa en Canvas con la proyección Miller, con el nivel de detalle que toque según el zoom, abierto desde la pantalla de inicio",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f3-t2",
           "titulo": "Navegación: pellizco, rueda, arrastre y doble toque para acercar, límites norte-sur y desplazamiento continuo este-oeste; medidor de fps en modo desarrollo",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {
