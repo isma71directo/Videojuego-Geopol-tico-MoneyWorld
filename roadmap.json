@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.3.0",
-  "actualizado": "2026-11-12T00:45:17Z",
+  "actualizado": "2026-11-12T00:46:01Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
     "resumen": "Fase 2 completa en su rama y versión 0.3.0: territorios dependientes y territorios de hecho jugables (223 países y territorios), fronteras de 2010 corregidas desde Natural Earth, mapa en dos niveles de detalle y vista previa en la galería.",
     "siguientePaso": "Cuando el jugador confirme la prueba en el móvil, marcar la Fase 2 como hecha y empezar la Fase 3 (Mapa: dibujo y navegación), confirmando antes la proyección Equal Earth.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 2 (v0.3.0)",
-      "Prueba en el móvil: abrir la galería y ver el mapa de 2010 (Sudán unido, Crimea dentro de Ucrania, Hong Kong y Puerto Rico como territorios propios) y las banderas de los territorios dependientes",
+      "Fusionar el PR n.º 8 (Fase 2, v0.3.0)",
+      "Prueba en el móvil: abrir la galería y ver el mapa de 2010 (Sudán unido, Crimea dentro de Ucrania, Groenlandia como territorio dependiente) y las banderas de Hong Kong, Puerto Rico y las Antillas Neerlandesas",
       "Confirmar la proyección Equal Earth para el mapa del juego (Fase 3)"
     ]
   },
