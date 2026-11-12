@@ -66,6 +66,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       detalle: './data/mapa-2010-detalle.json',
       relieve: './av/relieve/',
       agua: './data/mapa-agua.json',
+      ciudades: './data/ciudades-2010.json',
     },
     ESTILO_MAPA,
   );

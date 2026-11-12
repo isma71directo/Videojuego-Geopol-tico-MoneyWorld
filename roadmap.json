@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.4.1",
-  "actualizado": "2026-11-12T06:22:59Z",
+  "actualizado": "2026-11-12T06:34:08Z",
   "faseActiva": "fase-4",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 en curso. Hechas f4-t1 (señalar y seleccionar países con el ratón, ficha y panel) y f4-t2 (colores sin repetir entre vecinos, paleta de 8 tonos y nombres de países según el zoom, sin pisarse; los países pequeños llevan el nombre debajo al acercarse).",
-    "siguientePaso": "Capitales y ciudades principales al acercar (tarea f4-t3): script con Natural Earth (ciudades pobladas) y capitales de 2010.",
+    "resumen": "Fase 4 en curso. Hechas f4-t1 (señalar y seleccionar países), f4-t2 (colores sin repetir entre vecinos y nombres de países según el zoom) y f4-t3 (capitales de 2010 y ciudades principales al acercar, con el script 13-ciudades.ts: Natural Earth y Wikidata).",
+    "siguientePaso": "Sonido de interfaz con Web Audio, botón de silencio y animación de la selección (tarea f4-t4); después, cerrar la fase (v0.5.0) y abrir el PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -321,13 +321,13 @@
           "titulo": "Colores por país estables y distintos de los de sus vecinos, y nombres de países que aparecen según el zoom",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ac1ac17"
         },
         {
           "id": "f4-t3",
           "titulo": "Capitales y ciudades principales al acercar",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

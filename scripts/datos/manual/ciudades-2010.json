@@ -1,0 +1,21 @@
+{
+  "_nota": "Capitales de 2010 que no se encuentran por su nombre entre los lugares de Natural Earth v5.1.2.",
+  "capitalesNE": {
+    "_nota": "Código del país → nombre exacto (NAME) del lugar de Natural Earth que es su capital de 2010.",
+    "BGD": "Dhaka",
+    "CYP": "Nicosia",
+    "DJI": "Djibouti",
+    "SOS": "Tskhinvali"
+  },
+  "capitalesWikidata": {
+    "_nota": "Capitales que no están entre los lugares de Natural Earth: su posición y su nombre en español salen de Wikidata (CC0). Las Islas del Canal tienen dos (Jersey y Guernsey).",
+    "CHI": ["Q147738", "Q174262"],
+    "CYN": ["Q2762100"],
+    "MAF": ["Q200605"],
+    "MNP": ["Q49755159"],
+    "NRU": ["Q31026"],
+    "PLW": ["Q515229"],
+    "VGB": ["Q179431"],
+    "VIR": ["Q51681"]
+  }
+}

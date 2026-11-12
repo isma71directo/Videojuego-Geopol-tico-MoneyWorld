@@ -82,17 +82,24 @@ export function colocarRotulos(
     const anchoTexto = Math.max(...lineas.map((linea) => medir(linea, tamano)));
     const altoTexto = lineas.length * tamano * INTERLINEA;
     const x = candidato.x;
-    const y = debajo ? candidato.y + candidato.tamanoPais / 2 + altoTexto / 2 + 3 : candidato.y;
-    const caja: Caja = [
-      x - anchoTexto / 2 - 3,
-      y - altoTexto / 2 - 2,
-      x + anchoTexto / 2 + 3,
-      y + altoTexto / 2 + 2,
-    ];
-    if (caja[2] < 0 || caja[0] > ancho || caja[3] < 0 || caja[1] > alto) return;
-    if (tapadas.some((otra) => cajasSeSolapan(caja, otra))) return;
-    colocados.push({ id: candidato.id, lineas, x, y, tamano, caja });
-    tapadas.push(caja);
+    // Dentro del país, si el sitio está tapado (p. ej. por su capital), se prueba un poco
+    // más arriba y un poco más abajo.
+    const posiciones = debajo
+      ? [candidato.y + candidato.tamanoPais / 2 + altoTexto / 2 + 3]
+      : [candidato.y, candidato.y - altoTexto * 1.1, candidato.y + altoTexto * 1.1];
+    for (const y of posiciones) {
+      const caja: Caja = [
+        x - anchoTexto / 2 - 3,
+        y - altoTexto / 2 - 2,
+        x + anchoTexto / 2 + 3,
+        y + altoTexto / 2 + 2,
+      ];
+      if (caja[2] < 0 || caja[0] > ancho || caja[3] < 0 || caja[1] > alto) return;
+      if (tapadas.some((otra) => cajasSeSolapan(caja, otra))) continue;
+      colocados.push({ id: candidato.id, lineas, x, y, tamano, caja });
+      tapadas.push(caja);
+      return;
+    }
   };
   const pequenos: CandidatoRotulo[] = [];
   for (const candidato of orden) {
