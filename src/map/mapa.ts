@@ -461,6 +461,8 @@ export class MapaMundo {
       for (const { ciudad, x, y } of this.ciudades) {
         if (!ciudadVisible(ciudad, z)) continue;
         const [px, py] = aPantalla(x, y, desplazamiento);
+        // Las que caen fuera de la pantalla no hace falta ni ordenarlas.
+        if (px < -20 || px > camara.ancho + 20 || py < -20 || py > camara.alto + 20) continue;
         (ciudad.capital ? capitales : otras).push({ ciudad, x: px, y: py });
       }
       for (const figura of this.mundo.figuras.paises) {

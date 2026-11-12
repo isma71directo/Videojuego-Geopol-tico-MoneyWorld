@@ -6,6 +6,7 @@ import type { ConjuntoPaises } from '../src/datos/paises';
 import {
   ciudadVisible,
   colocarCiudades,
+  zoomDeAparicion,
   ZOOM_TODAS_CAPITALES,
   type CandidatoCiudad,
   type Ciudad,
@@ -73,8 +74,35 @@ describe('datos de capitales y ciudades', () => {
     expect(fuera).toEqual([]);
   });
 
-  it('no guarda poblaciones (las de Natural Earth no son de 2010)', () => {
-    for (const ciudad of ciudades) expect(Object.keys(ciudad)).not.toContain('poblacion');
+  it('guarda la población de 2010 o la más cercana, con su fuente y su año', () => {
+    const conDato = ciudades.filter((c) => c.poblacion !== null);
+    expect(conDato.length / ciudades.length).toBeGreaterThan(0.9);
+    for (const ciudad of conDato) {
+      expect(ciudad.origenPoblacion, ciudad.nombre).toMatch(/^(WD:(\d{4}|sin-fecha)|ONU:2010)$/);
+      expect(ciudad.poblacion!, ciudad.nombre).toBeGreaterThan(0);
+    }
+    for (const ciudad of ciudades.filter((c) => c.poblacion === null)) {
+      expect(ciudad.origenPoblacion).toBeNull();
+    }
+    // Ejemplos de España con su dato de 2010 (Wikidata).
+    expect(buscar('Zaragoza')).toMatchObject({ origenPoblacion: 'WD:2010' });
+    expect(buscar('Madrid')!.poblacion).toBeGreaterThan(3_000_000);
+  });
+
+  it('las ciudades salen por orden de población: Zaragoza, después Córdoba y después Oviedo', () => {
+    const espana = (nombre: string): Ciudad =>
+      ciudades.find((c) => c.nombre === nombre && c.pais === 'ESP')!;
+    const [zaragoza, cordoba, oviedo] = ['Zaragoza', 'Córdoba', 'Oviedo'].map(espana);
+    expect(zoomDeAparicion(zaragoza!)).toBeLessThan(zoomDeAparicion(cordoba!));
+    expect(zoomDeAparicion(cordoba!)).toBeLessThan(zoomDeAparicion(oviedo!));
+    // En general: una ciudad más poblada nunca aparece después que otra menos poblada.
+    const normales = ciudades.filter((c) => !c.capital && c.poblacion !== null);
+    const ordenadas = [...normales].sort((a, b) => b.poblacion! - a.poblacion!);
+    for (let i = 1; i < ordenadas.length; i++) {
+      expect(zoomDeAparicion(ordenadas[i - 1]!)).toBeLessThanOrEqual(
+        zoomDeAparicion(ordenadas[i]!),
+      );
+    }
   });
 });
 
@@ -84,18 +112,20 @@ describe('cuándo y dónde se dibujan', () => {
     pais: 'BDI',
     lon: 29.36,
     lat: -3.38,
-    rango: 10,
-    zoom: 5.6,
     capital: true,
+    poblacion: null,
+    origenPoblacion: null,
+    rango: 10,
   };
   const ciudad: Ciudad = {
     nombre: 'Kindu',
     pais: 'COD',
     lon: 25.9,
     lat: -2.9,
-    rango: 10,
-    zoom: 6.7,
     capital: false,
+    poblacion: 170_000,
+    origenPoblacion: 'WD:2010',
+    rango: 9,
   };
 
   it('las capitales aparecen antes que las demás ciudades al acercarse', () => {
@@ -116,7 +146,7 @@ describe('cuándo y dónde se dibujan', () => {
     ];
     const colocadas = colocarCiudades(candidatos, medir, altura, 1280, 720);
     expect(colocadas.map((c) => c.ciudad.nombre)).toEqual(['Buyumbura', 'Uvira']);
-    const cajas = colocadas.flatMap((c) => [c.cajaPunto, c.cajaTexto]);
+    const cajas = colocadas.flatMap((c) => [c.cajaPunto, ...(c.cajaTexto ? [c.cajaTexto] : [])]);
     for (let i = 0; i < cajas.length; i++) {
       for (let j = i + 1; j < cajas.length; j++) {
         expect(cajasSeSolapan(cajas[i]!, cajas[j]!)).toBe(false);
