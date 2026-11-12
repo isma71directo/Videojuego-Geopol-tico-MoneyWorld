@@ -40,6 +40,7 @@ export function informeCobertura(
   const { total, porPais, porCampo } = cobertura(conjunto);
   const estados = paises.filter((pais) => pais.tipo === 'pais');
   const especiales = paises.filter((pais) => pais.tipo === 'especial');
+  const dependientes = paises.filter((pais) => pais.tipo === 'dependiente');
   const jugables = paises.filter((pais) => pais.jugable);
   const conBasicosReales = paises.filter(
     (pais) =>
@@ -62,7 +63,8 @@ export function informeCobertura(
   const nombreCon = (pais: PaisDatos): string => {
     const bandera = opciones.bandera?.(pais);
     const imagen = bandera ? `<img src="${bandera}" alt="" width="24"> ` : '';
-    return `${imagen}${pais.nombre}${pais.tipo === 'especial' ? ' †' : ''}`;
+    const marca = pais.tipo === 'especial' ? ' †' : pais.tipo === 'dependiente' ? ' ‡' : '';
+    return `${imagen}${pais.nombre}${marca}`;
   };
 
   const secciones: string[] = [];
@@ -74,12 +76,12 @@ export function informeCobertura(
 
 ## Resumen
 
-- **${paises.length} países y territorios**: ${estados.length} Estados soberanos (los 192 miembros de la ONU el 1 de enero de 2010 y el Vaticano) y ${especiales.length} territorios de estatus especial o en disputa. **${jugables.length} son jugables.**
+- **${paises.length} países y territorios**: ${estados.length} Estados soberanos (los 192 miembros de la ONU el 1 de enero de 2010 y el Vaticano), ${especiales.length} territorios de estatus especial o en disputa y ${dependientes.length} territorios dependientes. **${jugables.length} son jugables.**
 - **${Object.keys(conjunto.campos).length} campos por país** (${numero(totalDe(total))} valores en total).
 - **${porcentaje(total.reales, totalDe(total))} son datos reales**, ${porcentaje(total.estimados, totalDe(total))} son estimaciones y ${porcentaje(total.sinDato, totalDe(total))} no tienen dato.
 - **${conBasicosReales.length} países tienen población y PIB reales** (la Fase 1 exige al menos 190).
 - De los ${numero(total.sinDato)} valores sin dato, ${numero(sinDatoReservas)} son reservas minerales de países que la fuente no lista; el resto, producción minera de territorios que la fuente no cubre.
-- Sudán aparece unido, como en 2010: sus cifras suman las de Sudán y Sudán del Sur.
+- Como en 2010, Sudán aparece unido (sus cifras suman las de Sudán y Sudán del Sur) y también las Antillas Neerlandesas (Curazao y Sint Maarten).
 
 **Fuentes y fecha de descarga**
 
@@ -93,7 +95,7 @@ ${Object.entries(opciones.descargas)
 - **Dato real:** viene de una fuente, con su año (se prefiere 2010; si falta, 2009 o 2008).
 - **Estimación (\\*):** valor de respaldo calculado, nunca un dato real. En el juego irá marcado.
 - **Sin dato (—):** ni la fuente lo da ni hay una forma razonable de estimarlo.
-- **†** Territorio de estatus especial o en disputa.
+- **†** Territorio de estatus especial o en disputa. **‡** Territorio dependiente.
 
 ## Datos principales por país
 
@@ -195,6 +197,22 @@ ${tabla(
   ]),
 )}`);
 
+  secciones.push(`## Territorios dependientes
+
+Jugables por decisión del jugador. Los territorios dependientes sin datos propios (Malvinas, Anguila, Santa Elena…) forman parte de su país soberano.
+
+${tabla(
+  ['Territorio', 'País soberano', 'Capital', 'Población', 'Datos reales'],
+  dependientes.map((pais) => [
+    nombreCon(pais),
+    conjunto.paises[pais.soberano!]?.nombre ?? pais.soberano!,
+    pais.capital,
+    celda(pais, 'poblacion'),
+    porcentaje(porPais[pais.id]!.reales, totalDe(porPais[pais.id]!)),
+  ]),
+  ['---', '---', '---', '--:', '--:'],
+)}`);
+
   secciones.push(`## Valores llamativos
 
 Datos que están dentro de lo posible pero fuera de lo habitual. Conviene comprobar que son correctos y no un error de la fuente.
@@ -205,7 +223,6 @@ ${avisos.length === 0 ? 'Ninguno.' : avisos.map((aviso) => `- ${aviso}`).join('\
 
 ${[
   ...opciones.notas,
-  'Los territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) no están en este conjunto; su tratamiento se decide en las Fases 2 y 5 (fronteras y regiones).',
   'El nivel de renta de los territorios sin RNB per cápita (y el de Corea del Norte) está fijado a mano.',
 ]
   .map((nota) => `- ${nota}`)

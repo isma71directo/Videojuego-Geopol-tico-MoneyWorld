@@ -322,6 +322,7 @@ export function construir(entradas: Entradas): Resultado {
       region: pais.region,
       regionNombre: pais.regionNombre,
       nivelRenta: niveles.get(pais.id)!,
+      ...(pais.soberano !== undefined ? { soberano: pais.soberano } : {}),
       ...(pais.estatus !== undefined ? { estatus: pais.estatus } : {}),
       ...(pais.reclamadoPor !== undefined ? { reclamadoPor: pais.reclamadoPor } : {}),
       datos,

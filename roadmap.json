@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.2.0",
-  "actualizado": "2026-11-12T00:40:00Z",
+  "actualizado": "2026-11-12T00:33:28Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Empezada la Fase 2. El jugador ha decidido que también sean jugables los territorios dependientes (Hong Kong, Puerto Rico…) y que el Sáhara Occidental siga sin serlo; la decisión se ha añadido a la Fase 2.",
-    "siguientePaso": "Añadir los territorios dependientes a los datos (tarea f2-t1).",
+    "resumen": "Fase 2 en marcha: añadidos 21 territorios dependientes jugables (Hong Kong, Puerto Rico, Groenlandia…, con las Antillas Neerlandesas de 2010) y jugables los cinco territorios con independencia de hecho. Ahora hay 223 países y territorios, 221 jugables.",
+    "siguientePaso": "Script de fronteras de 2010 a partir de Natural Earth (tarea f2-t2).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -230,15 +230,15 @@
         {
           "id": "f2-t1",
           "titulo": "Territorios jugables (decisión del jugador): añadir a los datos los territorios dependientes con datos del Banco Mundial (Hong Kong, Puerto Rico, Groenlandia…), con las Antillas Neerlandesas tal como eran en 2010, y hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f2-t2",
           "titulo": "Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas, y Antillas Neerlandesas e Islas del Canal unidas",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {

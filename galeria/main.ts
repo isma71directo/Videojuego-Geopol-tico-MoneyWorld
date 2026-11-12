@@ -78,6 +78,7 @@ function banderas(conjunto: ConjuntoPaises): HTMLElement[] {
   );
   const estados = orden.filter((pais) => pais.tipo === 'pais');
   const especiales = orden.filter((pais) => pais.tipo === 'especial');
+  const dependientes = orden.filter((pais) => pais.tipo === 'dependiente');
   return [
     seccion(
       t('galeria.banderas.titulo', { n: estados.length }),
@@ -88,6 +89,11 @@ function banderas(conjunto: ConjuntoPaises): HTMLElement[] {
       t('galeria.banderas.especiales', { n: especiales.length }),
       t('galeria.banderas.notaEspeciales'),
       el('ul', { class: 'galeria__banderas' }, ...especiales.map(bandera)),
+    ),
+    seccion(
+      t('galeria.banderas.dependientes', { n: dependientes.length }),
+      t('galeria.banderas.notaDependientes'),
+      el('ul', { class: 'galeria__banderas' }, ...dependientes.map(bandera)),
     ),
   ];
 }

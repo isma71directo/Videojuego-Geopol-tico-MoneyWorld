@@ -7,7 +7,7 @@
       "iso2": null,
       "nombre": "Abjasia",
       "tipo": "especial",
-      "jugable": false,
+      "jugable": true,
       "capital": "Sujumi",
       "capitalFuente": "manual",
       "region": "ECS",
@@ -21,6 +21,24 @@
         "wikidata": "Q23334"
       },
       "nivelRentaManual": "medio-bajo"
+    },
+    {
+      "id": "ABW",
+      "iso2": "AW",
+      "nombre": "Aruba",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Oranjestad",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "NLD",
+      "codigos": {
+        "bm": "ABW",
+        "fmi": "ABW",
+        "owid": "ABW",
+        "wikidata": null
+      }
     },
     {
       "id": "AFG",
@@ -91,6 +109,29 @@
       }
     },
     {
+      "id": "ANT",
+      "iso2": "AN",
+      "nombre": "Antillas Neerlandesas",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Willemstad",
+      "capitalFuente": "manual",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "NLD",
+      "codigos": {
+        "bm": null,
+        "fmi": null,
+        "owid": null,
+        "wikidata": null
+      },
+      "componentes": [
+        "CUW",
+        "SXM"
+      ],
+      "nota": "Existieron hasta el 10 de octubre de 2010: Curazao y Sint Maarten (más Bonaire, Saba y San Eustaquio, sin datos propios)."
+    },
+    {
       "id": "ARE",
       "iso2": "AE",
       "nombre": "Emiratos Árabes Unidos",
@@ -138,6 +179,24 @@
         "bm": "ARM",
         "fmi": "ARM",
         "owid": "ARM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "ASM",
+      "iso2": "AS",
+      "nombre": "Samoa Americana",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Pago Pago",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "USA",
+      "codigos": {
+        "bm": "ASM",
+        "fmi": "ASM",
+        "owid": "ASM",
         "wikidata": null
       }
     },
@@ -397,6 +456,24 @@
       }
     },
     {
+      "id": "BMU",
+      "iso2": "BM",
+      "nombre": "Bermudas",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Hamilton",
+      "capitalFuente": "wikidata",
+      "region": "NAC",
+      "regionNombre": "América del Norte",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "BMU",
+        "fmi": "BMU",
+        "owid": "BMU",
+        "wikidata": null
+      }
+    },
+    {
       "id": "BOL",
       "iso2": "BO",
       "nombre": "Bolivia",
@@ -546,6 +623,24 @@
         "bm": "CHE",
         "fmi": "CHE",
         "owid": "CHE",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "CHI",
+      "iso2": null,
+      "nombre": "Islas del Canal",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Saint Helier y Saint Peter Port",
+      "capitalFuente": "manual",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "CHI",
+        "fmi": "CHI",
+        "owid": "CHI",
         "wikidata": null
       }
     },
@@ -737,11 +832,29 @@
       }
     },
     {
+      "id": "CYM",
+      "iso2": "KY",
+      "nombre": "Islas Caimán",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "George Town",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "CYM",
+        "fmi": "CYM",
+        "owid": "CYM",
+        "wikidata": null
+      }
+    },
+    {
       "id": "CYN",
       "iso2": null,
       "nombre": "Chipre del Norte",
       "tipo": "especial",
-      "jugable": false,
+      "jugable": true,
       "capital": "Nicosia Norte",
       "capitalFuente": "manual",
       "region": "ECS",
@@ -1066,6 +1179,24 @@
       }
     },
     {
+      "id": "FRO",
+      "iso2": "FO",
+      "nombre": "Islas Feroe",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Tórshavn",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "soberano": "DNK",
+      "codigos": {
+        "bm": "FRO",
+        "fmi": "FRO",
+        "owid": "FRO",
+        "wikidata": null
+      }
+    },
+    {
       "id": "FSM",
       "iso2": "FM",
       "nombre": "Micronesia",
@@ -1149,6 +1280,25 @@
         "owid": "GHA",
         "wikidata": null
       }
+    },
+    {
+      "id": "GIB",
+      "iso2": "GI",
+      "nombre": "Gibraltar",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Gibraltar",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "GIB",
+        "fmi": "GIB",
+        "owid": "GIB",
+        "wikidata": null
+      },
+      "nivelRentaManual": "alto"
     },
     {
       "id": "GIN",
@@ -1253,6 +1403,24 @@
       }
     },
     {
+      "id": "GRL",
+      "iso2": "GL",
+      "nombre": "Groenlandia",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Nuuk",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "soberano": "DNK",
+      "codigos": {
+        "bm": "GRL",
+        "fmi": "GRL",
+        "owid": "GRL",
+        "wikidata": null
+      }
+    },
+    {
       "id": "GTM",
       "iso2": "GT",
       "nombre": "Guatemala",
@@ -1270,6 +1438,24 @@
       }
     },
     {
+      "id": "GUM",
+      "iso2": "GU",
+      "nombre": "Guam",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Agaña",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "USA",
+      "codigos": {
+        "bm": "GUM",
+        "fmi": "GUM",
+        "owid": "GUM",
+        "wikidata": null
+      }
+    },
+    {
       "id": "GUY",
       "iso2": "GY",
       "nombre": "Guyana",
@@ -1283,6 +1469,24 @@
         "bm": "GUY",
         "fmi": "GUY",
         "owid": "GUY",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "HKG",
+      "iso2": "HK",
+      "nombre": "Hong Kong",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Hong Kong",
+      "capitalFuente": "manual",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "CHN",
+      "codigos": {
+        "bm": "HKG",
+        "fmi": "HKG",
+        "owid": "HKG",
         "wikidata": null
       }
     },
@@ -1368,6 +1572,24 @@
         "bm": "IDN",
         "fmi": "IDN",
         "owid": "IDN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "IMN",
+      "iso2": "IM",
+      "nombre": "Isla de Man",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Douglas",
+      "capitalFuente": "wikidata",
+      "region": "ECS",
+      "regionNombre": "Europa y Asia Central",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "IMN",
+        "fmi": "IMN",
+        "owid": "IMN",
         "wikidata": null
       }
     },
@@ -1865,6 +2087,43 @@
       }
     },
     {
+      "id": "MAC",
+      "iso2": "MO",
+      "nombre": "Macao",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Macao",
+      "capitalFuente": "manual",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "CHN",
+      "codigos": {
+        "bm": "MAC",
+        "fmi": "MAC",
+        "owid": "MAC",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "MAF",
+      "iso2": "MF",
+      "nombre": "San Martín (Francia)",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Marigot",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "FRA",
+      "codigos": {
+        "bm": "MAF",
+        "fmi": "MAF",
+        "owid": "MAF",
+        "wikidata": null
+      },
+      "nivelRentaManual": "alto"
+    },
+    {
       "id": "MAR",
       "iso2": "MA",
       "nombre": "Marruecos",
@@ -2086,6 +2345,24 @@
       }
     },
     {
+      "id": "MNP",
+      "iso2": "MP",
+      "nombre": "Islas Marianas del Norte",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Saipan",
+      "capitalFuente": "banco-mundial",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "USA",
+      "codigos": {
+        "bm": "MNP",
+        "fmi": "MNP",
+        "owid": "MNP",
+        "wikidata": null
+      }
+    },
+    {
       "id": "MOZ",
       "iso2": "MZ",
       "nombre": "Mozambique",
@@ -2184,6 +2461,24 @@
         "bm": "NAM",
         "fmi": "NAM",
         "owid": "NAM",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "NCL",
+      "iso2": "NC",
+      "nombre": "Nueva Caledonia",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Numea",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "FRA",
+      "codigos": {
+        "bm": "NCL",
+        "fmi": "NCL",
+        "owid": "NCL",
         "wikidata": null
       }
     },
@@ -2430,7 +2725,7 @@
       "iso2": null,
       "nombre": "Transnistria",
       "tipo": "especial",
-      "jugable": false,
+      "jugable": true,
       "capital": "Tiráspol",
       "capitalFuente": "manual",
       "region": "ECS",
@@ -2476,6 +2771,24 @@
         "bm": "POL",
         "fmi": "POL",
         "owid": "POL",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "PRI",
+      "iso2": "PR",
+      "nombre": "Puerto Rico",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "San Juan",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "USA",
+      "codigos": {
+        "bm": "PRI",
+        "fmi": "PRI",
+        "owid": "PRI",
         "wikidata": null
       }
     },
@@ -2548,6 +2861,24 @@
         "fmi": "WBG",
         "owid": "PSE",
         "wikidata": "Q219060"
+      }
+    },
+    {
+      "id": "PYF",
+      "iso2": "PF",
+      "nombre": "Polinesia Francesa",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Papeete",
+      "capitalFuente": "wikidata",
+      "region": "EAS",
+      "regionNombre": "Asia Oriental y Pacífico",
+      "soberano": "FRA",
+      "codigos": {
+        "bm": "PYF",
+        "fmi": "PYF",
+        "owid": "PYF",
+        "wikidata": null
       }
     },
     {
@@ -2763,7 +3094,7 @@
       "iso2": null,
       "nombre": "Somalilandia",
       "tipo": "especial",
-      "jugable": false,
+      "jugable": true,
       "capital": "Hargeisa",
       "capitalFuente": "manual",
       "region": "SSF",
@@ -2800,7 +3131,7 @@
       "iso2": null,
       "nombre": "Osetia del Sur",
       "tipo": "especial",
-      "jugable": false,
+      "jugable": true,
       "capital": "Tsjinval",
       "capitalFuente": "manual",
       "region": "ECS",
@@ -2965,6 +3296,24 @@
         "bm": "SYR",
         "fmi": "SYR",
         "owid": "SYR",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "TCA",
+      "iso2": "TC",
+      "nombre": "Islas Turcas y Caicos",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Cockburn Town",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "TCA",
+        "fmi": "TCA",
+        "owid": "TCA",
         "wikidata": null
       }
     },
@@ -3326,6 +3675,43 @@
         "bm": "VEN",
         "fmi": "VEN",
         "owid": "VEN",
+        "wikidata": null
+      }
+    },
+    {
+      "id": "VGB",
+      "iso2": "VG",
+      "nombre": "Islas Vírgenes Británicas",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Road Town",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "GBR",
+      "codigos": {
+        "bm": "VGB",
+        "fmi": "VGB",
+        "owid": "VGB",
+        "wikidata": null
+      },
+      "nivelRentaManual": "alto"
+    },
+    {
+      "id": "VIR",
+      "iso2": "VI",
+      "nombre": "Islas Vírgenes de EE. UU.",
+      "tipo": "dependiente",
+      "jugable": true,
+      "capital": "Charlotte Amalie",
+      "capitalFuente": "wikidata",
+      "region": "LCN",
+      "regionNombre": "América Latina y el Caribe",
+      "soberano": "USA",
+      "codigos": {
+        "bm": "VIR",
+        "fmi": "VIR",
+        "owid": "VIR",
         "wikidata": null
       }
     },

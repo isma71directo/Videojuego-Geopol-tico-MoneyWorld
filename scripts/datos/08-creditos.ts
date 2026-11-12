@@ -22,6 +22,7 @@ interface CreditosBanderas {
     string,
     { archivo: string; motivo: string; url: string; licencia: string; autor: string }
   >;
+  sinBanderaPropia?: Record<string, { iso2: string; motivo: string }>;
   diferenciasConocidas: string[];
 }
 
@@ -67,6 +68,10 @@ Descargadas el ${fecha(banderas.descargado)} con \`scripts/datos/07-banderas.ts\
 | País o territorio | Archivo | Licencia | Autor según Commons | Motivo |
 | --- | --- | --- | --- | --- |
 ${filasCommons.join('\n')}
+
+${Object.entries(banderas.sinBanderaPropia ?? {})
+  .map(([id, c]) => `- **${nombres.get(id) ?? id}:** ${c.motivo}.`)
+  .join('\n')}
 
 **Diferencias conocidas con 2010**
 

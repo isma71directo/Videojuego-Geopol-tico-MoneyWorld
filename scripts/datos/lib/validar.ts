@@ -49,6 +49,16 @@ export function validar(conjunto: ConjuntoPaises): ResultadoValidacion {
     const { datos, origen } = pais;
     if (pais.id !== clave) errores.push(`${clave}: el identificador interno es ${pais.id}`);
     if (pais.capital.trim() === '') errores.push(`${pais.nombre}: sin capital`);
+    if (pais.tipo === 'dependiente') {
+      const soberano = pais.soberano ? conjunto.paises[pais.soberano] : undefined;
+      if (soberano?.tipo !== 'pais') {
+        errores.push(
+          `${pais.nombre}: es dependiente pero su país soberano no es un Estado de los datos`,
+        );
+      }
+    } else if (pais.soberano !== undefined) {
+      errores.push(`${pais.nombre}: solo los territorios dependientes tienen país soberano`);
+    }
 
     for (const esencial of ['poblacion', 'pib']) {
       if (pais.jugable && datos[esencial] == null) {

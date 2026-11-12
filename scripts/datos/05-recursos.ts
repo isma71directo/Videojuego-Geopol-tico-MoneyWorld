@@ -20,17 +20,12 @@ import {
   numero,
   redondear,
 } from './lib/comun.ts';
-import { hoy, leerPaises } from './lib/paises.ts';
+import { codigosFuente, hoy, leerPaises } from './lib/paises.ts';
 import type { ArchivoFuente, SeriePorPais } from './lib/tipos.ts';
 
 const ANIOS = [2008, 2009, 2010];
 
-const codigos = new Set(
-  leerPaises()
-    .map((pais) => pais.codigos.owid)
-    .filter((codigo): codigo is string => codigo !== null),
-);
-codigos.add('SSD');
+const codigos = codigosFuente(leerPaises(), 'owid');
 
 const salida: ArchivoFuente = {
   fuente: 'Our World in Data: Energy Institute y EIA (reservas fósiles); USGS y BGS (minerales)',

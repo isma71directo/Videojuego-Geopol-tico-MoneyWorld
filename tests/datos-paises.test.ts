@@ -58,6 +58,31 @@ describe('paises-2010.json (datos publicados)', () => {
     );
   });
 
+  it('incluye los territorios dependientes con datos, con su país soberano', () => {
+    const dependientes = paises.filter((p) => p.tipo === 'dependiente');
+    expect(dependientes).toHaveLength(21);
+    expect(pais('HKG').soberano).toBe('CHN');
+    expect(pais('PRI').soberano).toBe('USA');
+    expect(pais('GRL').soberano).toBe('DNK');
+    for (const p of dependientes) {
+      expect(p.jugable, p.nombre).toBe(true);
+      expect(conjunto.paises[p.soberano!]?.tipo, p.nombre).toBe('pais');
+    }
+  });
+
+  it('tiene las Antillas Neerlandesas de 2010 y no sus partes actuales', () => {
+    expect(pais('ANT').soberano).toBe('NLD');
+    expect(conjunto.paises.CUW).toBeUndefined();
+    expect(conjunto.paises.SXM).toBeUndefined();
+  });
+
+  it('son jugables los territorios con independencia de hecho, y el Sáhara Occidental no', () => {
+    for (const id of ['ABK', 'SOS', 'PMR', 'SOL', 'CYN', 'XKX', 'TWN', 'PSE']) {
+      expect(pais(id).jugable, id).toBe(true);
+    }
+    expect(pais('ESH').jugable).toBe(false);
+  });
+
   it('refleja el mapa de 2010: Sudán unido y sin Sudán del Sur', () => {
     expect(conjunto.paises.SSD).toBeUndefined();
     // Sudán (unos 35 M) más Sudán del Sur (unos 10 M).
@@ -334,6 +359,12 @@ describe('validación de los datos', () => {
     const malo = copia();
     malo.paises.ESP!.datos.serviciosPib = 20;
     expect(validar(malo).errores.some((e) => e.includes('los sectores suman'))).toBe(true);
+  });
+
+  it('rechaza un territorio dependiente sin país soberano válido', () => {
+    const malo = copia();
+    malo.paises.HKG!.soberano = 'XXX';
+    expect(validar(malo).errores.some((e) => e.startsWith('Hong Kong: es dependiente'))).toBe(true);
   });
 
   it('rechaza nombres repetidos', () => {

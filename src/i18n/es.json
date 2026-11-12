@@ -134,7 +134,9 @@
       "nota": "Tal como eran el 1 de enero de 2010: Libia, Birmania, Siria, Mauritania, Afganistán y Kirguistán tenían otra bandera.",
       "especiales": "Territorios de estatus especial ({n})",
       "notaEspeciales": "Territorios en disputa o con reconocimiento parcial en 2010.",
-      "alt": "Bandera de {pais}"
+      "alt": "Bandera de {pais}",
+      "dependientes": "Territorios dependientes ({n})",
+      "notaDependientes": "Jugables, cada uno con su país soberano. Las Antillas Neerlandesas existieron hasta octubre de 2010; las Islas del Canal no tienen bandera común y muestran la del Reino Unido."
     }
   }
 }

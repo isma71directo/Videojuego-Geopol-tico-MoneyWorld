@@ -11,7 +11,7 @@
  * Uso:    node scripts/datos/04-owid.ts
  */
 import { descargarTexto, escribirJsonCompacto, leerCsv, numero, redondear } from './lib/comun.ts';
-import { hoy, leerPaises } from './lib/paises.ts';
+import { codigosFuente, hoy, leerPaises } from './lib/paises.ts';
 import type { ArchivoFuente, SeriePorPais } from './lib/tipos.ts';
 
 type Columnas = Record<string, { columna: string; descripcion: string; unidad: string }>;
@@ -120,13 +120,7 @@ const ANIOS = new Set(['2008', '2009', '2010']);
 /** Países que OWID publica sin código ISO; se les da el código de la tabla de países. */
 const SIN_ISO: Record<string, string> = { Kosovo: 'OWID_KOS' };
 
-const codigos = new Set(
-  leerPaises()
-    .map((pais) => pais.codigos.owid)
-    .filter((codigo): codigo is string => codigo !== null),
-);
-// Sudán del Sur, para reconstruir el Sudán unido de 2010.
-codigos.add('SSD');
+const codigos = codigosFuente(leerPaises(), 'owid');
 
 async function procesar(url: string, fuente: string, columnas: Columnas): Promise<ArchivoFuente> {
   const texto = await descargarTexto(url);

@@ -1,6 +1,9 @@
 /**
  * Tabla de países y territorios del escenario del 1 de enero de 2010 (tarea f1-t4).
  *
+ * Incluye los Estados soberanos, los territorios de estatus especial y los territorios
+ * dependientes con datos propios (decisión del jugador), cada uno con su país soberano.
+ *
  * Fuentes:
  *  - Banco Mundial, API de países (lista de economías, ISO2, región y capital): consulta actual.
  *  - Wikidata (capital de cada país con sus fechas, nombre en español): consulta actual.
@@ -17,7 +20,20 @@ import type { PaisBase } from './lib/tipos.ts';
 const FECHA_ESCENARIO = '2010-01-01';
 
 interface Manual {
-  dependenciasExcluidas: { codigos: string[] };
+  dependientes: {
+    soberanos: Record<string, string>;
+    compuestos: {
+      id: string;
+      iso2: string;
+      nombre: string;
+      capital: string;
+      region: string;
+      soberano: string;
+      componentes: string[];
+      nota?: string;
+    }[];
+    sinIso2: Record<string, string>;
+  };
   fusiones: Record<string, string[] | string>;
   regiones: Record<string, string>;
   regionesCorregidas: Record<string, string>;
@@ -124,32 +140,40 @@ const respuestaBM = await descargarJson<[unknown, PaisBM[]]>(
 );
 const capitales = await capitalesDeWikidata();
 
-const excluidos = new Set(manual.dependenciasExcluidas.codigos);
-const absorbidos = new Set(
-  Object.entries(manual.fusiones)
-    .filter(([clave]) => !clave.startsWith('_'))
-    .flatMap(([destino, partes]) => (partes as string[]).filter((parte) => parte !== destino)),
+const fusionesManual = Object.entries(manual.fusiones).filter(([clave]) => !clave.startsWith('_'));
+const absorbidos = new Set([
+  ...fusionesManual.flatMap(([destino, partes]) =>
+    (partes as string[]).filter((parte) => parte !== destino),
+  ),
+  ...manual.dependientes.compuestos.flatMap((compuesto) => compuesto.componentes),
+]);
+const soberanoDe = new Map(Object.entries(manual.dependientes.soberanos));
+const sinIso2 = new Map(
+  Object.entries(manual.dependientes.sinIso2).filter(([clave]) => !clave.startsWith('_')),
 );
 const idsEspeciales = new Set(manual.especiales.map((especial) => especial.id));
 
 const paises: PaisBase[] = [];
 
-// 1) Estados soberanos de 2010 según la lista del Banco Mundial.
+// 1) Estados soberanos de 2010 y territorios dependientes con datos, según el Banco Mundial.
 for (const pais of respuestaBM[1]) {
   // Los agregados («Mundo», «Zona euro»…) no tienen región.
   if (pais.region.id === 'NA') continue;
-  if (excluidos.has(pais.id) || absorbidos.has(pais.id) || idsEspeciales.has(pais.id)) continue;
+  if (absorbidos.has(pais.id) || idsEspeciales.has(pais.id)) continue;
   const region = manual.regionesCorregidas[pais.id] ?? pais.region.id;
   const fusion = manual.fusiones[pais.id];
+  const soberano = soberanoDe.get(pais.id);
+  const nombreSinIso = sinIso2.get(pais.id);
   paises.push({
     id: pais.id,
-    iso2: pais.iso2Code,
-    nombre: manual.nombres[pais.id] ?? nombresEs.of(pais.iso2Code) ?? pais.name,
-    tipo: 'pais',
+    iso2: nombreSinIso ? null : pais.iso2Code,
+    nombre: manual.nombres[pais.id] ?? nombreSinIso ?? nombresEs.of(pais.iso2Code) ?? pais.name,
+    tipo: soberano ? 'dependiente' : 'pais',
     jugable: true,
     ...elegirCapital(pais.id, capitales.get(pais.id), pais.capitalCity),
     region,
     regionNombre: manual.regiones[region]!,
+    ...(soberano ? { soberano } : {}),
     codigos: { bm: pais.id, fmi: pais.id, owid: pais.id, wikidata: null },
     ...(manual.nivelesRenta[pais.id] ? { nivelRentaManual: manual.nivelesRenta[pais.id] } : {}),
     ...(Array.isArray(fusion) ? { componentes: fusion } : {}),
@@ -173,7 +197,26 @@ for (const extra of manual.extra) {
   });
 }
 
-// 3) Territorios de estatus especial o en disputa (GDD, sección 3).
+// 3) Territorios dependientes que en 2010 eran uno solo y hoy se publican por partes.
+for (const compuesto of manual.dependientes.compuestos) {
+  paises.push({
+    id: compuesto.id,
+    iso2: compuesto.iso2,
+    nombre: compuesto.nombre,
+    tipo: 'dependiente',
+    jugable: true,
+    capital: compuesto.capital,
+    capitalFuente: 'manual',
+    region: compuesto.region,
+    regionNombre: manual.regiones[compuesto.region]!,
+    soberano: compuesto.soberano,
+    codigos: { bm: null, fmi: null, owid: null, wikidata: null },
+    componentes: compuesto.componentes,
+    ...(compuesto.nota ? { nota: compuesto.nota } : {}),
+  });
+}
+
+// 4) Territorios de estatus especial o en disputa (GDD, sección 3).
 for (const especial of manual.especiales) {
   paises.push({
     id: especial.id,
@@ -202,6 +245,21 @@ if (capitalesDudosas.length > 0) {
 }
 
 const soberanos = paises.filter((pais) => pais.tipo === 'pais').length;
+const dependientes = paises.filter((pais) => pais.tipo === 'dependiente');
+for (const dependiente of dependientes) {
+  if (!paises.some((pais) => pais.id === dependiente.soberano && pais.tipo === 'pais')) {
+    throw new Error(
+      `${dependiente.nombre}: su país soberano ${dependiente.soberano} no está en la tabla.`,
+    );
+  }
+}
+for (const codigo of soberanoDe.keys()) {
+  if (!dependientes.some((pais) => pais.id === codigo)) {
+    throw new Error(
+      `El territorio dependiente ${codigo} ya no está en la lista del Banco Mundial.`,
+    );
+  }
+}
 // 192 miembros de la ONU el 1 de enero de 2010 (Sudán del Sur ingresó en 2011) más el Vaticano.
 if (soberanos !== 193) {
   throw new Error(`Se esperaban 193 Estados soberanos en 2010 y hay ${soberanos}.`);
@@ -217,5 +275,7 @@ escribirJson('fuentes/datos/paises.json', {
   paises,
 });
 console.log(
-  `Tabla de países: ${paises.length} (${soberanos} Estados y ${paises.length - soberanos} territorios especiales).`,
+  `Tabla de países: ${paises.length} (${soberanos} Estados, ` +
+    `${paises.length - soberanos - dependientes.length} territorios especiales y ` +
+    `${dependientes.length} territorios dependientes).`,
 );
