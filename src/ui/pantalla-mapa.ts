@@ -6,6 +6,7 @@ import { ESTILO_MAPA } from '../map/estilo';
 import { conectarGestos } from '../map/gestos';
 import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el, reemplazar } from './dom';
+import { contenidoPanelCiudad, contenidoRecuadroCiudad } from './ficha-ciudad';
 import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
@@ -105,17 +106,24 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   lienzo.addEventListener('keydown', alternarMedidor);
 
   let conjunto: ConjuntoPaises | null = null;
-  let recuadroDe: string | null = null;
-  mapa.alSenalar = (id, x, y) => {
-    const pais = id && conjunto ? conjunto.paises[id] : undefined;
-    if (!pais || !conjunto) {
+  let recuadroDe: unknown = null;
+  mapa.alSenalar = (objetivo, x, y) => {
+    // Lo que se señala: el código del país o la propia ciudad.
+    const clave = objetivo?.tipo === 'ciudad' ? objetivo.ciudad : (objetivo?.id ?? null);
+    const pais = objetivo?.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
+    if (objetivo === null || (objetivo.tipo === 'pais' && (!pais || !conjunto))) {
       recuadro.hidden = true;
       recuadroDe = null;
       return;
     }
-    if (recuadroDe !== id) {
-      reemplazar(recuadro, ...contenidoRecuadro(pais, conjunto));
-      recuadroDe = id;
+    if (recuadroDe !== clave) {
+      reemplazar(
+        recuadro,
+        ...(objetivo.tipo === 'ciudad'
+          ? contenidoRecuadroCiudad(objetivo.ciudad, conjunto)
+          : contenidoRecuadro(pais!, conjunto!)),
+      );
+      recuadroDe = clave;
     }
     recuadro.hidden = false;
     // Al lado del ratón, sin salirse de la pantalla.
@@ -126,9 +134,9 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     const arriba = Math.min(y + margen, elemento.clientHeight - alto - 8);
     recuadro.style.transform = `translate(${Math.max(8, izquierda)}px, ${Math.max(8, arriba)}px)`;
   };
-  mapa.alSeleccionar = (id) => {
-    const pais = id && conjunto ? conjunto.paises[id] : undefined;
-    if (!pais || !conjunto) {
+  mapa.alSeleccionar = (objetivo) => {
+    const pais = objetivo?.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
+    if (objetivo === null || (objetivo.tipo === 'pais' && (!pais || !conjunto))) {
       if (!panel.hidden) reproducir('deseleccionar');
       panel.hidden = true;
       panel.replaceChildren();
@@ -136,11 +144,19 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     }
     if (panel.hidden) reproducir('abrirPanel');
     reproducir('seleccionar');
-    reemplazar(panel, ...contenidoPanel(pais, conjunto, () => mapa.seleccionar(null)));
+    const quitar = (): void => mapa.seleccionar(null);
+    reemplazar(
+      panel,
+      ...(objetivo.tipo === 'ciudad'
+        ? contenidoPanelCiudad(objetivo.ciudad, conjunto, quitar, () =>
+            mapa.seleccionar(objetivo.ciudad.pais),
+          )
+        : contenidoPanel(pais!, conjunto!, quitar)),
+    );
     panel.hidden = false;
   };
   const alPulsarEscape = (evento: KeyboardEvent): void => {
-    if (evento.key === 'Escape' && mapa.paisSeleccionado) {
+    if (evento.key === 'Escape' && mapa.haySeleccion) {
       evento.preventDefault();
       mapa.seleccionar(null);
       lienzo.focus({ preventScroll: true });

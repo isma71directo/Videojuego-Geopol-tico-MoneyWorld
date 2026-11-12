@@ -149,3 +149,37 @@ export function colocarCiudades(
 
 /** Separación entre el punto de una ciudad y su nombre, para dibujarlo. */
 export const SEPARACION_NOMBRE = SEPARACION;
+
+/** Distancia (px) a la que el ratón señala el punto de una ciudad. */
+export const RADIO_CIUDAD_PX = 8;
+
+/**
+ * Ciudad dibujada bajo el ratón (ajuste f4-a4): la de punto más cercano a menos de
+ * RADIO_CIUDAD_PX o, si no, aquella cuyo nombre está debajo. Null si no hay ninguna.
+ */
+export function ciudadEnPunto(
+  colocadas: readonly CiudadColocada[],
+  x: number,
+  y: number,
+): CiudadColocada | null {
+  let elegida: CiudadColocada | null = null;
+  let distanciaMejor = RADIO_CIUDAD_PX;
+  for (const colocada of colocadas) {
+    const distancia = Math.hypot(colocada.x - x, colocada.y - y);
+    if (distancia <= distanciaMejor) {
+      elegida = colocada;
+      distanciaMejor = distancia;
+    }
+  }
+  if (elegida) return elegida;
+  return (
+    colocadas.find(
+      ({ cajaTexto }) =>
+        cajaTexto !== null &&
+        x >= cajaTexto[0] &&
+        x <= cajaTexto[2] &&
+        y >= cajaTexto[1] &&
+        y <= cajaTexto[3],
+    ) ?? null
+  );
+}

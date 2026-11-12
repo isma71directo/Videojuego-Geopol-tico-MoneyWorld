@@ -6,6 +6,11 @@ const decimal = new Intl.NumberFormat('es-ES', {
   maximumFractionDigits: 1,
 });
 
+/** 3273049 → «3.273.049». */
+export function enteros(valor: number): string {
+  return entero.format(valor);
+}
+
 /** 46576897 → «46,6 millones»; 31248 → «31.248». */
 export function personas(valor: number): string {
   if (valor >= 1e9) return `${decimal.format(valor / 1e9)} mil millones`;

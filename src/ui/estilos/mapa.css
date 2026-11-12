@@ -242,3 +242,15 @@
   color: var(--texto-suave);
   font-size: 12px;
 }
+
+/* Panel de la ciudad (ajuste f4-a4). */
+.panel-pais__subtitulo {
+  margin: 6px 0 0;
+  color: var(--texto-suave);
+  font-size: 14px;
+}
+
+.panel-pais__accion {
+  width: 100%;
+  margin-top: 12px;
+}

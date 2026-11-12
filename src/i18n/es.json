@@ -63,7 +63,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país para seleccionarlo, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país o en una ciudad para ver su ficha, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -131,6 +131,23 @@
         "KOR": "Corea del S.",
         "NZL": "N. Zelanda",
         "SLB": "Is. Salomón"
+      },
+      "ciudad": {
+        "capitalDe": "Capital de {pais}",
+        "ciudadDe": "Ciudad de {pais}",
+        "poblacion": "Población",
+        "anioDato": "Año del dato",
+        "fuente": "Fuente",
+        "sinDato": "Sin dato",
+        "sinAnio": "Sin indicar",
+        "conAnio": "{valor} ({anio})",
+        "fuentes": {
+          "WD": "Wikidata (población del municipio)",
+          "ONU": "Naciones Unidas (aglomeración urbana)"
+        },
+        "notaAnio": "No hay dato de 2010: es el más cercano que hay.",
+        "verPais": "Ver la ficha de {pais}",
+        "cerrar": "Cerrar ficha de la ciudad"
       }
     }
   },

@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.0",
-  "actualizado": "2026-11-12T07:21:09Z",
+  "actualizado": "2026-11-12T07:24:35Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 cerrada (v0.5.0 probada por el jugador). Ajustes de la v0.5.1: hechos f4-a1 (12 colores), f4-a2 (nombres de países siempre que no se pisen) y f4-a3 (población de las ciudades y orden por población).",
-    "siguientePaso": "Ficha de la ciudad al pasar el ratón y al hacer clic (ajuste f4-a4); después, publicar la v0.5.1.",
+    "resumen": "Fase 4 cerrada (v0.5.0 probada por el jugador). Hechos los cuatro ajustes de la v0.5.1: 12 colores sin repeticiones cerca, nombres de países siempre que no se pisen, población de las ciudades con orden de aparición por población y ficha de la ciudad.",
+    "siguientePaso": "Publicar la v0.5.1 y abrir el PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -364,15 +364,15 @@
           "origen": "Mensaje del jugador tras probar la v0.5.0",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/afa5a44"
         },
         {
           "id": "f4-a4",
           "titulo": "Ficha de la ciudad al pasar el ratón por encima y al hacer clic",
           "version": "0.5.1",
           "origen": "Mensaje del jugador tras probar la v0.5.0",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-12",
           "enlace": ""
         }
       ]
