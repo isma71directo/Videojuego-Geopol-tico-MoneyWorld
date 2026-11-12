@@ -115,7 +115,7 @@
     "subtitulo": "El contenido gráfico del juego, para revisarlo de un vistazo.",
     "juego": "Ir al juego",
     "hojaDeRuta": "Hoja de ruta",
-    "cargando": "Cargando las banderas…",
+    "cargando": "Cargando el mapa y las banderas…",
     "error": "No se han podido cargar los datos de los países. Comprueba la conexión.",
     "iconos": {
       "titulo": "Iconos de indicadores",
@@ -137,6 +137,15 @@
       "alt": "Bandera de {pais}",
       "dependientes": "Territorios dependientes ({n})",
       "notaDependientes": "Jugables, cada uno con su país soberano. Las Antillas Neerlandesas existieron hasta octubre de 2010; las Islas del Canal no tienen bandera común y muestran la del Reino Unido."
+    },
+    "mapa": {
+      "titulo": "Mapa del mundo de 2010",
+      "nota": "Fronteras del 1 de enero de 2010: Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas y los territorios dependientes como entidades propias. Proyección Equal Earth (propuesta; se confirma en la Fase 3).",
+      "alt": "Mapa del mundo de 2010 con los Estados, los territorios especiales, los territorios dependientes y las zonas sin país.",
+      "estados": "Estados",
+      "especiales": "Territorios especiales o en disputa",
+      "dependientes": "Territorios dependientes",
+      "zonas": "Zonas sin país"
     }
   }
 }

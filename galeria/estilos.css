@@ -88,3 +88,91 @@
   background: var(--superficie-2);
   object-fit: cover;
 }
+
+/* Vista previa del mapa de 2010 */
+.galeria__mapa {
+  margin: 14px 0 0;
+}
+
+.mapa-previo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mapa-previo__oceano {
+  fill: #0d1a2e;
+}
+
+.mapa-previo__reticula {
+  fill: none;
+  stroke: #1d2c47;
+  stroke-width: 0.5;
+}
+
+.mapa-previo__borde {
+  fill: none;
+  stroke: var(--borde);
+  stroke-width: 1;
+}
+
+.mapa-previo__pais {
+  stroke: var(--fondo);
+  stroke-width: 0.4;
+  stroke-linejoin: round;
+}
+
+.mapa-previo__pais--pais {
+  fill: #3d6a99;
+}
+
+.mapa-previo__pais--especial {
+  fill: var(--en-curso);
+}
+
+.mapa-previo__pais--dependiente {
+  fill: #9b7fd6;
+}
+
+.mapa-previo__zona {
+  fill: #6b7488;
+  stroke: var(--fondo);
+  stroke-width: 0.4;
+}
+
+.galeria__leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 10px;
+  color: var(--texto-suave);
+  font-size: 0.8125rem;
+}
+
+.galeria__leyenda li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.galeria__muestra {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.galeria__muestra.mapa-previo__pais--pais {
+  background: #3d6a99;
+}
+
+.galeria__muestra.mapa-previo__pais--especial {
+  background: var(--en-curso);
+}
+
+.galeria__muestra.mapa-previo__pais--dependiente {
+  background: #9b7fd6;
+}
+
+.galeria__muestra.mapa-previo__zona {
+  background: #6b7488;
+}

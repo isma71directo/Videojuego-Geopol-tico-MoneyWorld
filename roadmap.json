@@ -1,7 +1,7 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.2.0",
-  "actualizado": "2026-11-12T00:43:29Z",
+  "actualizado": "2026-11-12T00:45:09Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
@@ -246,12 +246,12 @@
           "titulo": "Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/da86195"
         },
         {
           "id": "f2-t4",
           "titulo": "Audiovisual: banderas de los territorios nuevos y vista previa del mapa del mundo de 2010 en la galería audiovisual",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         }
