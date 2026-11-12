@@ -2,6 +2,7 @@
 import { numeroDeFase, type Roadmap } from '../compartido/roadmap';
 import { VERSION, etiquetaVersion } from '../compartido/version';
 import { t } from '../i18n';
+import { guardarAjuste, leerAjuste } from './ajustes';
 import { el } from './dom';
 import { abrirHoja } from './hoja';
 import './estilos/inicio.css';
@@ -39,9 +40,26 @@ function globo(): SVGElement {
   return svg;
 }
 
+function casillaMedidorFps(): HTMLElement {
+  const casilla = el('input', { type: 'checkbox', checked: leerAjuste('medidorFps') });
+  casilla.addEventListener('change', () => guardarAjuste('medidorFps', casilla.checked));
+  return el(
+    'label',
+    { class: 'ajuste' },
+    casilla,
+    el(
+      'span',
+      {},
+      el('strong', {}, t('juego.ajustes.medidorFps')),
+      el('small', {}, t('juego.ajustes.medidorFpsAyuda')),
+    ),
+  );
+}
+
 function abrirAjustes(): void {
   abrirHoja(
     t('juego.ajustes.titulo'),
+    casillaMedidorFps(),
     el('p', { class: 'hoja__nota' }, t('juego.ajustes.vacio')),
     el(
       'p',

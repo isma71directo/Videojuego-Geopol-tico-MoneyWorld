@@ -149,3 +149,14 @@ describe('geometría del mapa de juego', () => {
     expect(cajasSeCruzan(espana.caja, [x, y, x, y])).toBe(true);
   });
 });
+
+describe('medidor de rendimiento', () => {
+  it('se muestra en desarrollo, con «?fps» o si el jugador lo ha activado', async () => {
+    const { medidorFpsActivo } = await import('../src/ui/ajustes');
+    expect(medidorFpsActivo('', false, false)).toBe(false);
+    expect(medidorFpsActivo('?fps', false, false)).toBe(true);
+    expect(medidorFpsActivo('?otra=1&fps', false, false)).toBe(true);
+    expect(medidorFpsActivo('', true, false)).toBe(true);
+    expect(medidorFpsActivo('', false, true)).toBe(true);
+  });
+});

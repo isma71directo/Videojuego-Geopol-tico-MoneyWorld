@@ -27,8 +27,10 @@
     },
     "ajustes": {
       "titulo": "Ajustes",
-      "vacio": "Todavía no hay nada que ajustar. Los ajustes de velocidad, pausa automática, accesibilidad e idioma llegarán con las primeras versiones jugables.",
-      "version": "Versión del juego"
+      "vacio": "El resto de ajustes (velocidad, pausa automática, sonido, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
+      "version": "Versión del juego",
+      "medidorFps": "Mostrar el medidor de rendimiento",
+      "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa."
     },
     "hoja": {
       "cerrar": "Cerrar"
@@ -58,7 +60,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte y pellizca o usa la rueda para acercar.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda o pellizca para acercar y pulsa F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión."
     }
@@ -95,7 +97,7 @@
       "objetivo": "Objetivo",
       "dependeDe": "Depende de",
       "hechoCuando": "Hecho cuando",
-      "pruebaJugador": "Prueba en el móvil",
+      "pruebaJugador": "Prueba en el PC",
       "tareas": "Tareas",
       "sinTareas": "Las tareas se detallarán al acercarse esta versión.",
       "verCambio": "Ver el cambio"

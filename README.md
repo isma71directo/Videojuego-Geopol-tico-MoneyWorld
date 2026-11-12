@@ -1,6 +1,6 @@
 # Geopolítica 2010 (nombre provisional)
 
-Simulador geopolítico en tiempo real con pausa que se juega en el navegador, en móvil y PC.
+Simulador geopolítico en tiempo real con pausa que se juega en el navegador del PC, con ratón y teclado.
 El jugador dirige un país real a partir del **1 de enero de 2010**.
 
 - 🎮 **Jugar:** <https://isma71directo.github.io/Videojuego-Geopol-tico-MoneyWorld/>

@@ -2,7 +2,7 @@
 
 > **Documento de Diseño del Juego (GDD).** Este archivo es la referencia principal del proyecto.
 > Claude Code debe leerlo al inicio de cada sesión, junto con `CLAUDE.md` y `roadmap.json`.
-> Versión del documento: 1.3 · Fecha: 12/11/2026 · Idioma del proyecto: español.
+> Versión del documento: 1.4 · Fecha: 12/11/2026 · Idioma del proyecto: español.
 
 ---
 
@@ -38,7 +38,7 @@
    - 6.22 Medio ambiente y desastres
    - 6.23 Eventos
    - 6.24 IA de los demás países
-7. Interfaz y experiencia en móvil
+7. Interfaz y experiencia en PC
    - 7.1 Contenido audiovisual
 8. Modelo de datos
 9. Hoja de ruta: etapas, fases y versiones (orden de trabajo)
@@ -61,7 +61,7 @@
 3. **Mapa 2D interactivo como centro del juego.** El mapa político es plano, con capas de información y zoom hasta las regiones. El mapa de juego no es un globo 3D; el 3D se reserva para componentes complementarios (sección 7.1).
 4. **Profundidad accesible.** Hay mucha información, pero se organiza por ministerios, con resúmenes, alertas y consejos de asesores.
 5. **Consecuencias, no guiones.** Hay eventos históricos opcionales, pero el mundo evoluciona por la simulación.
-6. **Pensado para móvil y PC.** Se juega en el navegador, con controles táctiles y paneles que se adaptan a la pantalla.
+6. **Pensado para PC (decisión del jugador).** Se juega en el navegador del ordenador, con ratón y teclado, y aprovecha su potencia: más detalle en el mapa y en la simulación y una interfaz densa, con varios paneles a la vez. La Hoja de ruta y la galería siguen funcionando en el móvil para consultar el progreso.
 7. **Largo plazo.** El juego no tiene fin. Las tecnologías permiten llegar a 2075 y más allá.
 8. **Acabado audiovisual desde el principio.** Cada sistema llega con sus gráficos, sus animaciones y su sonido; no se deja para el final.
 
@@ -73,7 +73,7 @@
 
 | Aspecto | Decisión |
 |---|---|
-| Plataforma | Web (navegador de móvil y PC). Sin servidor: todo se ejecuta en el cliente. |
+| Plataforma | Web, en el navegador del PC (Chrome, Edge, Firefox o Safari recientes), con ratón y teclado; pantalla de al menos 1280 × 720. Sin servidor: todo se ejecuta en el cliente. |
 | Lenguaje | TypeScript |
 | Herramientas | Vite (compilación), Vitest (tests) |
 | Publicación | GitHub Pages mediante GitHub Actions. Cada fusión en `main` publica una versión nueva. |
@@ -104,7 +104,7 @@
 /tests/                 → tests del motor
 ```
 
-**Rendimiento.** El juego debe moverse con fluidez en un móvil de gama media: unos 200 países simulados mensualmente, regiones agregadas y un mapa a 60 fps al desplazar. Los países que no ve el jugador pueden simularse con menos detalle.
+**Rendimiento.** El juego debe moverse con fluidez en un PC de gama media con gráficos integrados: unos 220 países y territorios simulados mensualmente, regiones y un mapa a 60 fps al desplazar. Niveles de calidad (Bajo, Medio y Alto) permiten aprovechar los PC potentes sin dejar fuera a los modestos. Los países que no ve el jugador pueden simularse con menos detalle.
 
 ---
 
@@ -508,9 +508,9 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 
 ---
 
-## 7. Interfaz y experiencia en móvil
+## 7. Interfaz y experiencia en PC
 
-**Principio:** el mapa ocupa toda la pantalla y los paneles se abren por encima (hojas deslizables en móvil, paneles laterales en PC).
+**Principio:** el mapa ocupa toda la pantalla y los paneles se abren a los lados o como ventanas sobre el mapa; puede haber varios abiertos a la vez, como en los simuladores geopolíticos de PC.
 
 **Pantallas**
 1. **Inicio:** nueva partida, cargar, ajustes, enlace a la Hoja de ruta, versión del juego.
@@ -520,9 +520,9 @@ El jugador también puede **apoyar movimientos independentistas en otros países
    - **Mapa vivo:** relieve sombreado y fondo oceánico, ríos y lagos, ciudades y, según avance el juego, infraestructuras, unidades, rutas comerciales y efectos (crisis, protestas, combates, desastres). Más detalle cuanto más se acerca el jugador.
    - **Modos de mapa:** el mismo mapa con distintas capas, cada una con su leyenda. Riqueza (de más rico a más pobre), población, crecimiento, paro, deuda, inflación y recursos llegan con el sistema de capas (Fase 6); relaciones, organizaciones y alianzas, comercio, energía, independentismo, conflictos, militar y elecciones llegan con su sistema.
    - Barra superior: fecha, controles de tiempo, tesorería, popularidad, alertas.
-   - Barra inferior (móvil): Gobierno · Economía · Política · Mundo · Ejército · Más.
+   - Barra de menú: Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado para cada sección.
    - **Capas del mapa:** político, alianzas, relaciones con mi país, PIB per cápita, crecimiento, paro, deuda, energía (mix y apagones), recursos, independentismo por región, conflictos, militar y elecciones.
-   - Tocar un país muestra su ficha; un toque largo o doble toque muestra las acciones diplomáticas.
+   - Al pasar el ratón por un país se ve su nombre y sus datos clave; un clic abre su ficha y el clic derecho, un menú de acciones (diplomacia, comercio, ejército).
 4. **Consejo de Ministros:** cuadrícula de ministerios con su indicador principal y alertas.
 5. **Presupuesto** e **Impuestos** con deslizadores y previsión.
 6. **Parlamento y leyes:** hemiciclo, votaciones, catálogo de leyes, negociación.
@@ -538,7 +538,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 16. **Ajustes:** velocidad, pausa automática, sonido (música y efectos), gráficos (animaciones y 3D), accesibilidad, idioma.
 
 **Experiencia de uso**
-- Zonas táctiles de al menos 44 px, gestos de zoom y arrastre en el mapa, y modo vertical y horizontal.
+- Ratón y teclado: rueda para el zoom, arrastre, clic derecho para acciones y atajos (espacio para pausar, 1 a 4 para la velocidad, F para el medidor de rendimiento…). Se adapta desde 1280 × 720 hasta pantallas grandes. El mapa conserva los gestos táctiles para los portátiles con pantalla táctil.
 - **Asesores:** cada ministro avisa de los problemas y propone medidas ("El paro juvenil supera el 40 %. Propuesta: plan de empleo joven").
 - Tooltips que explican cada indicador y qué lo afecta.
 - Tema oscuro por defecto, con colores accesibles.
@@ -564,10 +564,10 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 - El **mapa de juego es 2D**. Usos previstos del 3D: maquetas de edificios y centrales en sus fichas, modelos del equipamiento militar y vista de un combate.
 - Cada uso de 3D figura en la sección 9 como **propuesta** y se confirma con el jugador al planificar esa fase.
 - Se carga **solo cuando se usa**, siempre hay una **alternativa en 2D** y se puede desactivar en Ajustes. Nunca es necesario para jugar.
-- Rendimiento en un móvil de gama media: el mapa mantiene sus 60 fps y una escena 3D no baja de unos 30 fps; si no se consigue, se muestra la alternativa en 2D.
+- Rendimiento en un PC de gama media: el mapa mantiene sus 60 fps y una escena 3D no baja de unos 30 fps; si no se consigue, se muestra la alternativa en 2D.
 
 **Reglas del sonido**
-- Empieza tras el primer toque del jugador (los navegadores no permiten otra cosa), con un botón de silencio siempre a mano y volúmenes separados de música y efectos.
+- Empieza tras la primera interacción del jugador, un clic o una tecla (los navegadores no permiten otra cosa), con un botón de silencio siempre a mano y volúmenes separados de música y efectos.
 - Ninguna información se da solo con sonido o solo con color: todo aviso sonoro tiene su equivalente visual.
 - Con «reducir movimiento» activado en el dispositivo, las animaciones se simplifican.
 
@@ -659,7 +659,7 @@ interface EstadoPartida {
 > - **Depende de:** cada fase depende de la anterior (no se repite en cada fase).
 > - **Tareas:** lista ordenada de trabajo.
 > - **Tests:** pruebas automáticas obligatorias.
-> - **Prueba en el móvil:** qué debe comprobar el jugador al publicarse la versión.
+> - **Prueba en el PC:** qué debe comprobar el jugador al publicarse la versión.
 > - **Hecho cuando:** condición para cerrar la fase y subir de versión.
 > - **Audiovisual:** la última tarea de cada fase es su contenido gráfico, sonoro y, si procede, 3D (sección 7.1). Las propuestas de 3D se confirman con el jugador al planificar la fase.
 
@@ -744,16 +744,16 @@ interface EstadoPartida {
 **Hecho cuando:** el mapa llena la pantalla, se ve vivo y va a unos 60 fps en un móvil de gama media.
 
 #### Fase 4 — v0.5.0 · Mapa: selección, nombres y sonido
-**Objetivo:** tocar un país para seleccionarlo y reconocer el mapa por sus nombres.
+**Objetivo:** señalar y elegir países con el ratón y reconocer el mapa por sus nombres.
 **Tareas**
-1. Selección de país al tocar, con resaltado del borde (también los países pequeños).
-2. Colores por país estables y distinguibles, y nombres que aparecen según el zoom.
+1. Selección de país con clic y resaltado al pasar el ratón, con su nombre y sus datos clave (también los países pequeños, por su punto de etiqueta).
+2. Colores por país estables y distintos de los de sus vecinos, y nombres de países que aparecen según el zoom.
 3. Capitales y ciudades principales al acercar.
 4. **Audiovisual:** motor de sonido (Web Audio), primeros efectos de interfaz, botón de silencio y animación de la selección.
 
-**Tests:** tocar cualquier punto del interior de un país lo selecciona; dos países vecinos nunca tienen el mismo color.
-**Prueba en el móvil:** tocar Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo.
-**Hecho cuando:** todos los países son seleccionables y el sonido se puede activar y silenciar.
+**Tests:** hacer clic en cualquier punto del interior de un país lo selecciona; dos países vecinos nunca tienen el mismo color.
+**Prueba en el PC:** pasar el ratón por varios países y ver su nombre; hacer clic en Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo.
+**Hecho cuando:** todos los países se pueden señalar y seleccionar con el ratón y el sonido se puede activar y silenciar.
 
 #### Fase 5 — v0.6.0 · Regiones del mundo
 **Objetivo:** las regiones de cada país, visibles y seleccionables al acercar.
@@ -764,40 +764,40 @@ interface EstadoPartida {
 4. **Audiovisual:** transición animada entre la vista de países y la de regiones.
 
 **Tests:** cada región pertenece a un país existente; la suma de población de las regiones ≈ la del país.
-**Prueba en el móvil:** acercarse a España y tocar Cataluña y Andalucía.
+**Prueba en el PC:** acercarse a España y hacer clic en Cataluña y en Andalucía.
 **Hecho cuando:** las regiones se ven y se seleccionan al acercar.
 
 #### Fase 6 — v0.7.0 · Capas del mapa
 **Objetivo:** ver la información del mundo sobre el mapa, con capas y leyenda.
 **Tareas**
 1. Sistema genérico de capas con leyenda.
-2. Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con selector de capas (menú desplegable en móvil).
+2. Capas de política, riqueza (PIB per cápita), población, crecimiento, paro, deuda, inflación y recursos (reservas de 2010 de petróleo, gas y carbón), con un panel de capas y atajos de teclado.
 3. **Audiovisual:** rampas de color accesibles, iconos de las capas y transición animada al cambiar de capa.
 
 **Tests:** cada capa da color a todos los países con dato y un color neutro a los que no lo tienen.
-**Prueba en el móvil:** cambiar de capa y leer la leyenda.
+**Prueba en el PC:** cambiar de capa y leer la leyenda.
 **Hecho cuando:** las capas funcionan con su leyenda.
 
 #### Fase 7 — v0.8.0 · Componentes de interfaz
 **Objetivo:** las piezas de interfaz que usarán todas las pantallas.
 **Tareas**
-1. Base de interfaz: tema oscuro, tipografía y componentes reutilizables (hoja deslizable, pestañas, tablas, deslizadores y gráficos básicos).
+1. Base de interfaz para PC: tema oscuro, tipografía y componentes reutilizables (paneles laterales y ventanas, pestañas, tablas, deslizadores, menús contextuales, información al pasar el ratón y gráficos básicos).
 2. Muestrario de los componentes en la galería audiovisual.
 3. **Audiovisual:** animaciones de hojas y pestañas y sonidos de navegación.
 
-**Tests:** cada componente se dibuja sin errores a 360 px y se puede usar con el teclado.
-**Prueba en el móvil:** abrir el muestrario de la galería y probar cada componente con el dedo.
-**Hecho cuando:** los componentes funcionan en móvil y en PC.
+**Tests:** cada componente se dibuja sin errores a 1280 × 720 y a 1920 × 1080 y se puede usar con el teclado.
+**Prueba en el PC:** abrir el muestrario de la galería y probar cada componente con el ratón y el teclado.
+**Hecho cuando:** los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes.
 
 #### Fase 8 — v0.9.0 · Ficha de país
 **Objetivo:** consultar los datos de cualquier país.
 **Tareas**
 1. Datos de 2010 de régimen político y jefes de Estado y de Gobierno (script con fuente).
-2. Ficha de país (hoja deslizable en móvil): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados.
+2. Ficha de país (panel lateral): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados.
 3. **Audiovisual:** iconos de los regímenes y retratos genéricos ilustrados para los cargos (sin fotografías de personas reales).
 
 **Tests:** la ficha muestra datos de todos los países sin errores.
-**Prueba en el móvil:** tocar España, Japón y Somalilandia y revisar sus fichas.
+**Prueba en el PC:** hacer clic en España, Japón y Somalilandia y revisar sus fichas.
 **Hecho cuando:** todos los países tienen una ficha completa.
 
 #### Fase 9 — v0.10.0 · Buscador y ficha de región
@@ -808,8 +808,8 @@ interface EstadoPartida {
 3. **Audiovisual:** resaltado animado del resultado en el mapa.
 
 **Tests:** el buscador encuentra países y regiones escritos con y sin tildes.
-**Prueba en el móvil:** buscar «Cataluña» y «Texas» y abrir sus fichas.
-**Hecho cuando:** cualquier país o región se encuentra en pocos toques.
+**Prueba en el PC:** buscar «Cataluña» y «Texas» y abrir sus fichas.
+**Hecho cuando:** cualquier país o región se encuentra en pocos clics.
 
 #### Fase 10 — v0.11.0 · Nueva partida
 **Objetivo:** empezar una partida eligiendo cualquier país.
@@ -819,7 +819,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación de la elección de país y transición al comienzo de la partida.
 
 **Tests:** se puede crear una partida con cualquier país jugable.
-**Prueba en el móvil:** crear una partida con España y otra con otro país; navegar por las secciones vacías.
+**Prueba en el PC:** crear una partida con España y otra con otro país; navegar por las secciones vacías.
 **Hecho cuando:** se puede empezar una partida con cualquier país jugable.
 
 ---
@@ -834,7 +834,7 @@ interface EstadoPartida {
 3. **Audiovisual:** reloj animado del paso del tiempo y sonidos de pausa y de cambio de velocidad.
 
 **Tests:** un año de juego produce 365 pasos diarios, 52 semanales, 12 mensuales y 1 anual.
-**Prueba en el móvil:** pausar, cambiar de velocidad y ver cómo avanza la fecha.
+**Prueba en el PC:** pausar, cambiar de velocidad y ver cómo avanza la fecha.
 **Hecho cuando:** el tiempo avanza a cada velocidad y se detiene al pausar.
 
 #### Fase 12 — v0.13.0 · Motor en segundo plano
@@ -845,7 +845,7 @@ interface EstadoPartida {
 3. **Audiovisual:** primera música ambiental sintetizada, con su propio volumen.
 
 **Tests:** dos partidas con la misma semilla y las mismas acciones dan el mismo resultado.
-**Prueba en el móvil:** jugar a ×8 y comprobar que los menús siguen respondiendo al instante.
+**Prueba en el PC:** jugar a ×8 y comprobar que los menús siguen respondiendo al instante.
 **Hecho cuando:** el tiempo avanza sin bloquear la interfaz.
 
 #### Fase 13 — v0.14.0 · Efectos y pausa automática
@@ -856,7 +856,7 @@ interface EstadoPartida {
 3. **Audiovisual:** aviso visual y sonoro de la pausa automática.
 
 **Tests:** un modificador con retraso y duración empieza y termina en las fechas correctas.
-**Prueba en el móvil:** activar y desactivar la pausa automática en Ajustes.
+**Prueba en el PC:** activar y desactivar la pausa automática en Ajustes.
 **Hecho cuando:** los efectos se aplican y caducan solos, y la pausa automática funciona.
 
 #### Fase 14 — v0.15.0 · Guardar y cargar partidas
@@ -867,7 +867,7 @@ interface EstadoPartida {
 3. **Audiovisual:** indicador de guardado y pantalla de cargar partida con la bandera y la fecha de cada ranura.
 
 **Tests:** guardar y cargar no altera el estado; una partida de una versión anterior se migra.
-**Prueba en el móvil:** avanzar un año a ×8, guardar, cerrar el navegador, volver y cargar.
+**Prueba en el PC:** avanzar un año a ×8, guardar, cerrar el navegador, volver y cargar.
 **Hecho cuando:** las partidas se recuperan siempre.
 
 #### Fase 15 — v0.16.0 · Economía: producción y demanda
@@ -878,7 +878,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de los indicadores macroeconómicos que falten.
 
 **Tests:** sin intervención, el PIB de los 20 mayores países evoluciona en rangos creíbles durante 5 años.
-**Prueba en el móvil:** avanzar un año y ver cambiar el PIB en la ficha de varios países.
+**Prueba en el PC:** avanzar un año y ver cambiar el PIB en la ficha de varios países.
 **Hecho cuando:** el PIB de todos los países evoluciona mes a mes.
 
 #### Fase 16 — v0.17.0 · Economía: inflación y paro
@@ -889,7 +889,7 @@ interface EstadoPartida {
 3. **Audiovisual:** sonidos de las alertas económicas.
 
 **Tests:** en 5 años sin intervención, crecimiento entre −10 % y +15 % e inflación entre −5 % y +30 %, salvo casos justificados.
-**Prueba en el móvil:** jugar un año y revisar el paro y la inflación de España.
+**Prueba en el PC:** jugar un año y revisar el paro y la inflación de España.
 **Hecho cuando:** pasa el test de credibilidad.
 
 #### Fase 17 — v0.18.0 · Pantalla de Economía
@@ -900,7 +900,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráficos históricos animados.
 
 **Tests:** el historial guarda un valor por mes de cada indicador, sin huecos.
-**Prueba en el móvil:** jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido.
+**Prueba en el PC:** jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido.
 **Hecho cuando:** los gráficos funcionan con los datos de la partida.
 
 #### Fase 18 — v0.19.0 · Banco central y tipos de interés
@@ -911,7 +911,7 @@ interface EstadoPartida {
 3. **Audiovisual:** visualización de los tipos de interés y de su evolución.
 
 **Tests:** subir los tipos reduce la inflación y el crecimiento con retraso.
-**Prueba en el móvil:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses.
+**Prueba en el PC:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses.
 **Hecho cuando:** la política monetaria funciona.
 
 #### Fase 19 — v0.20.0 · Moneda y divisas
@@ -922,7 +922,7 @@ interface EstadoPartida {
 3. **Audiovisual:** símbolos de las monedas y gráfico del tipo de cambio.
 
 **Tests:** devaluar abarata las exportaciones y encarece las importaciones.
-**Prueba en el móvil:** devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses.
+**Prueba en el PC:** devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses.
 **Hecho cuando:** cada país tiene su régimen de moneda y se puede cambiar.
 
 #### Fase 20 — v0.21.0 · Bancos, bolsa y crisis
@@ -933,7 +933,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación del contagio de una crisis en el mapa.
 
 **Tests:** una crisis bancaria se contagia a los socios con mucha exposición.
-**Prueba en el móvil:** seguir en el mapa el contagio de una crisis en una partida de prueba.
+**Prueba en el PC:** seguir en el mapa el contagio de una crisis en una partida de prueba.
 **Hecho cuando:** puede producirse una crisis financiera y contagiarse.
 
 #### Fase 21 — v0.22.0 · Presupuesto: ingresos y gastos
@@ -944,7 +944,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráfico de ingresos y gastos.
 
 **Tests:** la suma de las partidas es el total y el saldo coincide con el déficit.
-**Prueba en el móvil:** ver el presupuesto inicial de España y compararlo con el de Alemania.
+**Prueba en el PC:** ver el presupuesto inicial de España y compararlo con el de Alemania.
 **Hecho cuando:** todos los países tienen su presupuesto de 2010.
 
 #### Fase 22 — v0.23.0 · Deuda, prima de riesgo y rating
@@ -955,7 +955,7 @@ interface EstadoPartida {
 3. **Audiovisual:** distintivo animado del rating.
 
 **Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo.
-**Prueba en el móvil:** ver la prima de riesgo de Grecia durante 2010.
+**Prueba en el PC:** ver la prima de riesgo de Grecia durante 2010.
 **Hecho cuando:** la deuda y el rating responden al déficit.
 
 #### Fase 23 — v0.24.0 · Pantalla de Presupuesto
@@ -966,7 +966,7 @@ interface EstadoPartida {
 3. **Audiovisual:** deslizadores con respuesta visual y sonora.
 
 **Tests:** la previsión a 12 meses coincide con lo que pasa si no cambia nada más.
-**Prueba en el móvil:** subir mucho el gasto y comprobar que el rating baja.
+**Prueba en el PC:** subir mucho el gasto y comprobar que el rating baja.
 **Hecho cuando:** el presupuesto es editable y sus efectos son coherentes.
 
 #### Fase 24 — v0.25.0 · Impuestos: modelo
@@ -977,18 +977,18 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de cada impuesto.
 
 **Tests:** subir un impuesto aumenta la recaudación hasta un punto y después la reduce.
-**Prueba en el móvil:** revisar los impuestos de España en 2010.
+**Prueba en el PC:** revisar los impuestos de España en 2010.
 **Hecho cuando:** todos los impuestos recaudan.
 
 #### Fase 25 — v0.26.0 · Impuestos: efectos y simulador
-**Objetivo:** ver qué pasa al tocar los impuestos.
+**Objetivo:** ver qué pasa al cambiar los impuestos.
 **Tareas**
 1. Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización.
 2. Pantalla «Impuestos» con simulador («si subes el IVA un punto, recaudarás X»).
 3. **Audiovisual:** curva de Laffer animada y simulador visual de la recaudación.
 
 **Tests:** el simulador acierta la recaudación real a 6 meses con un margen razonable.
-**Prueba en el móvil:** subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses.
+**Prueba en el PC:** subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses.
 **Hecho cuando:** todos los impuestos funcionan y el simulador acierta de forma aproximada.
 
 #### Fase 26 — v0.27.0 · Consejo de Ministros
@@ -999,7 +999,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de los 20 ministerios y retratos genéricos de los ministros.
 
 **Tests:** cada ministerio tiene datos para todos los países.
-**Prueba en el móvil:** abrir el Consejo de Ministros y cesar a un ministro.
+**Prueba en el PC:** abrir el Consejo de Ministros y cesar a un ministro.
 **Hecho cuando:** todo lo construido hasta ahora se maneja desde los ministerios.
 
 #### Fase 27 — v0.28.0 · Asesores, noticias e informe del mes
@@ -1011,7 +1011,7 @@ interface EstadoPartida {
 4. **Audiovisual:** teletipo animado, sonidos de notificación e ilustración del informe del mes.
 
 **Tests:** cada aviso de un asesor trae al menos una propuesta que se puede aplicar.
-**Prueba en el móvil:** leer el informe del mes y aplicar la propuesta de un asesor.
+**Prueba en el PC:** leer el informe del mes y aplicar la propuesta de un asesor.
 **Hecho cuando:** el jugador se entera de lo importante sin buscarlo.
 
 #### Fase 28 — v0.29.0 · Demografía
@@ -1022,7 +1022,7 @@ interface EstadoPartida {
 3. **Audiovisual:** pirámide de población animada.
 
 **Tests:** 10 años de simulación dan cifras de población cercanas a las reales de 2020 (±5 % en los países grandes).
-**Prueba en el móvil:** ver la pirámide de Japón y la de Nigeria.
+**Prueba en el PC:** ver la pirámide de Japón y la de Nigeria.
 **Hecho cuando:** la demografía evoluciona de forma creíble.
 
 #### Fase 29 — v0.30.0 · Población por región
@@ -1033,7 +1033,7 @@ interface EstadoPartida {
 3. **Audiovisual:** flujos migratorios animados en el mapa.
 
 **Tests:** la suma de la población de las regiones es igual a la del país en todo momento.
-**Prueba en el móvil:** ver en la capa de población cómo crecen las capitales en 5 años.
+**Prueba en el PC:** ver en la capa de población cómo crecen las capitales en 5 años.
 **Hecho cuando:** la población de cada región evoluciona.
 
 > 🎮 **HITO ALFA 1:** ya se puede jugar a gestionar la economía de un país en el tiempo. Partida de prueba recomendada: España 2010–2014.
@@ -1050,7 +1050,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos del mercado laboral y de las prestaciones.
 
 **Tests:** subir mucho el salario mínimo sube los salarios bajos y, por encima de cierto nivel, el paro.
-**Prueba en el móvil:** subir el salario mínimo y ver el paro al cabo de un año.
+**Prueba en el PC:** subir el salario mínimo y ver el paro al cabo de un año.
 **Hecho cuando:** el mercado laboral responde a las leyes y al salario mínimo.
 
 #### Fase 31 — v0.32.0 · Pensiones y huelgas
@@ -1061,7 +1061,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráfico de la proyección de las pensiones y animación y sonido de las huelgas.
 
 **Tests:** subir la edad de jubilación mejora el saldo de las pensiones y empeora la satisfacción de los mayores.
-**Prueba en el móvil:** reformar las pensiones y ver la proyección a 20 años.
+**Prueba en el PC:** reformar las pensiones y ver la proyección a 20 años.
 **Hecho cuando:** el sistema de pensiones responde a la demografía y a las reformas.
 
 #### Fase 32 — v0.33.0 · Sanidad
@@ -1073,7 +1073,7 @@ interface EstadoPartida {
 4. **Audiovisual:** iconos sanitarios.
 
 **Tests:** recortar el gasto sanitario empeora las listas de espera en meses y la esperanza de vida en años.
-**Prueba en el móvil:** recortar la sanidad un 20 % y observar los avisos del asesor.
+**Prueba en el PC:** recortar la sanidad un 20 % y observar los avisos del asesor.
 **Hecho cuando:** la sanidad responde al gasto con retrasos realistas.
 
 #### Fase 33 — v0.34.0 · Epidemias
@@ -1084,7 +1084,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación de la propagación en el mapa y sonidos de alerta sanitaria.
 
 **Tests:** una epidemia se extiende más rápido entre países muy relacionados y la vacunación la frena.
-**Prueba en el móvil:** en una partida de prueba con una epidemia, seguirla en el mapa y vacunar.
+**Prueba en el PC:** en una partida de prueba con una epidemia, seguirla en el mapa y vacunar.
 **Hecho cuando:** las epidemias se propagan y se pueden contener.
 
 #### Fase 34 — v0.35.0 · Educación
@@ -1096,7 +1096,7 @@ interface EstadoPartida {
 4. **Audiovisual:** iconos de los niveles educativos y gráficos de los efectos con retraso.
 
 **Tests:** más gasto en educación mejora la productividad a 10–15 años, no antes.
-**Prueba en el móvil:** comparar la calidad educativa de varios países en una capa del mapa.
+**Prueba en el PC:** comparar la calidad educativa de varios países en una capa del mapa.
 **Hecho cuando:** la educación alimenta la economía a largo plazo.
 
 #### Fase 35 — v0.36.0 · Infraestructuras
@@ -1108,7 +1108,7 @@ interface EstadoPartida {
 4. **Audiovisual:** iconos de cada tipo de infraestructura.
 
 **Tests:** una infraestructura sin mantenimiento pierde capacidad.
-**Prueba en el móvil:** ver los hospitales y colegios de varias regiones de España.
+**Prueba en el PC:** ver los hospitales y colegios de varias regiones de España.
 **Hecho cuando:** cada región tiene sus infraestructuras de 2010.
 
 #### Fase 36 — v0.37.0 · Obras
@@ -1119,7 +1119,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación de la obra en curso y de la inauguración, sonidos de construcción y, si aporta al juego, maquetas 3D sencillas de los edificios en la ficha de región.
 
 **Tests:** una obra sin presupuesto se retrasa.
-**Prueba en el móvil:** construir un hospital en una región y seguirlo hasta su inauguración.
+**Prueba en el PC:** construir un hospital en una región y seguirlo hasta su inauguración.
 **Hecho cuando:** las obras se construyen, cuestan y afectan a los indicadores regionales.
 
 #### Fase 37 — v0.38.0 · Transporte
@@ -1130,7 +1130,7 @@ interface EstadoPartida {
 3. **Audiovisual:** trazado de las redes en el mapa con tráfico animado, iconos de cada medio y capa de transporte.
 
 **Tests:** mejorar la conectividad de una región aumenta su producción.
-**Prueba en el móvil:** ver la red de alta velocidad de España en 2010 en la capa de transporte.
+**Prueba en el PC:** ver la red de alta velocidad de España en 2010 en la capa de transporte.
 **Hecho cuando:** el transporte influye en la economía regional.
 
 #### Fase 38 — v0.39.0 · Energía: centrales y demanda
@@ -1141,7 +1141,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de las centrales por tipo y gráfico del mix eléctrico.
 
 **Tests:** la generación inicial de cada país cuadra con sus datos de 2010 (±5 %).
-**Prueba en el móvil:** ver el mix eléctrico de Francia y el de Polonia.
+**Prueba en el PC:** ver el mix eléctrico de Francia y el de Polonia.
 **Hecho cuando:** cada país produce su electricidad de 2010.
 
 #### Fase 39 — v0.40.0 · Red eléctrica, precios y apagones
@@ -1152,7 +1152,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación del flujo eléctrico en la red y efecto visual y sonoro de los apagones.
 
 **Tests:** cerrar centrales sin reponer capacidad provoca subida de precios y apagones.
-**Prueba en el móvil:** cerrar todas las nucleares y observar el resultado en un año.
+**Prueba en el PC:** cerrar todas las nucleares y observar el resultado en un año.
 **Hecho cuando:** la energía limita y encarece la economía de forma realista.
 
 #### Fase 40 — v0.41.0 · Combustibles y pantalla de Energía
@@ -1163,7 +1163,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráficos animados de la pantalla de Energía y, si aporta al juego, maqueta 3D de cada tipo de central.
 
 **Tests:** cortar el gas importado sube el precio de la electricidad.
-**Prueba en el móvil:** construir una central y ver el cambio en el mix y en el precio.
+**Prueba en el PC:** construir una central y ver el cambio en el mix y en el precio.
 **Hecho cuando:** la energía se gestiona por completo desde su ministerio.
 
 #### Fase 41 — v0.42.0 · Telecomunicaciones
@@ -1174,7 +1174,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de telecomunicaciones y animación del despliegue de cobertura en el mapa.
 
 **Tests:** más cobertura de banda ancha mejora la productividad de los servicios.
-**Prueba en el móvil:** desplegar fibra en una región y comprobar el efecto.
+**Prueba en el PC:** desplegar fibra en una región y comprobar el efecto.
 **Hecho cuando:** las telecomunicaciones influyen en la economía.
 
 #### Fase 42 — v0.43.0 · Vivienda y agua
@@ -1185,7 +1185,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de vivienda y agua.
 
 **Tests:** más vivienda pública reduce el sinhogarismo; sin agua suficiente baja la producción agraria.
-**Prueba en el móvil:** construir vivienda pública y ver el precio del alquiler.
+**Prueba en el PC:** construir vivienda pública y ver el precio del alquiler.
 **Hecho cuando:** todos los ministerios de servicios tienen contenido real.
 
 > 🎮 **HITO ALFA 2:** el país completo funciona por dentro: servicios, obras, transporte y energía.
@@ -1202,7 +1202,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de los 18 recursos y capa de recursos en el mapa.
 
 **Tests:** producir agota las reservas; ningún país produce un recurso del que no tiene reservas.
-**Prueba en el móvil:** ver en la capa de recursos dónde están el petróleo y el litio.
+**Prueba en el PC:** ver en la capa de recursos dónde están el petróleo y el litio.
 **Hecho cuando:** cada país tiene sus recursos de 2010.
 
 #### Fase 44 — v0.45.0 · Precios mundiales de los recursos
@@ -1213,7 +1213,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráfico de precios mundiales en movimiento y animación de los descubrimientos.
 
 **Tests:** cortar la producción de un gran exportador sube el precio mundial.
-**Prueba en el móvil:** como Arabia Saudí, reducir la producción de petróleo y ver el precio.
+**Prueba en el PC:** como Arabia Saudí, reducir la producción de petróleo y ver el precio.
 **Hecho cuando:** los recursos generan ingresos y dependencias reales.
 
 #### Fase 45 — v0.46.0 · Sectores productivos
@@ -1224,7 +1224,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de los 28 sectores.
 
 **Tests:** el PIB es la suma de los sectores; una subida del petróleo encarece la energía, frena la industria y beneficia a los productores.
-**Prueba en el móvil:** ver los sectores más grandes de Alemania y de Arabia Saudí.
+**Prueba en el PC:** ver los sectores más grandes de Alemania y de Arabia Saudí.
 **Hecho cuando:** el PIB es la suma de sectores interconectados.
 
 #### Fase 46 — v0.47.0 · Política industrial
@@ -1235,7 +1235,7 @@ interface EstadoPartida {
 3. **Audiovisual:** diagrama animado de los insumos entre sectores.
 
 **Tests:** subvencionar un sector aumenta su empleo y cuesta lo previsto.
-**Prueba en el móvil:** lanzar un plan para el sector automoción y seguir su empleo.
+**Prueba en el PC:** lanzar un plan para el sector automoción y seguir su empleo.
 **Hecho cuando:** el jugador puede impulsar cualquier sector.
 
 #### Fase 47 — v0.48.0 · Empresas
@@ -1246,7 +1246,7 @@ interface EstadoPartida {
 3. **Audiovisual:** emblemas genéricos de empresas por sector (sin logotipos reales).
 
 **Tests:** nacionalizar pasa los beneficios de la empresa al presupuesto.
-**Prueba en el móvil:** nacionalizar el sector eléctrico y ver el impacto en el presupuesto y los precios.
+**Prueba en el PC:** nacionalizar el sector eléctrico y ver el impacto en el presupuesto y los precios.
 **Hecho cuando:** el Estado puede ser empresario.
 
 #### Fase 48 — v0.49.0 · Inversión extranjera y fusiones
@@ -1257,7 +1257,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación en el mapa de inversiones, nacionalizaciones y deslocalizaciones.
 
 **Tests:** subir mucho el impuesto de sociedades provoca deslocalización.
-**Prueba en el móvil:** bajar el impuesto de sociedades y ver llegar inversión extranjera.
+**Prueba en el PC:** bajar el impuesto de sociedades y ver llegar inversión extranjera.
 **Hecho cuando:** las empresas responden al entorno y al gobierno.
 
 #### Fase 49 — v0.50.0 · Comercio: flujos
@@ -1268,7 +1268,7 @@ interface EstadoPartida {
 3. **Audiovisual:** líneas animadas de los flujos comerciales en el mapa.
 
 **Tests:** el comercio inicial de cada país cuadra con su comercio de 2010 en % del PIB.
-**Prueba en el móvil:** ver en el mapa los principales socios de España.
+**Prueba en el PC:** ver en el mapa los principales socios de España.
 **Hecho cuando:** el comercio conecta las economías del mundo.
 
 #### Fase 50 — v0.51.0 · Comercio: política comercial
@@ -1280,7 +1280,7 @@ interface EstadoPartida {
 4. **Audiovisual:** iconos de los bienes comerciados.
 
 **Tests:** sancionar a un socio reduce el comercio de ambos.
-**Prueba en el móvil:** poner aranceles a China y ver los precios, las exportaciones y su reacción.
+**Prueba en el PC:** poner aranceles a China y ver los precios, las exportaciones y su reacción.
 **Hecho cuando:** la política comercial tiene efectos visibles.
 
 #### Fase 51 — v0.52.0 · Relaciones internacionales
@@ -1292,7 +1292,7 @@ interface EstadoPartida {
 4. **Audiovisual:** animación de los cambios de relación en el mapa.
 
 **Tests:** las relaciones iniciales reflejan las alianzas y los conflictos conocidos de 2010.
-**Prueba en el móvil:** ver en la capa de relaciones los aliados de EE. UU. y los de Rusia.
+**Prueba en el PC:** ver en la capa de relaciones los aliados de EE. UU. y los de Rusia.
 **Hecho cuando:** las relaciones de 2010 son reconocibles.
 
 #### Fase 52 — v0.53.0 · Acciones diplomáticas
@@ -1303,7 +1303,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de las acciones, escenas ilustradas de visitas y cumbres y sonidos de firma de tratados.
 
 **Tests:** las acciones hostiles bajan las relaciones y los aliados del afectado reaccionan.
-**Prueba en el móvil:** mejorar las relaciones con un país mediante visitas y un tratado.
+**Prueba en el PC:** mejorar las relaciones con un país mediante visitas y un tratado.
 **Hecho cuando:** la diplomacia tiene consecuencias económicas y políticas.
 
 #### Fase 53 — v0.54.0 · Organizaciones internacionales
@@ -1314,7 +1314,7 @@ interface EstadoPartida {
 3. **Audiovisual:** emblemas de las organizaciones (los oficiales cuando su licencia lo permita; si no, versiones propias) y sala de votación animada.
 
 **Tests:** los miembros de cada organización coinciden con los de 2010.
-**Prueba en el móvil:** proponer sanciones en el Consejo de Seguridad y ver el veto.
+**Prueba en el PC:** proponer sanciones en el Consejo de Seguridad y ver el veto.
 **Hecho cuando:** las organizaciones existen y votan.
 
 #### Fase 54 — v0.55.0 · Organizaciones: beneficios y obligaciones
@@ -1325,7 +1325,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación de adhesiones y salidas en el mapa.
 
 **Tests:** solicitar la entrada en la UE comprueba los requisitos y requiere unanimidad.
-**Prueba en el móvil:** ver la capa de alianzas y solicitar la entrada en una organización.
+**Prueba en el PC:** ver la capa de alianzas y solicitar la entrada en una organización.
 **Hecho cuando:** las organizaciones influyen en las decisiones de los países.
 
 > 🎮 **HITO ALFA 3:** el mundo está conectado por la economía, el comercio y la diplomacia.
@@ -1342,7 +1342,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de los 17 grupos sociales.
 
 **Tests:** una reforma impopular baja la satisfacción de los grupos afectados y no la de los demás.
-**Prueba en el móvil:** subir el salario mínimo y ver qué grupos mejoran y cuáles empeoran.
+**Prueba en el PC:** subir el salario mínimo y ver qué grupos mejoran y cuáles empeoran.
 **Hecho cuando:** cada decisión tiene ganadores y perdedores visibles.
 
 #### Fase 56 — v0.57.0 · Opinión pública
@@ -1354,7 +1354,7 @@ interface EstadoPartida {
 4. **Audiovisual:** gráficos animados de satisfacción y de temas de preocupación.
 
 **Tests:** si el paro sube, el paro gana peso entre los temas de preocupación.
-**Prueba en el móvil:** ver cómo cambia la popularidad tras una medida impopular.
+**Prueba en el PC:** ver cómo cambia la popularidad tras una medida impopular.
 **Hecho cuando:** el gobierno tiene una popularidad que responde a su gestión.
 
 #### Fase 57 — v0.58.0 · Medios de comunicación
@@ -1365,7 +1365,7 @@ interface EstadoPartida {
 3. **Audiovisual:** portadas de prensa y cabeceras de televisión generadas.
 
 **Tests:** con menos libertad de prensa, los escándalos afectan menos a la popularidad y más a la imagen internacional.
-**Prueba en el móvil:** leer las portadas del día tras una decisión importante.
+**Prueba en el PC:** leer las portadas del día tras una decisión importante.
 **Hecho cuando:** los medios reflejan y amplifican lo que pasa.
 
 #### Fase 58 — v0.59.0 · Protestas y estabilidad
@@ -1376,7 +1376,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación de las protestas en el mapa y ambiente sonoro sintetizado de manifestación.
 
 **Tests:** una baja satisfacción prolongada desencadena protestas; la represión baja la imagen internacional.
-**Prueba en el móvil:** provocar una huelga general y negociar su fin.
+**Prueba en el PC:** provocar una huelga general y negociar su fin.
 **Hecho cuando:** la sociedad puede presionar al gobierno.
 
 #### Fase 59 — v0.60.0 · Partidos políticos
@@ -1387,7 +1387,7 @@ interface EstadoPartida {
 3. **Audiovisual:** emblemas de los partidos a partir de su color y sus siglas (sin logotipos registrados).
 
 **Tests:** todos los países tienen al menos un partido o una fuerza política coherente con su régimen.
-**Prueba en el móvil:** revisar los partidos de España, Reino Unido y Alemania en 2010.
+**Prueba en el PC:** revisar los partidos de España, Reino Unido y Alemania en 2010.
 **Hecho cuando:** el panorama político de 2010 es reconocible.
 
 #### Fase 60 — v0.61.0 · Líderes y vida de los partidos
@@ -1398,7 +1398,7 @@ interface EstadoPartida {
 3. **Audiovisual:** retratos genéricos de los líderes y brújula ideológica animada.
 
 **Tests:** fusionar dos partidos suma sus militantes y mezcla su ideología.
-**Prueba en el móvil:** abrir la pantalla de partidos y comparar a sus líderes.
+**Prueba en el PC:** abrir la pantalla de partidos y comparar a sus líderes.
 **Hecho cuando:** los partidos tienen líderes y pueden cambiar.
 
 #### Fase 61 — v0.62.0 · Parlamento: votaciones
@@ -1409,7 +1409,7 @@ interface EstadoPartida {
 3. **Audiovisual:** hemiciclo animado con la votación escaño a escaño y sonidos de la votación.
 
 **Tests:** un gobierno en minoría no aprueba los presupuestos sin apoyos.
-**Prueba en el móvil:** ver el hemiciclo de España y votar los presupuestos.
+**Prueba en el PC:** ver el hemiciclo de España y votar los presupuestos.
 **Hecho cuando:** el presupuesto y las leyes dependen del parlamento.
 
 #### Fase 62 — v0.63.0 · Parlamento: negociación y confianza
@@ -1420,7 +1420,7 @@ interface EstadoPartida {
 3. **Audiovisual:** escena ilustrada de la negociación y animación de la moción de censura.
 
 **Tests:** una moción de censura con mayoría cambia el gobierno.
-**Prueba en el móvil:** negociar los presupuestos con un partido regional.
+**Prueba en el PC:** negociar los presupuestos con un partido regional.
 **Hecho cuando:** se puede gobernar en minoría negociando.
 
 #### Fase 63 — v0.64.0 · Sistemas electorales
@@ -1431,7 +1431,7 @@ interface EstadoPartida {
 3. **Audiovisual:** capa de circunscripciones en el mapa.
 
 **Tests:** con los votos reales de unas elecciones conocidas, el reparto da los escaños reales.
-**Prueba en el móvil:** ver la fecha de las próximas elecciones de varios países.
+**Prueba en el PC:** ver la fecha de las próximas elecciones de varios países.
 **Hecho cuando:** cada país tiene su sistema y su calendario electoral.
 
 #### Fase 64 — v0.65.0 · Voto y encuestas
@@ -1442,7 +1442,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráfico animado de las encuestas.
 
 **Tests:** con la misma situación, la intención de voto varía poco entre semillas.
-**Prueba en el móvil:** seguir las encuestas durante 6 meses de gestión.
+**Prueba en el PC:** seguir las encuestas durante 6 meses de gestión.
 **Hecho cuando:** las encuestas reflejan la gestión.
 
 #### Fase 65 — v0.66.0 · Campaña y noche electoral
@@ -1453,7 +1453,7 @@ interface EstadoPartida {
 3. **Audiovisual:** recuento animado, sintonía y sonidos propios y carteles de campaña generados.
 
 **Tests:** con una mala gestión, el gobierno pierde.
-**Prueba en el móvil:** jugar hasta las elecciones generales españolas de 2011.
+**Prueba en el PC:** jugar hasta las elecciones generales españolas de 2011.
 **Hecho cuando:** se pueden ganar y perder elecciones en España y en 3 países más de prueba.
 
 #### Fase 66 — v0.67.0 · Leyes: catálogo
@@ -1465,7 +1465,7 @@ interface EstadoPartida {
 4. **Audiovisual:** iconos de las categorías de leyes.
 
 **Tests:** cada ley tiene efectos y reacciones definidos.
-**Prueba en el móvil:** buscar las leyes vigentes en España en 2010.
+**Prueba en el PC:** buscar las leyes vigentes en España en 2010.
 **Hecho cuando:** cada país tiene su situación legal de 2010.
 
 #### Fase 67 — v0.68.0 · Leyes: aprobación
@@ -1477,7 +1477,7 @@ interface EstadoPartida {
 4. **Audiovisual:** animación de la aprobación y la derogación de una ley.
 
 **Tests:** cada ley se puede aprobar o derogar con la mayoría que le corresponde.
-**Prueba en el móvil:** aprobar una reforma laboral y ver sus efectos en 6 meses.
+**Prueba en el PC:** aprobar una reforma laboral y ver sus efectos en 6 meses.
 **Hecho cuando:** las leyes cambian el país de forma visible.
 
 #### Fase 68 — v0.69.0 · Regímenes políticos
@@ -1488,7 +1488,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de los regímenes en la ficha y en la interfaz.
 
 **Tests:** en cada régimen, el jugador solo tiene los poderes que le corresponden.
-**Prueba en el móvil:** jugar con un régimen autoritario y gobernar por decreto.
+**Prueba en el PC:** jugar con un régimen autoritario y gobernar por decreto.
 **Hecho cuando:** cada régimen funciona con sus reglas.
 
 #### Fase 69 — v0.70.0 · Cambios de régimen
@@ -1499,7 +1499,7 @@ interface EstadoPartida {
 3. **Audiovisual:** secuencias ilustradas, con sonido, de golpe de Estado, revolución y transición.
 
 **Tests:** una estabilidad muy baja durante meses puede producir un golpe o una revolución.
-**Prueba en el móvil:** como un régimen autoritario, reprimir protestas y vigilar la lealtad del ejército.
+**Prueba en el PC:** como un régimen autoritario, reprimir protestas y vigilar la lealtad del ejército.
 **Hecho cuando:** los regímenes pueden caer y transformarse.
 
 #### Fase 70 — v0.71.0 · Autonomía regional
@@ -1510,7 +1510,7 @@ interface EstadoPartida {
 3. **Audiovisual:** banderas de las principales regiones (licencia libre y script reproducible).
 
 **Tests:** transferir competencias cambia quién gestiona el gasto y la satisfacción regional.
-**Prueba en el móvil:** revisar las comunidades autónomas españolas y negociar su financiación.
+**Prueba en el PC:** revisar las comunidades autónomas españolas y negociar su financiación.
 **Hecho cuando:** cada región tiene su nivel de autonomía y su financiación.
 
 #### Fase 71 — v0.72.0 · Gobiernos y elecciones regionales
@@ -1521,7 +1521,7 @@ interface EstadoPartida {
 3. **Audiovisual:** mapa animado de los resultados regionales.
 
 **Tests:** unas elecciones regionales cambian el gobierno de la región y no el nacional.
-**Prueba en el móvil:** seguir unas elecciones autonómicas en España.
+**Prueba en el PC:** seguir unas elecciones autonómicas en España.
 **Hecho cuando:** las regiones tienen vida política propia.
 
 #### Fase 72 — v0.73.0 · Independentismo
@@ -1532,7 +1532,7 @@ interface EstadoPartida {
 3. **Audiovisual:** banderas de los movimientos de 2010.
 
 **Tests:** los agravios y la represión aumentan el apoyo a la independencia.
-**Prueba en el móvil:** ver Escocia, Cataluña y Quebec en la capa de independentismo.
+**Prueba en el PC:** ver Escocia, Cataluña y Quebec en la capa de independentismo.
 **Hecho cuando:** los movimientos de 2010 existen y reaccionan.
 
 #### Fase 73 — v0.74.0 · Referéndums y nuevos países
@@ -1543,7 +1543,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación del nacimiento de un país en el mapa (nueva frontera y bandera) y secuencia del referéndum.
 
 **Tests:** una independencia pactada crea un país válido y jugable; la población total se conserva.
-**Prueba en el móvil:** autorizar un referéndum en Escocia y seguir el proceso.
+**Prueba en el PC:** autorizar un referéndum en Escocia y seguir el proceso.
 **Hecho cuando:** pueden nacer países nuevos en la partida.
 
 > 🎮 **HITO BETA 1:** el juego político completo: gobernar, negociar, ganar elecciones y gestionar el territorio.
@@ -1560,7 +1560,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de las 10 ramas.
 
 **Tests:** las 10 ramas cargan sin errores; ninguna tecnología es inalcanzable.
-**Prueba en el móvil:** revisar el informe y corregir los errores que señale en los documentos.
+**Prueba en el PC:** revisar el informe y corregir los errores que señale en los documentos.
 **Hecho cuando:** todo el árbol está cargado y validado.
 
 #### Fase 75 — v0.76.0 · Tecnologías: efectos y punto de partida
@@ -1571,7 +1571,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de las categorías de tecnología, generados de forma sistemática.
 
 **Tests:** cada tecnología tiene al menos un efecto; los países punteros empiezan con todo lo de 2010.
-**Prueba en el móvil:** comparar las tecnologías iniciales de EE. UU. y de Chad.
+**Prueba en el PC:** comparar las tecnologías iniciales de EE. UU. y de Chad.
 **Hecho cuando:** todas las tecnologías tienen efectos y estado inicial.
 
 #### Fase 76 — v0.77.0 · Investigación
@@ -1583,7 +1583,7 @@ interface EstadoPartida {
 4. **Audiovisual:** efecto visual y sonoro al completar una tecnología.
 
 **Tests:** sin las instalaciones necesarias no se puede investigar.
-**Prueba en el móvil:** poner tres tecnologías en cola y ver avanzar la primera.
+**Prueba en el PC:** poner tres tecnologías en cola y ver avanzar la primera.
 **Hecho cuando:** se investiga con recursos reales.
 
 #### Fase 77 — v0.78.0 · Árbol de investigación
@@ -1594,7 +1594,7 @@ interface EstadoPartida {
 3. **Audiovisual:** árbol tecnológico animado.
 
 **Tests:** cada tecnología investigada aplica sus efectos.
-**Prueba en el móvil:** investigar una tecnología energética y ver el efecto en el mix.
+**Prueba en el PC:** investigar una tecnología energética y ver el efecto en el mix.
 **Hecho cuando:** la tecnología transforma la economía y desbloquea contenido.
 
 #### Fase 78 — v0.79.0 · Fuerzas armadas
@@ -1605,7 +1605,7 @@ interface EstadoPartida {
 3. **Audiovisual:** insignias de cada rama de las fuerzas armadas.
 
 **Tests:** la potencia militar inicial ordena a los países de forma creíble (EE. UU., Rusia y China en cabeza).
-**Prueba en el móvil:** ver las fuerzas armadas de varios países.
+**Prueba en el PC:** ver las fuerzas armadas de varios países.
 **Hecho cuando:** cada país tiene sus fuerzas armadas de 2010.
 
 #### Fase 79 — v0.80.0 · Equipamiento militar
@@ -1616,7 +1616,7 @@ interface EstadoPartida {
 3. **Audiovisual:** siluetas vectoriales del equipamiento y, si aporta al juego, modelos 3D en su ficha.
 
 **Tests:** sin la tecnología y la industria necesarias no se puede fabricar.
-**Prueba en el móvil:** comprar aviones a un aliado y ver el coste y el plazo.
+**Prueba en el PC:** comprar aviones a un aliado y ver el coste y el plazo.
 **Hecho cuando:** cada país tiene un ejército gestionable.
 
 #### Fase 80 — v0.81.0 · Unidades en el mapa
@@ -1627,7 +1627,7 @@ interface EstadoPartida {
 3. **Audiovisual:** símbolos militares estándar y animación de movimientos y rutas.
 
 **Tests:** una unidad tarda en llegar lo que marcan la distancia y el terreno.
-**Prueba en el móvil:** desplegar una flota y mover tropas entre regiones.
+**Prueba en el PC:** desplegar una flota y mover tropas entre regiones.
 **Hecho cuando:** las fuerzas se mueven por el mapa.
 
 #### Fase 81 — v0.82.0 · Bases y logística
@@ -1638,7 +1638,7 @@ interface EstadoPartida {
 3. **Audiovisual:** sonidos de despliegue e indicadores de suministro.
 
 **Tests:** una unidad sin suministro pierde preparación.
-**Prueba en el móvil:** abrir una base en un país aliado.
+**Prueba en el PC:** abrir una base en un país aliado.
 **Hecho cuando:** las fuerzas se mueven por el mapa con lógica.
 
 #### Fase 82 — v0.83.0 · Guerra: declaración y frentes
@@ -1649,7 +1649,7 @@ interface EstadoPartida {
 3. **Audiovisual:** pantalla de guerra con frentes y bajas.
 
 **Tests:** no se puede declarar una guerra sin el apoyo parlamentario que exija el régimen.
-**Prueba en el móvil:** ver la guerra de Afganistán en curso al empezar.
+**Prueba en el PC:** ver la guerra de Afganistán en curso al empezar.
 **Hecho cuando:** se puede declarar la guerra cumpliendo sus requisitos.
 
 #### Fase 83 — v0.84.0 · Combate
@@ -1660,7 +1660,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animaciones de combate y bombardeo, líneas de frente, sonido de combate sintetizado y, si aporta al juego, vista 3D de un combate.
 
 **Tests:** el bando superior gana con más frecuencia, pero no siempre.
-**Prueba en el móvil:** iniciar un conflicto limitado y seguirlo en el mapa.
+**Prueba en el PC:** iniciar un conflicto limitado y seguirlo en el mapa.
 **Hecho cuando:** se puede librar una guerra completa.
 
 #### Fase 84 — v0.85.0 · Ocupación e insurgencia
@@ -1671,7 +1671,7 @@ interface EstadoPartida {
 3. **Audiovisual:** flujos de refugiados en el mapa.
 
 **Tests:** ocupar una región hostil cuesta dinero y bajas cada mes.
-**Prueba en el móvil:** ocupar una región y ver la resistencia.
+**Prueba en el PC:** ocupar una región y ver la resistencia.
 **Hecho cuando:** la ocupación tiene costes.
 
 #### Fase 85 — v0.86.0 · Paz y fronteras
@@ -1682,7 +1682,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animación del cambio de fronteras y escena ilustrada de la firma de la paz.
 
 **Tests:** un tratado de paz con anexión mueve la región al nuevo país y conserva sus datos.
-**Prueba en el móvil:** firmar una paz con cesión territorial.
+**Prueba en el PC:** firmar una paz con cesión territorial.
 **Hecho cuando:** las guerras terminan y cambian el mapa.
 
 #### Fase 86 — v0.87.0 · Interior y justicia
@@ -1693,7 +1693,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de seguridad y justicia.
 
 **Tests:** más policía reduce la criminalidad con rendimientos decrecientes.
-**Prueba en el móvil:** aumentar la policía y ver la criminalidad al cabo de un año.
+**Prueba en el PC:** aumentar la policía y ver la criminalidad al cabo de un año.
 **Hecho cuando:** la seguridad interior responde a las decisiones.
 
 #### Fase 87 — v0.88.0 · Corrupción y terrorismo
@@ -1704,7 +1704,7 @@ interface EstadoPartida {
 3. **Audiovisual:** tratamiento visual y sonoro sobrio de atentados y escándalos.
 
 **Tests:** más corrupción reduce la eficacia del gasto en todos los ministerios.
-**Prueba en el móvil:** lanzar un plan anticorrupción y ver los escándalos que destapa.
+**Prueba en el PC:** lanzar un plan anticorrupción y ver los escándalos que destapa.
 **Hecho cuando:** la seguridad interior influye en la política y la economía.
 
 #### Fase 88 — v0.89.0 · Emisiones y clima
@@ -1715,7 +1715,7 @@ interface EstadoPartida {
 3. **Audiovisual:** capa ambiental y de temperatura global.
 
 **Tests:** más emisiones globales suben la temperatura con los años.
-**Prueba en el móvil:** ver la capa de emisiones y la temperatura al cabo de 10 años.
+**Prueba en el PC:** ver la capa de emisiones y la temperatura al cabo de 10 años.
 **Hecho cuando:** las emisiones calientan el planeta.
 
 #### Fase 89 — v0.90.0 · Desastres y acuerdos climáticos
@@ -1726,7 +1726,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animaciones de cada tipo de desastre en el mapa y sonidos de desastre.
 
 **Tests:** más emisiones globales aumentan con los años la frecuencia de desastres climáticos.
-**Prueba en el móvil:** sufrir un desastre y gestionar la reconstrucción.
+**Prueba en el PC:** sufrir un desastre y gestionar la reconstrucción.
 **Hecho cuando:** el medio ambiente es un factor más del juego.
 
 > 🎮 **HITO BETA 2:** todos los sistemas del GDD existen.
@@ -1743,7 +1743,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos de las personalidades de los países y resumen visual de sus decisiones.
 
 **Tests:** 10 años sin jugador: ningún país entra en una bancarrota absurda.
-**Prueba en el móvil:** observar cómo gestiona Francia su presupuesto durante 2 años.
+**Prueba en el PC:** observar cómo gestiona Francia su presupuesto durante 2 años.
 **Hecho cuando:** los países no jugadores gestionan su economía.
 
 #### Fase 91 — v0.92.0 · IA: leyes y crisis
@@ -1754,7 +1754,7 @@ interface EstadoPartida {
 3. **Audiovisual:** noticias ilustradas de las decisiones de otros gobiernos.
 
 **Tests:** ningún país hace cambios incoherentes con su ideología.
-**Prueba en el móvil:** observar cómo gestiona Francia una crisis.
+**Prueba en el PC:** observar cómo gestiona Francia una crisis.
 **Hecho cuando:** los países no jugadores se gobiernan de forma creíble.
 
 #### Fase 92 — v0.93.0 · IA: diplomacia y comercio
@@ -1765,7 +1765,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animaciones en el mapa de las reacciones diplomáticas.
 
 **Tests:** un país responde a una acción hostil del jugador.
-**Prueba en el móvil:** sancionar a un país y ver su respuesta.
+**Prueba en el PC:** sancionar a un país y ver su respuesta.
 **Hecho cuando:** el mundo responde con lógica al jugador.
 
 #### Fase 93 — v0.94.0 · IA: ejército y organizaciones
@@ -1776,7 +1776,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animaciones en el mapa de los movimientos militares de los demás países.
 
 **Tests:** la IA no declara guerras sin motivo ni capacidad, y responde a las amenazas.
-**Prueba en el móvil:** amenazar a un vecino y ver la reacción de sus aliados.
+**Prueba en el PC:** amenazar a un vecino y ver la reacción de sus aliados.
 **Hecho cuando:** los demás países usan el ejército y las organizaciones con lógica.
 
 #### Fase 94 — v0.95.0 · Motor de eventos
@@ -1787,7 +1787,7 @@ interface EstadoPartida {
 3. **Audiovisual:** sintonía de noticias y sonidos según la gravedad.
 
 **Tests:** cada evento se puede disparar en pruebas y sus opciones aplican efectos.
-**Prueba en el móvil:** filtrar el teletipo por un país.
+**Prueba en el PC:** filtrar el teletipo por un país.
 **Hecho cuando:** los eventos ocurren y se pueden responder.
 
 #### Fase 95 — v0.96.0 · Catálogo de eventos
@@ -1798,7 +1798,7 @@ interface EstadoPartida {
 3. **Audiovisual:** ilustración o icono propio para cada evento.
 
 **Tests:** cada evento del catálogo tiene condiciones, opciones y efectos válidos.
-**Prueba en el móvil:** jugar un año y responder a varios eventos.
+**Prueba en el PC:** jugar un año y responder a varios eventos.
 **Hecho cuando:** las partidas tienen sorpresas variadas.
 
 #### Fase 96 — v0.97.0 · Eventos históricos
@@ -1809,7 +1809,7 @@ interface EstadoPartida {
 3. **Audiovisual:** ilustraciones propias de los eventos históricos (sin fotografías reales) y secuencias especiales para los más importantes.
 
 **Tests:** un evento histórico no ocurre si no se dan sus condiciones.
-**Prueba en el móvil:** jugar con y sin eventos históricos y comparar.
+**Prueba en el PC:** jugar con y sin eventos históricos y comparar.
 **Hecho cuando:** los eventos históricos ocurren sin forzar resultados.
 
 #### Fase 97 — v0.98.0 · Credibilidad histórica
@@ -1820,7 +1820,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráfico que compara la partida con la historia real.
 
 **Tests:** con los eventos activados y sin jugador, 2010–2015 se parece a la realidad en las grandes cifras.
-**Prueba en el móvil:** ver el gráfico de la partida frente a la realidad para España.
+**Prueba en el PC:** ver el gráfico de la partida frente a la realidad para España.
 **Hecho cuando:** el modo histórico funciona sin forzar resultados.
 
 #### Fase 98 — v0.99.0 · Comparador y clasificaciones
@@ -1831,7 +1831,7 @@ interface EstadoPartida {
 3. **Audiovisual:** gráficos comparativos animados y opción de guardar un gráfico como imagen.
 
 **Tests:** las clasificaciones ordenan correctamente con datos de prueba.
-**Prueba en el móvil:** comparar España con Italia en 10 indicadores.
+**Prueba en el PC:** comparar España con Italia en 10 indicadores.
 **Hecho cuando:** el jugador puede comparar países con facilidad.
 
 #### Fase 99 — v0.100.0 · Informes e historial de la partida
@@ -1842,7 +1842,7 @@ interface EstadoPartida {
 3. **Audiovisual:** línea de tiempo ilustrada de la partida.
 
 **Tests:** la línea de tiempo recoge todos los hechos marcados como clave.
-**Prueba en el móvil:** revisar el informe anual y la línea de tiempo al cabo de 3 años.
+**Prueba en el PC:** revisar el informe anual y la línea de tiempo al cabo de 3 años.
 **Hecho cuando:** el jugador puede analizar el mundo con facilidad.
 
 > 🎮 **HITO BETA 3:** el mundo está vivo; el juego está completo en contenido base.
@@ -1859,7 +1859,7 @@ interface EstadoPartida {
 3. **Audiovisual:** animaciones guiadas y resaltados del tutorial.
 
 **Tests:** cada paso del tutorial se puede completar y saltar.
-**Prueba en el móvil:** hacer el tutorial completo.
+**Prueba en el PC:** hacer el tutorial completo.
 **Hecho cuando:** un jugador nuevo entiende lo básico en 15 minutos.
 
 #### Fase 101 — v0.102.0 · Ayuda y enciclopedia
@@ -1870,7 +1870,7 @@ interface EstadoPartida {
 3. **Audiovisual:** ilustraciones de la enciclopedia.
 
 **Tests:** todos los indicadores tienen su explicación.
-**Prueba en el móvil:** consultar qué afecta al paro desde su tooltip.
+**Prueba en el PC:** consultar qué afecta al paro desde su tooltip.
 **Hecho cuando:** todo indicador se explica en el propio juego.
 
 #### Fase 102 — v0.103.0 · Equilibrado
@@ -1881,7 +1881,7 @@ interface EstadoPartida {
 3. **Audiovisual:** mezcla y niveles de sonido y ritmo de las animaciones.
 
 **Tests:** ningún país diverge de forma absurda en 20 años.
-**Prueba en el móvil:** jugar 10 años a ×8 y revisar el mundo.
+**Prueba en el PC:** jugar 10 años a ×8 y revisar el mundo.
 **Hecho cuando:** ningún país diverge de forma absurda.
 
 #### Fase 103 — v0.104.0 · Dificultad y revisión final
@@ -1892,30 +1892,30 @@ interface EstadoPartida {
 3. **Audiovisual:** revisión de la coherencia visual de todo el juego.
 
 **Tests:** la dificultad cambia la tolerancia de los votantes, los mercados y la IA.
-**Prueba en el móvil:** jugar el mismo año en Fácil y en Realista.
+**Prueba en el PC:** jugar el mismo año en Fácil y en Realista.
 **Hecho cuando:** la dificultad se nota y todo lo anterior se sigue cumpliendo.
 
 #### Fase 104 — v0.105.0 · Rendimiento
-**Objetivo:** fluido en un móvil de gama media.
+**Objetivo:** fluido en un PC de gama media.
 **Tareas**
-1. Optimización para móviles de gama media.
+1. Optimización para PC de gama media (gráficos integrados) y niveles de calidad Bajo, Medio y Alto.
 2. Pruebas automáticas de rendimiento con tiempos máximos.
 3. **Audiovisual:** optimización del peso y de la carga de los recursos audiovisuales y modo sin animaciones.
 
 **Tests:** las pruebas de rendimiento no superan los tiempos fijados.
-**Prueba en el móvil:** jugar 10 años a ×8 sin tirones.
+**Prueba en el PC:** jugar 10 años a ×8 sin tirones.
 **Hecho cuando:** una partida de 10 años va fluida.
 
 #### Fase 105 — v0.106.0 · App instalable y accesibilidad
 **Objetivo:** instalar el juego y que todo el mundo pueda jugarlo.
 **Tareas**
-1. PWA: instalable en el móvil como una app y jugable sin conexión.
+1. PWA: instalable en el PC como una aplicación y jugable sin conexión.
 2. Accesibilidad: contraste, tamaño de texto y lectores de pantalla en los menús.
 3. **Audiovisual:** alternativa visual para todo sonido, iconos y pantalla de arranque de la app instalada.
 
 **Tests:** el juego carga sin conexión tras la primera visita.
-**Prueba en el móvil:** instalar el juego en el móvil y abrirlo sin conexión.
-**Hecho cuando:** se instala en el móvil y funciona sin conexión.
+**Prueba en el PC:** instalar el juego en el PC y abrirlo sin conexión.
+**Hecho cuando:** se instala en el PC y funciona sin conexión.
 
 #### Fase 106 — v0.107.0 · Más leyes
 **Objetivo:** contenido completo: leyes.
@@ -1925,7 +1925,7 @@ interface EstadoPartida {
 3. **Audiovisual:** iconos e ilustraciones que falten de las leyes nuevas.
 
 **Tests:** cada ley nueva tiene efectos y reacciones definidos.
-**Prueba en el móvil:** buscar leyes de varias categorías y aprobar alguna nueva.
+**Prueba en el PC:** buscar leyes de varias categorías y aprobar alguna nueva.
 **Hecho cuando:** hay unas 150 leyes.
 
 #### Fase 107 — v0.108.0 · Más partidos, eventos y textos
@@ -1936,7 +1936,7 @@ interface EstadoPartida {
 3. **Audiovisual:** música ambiental según la situación (paz, crisis o guerra) y pantalla de créditos.
 
 **Tests:** todos los textos están en es.json y no quedan claves sin texto.
-**Prueba en el móvil:** escuchar cómo cambia la música en una crisis.
+**Prueba en el PC:** escuchar cómo cambia la música en una crisis.
 **Hecho cuando:** se cumplen los objetivos de contenido del GDD.
 
 ### v1.0.0 · Lanzamiento
@@ -2041,14 +2041,14 @@ La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, 
 5. **Motor puro y probado:** toda la lógica de simulación en `/src/sim`, sin dependencias de la interfaz, con tests en Vitest. No se fusiona nada con tests en rojo.
 6. **Parámetros fuera del código:** constantes de equilibrado en `/src/sim/config/*.json`.
 7. **Datos reproducibles:** todo dato real procede de un script en `/scripts` que indica fuente y año; los datos estimados se marcan.
-8. **Pensado para móvil:** probar cada pantalla a 360 px de ancho y con controles táctiles.
+8. **Pensado para PC:** probar cada pantalla en el navegador del PC a 1280 × 720 y a 1920 × 1080, con ratón y teclado. La Hoja de ruta y la galería siguen siendo usables en el móvil.
 9. **Compatibilidad de partidas:** si cambia el formato de guardado, incluir migración.
 10. **Versiones:** subir la versión (semver) al cerrar cada fase y actualizar `versionActual`.
 11. **Dudas de diseño:** si algo no está en el GDD, proponer opciones al jugador en lugar de inventar; anotar la decisión en el GDD.
 12. **No romper el GDD:** cualquier cambio de diseño se refleja también en `docs/GDD.md` y en el registro de cambios de diseño (sección 12).
 13. **Guardar el trabajo a menudo:** hacer commit y push al terminar **cada tarea**, sin acumular cambios. Si la sesión se detiene (límite de uso, inactividad o cierre), lo subido a GitHub no se pierde.
 14. **Dejar la sesión lista para retomar:** al terminar cada tarea, actualizar `ultimaSesion` en `roadmap.json` (qué se hizo, siguiente paso y qué tiene pendiente el jugador). Al empezar una sesión nueva o retomar una, leer ese bloque y continuar desde ahí.
-15. **Una fase, una rama y un PR:** trabajar cada fase en su rama. Al cerrarla, abrir el PR con un resumen en español de lo nuevo y la "Prueba en el móvil" para que el jugador sepa qué comprobar.
+15. **Una fase, una rama y un PR:** trabajar cada fase en su rama. Al cerrarla, abrir el PR con un resumen en español de lo nuevo y la "Prueba en el PC" para que el jugador sepa qué comprobar.
 16. **Peticiones nuevas del jugador:** toda idea o corrección (mensaje o *issue*) se añade a `roadmap.json`: a la fase activa si es pequeña o un fallo; a la fase que corresponda si es un sistema; o a `ideasPendientes` si no encaja. Avisar al jugador de dónde ha ido.
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
@@ -2080,6 +2080,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Territorios dependientes con datos (Hong Kong, Puerto Rico…) jugables; Antillas Neerlandesas como en 2010 | Decisión del jugador | 3, 9, 13 |
 | 12/11/2026 | Mapa de juego grande, plano y rectangular a pantalla completa, con zoom y elementos clicables; Equal Earth descartada | Decisión del jugador | 7, 9, 13 |
 | 12/11/2026 | Proyección Miller con desplazamiento continuo este-oeste; mapa vivo (relieve, ríos, lagos) y modos de mapa con leyenda | Decisión del jugador | 7, 9, 13 |
+| 12/11/2026 | Juego solo para PC (ratón y teclado, interfaz densa, más detalle); «Prueba en el móvil» pasa a «Prueba en el PC» en las fases pendientes | Decisión del jugador | 1, 2, 7, 9, 11, 13 |
 
 ---
 
@@ -2097,10 +2098,10 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Dificultad | Fácil / Normal / Realista | Las tres, cambiando la tolerancia de votantes, mercados e IA |
 | Proyección del mapa | Miller / Mercator / Equirectangular / Equal Earth | **Decidido por el jugador (12/11/2026):** Miller, rectangular y a pantalla completa (Equal Earth descartada) |
 | Desplazamiento este-oeste | Con borde / continuo (el mapa da la vuelta) | **Decidido por el jugador (12/11/2026):** continuo; al pasar el Pacífico se vuelve a América |
-| Plataforma | Móvil y PC / solo PC | Pendiente del jugador. Propuesta: móvil y PC con niveles de calidad (Bajo, Medio y Alto, elegidos según el dispositivo): el PC aprovecha su potencia con más detalle en el mapa y la simulación sin perder la partida en el móvil |
+| Plataforma | Móvil y PC / solo PC | **Decidido por el jugador (12/11/2026):** solo PC, en el navegador, con ratón y teclado; los recursos y la jugabilidad están pensados para PC. Niveles de calidad para PC modestos y potentes |
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 11 (reloj del juego) |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
-| Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer toque, con botón de silencio visible |
+| Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer clic o tecla, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 | Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |
 | Territorios dependientes (Hong Kong, Groenlandia, Puerto Rico…) | Países aparte / regiones de su país soberano | **Decidido por el jugador (12/11/2026):** jugables, como entidades propias con su país soberano, los que tienen datos del Banco Mundial; los demás, casi deshabitados, forman parte de su país soberano en el mapa. Se hace en la Fase 2 |

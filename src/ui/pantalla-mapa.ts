@@ -3,12 +3,12 @@ import { t } from '../i18n';
 import { MapaMundo } from '../map/mapa';
 import { ESTILO_MAPA } from '../map/estilo';
 import { conectarGestos } from '../map/gestos';
+import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el } from './dom';
 import './estilos/mapa.css';
 
-/** El medidor de fps se ve en desarrollo o añadiendo «?fps» a la dirección. */
 function medidorActivo(): boolean {
-  return import.meta.env.DEV || new URLSearchParams(location.search).has('fps');
+  return medidorFpsActivo(location.search, import.meta.env.DEV, leerAjuste('medidorFps'));
 }
 
 export interface PantallaMapa {
@@ -31,7 +31,12 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     tabindex: 0,
     'aria-label': t('juego.mapa.etiqueta'),
   });
-  const medidor = medidorActivo() ? el('p', { class: 'mapa__fps', 'aria-hidden': 'true' }) : null;
+  // El medidor siempre existe; se muestra u oculta (Ajustes, «?fps» o la tecla F).
+  const medidor = el(
+    'p',
+    { class: 'mapa__fps', 'aria-hidden': 'true', hidden: !medidorActivo() },
+    '— fps',
+  );
   const elemento = el('section', { class: 'mapa' }, lienzo, volver, estado, medidor);
   document.body.appendChild(elemento);
 
@@ -45,11 +50,16 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     },
     ESTILO_MAPA,
   );
-  if (medidor) {
-    mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
-      medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
-    };
-  }
+  mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
+    if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
+  };
+  const alternarMedidor = (evento: KeyboardEvent): void => {
+    if (evento.key !== 'f' && evento.key !== 'F') return;
+    medidor.hidden = !medidor.hidden;
+    guardarAjuste('medidorFps', !medidor.hidden);
+    mapa.pedirDibujo();
+  };
+  lienzo.addEventListener('keydown', alternarMedidor);
   mapa
     .iniciar()
     .then(() => estado.remove())
@@ -62,6 +72,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   lienzo.focus({ preventScroll: true });
 
   const cerrar = (): void => {
+    lienzo.removeEventListener('keydown', alternarMedidor);
     desconectar();
     mapa.destruir();
     elemento.remove();
