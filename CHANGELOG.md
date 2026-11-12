@@ -7,6 +7,32 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.5.1 - 2026-11-12
+
+Ajustes de la Fase 4 pedidos por el jugador tras probar la v0.5.0.
+
+### Cambiado
+
+- **Más colores:** 12 tonos en lugar de 8. Además de que dos vecinos nunca coinciden, se evita
+  repetir color entre los vecinos de un país y entre países cercanos sin frontera (islas,
+  estrechos): ningún país comparte color con dos de sus vecinos a la vez.
+- **Nombres de países:** aparecen siempre que no se pisen con otro, aunque el nombre sea más
+  ancho que el país (Marruecos se ve con el mundo entero a la vista). Si el sitio está ocupado,
+  el nombre prueba un poco más arriba, abajo o a un lado y, si aun así no cabe, su forma corta
+  («Rep. Checa»). Solo los países diminutos, como Hong Kong, esperan al zoom.
+- **Orden de las ciudades:** aparecen al acercarse según su población (Zaragoza antes que
+  Córdoba y esta antes que Oviedo). Las capitales, algo antes que una ciudad del mismo tamaño.
+  Ahora hay 2214 ciudades: todas las de más de 100 000 habitantes (hasta 50 por país).
+
+### Añadido
+
+- Población de cada ciudad, de Wikidata: la de 2010 o, si no la hay, la de la fecha más
+  cercana, con su año. Si Wikidata no tiene ninguna con fecha, la de 2010 de la ONU.
+- Ficha de la ciudad al pasar el ratón por su punto o su nombre, y panel al hacer clic, con su
+  población, el año y la fuente del dato y un botón para ver la ficha de su país.
+- Hoja de ruta: apartado «Ajustes tras la prueba» en cada fase, para lo que el jugador pide
+  cambiar después de probarla.
+
 ## 0.5.0 - 2026-11-12
 
 Fase 4 · Mapa: selección, nombres y sonido.

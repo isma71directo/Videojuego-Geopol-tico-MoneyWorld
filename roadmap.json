@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.5.0",
-  "actualizado": "2026-11-12T06:39:37Z",
-  "faseActiva": "fase-4",
+  "versionActual": "0.5.1",
+  "actualizado": "2026-11-12T07:25:15Z",
+  "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 4 completa en su rama y versión 0.5.0: países que se señalan y seleccionan con el ratón (ficha y panel con sus datos de 2010), colores sin repetir entre vecinos, nombres de países, capitales de 2010 y ciudades según el zoom, sonido de interfaz con botón de silencio y pulso de selección.",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 4 como hecha y empezar la Fase 5.",
+    "resumen": "v0.5.1 lista en su rama con los ajustes que pidió el jugador tras probar la Fase 4: 12 colores sin repeticiones cerca, nombres de países siempre que no se pisen (con forma corta si hace falta), población de las ciudades (2010 o la más cercana) con orden de aparición por población, y ficha y panel de cada ciudad.",
+    "siguientePaso": "Cuando el jugador confirme la prueba de la v0.5.1, empezar la Fase 5 (regiones del mundo) presentando antes su plan.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 4 (v0.5.0)",
-      "Prueba en el PC: pasar el ratón por varios países y ver su ficha; hacer clic en Luxemburgo y Singapur y que se abra su panel; acercarse y ver nombres, capitales (Buyumbura en Burundi) y ciudades; oír el sonido de selección y silenciarlo con el altavoz o la tecla M"
+      "Fusionar el PR de la v0.5.1",
+      "Prueba en el PC: ver que los colores no se repiten cerca; con el mundo entero a la vista, ver el nombre de Marruecos y, con poco zoom, el de República Checa; acercarse a España y ver que salen primero Zaragoza, luego Córdoba y luego Oviedo; pasar el ratón por una ciudad y hacer clic en ella para ver su población y su año"
     ]
   },
   "etapas": [
@@ -310,7 +310,7 @@
       "dependeDe": ["fase-3"],
       "hechoCuando": "Todos los países se pueden señalar y seleccionar con el ratón y el sonido se puede activar y silenciar",
       "pruebaJugador": "Pasar el ratón por varios países y ver su nombre; hacer clic en Luxemburgo y Singapur y que se seleccionen; oír el sonido de selección y silenciarlo",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f4-t1",
@@ -339,6 +339,44 @@
           "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ddc1840"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f4-a1",
+          "titulo": "Más colores de país y que no se repitan cerca (vecinos de vecinos y países próximos), no solo entre vecinos",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f63cd17"
+        },
+        {
+          "id": "f4-a2",
+          "titulo": "Nombres de países visibles siempre que no se pisen (Marruecos, República Checa con el mundo entero a la vista); solo los muy pequeños, como Hong Kong, esperan al zoom",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/9ae84ac"
+        },
+        {
+          "id": "f4-a3",
+          "titulo": "Población de cada ciudad (la de 2010 o la más cercana, con su año) y ciudades que aparecen al acercarse por orden de población",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/afa5a44"
+        },
+        {
+          "id": "f4-a4",
+          "titulo": "Ficha de la ciudad al pasar el ratón por encima y al hacer clic",
+          "version": "0.5.1",
+          "origen": "Mensaje del jugador tras probar la v0.5.0",
+          "estado": "hecha",
+          "fecha": "2026-11-12",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7c88035"
         }
       ]
     },
@@ -4195,6 +4233,17 @@
         "Nombres de países que aparecen según el zoom sin pisarse; capitales de 2010 y ciudades principales al acercarse",
         "Sonido de interfaz sintetizado, botón de silencio (y tecla M), volumen de los efectos en Ajustes y pulso dorado al seleccionar",
         "Galería: paleta del mapa y sonidos de la interfaz"
+      ]
+    },
+    {
+      "version": "0.5.1",
+      "fecha": "2026-11-12",
+      "cambios": [
+        "Ajustes del mapa pedidos por el jugador tras probar la v0.5.0",
+        "12 colores de país; además de los vecinos, tampoco repiten color los países cercanos ni los vecinos de vecinos",
+        "Nombres de países siempre que no se pisen (Marruecos con el mundo entero a la vista); forma corta si el nombre entero no cabe («Rep. Checa»)",
+        "Población de cada ciudad (la de 2010 o la más cercana, con su año) y ciudades que aparecen al acercarse por orden de población; 2214 ciudades",
+        "Ficha de la ciudad al pasar el ratón y panel al hacer clic"
       ]
     }
   ]

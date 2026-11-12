@@ -63,7 +63,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país para seleccionarlo, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país o en una ciudad para ver su ficha, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -94,7 +94,61 @@
         "nivelRenta": "Nivel de renta"
       },
       "silenciar": "Silenciar el sonido (M)",
-      "activarSonido": "Activar el sonido (M)"
+      "activarSonido": "Activar el sonido (M)",
+      "nombresCortos": {
+        "_nota": "Formas cortas de los nombres largos, para el mapa cuando el nombre entero no cabe.",
+        "COD": "R. D. del Congo",
+        "VCT": "San Vicente y Gran.",
+        "VGB": "Is. Vírgenes Brit.",
+        "VIR": "Is. Vírgenes EE. UU.",
+        "CAF": "Rep. Centroafricana",
+        "MNP": "Is. Marianas del N.",
+        "ARE": "EAU",
+        "KNA": "San Cristóbal y N.",
+        "ANT": "Antillas Neerl.",
+        "STP": "Santo Tomé y P.",
+        "TCA": "Is. Turcas y Caicos",
+        "BIH": "Bosnia y Herz.",
+        "DOM": "Rep. Dominicana",
+        "MAF": "San Martín (Fr.)",
+        "COG": "Rep. del Congo",
+        "VAT": "Vaticano",
+        "PNG": "Papúa N. Guinea",
+        "PYF": "Polinesia Fr.",
+        "ATG": "Antigua y B.",
+        "ESH": "Sáhara Occ.",
+        "GNQ": "Guinea Ecuat.",
+        "TTO": "Trinidad y T.",
+        "CYN": "Chipre del N.",
+        "ASM": "Samoa Am.",
+        "CHI": "Is. del Canal",
+        "CZE": "Rep. Checa",
+        "NCL": "N. Caledonia",
+        "PRK": "Corea del N.",
+        "MHL": "Is. Marshall",
+        "SOS": "Osetia del S.",
+        "USA": "EE. UU.",
+        "KOR": "Corea del S.",
+        "NZL": "N. Zelanda",
+        "SLB": "Is. Salomón"
+      },
+      "ciudad": {
+        "capitalDe": "Capital de {pais}",
+        "ciudadDe": "Ciudad de {pais}",
+        "poblacion": "Población",
+        "anioDato": "Año del dato",
+        "fuente": "Fuente",
+        "sinDato": "Sin dato",
+        "sinAnio": "Sin indicar",
+        "conAnio": "{valor} ({anio})",
+        "fuentes": {
+          "WD": "Wikidata (población del municipio)",
+          "ONU": "Naciones Unidas (aglomeración urbana)"
+        },
+        "notaAnio": "No hay dato de 2010: es el más cercano que hay.",
+        "verPais": "Ver la ficha de {pais}",
+        "cerrar": "Cerrar ficha de la ciudad"
+      }
     }
   },
   "hojaDeRuta": {
@@ -132,7 +186,9 @@
       "pruebaJugador": "Prueba en el PC",
       "tareas": "Tareas",
       "sinTareas": "Las tareas se detallarán al acercarse esta versión.",
-      "verCambio": "Ver el cambio"
+      "verCambio": "Ver el cambio",
+      "ajustes": "Ajustes tras la prueba",
+      "ajustesNota": "Lo que el jugador pidió cambiar al probar esta fase; sale en una versión de corrección."
     },
     "ideas": {
       "titulo": "Ideas pendientes",
@@ -202,7 +258,7 @@
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
-      "nota": "Ocho tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo y nunca el de un vecino."
+      "nota": "Doce tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo, nunca el de un vecino y, en lo posible, tampoco el de los países de su entorno."
     }
   }
 }

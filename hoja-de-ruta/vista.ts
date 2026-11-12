@@ -10,6 +10,7 @@ import {
   type Etapa,
   type Fase,
   type Roadmap,
+  type Ajuste,
   type Tarea,
 } from '../src/compartido/roadmap';
 import { etiquetaVersion } from '../src/compartido/version';
@@ -137,7 +138,7 @@ function ultimaSesion(roadmap: Roadmap): HTMLElement {
   );
 }
 
-function tarea(datos: Tarea): HTMLElement {
+function tarea(datos: Tarea | Ajuste): HTMLElement {
   const enlace = datos.enlace.startsWith('https://')
     ? el(
         'a',
@@ -157,6 +158,7 @@ function tarea(datos: Tarea): HTMLElement {
         'p',
         { class: 'tarea__detalle' },
         el('span', { class: 'tarea__estado' }, t(`comun.estado.${datos.estado}`)),
+        'version' in datos ? el('span', {}, etiquetaVersion(datos.version)) : null,
         datos.fecha ? el('span', {}, formatearFecha(datos.fecha)) : null,
         enlace,
       ),
@@ -221,6 +223,19 @@ function fase(datos: Fase, roadmap: Roadmap, abiertos: Abiertos): HTMLElement {
           el('ul', { class: 'tareas' }, ...datos.tareas.map(tarea)),
         )
       : el('p', { class: 'vacio' }, t('hojaDeRuta.fases.sinTareas')),
+    datos.ajustes && datos.ajustes.length > 0
+      ? el(
+          'div',
+          {},
+          el(
+            'h4',
+            { class: 'fase__subtitulo' },
+            `${t('hojaDeRuta.fases.ajustes')} · ${datos.ajustes.filter((a) => a.estado === 'hecha').length}/${datos.ajustes.length}`,
+          ),
+          el('p', { class: 'fase__nota' }, t('hojaDeRuta.fases.ajustesNota')),
+          el('ul', { class: 'tareas' }, ...datos.ajustes.map(tarea)),
+        )
+      : null,
   ];
 
   return desplegable(

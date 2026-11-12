@@ -7,7 +7,7 @@ import type { Estilo } from './mapa';
 
 /**
  * Tonos de mapa político, apagados para el tema oscuro y para que se lea el relieve.
- * Ocho tonos bien distintos entre sí: dos vecinos nunca se confunden.
+ * Doce tonos bien distintos entre sí (ajuste f4-a1: el jugador pidió más colores).
  */
 export const PALETA = [
   '#6f8fb5', // azul
@@ -18,6 +18,10 @@ export const PALETA = [
   '#b86b6b', // teja
   '#a9ae5c', // oliva
   '#c587a5', // rosa
+  '#8a7a58', // caqui
+  '#6cb6cf', // celeste
+  '#d3ab98', // arena
+  '#4f8486', // petróleo
 ];
 
 export const ESTILO_MAPA: Estilo = {

@@ -26,6 +26,7 @@ import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
 import { paisEnPunto, UMBRAL_PEQUENO_PX } from './seleccion';
 import { Relieve } from './relieve';
 import {
+  ciudadEnPunto,
   ciudadVisible,
   colocarCiudades,
   SEPARACION_NOMBRE,
@@ -38,6 +39,9 @@ import { colocarRotulos, type Caja, type CandidatoRotulo } from './rotulos';
 
 /** A partir de este zoom (relativo al mundo entero) se usa el nivel de detalle. */
 export const ZOOM_DETALLE = 2.5;
+
+/** Lo que se puede señalar o seleccionar en el mapa: un país o una ciudad (ajuste f4-a4). */
+export type Objetivo = { tipo: 'pais'; id: string } | { tipo: 'ciudad'; ciudad: Ciudad };
 
 const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
@@ -84,6 +88,7 @@ export class MapaMundo {
   private colores = new Map<string, string>();
   /** Nombres de los países (los pone la pantalla del mapa al cargar los datos). */
   private nombresPaises = new Map<string, string>();
+  private nombresCortos = new Map<string, string>();
   private readonly anchosTexto = new Map<string, number>();
   private relieve: Relieve | null = null;
   private agua: CapaAgua | null = null;
@@ -103,11 +108,15 @@ export class MapaMundo {
   private readonly observador: ResizeObserver;
   /** Se llama después de cada dibujo (p. ej. para el medidor de fps). */
   alDibujar: ((estadisticas: Estadisticas) => void) | null = null;
-  /** País bajo el ratón (o null) y posición del ratón en la pantalla del mapa. */
-  alSenalar: ((id: string | null, x: number, y: number) => void) | null = null;
-  /** País seleccionado con un clic (o null al hacer clic en el mar). */
-  alSeleccionar: ((id: string | null) => void) | null = null;
+  /** País o ciudad bajo el ratón (o null) y posición del ratón en la pantalla del mapa. */
+  alSenalar: ((objetivo: Objetivo | null, x: number, y: number) => void) | null = null;
+  /** País o ciudad seleccionados con un clic (o null al hacer clic en el mar). */
+  alSeleccionar: ((objetivo: Objetivo | null) => void) | null = null;
   private senalado: string | null = null;
+  private ciudadSenalada: Ciudad | null = null;
+  private ciudadSeleccionada: Ciudad | null = null;
+  /** Ciudades dibujadas en el último fotograma, con su posición en pantalla. */
+  private ciudadesDibujadas: CiudadColocada[] = [];
   /** Momento en que empezó el pulso de la selección (animación de la tarea f4-t4). */
   private inicioPulso: number | null = null;
   private pedirDibujoSiguiente = false;
@@ -236,24 +245,46 @@ export class MapaMundo {
 
   /** El ratón se mueve sobre el mapa (sin pulsar); null si sale del mapa. */
   alPasar = (x: number | null, y: number | null): void => {
-    const id = x === null || y === null ? null : this.paisEn(x, y);
-    this.raton = x === null || y === null ? null : [x, y];
+    const dentro = x !== null && y !== null;
+    // Las ciudades están encima de los países: primero se mira si hay una bajo el ratón.
+    const ciudad = dentro ? this.ciudadEn(x, y) : null;
+    const id = dentro && !ciudad ? this.paisEn(x, y) : null;
+    this.raton = dentro ? [x, y] : null;
     this.camaraSenalada = this.camara;
-    if (id !== this.senalado) {
+    if (id !== this.senalado || ciudad !== this.ciudadSenalada) {
       this.senalado = id;
-      this.lienzo.style.cursor = id ? 'pointer' : '';
+      this.ciudadSenalada = ciudad;
+      this.lienzo.style.cursor = id || ciudad ? 'pointer' : '';
       this.pedirDibujo();
     }
-    this.alSenalar?.(id, x ?? 0, y ?? 0);
+    const objetivo: Objetivo | null = ciudad
+      ? { tipo: 'ciudad', ciudad }
+      : id
+        ? { tipo: 'pais', id }
+        : null;
+    this.alSenalar?.(objetivo, x ?? 0, y ?? 0);
   };
 
-  /** Clic sin arrastre: selecciona el país (o quita la selección si es mar). */
+  /** Clic sin arrastre: selecciona la ciudad o el país (o quita la selección si es mar). */
   alTocar = (x: number, y: number): void => {
-    this.seleccionar(this.paisEn(x, y));
+    const ciudad = this.ciudadEn(x, y);
+    if (ciudad) this.seleccionarCiudad(ciudad);
+    else this.seleccionar(this.paisEn(x, y));
   };
+
+  /** Ciudad dibujada en un punto de la pantalla del mapa (o null). */
+  ciudadEn(px: number, py: number): Ciudad | null {
+    return ciudadEnPunto(this.ciudadesDibujadas, px, py)?.ciudad ?? null;
+  }
 
   set nombres(nombres: Map<string, string>) {
     this.nombresPaises = nombres;
+    this.pedirDibujo();
+  }
+
+  /** Formas cortas de los nombres largos («Rep. Checa»), para cuando el entero no cabe. */
+  set nombresAbreviados(nombres: Map<string, string>) {
+    this.nombresCortos = nombres;
     this.pedirDibujo();
   }
 
@@ -261,12 +292,27 @@ export class MapaMundo {
     return this.seleccionado;
   }
 
+  /** ¿Hay un país o una ciudad seleccionados? */
+  get haySeleccion(): boolean {
+    return this.seleccionado !== null || this.ciudadSeleccionada !== null;
+  }
+
   seleccionar(id: string | null): void {
-    if (id === this.seleccionado) return;
+    if (id === this.seleccionado && this.ciudadSeleccionada === null) return;
     this.seleccionado = id;
+    this.ciudadSeleccionada = null;
     this.inicioPulso = id && !this.sinMovimiento ? performance.now() : null;
     this.pedirDibujo();
-    this.alSeleccionar?.(id);
+    this.alSeleccionar?.(id ? { tipo: 'pais', id } : null);
+  }
+
+  seleccionarCiudad(ciudad: Ciudad): void {
+    if (ciudad === this.ciudadSeleccionada) return;
+    this.seleccionado = null;
+    this.ciudadSeleccionada = ciudad;
+    this.inicioPulso = this.sinMovimiento ? null : performance.now();
+    this.pedirDibujo();
+    this.alSeleccionar?.({ tipo: 'ciudad', ciudad });
   }
 
   /** Círculo alrededor de un país que en pantalla es demasiado pequeño para verse resaltado. */
@@ -435,7 +481,9 @@ export class MapaMundo {
 
   /**
    * Nombres de países (tarea f4-t2) y capitales y ciudades (tarea f4-t3), sin pisarse.
-   * Orden de preferencia: capitales, nombres de países y, por último, las demás ciudades.
+   * Orden de preferencia (ajuste f4-a2): nombres de países, que esquivan los puntos de las
+   * capitales; después, los nombres de las capitales (si no caben, queda solo su punto) y, por
+   * último, las demás ciudades.
    */
   private dibujarRotulos(camara: Camara): void {
     if (!this.mundo) return;
@@ -452,15 +500,19 @@ export class MapaMundo {
       for (const { ciudad, x, y } of this.ciudades) {
         if (!ciudadVisible(ciudad, z)) continue;
         const [px, py] = aPantalla(x, y, desplazamiento);
+        // Las que caen fuera de la pantalla no hace falta ni ordenarlas.
+        if (px < -20 || px > camara.ancho + 20 || py < -20 || py > camara.alto + 20) continue;
         (ciudad.capital ? capitales : otras).push({ ciudad, x: px, y: py });
       }
       for (const figura of this.mundo.figuras.paises) {
         const texto = this.nombresPaises.get(figura.id);
         if (!texto || !figura.etiqueta) continue;
         const [px, py] = aPantalla(figura.etiqueta[0], figura.etiqueta[1], desplazamiento);
+        const textoCorto = this.nombresCortos.get(figura.id);
         candidatos.push({
           id: figura.id,
           texto,
+          ...(textoCorto ? { textoCorto } : {}),
           x: px,
           y: py,
           tamanoPais: Math.sqrt(figura.area) * camara.k,
@@ -473,8 +525,8 @@ export class MapaMundo {
       this.medirTexto(texto, fuenteCiudad(capital));
     const alturaCiudad = (capital: boolean): number => (capital ? LETRA_CAPITAL : LETRA_CIUDAD);
     const { ancho, alto } = camara;
-    const colocadasCapitales = colocarCiudades(capitales, medirCiudad, alturaCiudad, ancho, alto);
-    const ocupadas: Caja[] = colocadasCapitales.flatMap((c) => [c.cajaPunto, c.cajaTexto]);
+    // Los puntos de las capitales se reservan antes, para que ningún nombre de país los tape.
+    const puntosCapitales: Caja[] = capitales.map(({ x, y }) => [x - 5, y - 5, x + 5, y + 5]);
 
     ctx.letterSpacing = '0.05em';
     const fuentePais = (tamano: number): string => `600 ${tamano}px ${FUENTE_ROTULOS}`;
@@ -483,13 +535,23 @@ export class MapaMundo {
       (texto, tamano) => this.medirTexto(texto, fuentePais(tamano)),
       ancho,
       alto,
-      ocupadas,
+      puntosCapitales,
     );
     ctx.letterSpacing = '0px';
-    const colocadasOtras = colocarCiudades(otras, medirCiudad, alturaCiudad, ancho, alto, [
-      ...ocupadas,
-      ...rotulos.map((r) => r.caja),
-    ]);
+    const ocupadas: Caja[] = rotulos.map((r) => r.caja);
+    const colocadasCapitales = colocarCiudades(
+      capitales,
+      medirCiudad,
+      alturaCiudad,
+      ancho,
+      alto,
+      ocupadas,
+      true,
+    );
+    ocupadas.push(
+      ...colocadasCapitales.flatMap((c) => [c.cajaPunto, ...(c.cajaTexto ? [c.cajaTexto] : [])]),
+    );
+    const colocadasOtras = colocarCiudades(otras, medirCiudad, alturaCiudad, ancho, alto, ocupadas);
 
     ctx.textBaseline = 'middle';
     ctx.lineJoin = 'round';
@@ -508,7 +570,59 @@ export class MapaMundo {
       });
     }
     ctx.letterSpacing = '0px';
+    this.ciudadesDibujadas = [...colocadasCapitales, ...colocadasOtras];
     for (const colocada of [...colocadasOtras, ...colocadasCapitales]) this.dibujarCiudad(colocada);
+    this.resaltarCiudades(camara, aPantalla);
+  }
+
+  /**
+   * Anillo blanco en la ciudad señalada y dorado en la seleccionada (con su pulso). La
+   * seleccionada se marca aunque a este zoom no tocara dibujarla (ajuste f4-a4).
+   */
+  private resaltarCiudades(
+    camara: Camara,
+    aPantalla: (x: number, y: number, desplazamiento: number) => [number, number],
+  ): void {
+    const { ctx } = this;
+    const anillo = (x: number, y: number, radio: number, color: string, grosor: number): void => {
+      ctx.beginPath();
+      ctx.arc(x, y, radio, 0, Math.PI * 2);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = grosor;
+      ctx.stroke();
+    };
+    const senalada = this.ciudadesDibujadas.find(
+      (c) => c.ciudad === this.ciudadSenalada && c.ciudad !== this.ciudadSeleccionada,
+    );
+    if (senalada) anillo(senalada.x, senalada.y, 7.5, 'rgba(255, 255, 255, 0.9)', 1.8);
+
+    const elegida = this.ciudadSeleccionada;
+    const datos = elegida ? this.ciudades.find((c) => c.ciudad === elegida) : undefined;
+    if (!elegida || !datos) return;
+    for (const desplazamiento of copiasVisibles(camara)) {
+      const [x, y] = aPantalla(datos.x, datos.y, desplazamiento);
+      if (x < -30 || x > camara.ancho + 30 || y < -30 || y > camara.alto + 30) continue;
+      if (!this.ciudadesDibujadas.some((c) => c.ciudad === elegida)) {
+        this.dibujarCiudad({
+          ciudad: elegida,
+          x,
+          y,
+          lado: null,
+          cajaPunto: [x, y, x, y],
+          cajaTexto: null,
+        });
+      }
+      anillo(x, y, 8, '#ffd678', 2.4);
+      if (this.inicioPulso !== null) {
+        const progreso = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
+        if (progreso < 1) {
+          anillo(x, y, 8 + 18 * progreso, `rgba(255, 214, 120, ${0.7 * (1 - progreso)})`, 2);
+          this.pedirDibujoSiguiente = true;
+        } else {
+          this.inicioPulso = null;
+        }
+      }
+    }
   }
 
   /** Punto y nombre de una ciudad: las capitales con un círculo con punto central. */
@@ -534,13 +648,19 @@ export class MapaMundo {
       ctx.strokeStyle = 'rgba(6, 12, 24, 0.85)';
       ctx.stroke();
     }
+    if (lado === null) return;
     ctx.font = fuenteCiudad(ciudad.capital);
     ctx.textAlign = lado === 'derecha' ? 'left' : 'right';
     const tx = lado === 'derecha' ? x + SEPARACION_NOMBRE : x - SEPARACION_NOMBRE;
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'rgba(6, 12, 24, 0.75)';
     ctx.strokeText(ciudad.nombre, tx, y);
-    ctx.fillStyle = ciudad.capital ? '#ffffff' : 'rgba(232, 237, 247, 0.9)';
+    ctx.fillStyle =
+      ciudad === this.ciudadSeleccionada
+        ? '#ffe3a1'
+        : ciudad.capital
+          ? '#ffffff'
+          : 'rgba(232, 237, 247, 0.9)';
     ctx.fillText(ciudad.nombre, tx, y);
   }
 

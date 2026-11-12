@@ -4,16 +4,20 @@ import { geoDistance } from 'd3-geo';
 import { describe, expect, it } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
 import {
+  ciudadEnPunto,
   ciudadVisible,
   colocarCiudades,
+  zoomDeAparicion,
   ZOOM_TODAS_CAPITALES,
   type CandidatoCiudad,
+  type CiudadColocada,
   type Ciudad,
   type ConjuntoCiudades,
 } from '../src/map/ciudades';
 import { prepararFiguras, type TopologiaMapa } from '../src/map/geometria';
 import { crearProyeccion } from '../src/map/proyeccion';
 import { cajasSeSolapan } from '../src/map/rotulos';
+import { origenDePoblacion, subtituloCiudad, textoPoblacion } from '../src/ui/ficha-ciudad';
 import { paisEnPunto } from '../src/map/seleccion';
 
 const leer = <T>(ruta: string): T =>
@@ -73,8 +77,35 @@ describe('datos de capitales y ciudades', () => {
     expect(fuera).toEqual([]);
   });
 
-  it('no guarda poblaciones (las de Natural Earth no son de 2010)', () => {
-    for (const ciudad of ciudades) expect(Object.keys(ciudad)).not.toContain('poblacion');
+  it('guarda la población de 2010 o la más cercana, con su fuente y su año', () => {
+    const conDato = ciudades.filter((c) => c.poblacion !== null);
+    expect(conDato.length / ciudades.length).toBeGreaterThan(0.9);
+    for (const ciudad of conDato) {
+      expect(ciudad.origenPoblacion, ciudad.nombre).toMatch(/^(WD:(\d{4}|sin-fecha)|ONU:2010)$/);
+      expect(ciudad.poblacion!, ciudad.nombre).toBeGreaterThan(0);
+    }
+    for (const ciudad of ciudades.filter((c) => c.poblacion === null)) {
+      expect(ciudad.origenPoblacion).toBeNull();
+    }
+    // Ejemplos de España con su dato de 2010 (Wikidata).
+    expect(buscar('Zaragoza')).toMatchObject({ origenPoblacion: 'WD:2010' });
+    expect(buscar('Madrid')!.poblacion).toBeGreaterThan(3_000_000);
+  });
+
+  it('las ciudades salen por orden de población: Zaragoza, después Córdoba y después Oviedo', () => {
+    const espana = (nombre: string): Ciudad =>
+      ciudades.find((c) => c.nombre === nombre && c.pais === 'ESP')!;
+    const [zaragoza, cordoba, oviedo] = ['Zaragoza', 'Córdoba', 'Oviedo'].map(espana);
+    expect(zoomDeAparicion(zaragoza!)).toBeLessThan(zoomDeAparicion(cordoba!));
+    expect(zoomDeAparicion(cordoba!)).toBeLessThan(zoomDeAparicion(oviedo!));
+    // En general: una ciudad más poblada nunca aparece después que otra menos poblada.
+    const normales = ciudades.filter((c) => !c.capital && c.poblacion !== null);
+    const ordenadas = [...normales].sort((a, b) => b.poblacion! - a.poblacion!);
+    for (let i = 1; i < ordenadas.length; i++) {
+      expect(zoomDeAparicion(ordenadas[i - 1]!)).toBeLessThanOrEqual(
+        zoomDeAparicion(ordenadas[i]!),
+      );
+    }
   });
 });
 
@@ -84,18 +115,20 @@ describe('cuándo y dónde se dibujan', () => {
     pais: 'BDI',
     lon: 29.36,
     lat: -3.38,
-    rango: 10,
-    zoom: 5.6,
     capital: true,
+    poblacion: null,
+    origenPoblacion: null,
+    rango: 10,
   };
   const ciudad: Ciudad = {
     nombre: 'Kindu',
     pais: 'COD',
     lon: 25.9,
     lat: -2.9,
-    rango: 10,
-    zoom: 6.7,
     capital: false,
+    poblacion: 170_000,
+    origenPoblacion: 'WD:2010',
+    rango: 9,
   };
 
   it('las capitales aparecen antes que las demás ciudades al acercarse', () => {
@@ -116,7 +149,7 @@ describe('cuándo y dónde se dibujan', () => {
     ];
     const colocadas = colocarCiudades(candidatos, medir, altura, 1280, 720);
     expect(colocadas.map((c) => c.ciudad.nombre)).toEqual(['Buyumbura', 'Uvira']);
-    const cajas = colocadas.flatMap((c) => [c.cajaPunto, c.cajaTexto]);
+    const cajas = colocadas.flatMap((c) => [c.cajaPunto, ...(c.cajaTexto ? [c.cajaTexto] : [])]);
     for (let i = 0; i < cajas.length; i++) {
       for (let j = i + 1; j < cajas.length; j++) {
         expect(cajasSeSolapan(cajas[i]!, cajas[j]!)).toBe(false);
@@ -145,5 +178,61 @@ describe('cuándo y dónde se dibujan', () => {
       [[80, 80, 300, 120]],
     );
     expect(colocadas).toEqual([]);
+  });
+});
+
+describe('ficha de la ciudad (ajuste f4-a4)', () => {
+  const base: Ciudad = {
+    nombre: 'Zaragoza',
+    pais: 'ESP',
+    lon: -0.88,
+    lat: 41.66,
+    capital: false,
+    poblacion: 675_121,
+    origenPoblacion: 'WD:2010',
+    rango: 11,
+  };
+  const colocada = (x: number, y: number, ciudad: Ciudad = base): CiudadColocada => ({
+    ciudad,
+    x,
+    y,
+    lado: 'derecha',
+    cajaPunto: [x - 3, y - 3, x + 3, y + 3],
+    cajaTexto: [x + 4, y - 7, x + 70, y + 7],
+  });
+
+  it('el ratón señala la ciudad por su punto o por su nombre', () => {
+    const lista = [colocada(100, 100), colocada(300, 300, { ...base, nombre: 'Huesca' })];
+    expect(ciudadEnPunto(lista, 104, 103)?.ciudad.nombre).toBe('Zaragoza');
+    expect(ciudadEnPunto(lista, 150, 100)?.ciudad.nombre).toBe('Zaragoza'); // sobre el nombre
+    expect(ciudadEnPunto(lista, 302, 299)?.ciudad.nombre).toBe('Huesca');
+    expect(ciudadEnPunto(lista, 200, 200)).toBeNull();
+  });
+
+  it('si dos puntos están cerca, gana el más cercano al ratón', () => {
+    const lista = [colocada(100, 100), colocada(106, 100, { ...base, nombre: 'Utebo' })];
+    expect(ciudadEnPunto(lista, 105, 100)?.ciudad.nombre).toBe('Utebo');
+  });
+
+  it('muestra la población con su año y su fuente', () => {
+    expect(textoPoblacion(base, false)).toBe('675.121 (2010)');
+    expect(textoPoblacion({ ...base, poblacion: 3_273_049 }, true)).toBe('3,3 millones (2010)');
+    expect(textoPoblacion({ ...base, poblacion: null, origenPoblacion: null }, false)).toBe(
+      'Sin dato',
+    );
+    expect(origenDePoblacion('WD:2008')).toEqual({
+      fuente: 'Wikidata (población del municipio)',
+      anio: 2008,
+    });
+    expect(origenDePoblacion('ONU:2010')?.fuente).toBe('Naciones Unidas (aglomeración urbana)');
+    expect(origenDePoblacion('WD:sin-fecha')?.anio).toBeNull();
+  });
+
+  it('dice si es la capital y de qué país', () => {
+    expect(subtituloCiudad(base, null)).toBe('Ciudad de ESP');
+    const paises = { paises: { ESP: { nombre: 'España' } } } as unknown as ConjuntoPaises;
+    expect(subtituloCiudad({ ...base, nombre: 'Madrid', capital: true }, paises)).toBe(
+      'Capital de España',
+    );
   });
 });

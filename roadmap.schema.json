@@ -16,23 +16,44 @@
     "historial"
   ],
   "properties": {
-    "$schema": { "type": "string" },
-    "versionActual": { "$ref": "#/definitions/semver" },
+    "$schema": {
+      "type": "string"
+    },
+    "versionActual": {
+      "$ref": "#/definitions/semver"
+    },
     "actualizado": {
       "description": "Fecha y hora (UTC) de la última modificación del archivo.",
       "type": "string",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
     },
-    "faseActiva": { "type": "string", "minLength": 1 },
+    "faseActiva": {
+      "type": "string",
+      "minLength": 1
+    },
     "ultimaSesion": {
       "type": "object",
       "additionalProperties": false,
       "required": ["fecha", "resumen", "siguientePaso", "pendienteDelJugador"],
       "properties": {
-        "fecha": { "$ref": "#/definitions/fecha" },
-        "resumen": { "type": "string", "minLength": 1 },
-        "siguientePaso": { "type": "string", "minLength": 1 },
-        "pendienteDelJugador": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        "fecha": {
+          "$ref": "#/definitions/fecha"
+        },
+        "resumen": {
+          "type": "string",
+          "minLength": 1
+        },
+        "siguientePaso": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pendienteDelJugador": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       }
     },
     "etapas": {
@@ -43,9 +64,17 @@
         "additionalProperties": false,
         "required": ["id", "nombre", "hito"],
         "properties": {
-          "id": { "type": "string", "minLength": 1 },
-          "nombre": { "type": "string", "minLength": 1 },
-          "hito": { "type": ["string", "null"] }
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hito": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
@@ -68,15 +97,40 @@
           "tareas"
         ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-          "etapa": { "type": "string", "minLength": 1 },
-          "version": { "$ref": "#/definitions/semver" },
-          "nombre": { "type": "string", "minLength": 1 },
-          "objetivo": { "type": "string" },
-          "dependeDe": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-          "hechoCuando": { "type": "string" },
-          "pruebaJugador": { "type": "string" },
-          "estado": { "$ref": "#/definitions/estado" },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "etapa": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "$ref": "#/definitions/semver"
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objetivo": {
+            "type": "string"
+          },
+          "dependeDe": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "hechoCuando": {
+            "type": "string"
+          },
+          "pruebaJugador": {
+            "type": "string"
+          },
+          "estado": {
+            "$ref": "#/definitions/estado"
+          },
           "tareas": {
             "type": "array",
             "items": {
@@ -84,12 +138,74 @@
               "additionalProperties": false,
               "required": ["id", "titulo", "estado", "fecha", "enlace"],
               "properties": {
-                "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-                "titulo": { "type": "string", "minLength": 1 },
-                "estado": { "$ref": "#/definitions/estado" },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "titulo": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "estado": {
+                  "$ref": "#/definitions/estado"
+                },
                 "fecha": {
                   "description": "Día en que se empezó o terminó la tarea; null si sigue pendiente.",
-                  "anyOf": [{ "$ref": "#/definitions/fecha" }, { "type": "null" }]
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/fecha"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "enlace": {
+                  "description": "Enlace al commit o PR; vacío si todavía no existe.",
+                  "type": "string",
+                  "pattern": "^(https://.+)?$"
+                }
+              }
+            }
+          },
+          "ajustes": {
+            "description": "Ajustes que pide el jugador tras probar la fase; salen en versiones de corrección (x.y.Z) de esa fase.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "titulo", "version", "origen", "estado", "fecha", "enlace"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9-]+$"
+                },
+                "titulo": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "description": "Versión de corrección (x.y.Z) en la que sale el ajuste.",
+                  "$ref": "#/definitions/semver"
+                },
+                "origen": {
+                  "description": "De dónde viene la petición (mensaje del jugador, issue…).",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "estado": {
+                  "$ref": "#/definitions/estado"
+                },
+                "fecha": {
+                  "description": "Día en que se empezó o terminó la tarea; null si sigue pendiente.",
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/fecha"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 },
                 "enlace": {
                   "description": "Enlace al commit o PR; vacío si todavía no existe.",
@@ -109,10 +225,20 @@
         "additionalProperties": false,
         "required": ["id", "titulo", "origen", "faseAsignada"],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-          "titulo": { "type": "string", "minLength": 1 },
-          "origen": { "type": "string" },
-          "faseAsignada": { "type": ["string", "null"] }
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "titulo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "origen": {
+            "type": "string"
+          },
+          "faseAsignada": {
+            "type": ["string", "null"]
+          }
         }
       }
     },
@@ -123,20 +249,35 @@
         "additionalProperties": false,
         "required": ["version", "fecha", "cambios"],
         "properties": {
-          "version": { "$ref": "#/definitions/semver" },
-          "fecha": { "$ref": "#/definitions/fecha" },
+          "version": {
+            "$ref": "#/definitions/semver"
+          },
+          "fecha": {
+            "$ref": "#/definitions/fecha"
+          },
           "cambios": {
             "type": "array",
             "minItems": 1,
-            "items": { "type": "string", "minLength": 1 }
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       }
     }
   },
   "definitions": {
-    "semver": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
-    "fecha": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
-    "estado": { "enum": ["pendiente", "en-curso", "hecha"] }
+    "semver": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "fecha": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "estado": {
+      "enum": ["pendiente", "en-curso", "hecha"]
+    }
   }
 }

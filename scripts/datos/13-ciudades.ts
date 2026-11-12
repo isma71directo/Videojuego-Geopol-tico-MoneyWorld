@@ -1,21 +1,24 @@
 /**
- * Capitales y ciudades principales del mapa (tarea f4-t3).
+ * Capitales y ciudades principales del mapa (tarea f4-t3 y ajuste f4-a3).
  *
  * Fuente: Natural Earth 1:10m, lugares poblados (populated places), versión fijada v5.1.2
  *         (dominio público). De cada lugar se usan el nombre en español (NAME_ES), la posición,
- *         su clase de población (RANK_MAX, de 0 a 14) y el zoom a partir del que se muestra
- *         (MIN_ZOOM, en la escala habitual de los mapas web).
+ *         su clase de población (RANK_MAX, de 0 a 14) y su identificador de Wikidata.
  * País de 2010: se decide por la posición, con las fronteras de 2010 de mapa-2010-detalle.json
  *         (así Simferópol queda en Ucrania, Yuba en Sudán y Sujumi en Abjasia), no por el país
  *         que indica Natural Earth.
  * Capital de 2010: la ciudad cuyo nombre coincide con la capital de 2010 de cada país
- *         (fuentes/datos/paises.json, de 01-paises.ts: Wikidata y tabla manual). Las capitales de Natural Earth posteriores a 2010 (Yuba,
- *         Guitega…) no cuentan. Las pocas que no coinciden por nombre se resuelven en
- *         scripts/datos/manual/ciudades-2010.json; si queda alguna sin resolver, el script falla.
- *         Las capitales que no están en Natural Earth (Road Town, Yaren…) toman su posición y su
- *         nombre de Wikidata (CC0); como no tienen clase ni zoom de Natural Earth, se les da
- *         rango 0 y zoom ZOOM_SIN_DATOS, que solo sirven para decidir cuándo se dibujan.
- * No se guarda la población: las cifras de Natural Earth no son de 2010.
+ *         (fuentes/datos/paises.json, de 01-paises.ts: Wikidata y tabla manual). Las capitales
+ *         de Natural Earth posteriores a 2010 (Yuba, Guitega…) no cuentan. Las pocas que no
+ *         coinciden por nombre se resuelven en scripts/datos/manual/ciudades-2010.json; si queda
+ *         alguna sin resolver, el script falla. Las capitales que no están en Natural Earth
+ *         (Road Town, Yaren…) toman su posición y su nombre de Wikidata (CC0).
+ * Población: de Wikidata (CC0, propiedad P1082, población del municipio), la de 2010 o, si no
+ *         hay, la de la fecha más cercana; con su año en «origenPoblacion» («WD:2010»). Si
+ *         Wikidata no tiene ninguna con fecha, la de 2010 de la ONU (aglomeración urbana) que
+ *         recoge Natural Earth («ONU:2010»); si tampoco, la de Wikidata sin fecha
+ *         («WD:sin-fecha»); si no hay ninguna, null. La clase de población de Natural Earth
+ *         («rango») solo sirve para ordenar las ciudades sin población.
  *
  * Salida: public/data/ciudades-2010.json
  * Uso:    node scripts/datos/13-ciudades.ts
@@ -30,16 +33,14 @@ import { leerPaises } from './lib/paises.ts';
 const VERSION_NE = 'v5.1.2';
 const URL_LUGARES = `https://raw.githubusercontent.com/nvkelso/natural-earth-vector/${VERSION_NE}/geojson/ne_10m_populated_places.geojson`;
 
-/** Clase de población mínima de una ciudad que no es capital (10 = de 100 000 a 200 000 hab.). */
-const RANGO_MINIMO = 10;
-/** Zoom máximo de una ciudad que no es capital (más allá no se mostraría nunca). */
-const ZOOM_MAXIMO = 7;
+/** Clase de población mínima de una ciudad que no es capital (9 = de 100 000 a 200 000 hab.). */
+const RANGO_MINIMO = 9;
 /** Ciudades como máximo por país, además de la capital. */
-const MAXIMO_POR_PAIS = 25;
+const MAXIMO_POR_PAIS = 50;
+/** Año del escenario: se busca la población de este año o la más cercana. */
+const ANIO = 2010;
 /** Distancia máxima (km) a un país para un lugar costero que cae justo fuera del contorno. */
 const DISTANCIA_COSTA_KM = 25;
-/** Zoom desde el que se dibujan las capitales que no están en Natural Earth (islas pequeñas). */
-const ZOOM_SIN_DATOS = 5;
 
 interface Manual {
   /** Código del país → nombre exacto (NAME) del lugar de Natural Earth que es su capital. */
@@ -54,11 +55,13 @@ export interface Ciudad {
   pais: string;
   lon: number;
   lat: number;
-  /** Clase de población de Natural Earth (de 0 a 14; más es mayor). */
-  rango: number;
-  /** Zoom (escala de los mapas web) desde el que se muestra. */
-  zoom: number;
   capital: boolean;
+  /** Habitantes (null si no hay dato). */
+  poblacion: number | null;
+  /** Fuente y año de la población: «WD:2010», «ONU:2010», «WD:sin-fecha» o null. */
+  origenPoblacion: string | null;
+  /** Clase de población de Natural Earth (0 a 14); solo para ordenar si falta la población. */
+  rango: number;
 }
 
 const manual = leerJson<Manual>('scripts/datos/manual/ciudades-2010.json');
@@ -192,7 +195,14 @@ const filas = (
     { cabeceras: { Accept: 'application/sparql-results+json' } },
   )
 ).results.bindings;
-const deWikidata: Ciudad[] = [];
+/** Ciudad con lo necesario para buscar su población. */
+interface Pendiente {
+  ciudad: Ciudad;
+  qid: string;
+  /** Población de 2010 de la ONU según Natural Earth (en miles; 0 si no la hay). */
+  onu2010: number;
+}
+const deWikidata: Pendiente[] = [];
 for (const [paisId, lista] of capitalesWikidata) {
   for (const qid of lista) {
     const fila = filas.find((f) => f.lugar.value.endsWith(`/${qid}`));
@@ -202,56 +212,147 @@ for (const [paisId, lista] of capitalesWikidata) {
       process.exit(1);
     }
     deWikidata.push({
-      // Con una sola capital se usa el mismo nombre que en la ficha del país.
-      nombre: lista.length === 1 ? paises[paisId]!.capital : (fila.nombre?.value ?? qid),
-      pais: paisId,
-      lon: Math.round(Number(punto[1]) * 1000) / 1000,
-      lat: Math.round(Number(punto[2]) * 1000) / 1000,
-      rango: 0,
-      zoom: ZOOM_SIN_DATOS,
-      capital: true,
+      ciudad: {
+        // Con una sola capital se usa el mismo nombre que en la ficha del país.
+        nombre: lista.length === 1 ? paises[paisId]!.capital : (fila.nombre?.value ?? qid),
+        pais: paisId,
+        lon: Math.round(Number(punto[1]) * 1000) / 1000,
+        lat: Math.round(Number(punto[2]) * 1000) / 1000,
+        capital: true,
+        poblacion: null,
+        origenPoblacion: null,
+        rango: 0,
+      },
+      qid,
+      onu2010: 0,
     });
   }
 }
 
 const esCapital = new Set(capitales.values());
-const ciudades: Ciudad[] = [...deWikidata];
+const pendientes: Pendiente[] = [...deWikidata];
 const capitalDe = new Map([...capitales].map(([paisId, lugar]) => [lugar, paisId]));
 const porPais = new Map<string, number>();
 const ordenados = [...conPais].sort(
-  (a, b) =>
-    Number(b.lugar.properties.RANK_MAX) - Number(a.lugar.properties.RANK_MAX) ||
-    Number(a.lugar.properties.MIN_ZOOM) - Number(b.lugar.properties.MIN_ZOOM),
+  (a, b) => Number(b.lugar.properties.RANK_MAX) - Number(a.lugar.properties.RANK_MAX),
 );
 for (const { lugar, lon, lat, pais } of ordenados) {
   const capital = esCapital.has(lugar);
   const rango = Number(lugar.properties.RANK_MAX);
-  const zoom = Number(lugar.properties.MIN_ZOOM);
   if (!capital) {
-    if (rango < RANGO_MINIMO || zoom > ZOOM_MAXIMO) continue;
+    if (rango < RANGO_MINIMO) continue;
     const cuenta = porPais.get(pais) ?? 0;
     if (cuenta >= MAXIMO_POR_PAIS) continue;
     porPais.set(pais, cuenta + 1);
   }
   const paisCapital = capitalDe.get(lugar);
-  ciudades.push({
-    // Las capitales llevan el mismo nombre que en la ficha del país.
-    nombre: paisCapital
-      ? paises[paisCapital]!.capital
-      : texto(lugar, 'NAME_ES') || texto(lugar, 'NAME'),
-    pais: paisCapital ?? pais,
-    lon: Math.round(lon * 1000) / 1000,
-    lat: Math.round(lat * 1000) / 1000,
-    rango,
-    zoom: Math.round(zoom * 10) / 10,
-    capital,
+  pendientes.push({
+    ciudad: {
+      // Las capitales llevan el mismo nombre que en la ficha del país.
+      nombre: paisCapital
+        ? paises[paisCapital]!.capital
+        : texto(lugar, 'NAME_ES') || texto(lugar, 'NAME'),
+      pais: paisCapital ?? pais,
+      lon: Math.round(lon * 1000) / 1000,
+      lat: Math.round(lat * 1000) / 1000,
+      capital,
+      poblacion: null,
+      origenPoblacion: null,
+      rango,
+    },
+    qid: texto(lugar, 'WIKIDATAID'),
+    onu2010: Number(lugar.properties.POP2010 ?? 0),
   });
 }
+
+// Población de Wikidata: todas las declaraciones de P1082 con su fecha, por lotes.
+interface FilaPoblacion {
+  lugar: { value: string };
+  valor: { value: string };
+  fecha?: { value: string };
+  rango: { value: string };
+}
+const declaraciones = new Map<
+  string,
+  { valor: number; anio: number | null; preferida: boolean }[]
+>();
+const qids = [...new Set(pendientes.map((p) => p.qid).filter((q) => /^Q\d+$/.test(q)))];
+console.log(`Consultando en Wikidata la población de ${qids.length} ciudades…`);
+for (let i = 0; i < qids.length; i += 200) {
+  const lote = qids.slice(i, i + 200);
+  const consultaPoblacion = `SELECT ?lugar ?valor ?fecha ?rango WHERE {
+    VALUES ?lugar { ${lote.map((q) => `wd:${q}`).join(' ')} }
+    ?lugar p:P1082 ?declaracion .
+    ?declaracion ps:P1082 ?valor ; wikibase:rank ?rango .
+    OPTIONAL { ?declaracion pq:P585 ?fecha }
+  }`;
+  const filasPoblacion = (
+    await descargarJson<{ results: { bindings: FilaPoblacion[] } }>(
+      `https://query.wikidata.org/sparql?format=json&query=${encodeURIComponent(consultaPoblacion)}`,
+      { cabeceras: { Accept: 'application/sparql-results+json' } },
+    )
+  ).results.bindings;
+  for (const fila of filasPoblacion) {
+    if (fila.rango.value.endsWith('DeprecatedRank')) continue;
+    const qid = fila.lugar.value.split('/').pop()!;
+    const anio =
+      fila.fecha && /^\d{4}-/.test(fila.fecha.value) ? Number(fila.fecha.value.slice(0, 4)) : null;
+    const lista = declaraciones.get(qid) ?? [];
+    lista.push({
+      valor: Math.round(Number(fila.valor.value)),
+      anio,
+      preferida: fila.rango.value.endsWith('PreferredRank'),
+    });
+    declaraciones.set(qid, lista);
+  }
+  // Una pausa corta entre lotes, por cortesía con el servicio.
+  await new Promise((resolver) => setTimeout(resolver, 300));
+}
+
+/** La población de 2010 o la de la fecha más cercana (en empate, la anterior a 2010). */
+function elegirPoblacion(pendiente: Pendiente): Pick<Ciudad, 'poblacion' | 'origenPoblacion'> {
+  const lista = (declaraciones.get(pendiente.qid) ?? []).filter((d) => d.valor > 0);
+  const conFecha = lista.filter((d) => d.anio !== null);
+  if (conFecha.length > 0) {
+    const [mejor] = [...conFecha].sort(
+      (a, b) =>
+        Math.abs(a.anio! - ANIO) - Math.abs(b.anio! - ANIO) ||
+        Number(a.anio! > ANIO) - Number(b.anio! > ANIO) ||
+        Number(b.preferida) - Number(a.preferida),
+    );
+    return { poblacion: mejor!.valor, origenPoblacion: `WD:${mejor!.anio}` };
+  }
+  if (pendiente.onu2010 > 0) {
+    return { poblacion: Math.round(pendiente.onu2010 * 1000), origenPoblacion: `ONU:${ANIO}` };
+  }
+  const sinFecha = lista.find((d) => d.preferida) ?? lista[0];
+  if (sinFecha) return { poblacion: sinFecha.valor, origenPoblacion: 'WD:sin-fecha' };
+  return { poblacion: null, origenPoblacion: null };
+}
+
+const ciudades: Ciudad[] = pendientes.map((pendiente) => ({
+  ...pendiente.ciudad,
+  ...elegirPoblacion(pendiente),
+}));
+const recuento = (prueba: (ciudad: Ciudad) => boolean): number => ciudades.filter(prueba).length;
+console.log(
+  `Población: ${recuento((c) => c.origenPoblacion === `WD:${ANIO}`)} de ${ANIO}, ` +
+    `${recuento((c) => /^WD:\d{4}$/.test(c.origenPoblacion ?? '') && c.origenPoblacion !== `WD:${ANIO}`)} de otro año, ` +
+    `${recuento((c) => c.origenPoblacion === `ONU:${ANIO}`)} de la ONU, ` +
+    `${recuento((c) => c.origenPoblacion === 'WD:sin-fecha')} sin fecha y ` +
+    `${recuento((c) => c.poblacion === null)} sin dato.`,
+);
 
 escribirJsonCompacto(
   'public/data/ciudades-2010.json',
   {
-    fuente: `Natural Earth 1:10m, lugares poblados ${VERSION_NE} (dominio público). Wikidata (CC0) para las capitales que no están en Natural Earth. País según las fronteras de 2010.`,
+    fuente: `Natural Earth 1:10m, lugares poblados ${VERSION_NE} (dominio público), y Wikidata (CC0) para la población y las capitales que no están en Natural Earth. País según las fronteras de 2010.`,
+    origenesPoblacion: {
+      'WD:<año>': 'Wikidata, población del municipio en ese año (la de 2010 o la más cercana)',
+      'ONU:2010':
+        'Naciones Unidas (World Urbanization Prospects), aglomeración urbana, según Natural Earth',
+      'WD:sin-fecha': 'Wikidata, población sin fecha indicada',
+    },
     ciudades,
   },
   2,
