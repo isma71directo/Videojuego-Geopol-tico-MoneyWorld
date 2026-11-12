@@ -174,3 +174,71 @@ describe('población y PIB de las regiones (f5-t2)', () => {
     expect(new Map(porPais('GBR')).get('Londres')!.origenPib).toBe('EST:dose-poblacion');
   });
 });
+
+describe('regiones en el mapa (f5-t3)', async () => {
+  const {
+    prepararRegiones,
+    regionEnPunto,
+    regionesVisibles,
+    colocarNombresRegiones,
+    TAMANO_REGIONES_PX,
+  } = await import('../src/map/regiones');
+  const { crearProyeccion } = await import('../src/map/proyeccion');
+  const capa = prepararRegiones(topo as unknown as Parameters<typeof prepararRegiones>[0]);
+  const proyeccion = crearProyeccion();
+  const invertir = (punto: [number, number]): [number, number] | null => {
+    const lugar = proyeccion.invert?.(punto);
+    return lugar ? [lugar[0], lugar[1]] : null;
+  };
+  const regionDe = (pais: string, lon: number, lat: number): string | null => {
+    const [x, y] = proyeccion([lon, lat])!;
+    return regionEnPunto(capa.porPais.get(pais) ?? [], x, y, invertir)?.nombre ?? null;
+  };
+
+  it('un punto de una región la selecciona', () => {
+    expect(regionDe('ESP', 2.17, 41.39)).toBe('Cataluña'); // Barcelona
+    expect(regionDe('ESP', -5.98, 37.39)).toBe('Andalucía'); // Sevilla
+    expect(regionDe('ESP', -3.7, 40.42)).toBe('Comunidad de Madrid');
+    expect(regionDe('FRA', 2.35, 48.86)).toBe('Isla de Francia');
+    expect(regionDe('UKR', 34.1, 44.95)).toBe('República Autónoma de Crimea');
+    // También en otra copia del mundo (desplazamiento continuo).
+    const [x, y] = proyeccion([2.17, 41.39])!;
+    expect(regionEnPunto(capa.porPais.get('ESP')!, x + 1024, y, invertir)?.nombre).toBe('Cataluña');
+  });
+
+  it('las regiones de un país se ven cuando el país es grande en pantalla', () => {
+    expect(regionesVisibles(TAMANO_REGIONES_PX - 1)).toBe(false);
+    expect(regionesVisibles(TAMANO_REGIONES_PX)).toBe(true);
+  });
+
+  it('las fronteras interiores existen en los países con varias regiones y no en los de una', () => {
+    expect(capa.fronteras('ESP').length).toBeGreaterThan(100);
+    expect(capa.fronteras('SOS')).toBe('');
+  });
+
+  it('los nombres de las regiones no se pisan entre sí ni con lo ocupado', () => {
+    const medir = (texto: string): number => texto.length * 6;
+    const nombres = colocarNombresRegiones(
+      [
+        { id: 'a', texto: 'Aragón', x: 100, y: 100, tamano: 120 },
+        { id: 'b', texto: 'Navarra', x: 104, y: 101, tamano: 80 },
+        { id: 'c', texto: 'La Rioja', x: 300, y: 300, tamano: 20 }, // no cabe en su región
+        { id: 'd', texto: 'Cataluña', x: 500, y: 100, tamano: 120 },
+      ],
+      medir,
+      11,
+      1280,
+      720,
+      [[480, 90, 560, 110]],
+    );
+    const ids = nombres.map((n) => n.id);
+    expect(ids).toContain('a');
+    expect(ids).not.toContain('c');
+    for (let i = 0; i < nombres.length; i++) {
+      for (let j = i + 1; j < nombres.length; j++) {
+        const [p, q] = [nombres[i]!.caja, nombres[j]!.caja];
+        expect(p[0] < q[2] && q[0] < p[2] && p[1] < q[3] && q[1] < p[3]).toBe(false);
+      }
+    }
+  });
+});

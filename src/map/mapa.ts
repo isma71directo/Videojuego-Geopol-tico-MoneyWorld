@@ -35,19 +35,44 @@ import {
   type CiudadColocada,
   type ConjuntoCiudades,
 } from './ciudades';
+import {
+  colocarNombresRegiones,
+  prepararRegiones,
+  regionEnPunto,
+  regionesVisibles,
+  type CandidatoNombreRegion,
+  type CapaRegionesPreparada,
+  type RegionMapa,
+  type TopologiaRegiones,
+} from './regiones';
 import { colocarRotulos, type Caja, type CandidatoRotulo } from './rotulos';
 
 /** A partir de este zoom (relativo al mundo entero) se usa el nivel de detalle. */
 export const ZOOM_DETALLE = 2.5;
 
-/** Lo que se puede señalar o seleccionar en el mapa: un país o una ciudad (ajuste f4-a4). */
-export type Objetivo = { tipo: 'pais'; id: string } | { tipo: 'ciudad'; ciudad: Ciudad };
+/** Las regiones se descargan la primera vez que el zoom (relativo al mundo) llega a este valor. */
+export const ZOOM_CARGA_REGIONES = 1.5;
+
+/** Una región, tal como se la pasa el mapa a la interfaz. */
+export interface RegionSenalada {
+  id: string;
+  pais: string;
+  nombre: string;
+}
+
+/** Lo que se puede señalar o seleccionar en el mapa: un país, una región o una ciudad. */
+export type Objetivo =
+  | { tipo: 'pais'; id: string }
+  | { tipo: 'region'; region: RegionSenalada }
+  | { tipo: 'ciudad'; ciudad: Ciudad };
 
 const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const DURACION_PULSO_MS = 520;
 const LETRA_CAPITAL = 12;
 const LETRA_CIUDAD = 11;
+const LETRA_REGION = 11;
+const FUENTE_REGION = `italic 500 ${LETRA_REGION}px ${FUENTE_ROTULOS}`;
 const fuenteCiudad = (capital: boolean): string =>
   capital ? `600 ${LETRA_CAPITAL}px ${FUENTE_ROTULOS}` : `500 ${LETRA_CIUDAD}px ${FUENTE_ROTULOS}`;
 
@@ -115,6 +140,15 @@ export class MapaMundo {
   private senalado: string | null = null;
   private ciudadSenalada: Ciudad | null = null;
   private ciudadSeleccionada: Ciudad | null = null;
+  /** Regiones de 2010 (Fase 5): se descargan al acercarse. */
+  private regiones: CapaRegionesPreparada | null = null;
+  private cargandoRegiones = false;
+  private readonly caminosRegion = new Map<string, Path2D>();
+  private readonly fronterasRegion = new Map<string, Path2D>();
+  /** Países que muestran sus regiones en el último fotograma. */
+  private paisesConRegiones = new Set<string>();
+  private regionSenalada: RegionMapa | null = null;
+  private regionSeleccionada: RegionMapa | null = null;
   /** Ciudades dibujadas en el último fotograma, con su posición en pantalla. */
   private ciudadesDibujadas: CiudadColocada[] = [];
   /** Momento en que empezó el pulso de la selección (animación de la tarea f4-t4). */
@@ -134,6 +168,7 @@ export class MapaMundo {
       relieve?: string;
       agua?: string;
       ciudades?: string;
+      regiones?: string;
     },
     private readonly estilo: Estilo,
   ) {
@@ -243,33 +278,58 @@ export class MapaMundo {
     });
   }
 
+  /**
+   * Región en un punto de la pantalla del mapa, si su país muestra ya sus regiones (está
+   * grande en pantalla); null si no.
+   */
+  regionEn(px: number, py: number, pais: string | null = this.paisEn(px, py)): RegionMapa | null {
+    if (!pais || !this.regiones || !this.paisesConRegiones.has(pais)) return null;
+    const x = this.camara.cx + (px - this.camara.ancho / 2) / this.camara.k;
+    const y = this.camara.cy + (py - this.camara.alto / 2) / this.camara.k;
+    return regionEnPunto(this.regiones.porPais.get(pais) ?? [], x, y, (punto) => {
+      const lugar = this.proyeccion.invert?.(punto);
+      return lugar ? [lugar[0], lugar[1]] : null;
+    });
+  }
+
   /** El ratón se mueve sobre el mapa (sin pulsar); null si sale del mapa. */
   alPasar = (x: number | null, y: number | null): void => {
     const dentro = x !== null && y !== null;
-    // Las ciudades están encima de los países: primero se mira si hay una bajo el ratón.
+    // Las ciudades están encima de todo; después, las regiones (al acercarse) y los países.
     const ciudad = dentro ? this.ciudadEn(x, y) : null;
-    const id = dentro && !ciudad ? this.paisEn(x, y) : null;
+    const pais = dentro && !ciudad ? this.paisEn(x, y) : null;
+    const region = dentro && pais ? this.regionEn(x, y, pais) : null;
+    const id = region ? null : pais;
     this.raton = dentro ? [x, y] : null;
     this.camaraSenalada = this.camara;
-    if (id !== this.senalado || ciudad !== this.ciudadSenalada) {
+    if (id !== this.senalado || ciudad !== this.ciudadSenalada || region !== this.regionSenalada) {
       this.senalado = id;
       this.ciudadSenalada = ciudad;
-      this.lienzo.style.cursor = id || ciudad ? 'pointer' : '';
+      this.regionSenalada = region;
+      this.lienzo.style.cursor = id || ciudad || region ? 'pointer' : '';
       this.pedirDibujo();
     }
     const objetivo: Objetivo | null = ciudad
       ? { tipo: 'ciudad', ciudad }
-      : id
-        ? { tipo: 'pais', id }
-        : null;
+      : region
+        ? { tipo: 'region', region: { id: region.id, pais: region.pais, nombre: region.nombre } }
+        : id
+          ? { tipo: 'pais', id }
+          : null;
     this.alSenalar?.(objetivo, x ?? 0, y ?? 0);
   };
 
-  /** Clic sin arrastre: selecciona la ciudad o el país (o quita la selección si es mar). */
+  /** Clic sin arrastre: selecciona la ciudad, la región o el país (o nada si es mar). */
   alTocar = (x: number, y: number): void => {
     const ciudad = this.ciudadEn(x, y);
-    if (ciudad) this.seleccionarCiudad(ciudad);
-    else this.seleccionar(this.paisEn(x, y));
+    if (ciudad) {
+      this.seleccionarCiudad(ciudad);
+      return;
+    }
+    const pais = this.paisEn(x, y);
+    const region = this.regionEn(x, y, pais);
+    if (region) this.seleccionarRegion(region.id);
+    else this.seleccionar(pais);
   };
 
   /** Ciudad dibujada en un punto de la pantalla del mapa (o null). */
@@ -292,23 +352,46 @@ export class MapaMundo {
     return this.seleccionado;
   }
 
-  /** ¿Hay un país o una ciudad seleccionados? */
+  /** ¿Hay un país, una región o una ciudad seleccionados? */
   get haySeleccion(): boolean {
-    return this.seleccionado !== null || this.ciudadSeleccionada !== null;
+    return (
+      this.seleccionado !== null ||
+      this.ciudadSeleccionada !== null ||
+      this.regionSeleccionada !== null
+    );
   }
 
   seleccionar(id: string | null): void {
-    if (id === this.seleccionado && this.ciudadSeleccionada === null) return;
+    if (id === this.seleccionado && this.ciudadSeleccionada === null && !this.regionSeleccionada) {
+      return;
+    }
     this.seleccionado = id;
     this.ciudadSeleccionada = null;
+    this.regionSeleccionada = null;
     this.inicioPulso = id && !this.sinMovimiento ? performance.now() : null;
     this.pedirDibujo();
     this.alSeleccionar?.(id ? { tipo: 'pais', id } : null);
   }
 
+  /** Selecciona una región por su identificador (si las regiones ya están cargadas). */
+  seleccionarRegion(id: string): void {
+    const region = this.regiones?.porId.get(id);
+    if (!region || region === this.regionSeleccionada) return;
+    this.seleccionado = null;
+    this.ciudadSeleccionada = null;
+    this.regionSeleccionada = region;
+    this.inicioPulso = this.sinMovimiento ? null : performance.now();
+    this.pedirDibujo();
+    this.alSeleccionar?.({
+      tipo: 'region',
+      region: { id: region.id, pais: region.pais, nombre: region.nombre },
+    });
+  }
+
   seleccionarCiudad(ciudad: Ciudad): void {
     if (ciudad === this.ciudadSeleccionada) return;
     this.seleccionado = null;
+    this.regionSeleccionada = null;
     this.ciudadSeleccionada = ciudad;
     this.inicioPulso = this.sinMovimiento ? null : performance.now();
     this.pedirDibujo();
@@ -362,8 +445,100 @@ export class MapaMundo {
     this.pedirDibujoSiguiente = true;
   }
 
+  /** Descarga las regiones la primera vez que el zoom pasa de ZOOM_CARGA_REGIONES. */
+  private capaRegiones(): CapaRegionesPreparada | null {
+    if (this.regiones || !this.urls.regiones) return this.regiones;
+    if (!this.cargandoRegiones && zoomRelativo(this.camara) >= ZOOM_CARGA_REGIONES) {
+      this.cargandoRegiones = true;
+      fetch(this.urls.regiones)
+        .then((r) =>
+          r.ok ? (r.json() as Promise<TopologiaRegiones>) : Promise.reject(new Error()),
+        )
+        .then((topo) => {
+          this.regiones = prepararRegiones(topo);
+          this.pedirDibujo();
+        })
+        .catch(() => {
+          // Sin conexión, el mapa sigue sin regiones; se reintenta en el próximo zoom.
+          this.cargandoRegiones = false;
+        });
+    }
+    return null;
+  }
+
+  private caminoRegion(region: RegionMapa): Path2D {
+    let camino = this.caminosRegion.get(region.id);
+    if (!camino) {
+      camino = new Path2D(region.camino);
+      this.caminosRegion.set(region.id, camino);
+    }
+    return camino;
+  }
+
+  /**
+   * Fronteras interiores de los países grandes en pantalla (líneas discontinuas y claras),
+   * recortadas al contorno del país para que no se salgan por la costa.
+   */
+  private dibujarRegiones(nivel: Nivel, paises: Figura[], camara: Camara): void {
+    const capa = this.capaRegiones();
+    if (!capa) return;
+    const { ctx } = this;
+    for (const figura of paises) {
+      if (!regionesVisibles(Math.sqrt(figura.area) * camara.k)) continue;
+      if ((capa.porPais.get(figura.id)?.length ?? 0) < 2) continue;
+      this.paisesConRegiones.add(figura.id);
+      let fronteras = this.fronterasRegion.get(figura.id);
+      if (!fronteras) {
+        fronteras = new Path2D(capa.fronteras(figura.id));
+        this.fronterasRegion.set(figura.id, fronteras);
+      }
+      ctx.save();
+      ctx.clip(this.camino(nivel, figura));
+      ctx.strokeStyle = 'rgba(240, 244, 252, 0.38)';
+      ctx.lineWidth = 0.9 / camara.k;
+      ctx.setLineDash([4 / camara.k, 3 / camara.k]);
+      ctx.stroke(fronteras);
+      ctx.restore();
+    }
+  }
+
+  /** Resaltado de la región señalada (blanco) y de la seleccionada (dorado, con su pulso). */
+  private resaltarRegiones(nivel: Nivel, paises: Figura[], camara: Camara): void {
+    const { ctx } = this;
+    const dibujar = (region: RegionMapa | null, seleccionada: boolean): void => {
+      if (!region) return;
+      const pais = paises.find((f) => f.id === region.pais);
+      if (!pais) return;
+      const camino = this.caminoRegion(region);
+      ctx.save();
+      ctx.clip(this.camino(nivel, pais));
+      ctx.fillStyle = seleccionada ? 'rgba(255, 214, 120, 0.18)' : 'rgba(255, 255, 255, 0.12)';
+      ctx.fill(camino);
+      ctx.strokeStyle = seleccionada ? '#ffd678' : 'rgba(255, 255, 255, 0.85)';
+      ctx.lineWidth = (seleccionada ? 2.2 : 1.5) / camara.k;
+      ctx.stroke(camino);
+      if (seleccionada && this.inicioPulso !== null) {
+        const progreso = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
+        if (progreso < 1) {
+          ctx.fillStyle = `rgba(255, 214, 120, ${0.22 * (1 - progreso)})`;
+          ctx.fill(camino);
+          ctx.strokeStyle = `rgba(255, 214, 120, ${0.6 * (1 - progreso)})`;
+          ctx.lineWidth = (2.2 + 9 * progreso) / camara.k;
+          ctx.stroke(camino);
+          this.pedirDibujoSiguiente = true;
+        } else {
+          this.inicioPulso = null;
+        }
+      }
+      ctx.restore();
+    };
+    if (this.regionSenalada !== this.regionSeleccionada) dibujar(this.regionSenalada, false);
+    dibujar(this.regionSeleccionada, true);
+  }
+
   private resaltar(nivel: Nivel, paises: Figura[], camara: Camara): void {
     const { ctx } = this;
+    this.resaltarRegiones(nivel, paises, camara);
     const senalada = paises.find((f) => f.id === this.senalado && f.id !== this.seleccionado);
     if (senalada) {
       const camino = this.camino(nivel, senalada);
@@ -551,6 +726,34 @@ export class MapaMundo {
     ocupadas.push(
       ...colocadasCapitales.flatMap((c) => [c.cajaPunto, ...(c.cajaTexto ? [c.cajaTexto] : [])]),
     );
+    // Nombres de las regiones de los países que las muestran (Fase 5), antes que las ciudades.
+    const candidatosRegiones: CandidatoNombreRegion[] = [];
+    if (this.regiones) {
+      for (const desplazamiento of copiasVisibles(camara)) {
+        for (const pais of this.paisesConRegiones) {
+          for (const region of this.regiones.porPais.get(pais) ?? []) {
+            const [px, py] = aPantalla(region.etiqueta[0], region.etiqueta[1], desplazamiento);
+            if (px < -50 || px > ancho + 50 || py < -20 || py > alto + 20) continue;
+            candidatosRegiones.push({
+              id: region.id,
+              texto: region.nombre,
+              x: px,
+              y: py,
+              tamano: Math.sqrt(region.area) * camara.k,
+            });
+          }
+        }
+      }
+    }
+    const nombresRegiones = colocarNombresRegiones(
+      candidatosRegiones,
+      (texto) => this.medirTexto(texto, FUENTE_REGION),
+      LETRA_REGION,
+      ancho,
+      alto,
+      ocupadas,
+    );
+    ocupadas.push(...nombresRegiones.map((n) => n.caja));
     const colocadasOtras = colocarCiudades(otras, medirCiudad, alturaCiudad, ancho, alto, ocupadas);
 
     ctx.textBaseline = 'middle';
@@ -570,6 +773,14 @@ export class MapaMundo {
       });
     }
     ctx.letterSpacing = '0px';
+    ctx.font = FUENTE_REGION;
+    ctx.lineWidth = 2.5;
+    for (const nombre of nombresRegiones) {
+      ctx.fillStyle =
+        nombre.id === this.regionSeleccionada?.id ? '#ffe3a1' : 'rgba(236, 240, 248, 0.82)';
+      ctx.strokeText(nombre.texto, nombre.x, nombre.y);
+      ctx.fillText(nombre.texto, nombre.x, nombre.y);
+    }
     this.ciudadesDibujadas = [...colocadasCapitales, ...colocadasOtras];
     for (const colocada of [...colocadasOtras, ...colocadasCapitales]) this.dibujarCiudad(colocada);
     this.resaltarCiudades(camara, aPantalla);
@@ -676,6 +887,7 @@ export class MapaMundo {
     const nivel = this.nivelParaZoom();
     if (nivel) {
       this.nivelActual = nivel === this.detalle ? 'detalle' : 'mundo';
+      this.paisesConRegiones = new Set();
       const [vx0, vy0, vx1, vy1] = rectanguloVisible(camara);
       for (const desplazamiento of copiasVisibles(camara)) {
         // Cada copia del mundo se dibuja con su propio desplazamiento horizontal.
@@ -724,6 +936,7 @@ export class MapaMundo {
         ctx.lineWidth = Math.min(1.4, 0.6 + 0.12 * (z - 2.5)) / camara.k;
         ctx.lineJoin = 'round';
         for (const figura of [...zonas, ...paises]) ctx.stroke(this.camino(nivel, figura));
+        this.dibujarRegiones(nivel, paises, camara);
         this.resaltar(nivel, paises, camara);
       }
       this.dibujarRotulos(camara);

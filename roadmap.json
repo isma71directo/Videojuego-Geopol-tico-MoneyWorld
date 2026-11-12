@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.5.2",
-  "actualizado": "2026-11-12T10:58:24Z",
+  "actualizado": "2026-11-12T11:03:35Z",
   "faseActiva": "fase-5",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 5 en curso. Hechas f5-t1 (2974 regiones de 2010) y f5-t2 (población y PIB de cada región: DOSE en 66 países, Wikidata y estimaciones marcadas, ajustado al total del país).",
-    "siguientePaso": "Mostrar y seleccionar las regiones al acercarse, con su ficha y su panel (tarea f5-t3).",
+    "resumen": "Fase 5 en curso. Hechas f5-t1 (regiones de 2010), f5-t2 (población y PIB por región) y f5-t3 (regiones en el mapa al acercarse: fronteras interiores, nombres, ficha al pasar el ratón y panel al hacer clic).",
+    "siguientePaso": "Transición animada entre la vista de países y la de regiones (tarea f5-t4); después, cerrar la fase (v0.6.0) y abrir el PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -409,20 +409,20 @@
           "titulo": "Datos básicos por región: población (Wikidata, la de 2010 o la más cercana, ajustada al total del país) y PIB de 2010 donde haya fuente abierta (Eurostat, OCDE, DOSE); si no, reparto proporcional del dato del país, marcado como estimado.",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/1fca16e"
         },
         {
           "id": "f5-t3",
           "titulo": "Mostrar y seleccionar las regiones a partir de cierto zoom",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f5-t4",
           "titulo": "Audiovisual: transición animada entre la vista de países y la de regiones",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         }
       ]

@@ -63,7 +63,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar, haz clic en un país o en una ciudad para ver su ficha, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -148,6 +148,29 @@
         "notaAnio": "No hay dato de 2010: es el más cercano que hay.",
         "verPais": "Ver la ficha de {pais}",
         "cerrar": "Cerrar ficha de la ciudad"
+      },
+      "region": {
+        "regionDe": "Región de {pais}",
+        "poblacion": "Población",
+        "pib": "PIB",
+        "pibPorHabitante": "PIB por habitante",
+        "fuentePoblacion": "Fuente de la población",
+        "fuentePib": "Fuente del PIB",
+        "sinDato": "Sin dato",
+        "cargando": "Cargando datos…",
+        "conAnio": "{valor} ({anio})",
+        "fuentes": {
+          "DOSE": "DOSE ({anio})",
+          "WD": "Wikidata ({anio})",
+          "BM": "Banco Mundial ({anio})",
+          "FMI": "FMI ({anio})",
+          "OWID": "Our World in Data ({anio})",
+          "EST": "Estimación"
+        },
+        "estimado": "* Estimación: no hay dato real de 2010 de esta región.",
+        "ajustado": "Datos de 2010, ajustados para que las regiones sumen el total del país.",
+        "verPais": "Ver la ficha de {pais}",
+        "cerrar": "Cerrar ficha de la región"
       }
     }
   },
