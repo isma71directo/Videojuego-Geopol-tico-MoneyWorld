@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.2.0",
-  "actualizado": "2026-11-12T00:33:28Z",
+  "actualizado": "2026-11-12T00:40:15Z",
   "faseActiva": "fase-2",
   "ultimaSesion": {
     "fecha": "2026-11-12",
-    "resumen": "Fase 2 en marcha: añadidos 21 territorios dependientes jugables (Hong Kong, Puerto Rico, Groenlandia…, con las Antillas Neerlandesas de 2010) y jugables los cinco territorios con independencia de hecho. Ahora hay 223 países y territorios, 221 jugables.",
-    "siguientePaso": "Script de fronteras de 2010 a partir de Natural Earth (tarea f2-t2).",
+    "resumen": "Fase 2 en marcha: 21 territorios dependientes y los territorios de hecho, jugables (223 en total). Fronteras de 2010 generadas desde Natural Earth con sus correcciones (Crimea en Ucrania, Sudán unido, Abjasia, Osetia del Sur, Transnistria y Sáhara Occidental separados, Antillas Neerlandesas e Islas del Canal unidas).",
+    "siguientePaso": "Niveles de detalle del mapa para móvil y protección de los microestados (tarea f2-t3).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -232,20 +232,20 @@
           "titulo": "Territorios jugables (decisión del jugador): añadir a los datos los territorios dependientes con datos del Banco Mundial (Hong Kong, Puerto Rico, Groenlandia…), con las Antillas Neerlandesas tal como eran en 2010, y hacer jugables los cinco territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte)",
           "estado": "hecha",
           "fecha": "2026-11-12",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ce55224"
         },
         {
           "id": "f2-t2",
           "titulo": "Script que procesa Natural Earth (admin-0) y aplica las correcciones de 2010 (sección 3): Sudán unido, Crimea dentro de Ucrania, Abjasia, Osetia del Sur y Transnistria separadas, y Antillas Neerlandesas e Islas del Canal unidas",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": ""
         },
         {
           "id": "f2-t3",
           "titulo": "Simplificar las geometrías a varios niveles de detalle (TopoJSON) para móvil",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-12",
           "enlace": ""
         },
         {
