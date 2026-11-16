@@ -1040,6 +1040,24 @@
       },
       "empezar": "Empezar con {pais}",
       "empezarSin": "Elige un país para empezar"
+    },
+    "partida": {
+      "barra": "Estado de la partida",
+      "menu": "Menú",
+      "menuAyuda": "Salir al menú principal",
+      "pais": "Tu país: {pais}. Pulsa para ir a él en el mapa.",
+      "fecha": "Fecha",
+      "fechaAyuda": "Fecha de la partida. El reloj y sus velocidades llegan en la Fase 11.",
+      "tesoreria": "Tesorería",
+      "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 21.",
+      "popularidad": "Popularidad",
+      "popularidadAyuda": "Popularidad del gobierno. Estimación provisional con la economía, los años del líder en el cargo y el régimen. La opinión pública llega en la Fase 56.",
+      "salir": {
+        "titulo": "¿Salir al menú?",
+        "texto": "La partida aún no se puede guardar (llega en la Fase 14): si sales, se pierde y tendrás que empezar otra.",
+        "aceptar": "Salir al menú",
+        "cancelar": "Seguir jugando"
+      }
     }
   },
   "hojaDeRuta": {
@@ -1180,7 +1198,10 @@
       "gema": "Gemas",
       "pico": "Metales",
       "bateria": "Minerales estratégicos",
-      "cristales": "Minerales industriales"
+      "cristales": "Minerales industriales",
+      "calendario": "Fecha",
+      "popularidad": "Popularidad",
+      "salir": "Salir"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1256,11 +1277,20 @@
       },
       "menu": {
         "titulo": "Componentes · Menú contextual e información",
-        "nota": "Haz clic derecho en el recuadro (o, con el foco en él, pulsa la tecla de menú o Mayús + F10). Pasa el ratón o lleva el foco a los indicadores para ver su explicación.",
+        "nota": "Haz clic derecho en el recuadro (o, con el foco en él, pulsa la tecla de menú o Mayús + F10). Pasa el ratón o lleva el foco a los indicadores para ver su explicación. El botón de confirmación abre la ventana que pregunta antes de algo que no se puede deshacer (como salir de una partida): empieza en «cancelar», y Escape o un clic fuera también cancelan.",
         "zona": "Haz clic derecho aquí",
         "etiqueta": "Acciones de ejemplo",
         "tituloMenu": "España",
-        "desactivada": "Opción que aún no se puede usar"
+        "desactivada": "Opción que aún no se puede usar",
+        "confirmar": "Pedir confirmación",
+        "confirmacion": {
+          "titulo": "¿Borrar la partida de ejemplo?",
+          "texto": "Es solo una prueba del muestrario: no se borra nada.",
+          "aceptar": "Borrar",
+          "cancelar": "Cancelar",
+          "si": "Has confirmado.",
+          "no": "Has cancelado."
+        }
       },
       "info": {
         "pib": {

@@ -22,6 +22,7 @@ import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
+import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
@@ -51,12 +52,25 @@ export function abrirPantallaMapa(
   opciones: OpcionesPantallaMapa = {},
 ): PantallaMapa {
   const partida = opciones.partida ?? null;
-  const volver = el(
-    'button',
-    { class: 'boton mapa__volver', type: 'button', 'aria-label': t('juego.mapa.volver') },
-    '← ',
-    t('juego.mapa.volver'),
-  );
+  // En una partida, «Menú» sale al inicio después de confirmarlo (tarea f10-t3).
+  const volver = partida
+    ? el(
+        'button',
+        {
+          class: 'boton mapa__volver mapa__menu',
+          type: 'button',
+          'aria-label': t('juego.partida.menuAyuda'),
+          title: t('juego.partida.menuAyuda'),
+        },
+        icono('salir'),
+        t('juego.partida.menu'),
+      )
+    : el(
+        'button',
+        { class: 'boton mapa__volver', type: 'button', 'aria-label': t('juego.mapa.volver') },
+        '← ',
+        t('juego.mapa.volver'),
+      );
   // Botón de silencio, siempre a mano (GDD 7.1); también con la tecla M.
   const botonSonido = el('button', { class: 'boton mapa__sonido', type: 'button' });
   const pintarBotonSonido = (): void => {
@@ -173,14 +187,28 @@ export function abrirPantallaMapa(
     buscador.alTeclear(evento);
   };
   document.addEventListener('keydown', alTeclearBuscador);
-  const barra = el(
-    'div',
-    { class: 'mapa__barra' },
-    volver,
-    botonSonido,
-    selector.elemento,
-    buscador.boton,
-  );
+  // Barra superior de la partida (tarea f10-t3): país, fecha, tesorería y popularidad, con las
+  // herramientas del mapa a la derecha. En el mapa libre, solo las herramientas.
+  const barraPartida = partida
+    ? crearBarraPartida({
+        partida,
+        alIrAlPais: () => {
+          reproducir('boton');
+          mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
+          lienzo.focus({ preventScroll: true });
+        },
+      })
+    : null;
+  const herramientas = [botonSonido, selector.elemento, buscador.boton];
+  const barra = barraPartida
+    ? el(
+        'header',
+        { class: 'mapa__barra mapa__barra--partida' },
+        volver,
+        barraPartida.elemento,
+        el('div', { class: 'mapa__herramientas' }, ...herramientas),
+      )
+    : el('div', { class: 'mapa__barra' }, volver, ...herramientas);
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -223,7 +251,7 @@ export function abrirPantallaMapa(
   document.addEventListener('keydown', alTeclearSecciones);
   const elemento = el(
     'section',
-    { class: 'mapa' },
+    { class: partida ? 'mapa mapa--partida' : 'mapa' },
     lienzo,
     brillo,
     barra,
@@ -237,6 +265,7 @@ export function abrirPantallaMapa(
   document.body.appendChild(elemento);
 
   const mapa = crearMapaDelJuego(lienzo);
+  if (partida) mapa.paisJugador = partida.jugador.paisId;
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
@@ -469,6 +498,8 @@ export function abrirPantallaMapa(
         }),
       );
       pintarCapa();
+      const propio = partida ? datos.paises[partida.jugador.paisId] : undefined;
+      if (propio) barraPartida?.ponerNombrePais(propio.nombre);
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.
@@ -597,6 +628,7 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alTeclearSecciones);
     document.removeEventListener('keydown', alTeclearBuscador);
     buscador.cerrar(false);
+    barraPartida?.destruir();
     secciones.destruir();
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
@@ -606,7 +638,13 @@ export function abrirPantallaMapa(
   };
   volver.addEventListener('click', () => {
     reproducir('boton');
-    alCerrar();
+    if (!partida) {
+      alCerrar();
+      return;
+    }
+    void confirmarSalidaDePartida().then((salir) => {
+      if (salir) alCerrar();
+    });
   });
   return { elemento, mapa, partida, cerrar };
 }

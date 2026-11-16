@@ -129,6 +129,16 @@ a {
   background: #7cc1ff;
 }
 
+.boton--peligro {
+  border-color: var(--peligro);
+  background: rgb(255 138 128 / 16%);
+  color: #ffd9d4;
+}
+
+.boton--peligro:hover {
+  background: rgb(255 138 128 / 28%);
+}
+
 .boton--discreto {
   background: transparent;
 }

@@ -39,6 +39,149 @@
   backdrop-filter: blur(6px);
 }
 
+/* Barra superior de la partida (tarea f10-t3): menú, país del jugador, fecha, tesorería y
+   popularidad; las herramientas del mapa, a la derecha. Ocupa todo el ancho, como la barra de
+   secciones de abajo. */
+.mapa__barra--partida {
+  top: 0;
+  right: 0;
+  left: 0;
+  align-items: center;
+  gap: 12px;
+  padding: calc(6px + env(safe-area-inset-top)) calc(10px + env(safe-area-inset-right)) 6px
+    calc(10px + env(safe-area-inset-left));
+  border-bottom: 1px solid var(--borde);
+  background: rgb(10 16 28 / 92%);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 30%);
+}
+
+.mapa__herramientas {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.mapa__menu .icono {
+  width: 18px;
+  height: 18px;
+}
+
+.partida-barra {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.partida-barra__pais {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tactil);
+  padding: 6px 14px 6px 8px;
+  border: 1px solid rgb(143 211 255 / 45%);
+  border-radius: var(--radio);
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+  cursor: pointer;
+}
+
+.partida-barra__pais:hover,
+.partida-barra__pais:focus-visible {
+  border-color: #8fd3ff;
+}
+
+.partida-barra__bandera {
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
+}
+
+.partida-barra__nombre {
+  max-width: 200px;
+  overflow: hidden;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partida-barra__datos {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.partida-barra__dato {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radio-pequeno);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.partida-barra__dato + .partida-barra__dato {
+  box-shadow: -1px 0 0 rgb(255 255 255 / 8%);
+}
+
+.partida-barra__dato:hover,
+.partida-barra__dato:focus-visible {
+  background: rgb(255 255 255 / 6%);
+}
+
+.partida-barra__dato .icono {
+  width: 18px;
+  height: 18px;
+  color: var(--texto-suave);
+}
+
+.partida-barra__valor {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.partida-barra__medidor {
+  width: 56px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgb(255 255 255 / 12%);
+}
+
+.partida-barra__relleno {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--en-curso);
+}
+
+.partida-barra__medidor[data-nivel='baja'] .partida-barra__relleno {
+  background: var(--peligro);
+}
+
+.partida-barra__medidor[data-nivel='alta'] .partida-barra__relleno {
+  background: var(--hecha);
+}
+
+/* En pantallas anchas cabe el nombre entero de casi cualquier país. */
+@media (min-width: 1600px) {
+  .partida-barra__nombre {
+    max-width: 360px;
+  }
+}
+
+/* Debajo de la barra superior de la partida. */
+.mapa--partida .panel-pais {
+  top: calc(68px + env(safe-area-inset-top));
+  max-height: calc(100% - 154px);
+}
+
+.mapa--partida .mapa__fps {
+  top: calc(72px + env(safe-area-inset-top));
+}
+
 /* Botón del buscador (tarea f9-t2): lupa, «Buscar» y la tecla B. */
 .mapa__buscar {
   gap: 8px;

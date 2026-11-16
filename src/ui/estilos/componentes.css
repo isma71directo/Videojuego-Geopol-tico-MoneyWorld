@@ -716,3 +716,50 @@
   stroke: var(--superficie);
   stroke-width: 1.5;
 }
+
+/* Ventana de confirmación (tarea f10-t3). */
+.confirmacion {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--capa-menu) + 5);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.confirmacion__fondo {
+  position: absolute;
+  inset: 0;
+  background: rgb(4 8 16 / 60%);
+  backdrop-filter: blur(2px);
+}
+
+.confirmacion__caja {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 20px 22px 18px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie-flotante);
+  box-shadow: var(--sombra-flotante);
+}
+
+.confirmacion__titulo {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.confirmacion__texto {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.confirmacion__botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}

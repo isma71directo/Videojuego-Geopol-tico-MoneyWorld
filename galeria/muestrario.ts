@@ -16,6 +16,7 @@ import {
 } from '../src/ui/componentes/graficos';
 import { conInformacion } from '../src/ui/componentes/info';
 import { abrirMenuContextual, SEPARADOR } from '../src/ui/componentes/menu';
+import { pedirConfirmacion } from '../src/ui/componentes/confirmacion';
 import { abrirPanel } from '../src/ui/componentes/panel';
 import { crearPestanas } from '../src/ui/componentes/pestanas';
 import { crearTabla } from '../src/ui/componentes/tabla';
@@ -271,11 +272,22 @@ function menusEInformacion(seccion: Seccion): HTMLElement {
     ]);
     return chip;
   });
+  // Ventana de confirmación (tarea f10-t3).
+  const confirmar = el('button', { class: 'boton', type: 'button' }, tx('menu.confirmar'));
+  confirmar.addEventListener('click', () => {
+    void pedirConfirmacion({
+      titulo: tx('menu.confirmacion.titulo'),
+      texto: tx('menu.confirmacion.texto'),
+      aceptar: tx('menu.confirmacion.aceptar'),
+      cancelar: tx('menu.confirmacion.cancelar'),
+      peligro: true,
+    }).then((si) => aviso.decir(tx(si ? 'menu.confirmacion.si' : 'menu.confirmacion.no')));
+  });
   return seccion(
     tx('menu.titulo'),
     tx('menu.nota'),
     zona,
-    el('div', { class: 'muestrario__botones' }, ...indicadores),
+    el('div', { class: 'muestrario__botones' }, ...indicadores, confirmar),
     aviso.elemento,
   );
 }

@@ -9,6 +9,7 @@ import { crearPantallaInicio } from './ui/inicio';
 import { abrirPantallaMapa, type PantallaMapa } from './ui/pantalla-mapa';
 import { abrirPantallaNuevaPartida, type PantallaNuevaPartida } from './ui/nueva-partida';
 import type { Partida } from './sim/partida';
+import { confirmarSalidaDePartida } from './ui/barra-partida';
 import { botonReportar } from './ui/reportar';
 import { sonidosDeComponentes } from './ui/componentes/sonidos';
 import { activarSonidoAlInteractuar, reproducir } from './ui/sonido';
@@ -63,6 +64,12 @@ function volverAlInicio(): void {
   }
 }
 
+/** Sale de la partida (ya confirmado): se pierde, porque aún no se guarda (Fase 14). */
+function terminarPartida(): void {
+  partida = null;
+  volverAlInicio();
+}
+
 function mostrarSegunDireccion(): void {
   const hash = location.hash;
   // Sin partida empezada (al recargar), «#partida» lleva a elegir país.
@@ -84,7 +91,7 @@ function mostrarSegunDireccion(): void {
     pantallaMapa = null;
   }
   if (hash === '#mapa') pantallaMapa ??= abrirPantallaMapa(volverAlInicio);
-  else if (hash === '#partida') pantallaMapa ??= abrirPantallaMapa(volverAlInicio, { partida });
+  else if (hash === '#partida') pantallaMapa ??= abrirPantallaMapa(terminarPartida, { partida });
   else if (hash === '#nueva-partida') {
     pantallaNueva ??= abrirPantallaNuevaPartida({
       alVolver: volverAlInicio,
@@ -97,8 +104,25 @@ function mostrarSegunDireccion(): void {
   }
 }
 window.addEventListener('hashchange', () => {
-  abiertaDesdeElJuego = ['#mapa', '#nueva-partida', '#partida'].includes(location.hash);
+  // «Atrás» con una partida en marcha (tarea f10-t3): se vuelve a ella y se pregunta antes de
+  // salir, como con el botón «Menú».
+  if (partida && pantallaMapa?.partida === partida && location.hash !== '#partida') {
+    history.pushState(null, '', '#partida');
+    void confirmarSalidaDePartida().then((salir) => {
+      if (salir) terminarPartida();
+    });
+    return;
+  }
+  // Al empezar, «#nueva-partida» se cambia por «#partida»: se conserva de dónde se vino.
+  const deElegirAJugar = location.hash === '#partida' && pantallaNueva !== null;
+  if (!deElegirAJugar) {
+    abiertaDesdeElJuego = ['#mapa', '#nueva-partida', '#partida'].includes(location.hash);
+  }
   mostrarSegunDireccion();
+});
+// Recargar o cerrar la pestaña con una partida en marcha la perdería: el navegador pregunta.
+window.addEventListener('beforeunload', (evento) => {
+  if (partida) evento.preventDefault();
 });
 mostrarSegunDireccion();
 
