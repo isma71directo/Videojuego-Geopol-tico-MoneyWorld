@@ -5,8 +5,8 @@
   "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "PR de la Fase 8 (v0.9.0) fusionado. El jugador pide más homenajes, mejorar los actuales y retratos genéricos más variados (sobre todo en África): apuntado como ajustes f8-a1, f8-a2 y f8-a3 de la v0.9.1.",
-    "siguientePaso": "f8-a1: caras distintas (forma de la cara, ojos, nariz, boca, orejas, cejas, arrugas y más tonos de piel).",
+    "resumen": "f8-a1 hecha: cada retrato tiene su cara. Forma de la cara (5) y proporciones, ojos con blanco e iris de color (5 formas), nariz (6), labios con color (3), orejas (4), cejas (6), gesto (4), arrugas según la edad, lunar y piel con tonos intermedios y matices. Los genéricos los reparten con un azar estable por persona según su región. Un test exige que dos personas se diferencien al menos en 3 de 16 rasgos.",
+    "siguientePaso": "f8-a2: peinados, barbas, ropa y complementos de cada región en los genéricos, con especial atención a África; subir el mínimo de rasgos distintos.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -615,7 +615,7 @@
           "titulo": "Caras distintas en todos los retratos: forma de la cara, ojos, nariz, boca, orejas, cejas y arrugas variables y más tonos de piel; los genéricos los reparten según la persona y su región, sin exagerar rasgos, con un test que impide que dos retratos se parezcan",
           "version": "0.9.1",
           "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
@@ -624,8 +624,8 @@
           "titulo": "Genéricos con más peinados, barbas, ropa y complementos de cada región, con especial atención a África (pelo afro corto y alto, rapado, trenzas, canas en las sienes, gele, agbada con gorro fila, kente, kanzu, dashiki, boubou bordado) y también guayabera, barong, batik, songkok, chaqueta nehru, hiyab, corbatas con dibujo e insignia con los colores de la bandera",
           "version": "0.9.1",
           "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

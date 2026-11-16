@@ -6,8 +6,9 @@
  *   (config/retratos-lideres.json): un homenaje e interpretación del personaje, reconocible por
  *   el pelo, la barba, las gafas, la ropa o el tocado.
  * - El resto lleva un retrato genérico según la región del país, el estilo de su régimen, el sexo
- *   y la edad de la persona. Siempre la misma cara base, sin rasgos exagerados: solo cambian el
- *   tono de piel, el pelo, la ropa y los complementos.
+ *   y la edad de la persona, siempre igual para la misma persona.
+ * - Cada cara es distinta (ajuste f8-a1): forma, ojos, nariz, boca, orejas, cejas, arrugas y matiz
+ *   de la piel varían, sin exagerar rasgos.
  *
  * Lógica pura (devuelve el texto del SVG), con tests.
  */
@@ -95,11 +96,30 @@ export type Tocado =
   /** Pañuelo o extremo del sari sobre el pelo. */
   | 'velo';
 
+export type FormaCara = 'ovalada' | 'redonda' | 'cuadrada' | 'afilada' | 'larga';
+export type Ojos = 'normales' | 'almendrados' | 'rasgados' | 'grandes' | 'caidos';
+export type Nariz = 'recta' | 'ancha' | 'aguilena' | 'pequena' | 'larga' | 'chata';
+export type Labios = 'finos' | 'medios' | 'gruesos';
+export type Orejas = 'pequenas' | 'normales' | 'grandes' | 'separadas';
+export type Cejas = 'normales' | 'arqueadas' | 'pobladas' | 'rectas' | 'finas' | 'caidas';
+export type Expresion = 'neutra' | 'leve' | 'sonrisa' | 'seria';
+/** Matiz de la piel sobre su tono. */
+export type Matiz = 'neutro' | 'oliva' | 'rosado' | 'dorado' | 'rojizo';
+
+export const COLORES_OJOS = {
+  marronOscuro: '#3a2618',
+  marron: '#5a3a22',
+  avellana: '#7a5a30',
+  verde: '#5d7346',
+  azul: '#4d6f95',
+  gris: '#6c7680',
+} as const;
+
 export interface Rasgos {
   sexo: 'h' | 'm';
   /** Edad en 2010 (canas y arrugas). */
   edad: number;
-  /** Índice en PIELES. */
+  /** Posición en PIELES (puede tener decimales: un tono entre dos). */
   piel: number;
   pelo: EstiloPelo;
   colorPelo: string;
@@ -115,9 +135,30 @@ export interface Rasgos {
   tocado: Tocado;
   colorTocado?: string;
   /** Gesto de la boca (por defecto, neutro). */
-  expresion?: 'neutra' | 'sonrisa' | 'seria';
+  expresion?: Expresion;
   /** Forma de las cejas (por defecto, normales). */
-  cejas?: 'normales' | 'arqueadas' | 'pobladas';
+  cejas?: Cejas;
+  /** Altura de las cejas (-1 a 1; por defecto, 0). */
+  alturaCejas?: number;
+  /** Forma de la cara (por defecto, ovalada). */
+  cara?: FormaCara;
+  /** Anchura y largo de la cabeza (en torno a 1). */
+  anchoCara?: number;
+  largoCara?: number;
+  ojos?: Ojos;
+  colorOjos?: string;
+  /** Separación de los ojos (-1 a 1; por defecto, 0). */
+  separacionOjos?: number;
+  nariz?: Nariz;
+  labios?: Labios;
+  /** Anchura de la boca (en torno a 1). */
+  anchoBoca?: number;
+  orejas?: Orejas;
+  matiz?: Matiz;
+  /** Cuánto se notan las arrugas de la edad (en torno a 1). */
+  arrugas?: number;
+  /** Lunar en la mejilla. */
+  lunar?: boolean;
   /** Collar de perlas. */
   collar?: boolean;
   /** El color del pelo y de la barba es el exacto (no encanece con la edad). */
@@ -152,12 +193,19 @@ function mezclar(a: string, b: string, t: number): string {
   return `#${canal(16)}${canal(8)}${canal(0)}`;
 }
 
+/** Número corto para el SVG (dos decimales como mucho). */
+const f = (n: number): string => (Math.round(n * 100) / 100).toString();
+
 // ── Partes del dibujo (viewBox 0 0 100 100) ──────────────────────────────────────────────────
 
 function cuerpo(r: Rasgos, piel: string): string {
   const ropa = r.colorRopa;
   const oscuro = tono(ropa, 0.75);
-  const cuello = `<path d="M43 58 L43 70 L57 70 L57 58 Z" fill="${tono(piel, 0.9)}"/>`;
+  // Cuello algo más estrecho que la cara, con la sombra de la barbilla.
+  const mitad = (r.sexo === 'm' ? 4.6 : 5.4) * (r.anchoCara ?? 1);
+  const cuello =
+    `<path d="M${f(50 - mitad)} 55 C${f(50 - mitad)} 62 ${f(49.4 - mitad)} 66 ${f(48 - mitad)} 70 L${f(52 + mitad)} 70 C${f(50.6 + mitad)} 66 ${f(50 + mitad)} 62 ${f(50 + mitad)} 55 Z" fill="${tono(piel, 0.9)}"/>` +
+    `<path d="M${f(50 - mitad)} 58.5 Q50 64.5 ${f(50 + mitad)} 58.5 L${f(50 + mitad)} 61 Q50 66.5 ${f(50 - mitad)} 61 Z" fill="${tono(piel, 0.72)}" opacity="0.55"/>`;
   const hombros = (color: string): string =>
     `<path d="M6 100 C8 82 24 72 40 69 L60 69 C76 72 92 82 94 100 Z" fill="${color}"/>`;
   switch (r.ropa) {
@@ -306,50 +354,238 @@ function veloDetras(r: Rasgos): string {
   return `<path d="M32 46 C28.5 15 71.5 15 68 46 L71 72 C62 67 38 67 29 72 Z" fill="${tono(color, 0.9)}"/>`;
 }
 
-function cabeza(piel: string, edad: number): string {
-  const sombra = tono(piel, 0.86);
-  const arrugas =
-    edad >= 62
-      ? `<path d="M43 31.5 Q50 30 57 31.5 M44.5 34 Q50 33 55.5 34" fill="none" stroke="${sombra}" stroke-width="0.6"/>` +
-        `<path d="M41 52 Q42.5 55 44 56 M59 52 Q57.5 55 56 56" fill="none" stroke="${sombra}" stroke-width="0.6"/>`
-      : '';
+/** Color de la piel: el tono de PIELES (con decimales, entre dos) y su matiz. */
+export function colorPiel(piel: number, matiz: Matiz = 'neutro'): string {
+  const p = Math.max(0, Math.min(PIELES.length - 1, piel));
+  const i = Math.min(PIELES.length - 2, Math.floor(p));
+  const base = mezclar(PIELES[i]!, PIELES[i + 1]!, p - i);
+  const MATICES: Record<Matiz, string | null> = {
+    neutro: null,
+    oliva: '#a89060',
+    rosado: '#e8a090',
+    dorado: '#c8903c',
+    rojizo: '#9a4a30',
+  };
+  const m = MATICES[matiz];
+  return m ? mezclar(base, m, 0.12) : base;
+}
+
+/** Contorno de la cara: arriba, media elipse; abajo, la mandíbula según la forma. */
+const CONTORNOS: Record<
+  FormaCara,
+  { c1: [number, number]; c2: [number, number]; barbilla: number }
+> = {
+  ovalada: { c1: [64.5, 51.9], c2: [58, 60], barbilla: 60 },
+  redonda: { c1: [65.2, 54.6], c2: [59.6, 60.4], barbilla: 60.2 },
+  cuadrada: { c1: [64.7, 57.2], c2: [56.4, 60.8], barbilla: 60.5 },
+  afilada: { c1: [63.8, 50.4], c2: [55.2, 59.6], barbilla: 60.9 },
+  larga: { c1: [64.3, 55.2], c2: [57, 62.2], barbilla: 62 },
+};
+
+function contorno(forma: FormaCara): string {
+  const { c1, c2, barbilla } = CONTORNOS[forma];
   return (
-    `<ellipse cx="35.5" cy="44" rx="3" ry="4.3" fill="${sombra}"/>` +
-    `<ellipse cx="64.5" cy="44" rx="3" ry="4.3" fill="${sombra}"/>` +
-    `<ellipse cx="50" cy="42" rx="14.5" ry="18" fill="${piel}"/>` +
-    arrugas
+    `M35.5 42 C35.5 32 42 24 50 24 C58 24 64.5 32 64.5 42 ` +
+    `C${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} 50 ${barbilla} ` +
+    `C${f(100 - c2[0])} ${c2[1]} ${f(100 - c1[0])} ${c1[1]} 35.5 42 Z`
   );
 }
 
-const CEJAS = {
-  normales: 'M41 37.6 Q44.2 36.2 47.2 37.6 M52.8 37.6 Q55.8 36.2 59 37.6',
+const OREJAS: Record<Orejas, { rx: number; ry: number; fuera: number }> = {
+  pequenas: { rx: 2.5, ry: 3.7, fuera: 0 },
+  normales: { rx: 3, ry: 4.3, fuera: 0 },
+  grandes: { rx: 3.4, ry: 5, fuera: 0.3 },
+  separadas: { rx: 3.5, ry: 4.6, fuera: 1.3 },
+};
+
+function cabeza(r: Rasgos, piel: string): string {
+  const sombra = tono(piel, 0.86);
+  const o = OREJAS[r.orejas ?? 'normales'];
+  const oreja = (lado: number): string => {
+    const cx = 50 + lado * (14.5 + o.fuera);
+    return (
+      `<ellipse cx="${f(cx)}" cy="44" rx="${o.rx}" ry="${o.ry}" fill="${sombra}"/>` +
+      `<path d="M${f(cx - lado * 0.6)} ${f(44 - o.ry * 0.6)} Q${f(cx + lado * 1.1)} 44 ${f(cx - lado * 0.4)} ${f(44 + o.ry * 0.6)}" fill="none" stroke="${tono(piel, 0.68)}" stroke-width="0.5"/>`
+    );
+  };
+  return oreja(-1) + oreja(1) + `<path d="${contorno(r.cara ?? 'ovalada')}" fill="${piel}"/>`;
+}
+
+/** Cejas (la izquierda; la derecha es su reflejo): punto interior, control y exterior. */
+const CEJAS: Record<
+  Cejas,
+  { puntos: [number, number, number, number, number, number]; grosor: number }
+> = {
+  normales: { puntos: [47.2, 37.6, 44.2, 36.2, 41, 37.6], grosor: 1.1 },
   // Más altas por dentro, en ángulo.
-  arqueadas: 'M41 38 Q44 37.2 47.4 35.6 M52.6 35.6 Q56 37.2 59 38',
-  pobladas: 'M40.8 37.4 Q44.2 36.4 47.4 37.2 M52.6 37.2 Q55.8 36.4 59.2 37.4',
-} as const;
-const BOCAS = {
-  neutra: 'M45.6 54.6 Q50 56.6 54.4 54.6',
-  sonrisa: 'M44.6 53.8 Q50 58.6 55.4 53.8',
+  arqueadas: { puntos: [47.4, 35.6, 44, 37.2, 41, 38], grosor: 1.1 },
+  pobladas: { puntos: [47.4, 37.2, 44.2, 36.4, 40.8, 37.4], grosor: 2 },
+  rectas: { puntos: [47.3, 37.3, 44.2, 36.9, 41, 37.4], grosor: 1.25 },
+  finas: { puntos: [47.1, 37.5, 44, 35.8, 41.1, 37.4], grosor: 0.7 },
+  // Caídas por fuera.
+  caidas: { puntos: [47.2, 36.9, 44.4, 36.1, 41.2, 38.5], grosor: 1.15 },
+};
+
+const OJOS: Record<
+  Ojos,
+  { ancho: number; arriba: number; abajo: number; caida: number; iris: number; pliegue: boolean }
+> = {
+  normales: { ancho: 2.2, arriba: 1.7, abajo: 1.3, caida: 0, iris: 1.05, pliegue: true },
+  almendrados: { ancho: 2.5, arriba: 1.6, abajo: 1.1, caida: -0.35, iris: 1.05, pliegue: true },
+  rasgados: { ancho: 2.3, arriba: 1, abajo: 0.9, caida: -0.25, iris: 0.95, pliegue: false },
+  grandes: { ancho: 2.4, arriba: 2, abajo: 1.6, caida: 0, iris: 1.2, pliegue: true },
+  caidos: { ancho: 2.3, arriba: 1.5, abajo: 1.2, caida: 0.45, iris: 1.05, pliegue: true },
+};
+
+const NARICES: Record<Nariz, { ancho: number; base: number; puente: number }> = {
+  recta: { ancho: 2.3, base: 50.3, puente: 0.6 },
+  ancha: { ancho: 3.3, base: 50.4, puente: 0.5 },
+  // Con caballete.
+  aguilena: { ancho: 2.4, base: 50.6, puente: 1.9 },
+  pequena: { ancho: 1.8, base: 49.6, puente: 0.4 },
+  larga: { ancho: 2.3, base: 51.4, puente: 0.8 },
+  chata: { ancho: 3, base: 49.8, puente: 0.2 },
+};
+
+/** Grosor de los labios: superior e inferior. */
+const LABIOS: Record<Labios, [number, number]> = {
+  finos: [0.45, 0.6],
+  medios: [0.8, 1.05],
+  gruesos: [1.25, 1.6],
+};
+
+/** Posición de las comisuras y del centro de la boca según el gesto. */
+const GESTOS: Record<Expresion, { comisura: number; centro: number }> = {
+  neutra: { comisura: 0, centro: 0.35 },
+  leve: { comisura: -0.4, centro: 0.65 },
+  sonrisa: { comisura: -0.8, centro: 1.3 },
   // Comisuras hacia abajo.
-  seria: 'M45.6 55.8 Q50 53.9 54.4 55.8',
-} as const;
+  seria: { comisura: 0.9, centro: -0.25 },
+};
+
+function ojo(cx: number, lado: number, r: Rasgos, piel: string): string {
+  const o = OJOS[r.ojos ?? 'normales'];
+  const y = 41.6;
+  const xi = cx - lado * o.ancho;
+  const xe = cx + lado * o.ancho;
+  const ye = y + o.caida;
+  const arriba = y - 2 * o.arriba;
+  const abajo = y + 2 * o.abajo;
+  const blanco = r.piel >= 4.5 ? '#eee6da' : '#f6f2ec';
+  const iris = r.colorOjos ?? COLORES_OJOS.marronOscuro;
+  const ry = Math.min(o.iris, ((o.arriba + o.abajo) / 2) * 0.95);
+  const parpado = tono(piel, 0.42);
+  return (
+    `<path d="M${f(xi)} ${y} Q${f(cx)} ${f(arriba)} ${f(xe)} ${f(ye)} Q${f(cx)} ${f(abajo)} ${f(xi)} ${y} Z" fill="${blanco}"/>` +
+    `<ellipse cx="${f(cx)}" cy="${f(y + 0.05)}" rx="${o.iris}" ry="${f(ry)}" fill="${iris}"/>` +
+    `<circle cx="${f(cx)}" cy="${f(y + 0.05)}" r="${f(ry * 0.48)}" fill="#17110d"/>` +
+    `<circle cx="${f(cx + 0.35)}" cy="${f(y - 0.3)}" r="0.28" fill="#ffffff" opacity="0.8"/>` +
+    `<path d="M${f(xi)} ${y} Q${f(cx)} ${f(arriba)} ${f(xe)} ${f(ye)}" fill="none" stroke="${parpado}" stroke-width="0.8" stroke-linecap="round"/>` +
+    (o.pliegue
+      ? `<path d="M${f(cx - lado * o.ancho * 0.8)} ${f(y - o.arriba - 0.9)} Q${f(cx)} ${f(y - 2 * o.arriba - 1.1)} ${f(cx + lado * o.ancho * 0.85)} ${f(y - o.arriba - 0.7 + o.caida * 0.5)}" fill="none" stroke="${tono(piel, 0.78)}" stroke-width="0.45"/>`
+      : '')
+  );
+}
+
+function cejas(r: Rasgos, pelo: string): string {
+  const c = CEJAS[r.cejas ?? 'normales'];
+  const dy = (r.alturaCejas ?? 0) * 0.6;
+  const [xi, yi, xc, yc, xe, ye] = c.puntos;
+  const izquierda = `M${xi} ${f(yi + dy)} Q${xc} ${f(yc + dy)} ${xe} ${f(ye + dy)}`;
+  const derecha = `M${f(100 - xi)} ${f(yi + dy)} Q${f(100 - xc)} ${f(yc + dy)} ${f(100 - xe)} ${f(ye + dy)}`;
+  const grosor = c.grosor + (r.edad >= 60 && r.cejas !== 'finas' ? 0.2 : 0);
+  return `<path d="${izquierda} ${derecha}" fill="none" stroke="${tono(pelo, 0.9)}" stroke-width="${f(grosor)}" stroke-linecap="round"/>`;
+}
+
+function nariz(r: Rasgos, piel: string): string {
+  const n = NARICES[r.nariz ?? 'recta'];
+  const linea = tono(piel, 0.62);
+  const b = n.base;
+  return (
+    `<path d="M50.8 43.6 Q${f(50.8 + n.puente)} ${f((43.6 + b) / 2)} ${f(50 + n.ancho * 0.55)} ${f(b - 1)}" fill="none" stroke="${linea}" stroke-width="0.7" stroke-linecap="round" opacity="0.75"/>` +
+    `<path d="M${f(50 - n.ancho)} ${f(b - 0.7)} Q${f(50 - n.ancho + 0.3)} ${f(b + 0.9)} 50 ${f(b + 0.6)} Q${f(50 + n.ancho - 0.3)} ${f(b + 0.9)} ${f(50 + n.ancho)} ${f(b - 0.7)}" fill="none" stroke="${linea}" stroke-width="0.8" stroke-linecap="round"/>` +
+    `<ellipse cx="${f(50 - n.ancho * 0.45)}" cy="${f(b + 0.15)}" rx="0.55" ry="0.35" fill="${tono(piel, 0.45)}"/>` +
+    `<ellipse cx="${f(50 + n.ancho * 0.45)}" cy="${f(b + 0.15)}" rx="0.55" ry="0.35" fill="${tono(piel, 0.45)}"/>`
+  );
+}
+
+/** Altura de la boca: un poco más abajo si la nariz es larga. */
+const alturaBoca = (r: Rasgos): number => 54.6 + (NARICES[r.nariz ?? 'recta'].base - 50.3) * 0.5;
+
+function boca(r: Rasgos, piel: string): string {
+  const [arriba, abajo] = LABIOS[r.labios ?? 'medios'];
+  const g = GESTOS[r.expresion ?? 'neutra'];
+  const w = 4.4 * (r.anchoBoca ?? 1);
+  const y = alturaBoca(r);
+  const yc = y + g.comisura;
+  const ym = y + g.centro;
+  const control = 2 * ym - yc;
+  const xi = 50 - w;
+  const xd = 50 + w;
+  const labio = mezclar(tono(piel, 0.86), '#a8504a', r.piel < 4 ? 0.3 : 0.15);
+  const superior =
+    `<path d="M${f(xi)} ${f(yc)} C${f(50 - w * 0.6)} ${f(yc - arriba * 1.1)} 48.8 ${f(ym - arriba * 1.5)} 50 ${f(ym - arriba * 1.05)} ` +
+    `C51.2 ${f(ym - arriba * 1.5)} ${f(50 + w * 0.6)} ${f(yc - arriba * 1.1)} ${f(xd)} ${f(yc)} Q50 ${f(control)} ${f(xi)} ${f(yc)} Z" fill="${tono(labio, 0.9)}"/>`;
+  const abierta = r.expresion === 'sonrisa' ? 1.1 : 0;
+  const dientes = abierta
+    ? `<path d="M${f(xi + 0.3)} ${f(yc)} Q50 ${f(control)} ${f(xd - 0.3)} ${f(yc)} Q50 ${f(control + 2 * abierta)} ${f(xi + 0.3)} ${f(yc)} Z" fill="#f3efe6"/>`
+    : '';
+  const inferior = `<path d="M${f(xi + 0.4)} ${f(yc + abierta * 0.3)} Q50 ${f(control + 2 * abierta)} ${f(xd - 0.4)} ${f(yc + abierta * 0.3)} Q50 ${f(control + 2 * abierta + abajo * 2.2)} ${f(xi + 0.4)} ${f(yc + abierta * 0.3)} Z" fill="${labio}"/>`;
+  const linea = `<path d="M${f(xi)} ${f(yc)} Q50 ${f(control)} ${f(xd)} ${f(yc)}" fill="none" stroke="${tono(piel, 0.45)}" stroke-width="0.7" stroke-linecap="round"/>`;
+  return superior + inferior + dientes + linea;
+}
+
+/** Arrugas de la edad: surcos, frente, bolsas, patas de gallo y papada. */
+function arrugas(r: Rasgos, piel: string): string {
+  const a = r.arrugas ?? 1;
+  const color = tono(piel, 0.8);
+  const n = NARICES[r.nariz ?? 'recta'];
+  const y = alturaBoca(r);
+  const w = 4.4 * (r.anchoBoca ?? 1);
+  const trazo = (d: string, desde: number, hasta: number): string => {
+    if (r.edad < desde) return '';
+    const opacidad = Math.min(1, ((r.edad - desde) / (hasta - desde)) * a);
+    return opacidad > 0.05
+      ? `<path d="${d}" fill="none" stroke="${color}" stroke-width="0.55" stroke-linecap="round" opacity="${f(opacidad)}"/>`
+      : '';
+  };
+  const surcos = [-1, 1]
+    .map(
+      (l) =>
+        `M${f(50 + l * (n.ancho + 0.7))} ${f(n.base - 0.3)} Q${f(50 + l * (n.ancho + 2.6))} ${f(n.base + 2.4)} ${f(50 + l * (w + 0.7))} ${f(y + 0.8)}`,
+    )
+    .join(' ');
+  return (
+    trazo(surcos, 38, 62) +
+    trazo('M43 31.5 Q50 30 57 31.5 M44.5 34 Q50 33 55.5 34', 50, 70) +
+    trazo('M41.6 45.4 Q44.2 46.6 46.6 45.4 M53.4 45.4 Q55.8 46.6 58.4 45.4', 52, 72) +
+    trazo(
+      'M39.2 41.2 L37.8 40.4 M39.2 42.4 L37.7 42.9 M60.8 41.2 L62.2 40.4 M60.8 42.4 L62.3 42.9',
+      58,
+      75,
+    ) +
+    trazo('M40.5 52.5 Q41.4 56.6 44.2 58.4 M59.5 52.5 Q58.6 56.6 55.8 58.4', 64, 82)
+  );
+}
 
 function cara(r: Rasgos, piel: string, pelo: string): string {
-  const linea = tono(piel, 0.62);
-  const cejas = r.cejas ?? 'normales';
-  const grosorCeja = cejas === 'pobladas' ? 2 : r.edad >= 60 ? 1.3 : 1.1;
-  const boca = r.expresion ?? 'neutra';
-  const dientes =
-    boca === 'sonrisa'
-      ? '<path d="M45.6 54.5 Q50 57.6 54.4 54.5 Q50 55.6 45.6 54.5 Z" fill="#f4f1ea"/>'
+  const sep = (r.separacionOjos ?? 0) * 0.5;
+  const rubor =
+    r.sexo === 'm' || r.edad < 40
+      ? `<ellipse cx="42.6" cy="48.6" rx="2.6" ry="1.6" fill="#e07a6a" opacity="${r.piel >= 4.5 ? 0.07 : 0.13}"/><ellipse cx="57.4" cy="48.6" rx="2.6" ry="1.6" fill="#e07a6a" opacity="${r.piel >= 4.5 ? 0.07 : 0.13}"/>`
       : '';
+  const lunar = r.lunar
+    ? `<circle cx="${f(57.6 + (semilla(pelo) % 3))}" cy="${f(49.5 + (semilla(piel) % 3) * 0.8)}" r="0.5" fill="${tono(piel, 0.5)}"/>`
+    : '';
   return (
-    `<path d="${CEJAS[cejas]}" fill="none" stroke="${tono(pelo, 0.9)}" stroke-width="${grosorCeja}" stroke-linecap="round"/>` +
-    '<ellipse cx="44.2" cy="41.6" rx="1.6" ry="1.2" fill="#2a211c"/>' +
-    '<ellipse cx="55.8" cy="41.6" rx="1.6" ry="1.2" fill="#2a211c"/>' +
-    `<path d="M50 44 Q48.4 49 49.4 50.2 Q50 50.6 51.2 50.2" fill="none" stroke="${linea}" stroke-width="0.9" stroke-linecap="round"/>` +
-    dientes +
-    `<path d="${BOCAS[boca]}" fill="none" stroke="${tono(piel, 0.55)}" stroke-width="1.1" stroke-linecap="round"/>`
+    rubor +
+    arrugas(r, piel) +
+    cejas(r, pelo) +
+    ojo(44.2 - sep, -1, r, piel) +
+    ojo(55.8 + sep, 1, r, piel) +
+    nariz(r, piel) +
+    boca(r, piel) +
+    lunar
   );
 }
 
@@ -525,7 +761,14 @@ function tocado(r: Rasgos): string {
  * pantalla; sin él, el retrato es decorativo.
  */
 export function svgRetrato(rasgos: Rasgos, fondo: string, titulo?: string): string {
-  const piel = PIELES[Math.max(0, Math.min(PIELES.length - 1, rasgos.piel))]!;
+  const piel = colorPiel(rasgos.piel, rasgos.matiz);
+  const sx = rasgos.anchoCara ?? 1;
+  const sy = rasgos.largoCara ?? 1;
+  // La cabeza (con el pelo y lo que lleva encima) se estira o se estrecha desde su centro.
+  const escala = (contenido: string): string =>
+    sx === 1 && sy === 1
+      ? contenido
+      : `<g transform="matrix(${f(sx)} 0 0 ${f(sy)} ${f(50 - 50 * sx)} ${f(42 - 42 * sy)})">${contenido}</g>`;
   const conEdad = (color: string): string =>
     rasgos.colorFijo ? color : peloConEdad(color, rasgos.edad);
   const pelo = conEdad(rasgos.colorPelo);
@@ -537,16 +780,19 @@ export function svgRetrato(rasgos: Rasgos, fondo: string, titulo?: string): stri
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" ${accesible}>` +
     `<rect width="100" height="100" fill="${fondo}"/>` +
     `<circle cx="50" cy="38" r="34" fill="${tono(fondo, 1.18)}" opacity="0.5"/>` +
-    veloDetras(rasgos) +
-    peloDetras(rasgos, pelo) +
+    escala(veloDetras(rasgos) + peloDetras(rasgos, pelo)) +
     cuerpo(rasgos, piel) +
     (rasgos.collar ? collar() : '') +
-    cabeza(piel, rasgos.edad) +
-    cara(rasgos, piel, pelo) +
-    barba(rasgos, colorBarba) +
-    (['kufiya', 'turbante', 'karakul'].includes(rasgos.tocado) ? '' : peloDelante(rasgos, pelo)) +
-    gafas(rasgos) +
-    tocado(rasgos) +
+    escala(
+      cabeza(rasgos, piel) +
+        cara(rasgos, piel, pelo) +
+        barba(rasgos, colorBarba) +
+        (['kufiya', 'turbante', 'karakul'].includes(rasgos.tocado)
+          ? ''
+          : peloDelante(rasgos, pelo)) +
+        gafas(rasgos) +
+        tocado(rasgos),
+    ) +
     '</svg>'
   );
 }
@@ -624,17 +870,154 @@ export interface DatosGenericos {
   persona: string;
 }
 
+/**
+ * Generador de números al azar estable (mulberry32): la misma persona da siempre la misma serie,
+ * así que su retrato no cambia de una partida a otra.
+ */
+export function azarDe(texto: string): () => number {
+  let a = semilla(texto);
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Elige una opción con su peso. */
+function conPeso<T extends string>(azar: () => number, pesos: Partial<Record<T, number>>): T {
+  const opciones = Object.entries(pesos) as [T, number][];
+  const total = opciones.reduce((suma, [, peso]) => suma + peso, 0);
+  let x = azar() * total;
+  for (const [opcion, peso] of opciones) {
+    x -= peso;
+    if (x < 0) return opcion;
+  }
+  return opciones[opciones.length - 1]![0];
+}
+
+const entre = (azar: () => number, desde: number, hasta: number): number =>
+  Math.round((desde + azar() * (hasta - desde)) * 100) / 100;
+
+/** Asia oriental y central y sudeste asiático, por la forma de los ojos más frecuente. */
+const ASIA_ORIENTAL = ['CHN', 'JPN', 'KOR', 'PRK', 'TWN', 'HKG', 'MAC', 'MNG'];
+const SUDESTE_ASIATICO = [
+  'IDN',
+  'MYS',
+  'PHL',
+  'THA',
+  'VNM',
+  'LAO',
+  'KHM',
+  'MMR',
+  'SGP',
+  'BRN',
+  'TLS',
+];
+const ASIA_CENTRAL = ['KAZ', 'KGZ', 'TJK', 'TKM', 'UZB'];
+
+/** Rasgos de la cara de un genérico (ajuste f8-a1): variados y sin exagerar. */
+function caraGenerica(
+  d: DatosGenericos,
+  sexo: 'h' | 'm',
+  edad: number,
+  piel: number,
+  azar: () => number,
+): Partial<Rasgos> {
+  const ojos: Ojos = ASIA_ORIENTAL.includes(d.pais)
+    ? conPeso<Ojos>(azar, { rasgados: 55, almendrados: 35, normales: 10 })
+    : SUDESTE_ASIATICO.includes(d.pais)
+      ? conPeso<Ojos>(azar, { rasgados: 30, almendrados: 45, normales: 25 })
+      : ASIA_CENTRAL.includes(d.pais)
+        ? conPeso<Ojos>(azar, { rasgados: 35, almendrados: 35, normales: 30 })
+        : conPeso<Ojos>(azar, {
+            normales: 35,
+            almendrados: 30,
+            grandes: 15,
+            caidos: edad > 55 ? 30 : 10,
+          });
+  const nariz: Nariz =
+    piel >= 4.5
+      ? conPeso<Nariz>(azar, { ancha: 40, chata: 20, recta: 25, pequena: 15 })
+      : d.region === 'MEA' || d.region === 'SAS'
+        ? conPeso<Nariz>(azar, { aguilena: 25, larga: 25, recta: 30, ancha: 20 })
+        : ASIA_ORIENTAL.includes(d.pais) || SUDESTE_ASIATICO.includes(d.pais)
+          ? conPeso<Nariz>(azar, { pequena: 35, chata: 30, recta: 20, ancha: 15 })
+          : conPeso<Nariz>(azar, { recta: 30, aguilena: 15, larga: 20, pequena: 20, ancha: 15 });
+  const labios: Labios =
+    piel >= 4.5
+      ? conPeso<Labios>(azar, { gruesos: 55, medios: 45 })
+      : piel >= 3
+        ? conPeso<Labios>(azar, { medios: 60, gruesos: 25, finos: 15 })
+        : conPeso<Labios>(azar, { finos: 35, medios: 55, gruesos: 10 });
+  const claros = piel <= 1.4 && ['ECS', 'NAC', 'LCN'].includes(d.region);
+  const colorOjos = claros
+    ? COLORES_OJOS[
+        conPeso<keyof typeof COLORES_OJOS>(azar, {
+          azul: 22,
+          verde: 12,
+          avellana: 18,
+          gris: 8,
+          marron: 40,
+        })
+      ]
+    : piel <= 2.5
+      ? COLORES_OJOS[conPeso<keyof typeof COLORES_OJOS>(azar, { avellana: 25, marron: 75 })]
+      : COLORES_OJOS[conPeso<keyof typeof COLORES_OJOS>(azar, { marronOscuro: 70, marron: 30 })];
+  const matiz: Matiz =
+    piel <= 2
+      ? conPeso<Matiz>(azar, { neutro: 40, rosado: 35, oliva: 25 })
+      : piel < 4.5
+        ? conPeso<Matiz>(azar, { dorado: 35, oliva: 35, neutro: 30 })
+        : conPeso<Matiz>(azar, { neutro: 50, dorado: 25, rojizo: 25 });
+  return {
+    cara: conPeso<FormaCara>(azar, {
+      ovalada: 30,
+      redonda: 20,
+      cuadrada: sexo === 'h' ? 20 : 8,
+      afilada: 15,
+      larga: 15,
+    }),
+    anchoCara: entre(azar, 0.92, 1.08),
+    largoCara: entre(azar, 0.96, 1.04),
+    ojos,
+    colorOjos,
+    separacionOjos: entre(azar, -1, 1),
+    nariz,
+    labios,
+    anchoBoca: entre(azar, 0.86, 1.12),
+    orejas: conPeso<Orejas>(azar, { normales: 45, pequenas: 20, grandes: 20, separadas: 15 }),
+    cejas:
+      sexo === 'm'
+        ? conPeso<Cejas>(azar, { finas: 35, arqueadas: 30, normales: 25, rectas: 10 })
+        : conPeso<Cejas>(azar, {
+            normales: 25,
+            rectas: 20,
+            arqueadas: 10,
+            pobladas: 15,
+            finas: 10,
+            caidas: 20,
+          }),
+    alturaCejas: entre(azar, -1, 1),
+    expresion: conPeso<Expresion>(azar, { neutra: 35, leve: 30, sonrisa: 20, seria: 15 }),
+    matiz,
+    arrugas: entre(azar, 0.7, 1.3),
+    lunar: azar() < 0.12,
+  };
+}
+
 /** Rasgos de un retrato genérico, respetuoso y estable para la misma persona. */
 export function rasgosGenericos(d: DatosGenericos): Rasgos {
-  const n = semilla(d.persona);
+  const azar = azarDe(d.persona);
   const sexo = d.sexo ?? 'h';
   const edad = d.edad ?? 58;
   const zona = ZONAS_PIEL.find(([paises]) => paises.includes(d.pais));
   const [desde, hasta] = zona ? [zona[1], zona[2]] : (PIEL_REGION[d.region] ?? [1, 5]);
-  const piel = desde + (n % (hasta - desde + 1));
-  const africana = piel >= 5;
+  const piel = entre(azar, desde, hasta);
+  const africana = piel >= 4.5;
   const coloresPelo =
-    piel <= 1
+    piel <= 1.4
       ? [
           COLORES_PELO.castano,
           COLORES_PELO.castanoOscuro,
@@ -642,36 +1025,38 @@ export function rasgosGenericos(d: DatosGenericos): Rasgos {
           COLORES_PELO.rubio,
         ]
       : [COLORES_PELO.negro, COLORES_PELO.castanoOscuro];
-  const colorPelo = elegir(coloresPelo, n >>> 3);
+  const n = (): number => Math.floor(azar() * 1000);
+  const colorPelo = elegir(coloresPelo, n());
   const pelo: EstiloPelo =
     sexo === 'm'
-      ? elegir(['melena', 'recogido', 'largo', 'corto'] as const, n >>> 5)
+      ? elegir(['melena', 'recogido', 'largo', 'corto'] as const, n())
       : africana
-        ? elegir(['rizado', 'calvo', 'rizado'] as const, n >>> 5)
+        ? elegir(['rizado', 'calvo', 'rizado'] as const, n())
         : edad > 60
-          ? elegir(['entradas', 'atras', 'calvo', 'raya'] as const, n >>> 5)
-          : elegir(['corto', 'raya', 'atras', 'ondulado'] as const, n >>> 5);
+          ? elegir(['entradas', 'atras', 'calvo', 'raya'] as const, n())
+          : elegir(['corto', 'raya', 'atras', 'ondulado'] as const, n());
   const conBarba = sexo === 'h' && ['MEA', 'SAS'].includes(d.region);
   const barba: Barba =
     sexo === 'm'
       ? 'ninguna'
       : conBarba
-        ? elegir(['bigote', 'corta', 'bigote', 'ninguna'] as const, n >>> 7)
-        : elegir(['ninguna', 'ninguna', 'ninguna', 'bigote'] as const, n >>> 7);
-  const gafas = edad > 55 && (n >>> 9) % 4 === 0 ? 'finas' : 'ninguna';
+        ? elegir(['bigote', 'corta', 'bigote', 'ninguna'] as const, n())
+        : elegir(['ninguna', 'ninguna', 'ninguna', 'bigote'] as const, n());
+  const gafas = edad > 55 && n() % 4 === 0 ? 'finas' : 'ninguna';
   const trajes = ['#25324a', '#2f2f35', '#3a3f4a', '#1f2b3d'];
   const corbatas = ['#8b2332', '#2c4f8a', '#5a5a64', '#7b5b2a', '#2f6a4a'];
   let ropa: Ropa = sexo === 'm' ? 'traje-mujer' : 'traje';
-  let colorRopa = elegir(trajes, n >>> 11);
+  let colorRopa = elegir(trajes, n());
   let colorDetalle = elegir(
     sexo === 'm' ? ['#d9d2c5', '#b9cbe0', '#e4c7c7', '#c9d8c8'] : corbatas,
-    n >>> 13,
+    n(),
   );
   let toc: Tocado = 'ninguno';
   let colorTocado: string | undefined;
+  const otro = n();
   if (d.regimen === 'junta') {
     ropa = 'uniforme';
-    colorRopa = elegir(['#4b5a3a', '#55603f', '#3f4b38'], n >>> 11);
+    colorRopa = elegir(['#4b5a3a', '#55603f', '#3f4b38'], otro);
     colorDetalle = '#c9a64a';
     toc = 'gorra-militar';
     colorTocado = colorRopa;
@@ -680,10 +1065,10 @@ export function rasgosGenericos(d: DatosGenericos): Rasgos {
     colorRopa = '#f4f2ec';
     colorDetalle = '#b8343a';
     toc = 'kufiya';
-    colorTocado = elegir(['#f4f2ec', '#ffffff'], n >>> 11);
-  } else if (sexo === 'h' && BOUBOU.includes(d.pais) && (n >>> 15) % 2 === 0) {
+    colorTocado = elegir(['#f4f2ec', '#ffffff'], otro);
+  } else if (sexo === 'h' && BOUBOU.includes(d.pais) && otro % 2 === 0) {
     ropa = 'boubou';
-    colorRopa = elegir(['#f1ece0', '#3d6fa8', '#e6d8a8', '#5f8b5a'], n >>> 11);
+    colorRopa = elegir(['#f1ece0', '#3d6fa8', '#e6d8a8', '#5f8b5a'], n());
     colorDetalle = '#c9a64a';
   }
   return {
@@ -699,6 +1084,7 @@ export function rasgosGenericos(d: DatosGenericos): Rasgos {
     colorDetalle,
     tocado: toc,
     ...(colorTocado ? { colorTocado } : {}),
+    ...caraGenerica(d, sexo, edad, piel, azar),
   };
 }
 

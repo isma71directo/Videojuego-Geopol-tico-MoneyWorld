@@ -6,6 +6,9 @@ import { describe, expect, it } from 'vitest';
 import { NOMBRES_ICONOS } from '../src/av/iconos';
 import {
   PIELES,
+  azarDe,
+  colorPiel,
+  type Rasgos,
   RASGOS_LIDERES,
   peloConEdad,
   rasgosDe,
@@ -24,6 +27,9 @@ import {
   type ConjuntoGobiernos,
 } from '../src/datos/gobiernos';
 import type { ConjuntoPaises } from '../src/datos/paises';
+
+/** Rasgos (de 16) en los que se diferencian, como mínimo, dos personas cualesquiera. */
+const MINIMO_RASGOS_DISTINTOS = 3;
 
 const leer = <T>(ruta: string): T => JSON.parse(readFileSync(resolve(ruta), 'utf8')) as T;
 const gobiernos = leer<ConjuntoGobiernos>('public/data/gobiernos-2010.json');
@@ -161,6 +167,76 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
     for (const persona of ['Q2494', 'Q57336', 'Q10665', 'Q19878', 'Q8440', 'Q46809']) {
       expect(tieneHomenaje(persona), persona).toBe(true);
     }
+  });
+
+  it('ajuste f8-a1: la piel admite tonos intermedios y matices', () => {
+    expect(colorPiel(0)).toBe(PIELES[0]);
+    expect(colorPiel(7)).toBe(PIELES[7]);
+    const medio = colorPiel(2.5);
+    expect(medio).not.toBe(PIELES[2]);
+    expect(medio).not.toBe(PIELES[3]);
+    expect(colorPiel(2, 'oliva')).not.toBe(colorPiel(2));
+    expect(colorPiel(-3)).toBe(PIELES[0]);
+    // El azar es estable para la misma persona.
+    const a = azarDe('Q42');
+    const b = azarDe('Q42');
+    const serie = [a(), a(), a()];
+    expect([b(), b(), b()]).toEqual(serie);
+    for (const x of serie) expect(x >= 0 && x < 1).toBe(true);
+  });
+
+  it('ajuste f8-a1: las caras de los genéricos son variadas en cada región', () => {
+    const porRegion = new Map<string, Rasgos[]>();
+    for (const datos of todosLosCargos()) {
+      if (tieneHomenaje(datos.persona)) continue;
+      const lista = porRegion.get(datos.region) ?? [];
+      lista.push(rasgosGenericos(datos));
+      porRegion.set(datos.region, lista);
+    }
+    for (const [region, lista] of porRegion) {
+      if (lista.length < 20) continue;
+      const distintos = (clave: keyof Rasgos): number => new Set(lista.map((r) => r[clave])).size;
+      expect(distintos('cara'), region).toBeGreaterThanOrEqual(4);
+      expect(distintos('nariz'), region).toBeGreaterThanOrEqual(3);
+      expect(distintos('ojos'), region).toBeGreaterThanOrEqual(2);
+      expect(distintos('cejas'), region).toBeGreaterThanOrEqual(4);
+      expect(distintos('orejas'), region).toBeGreaterThanOrEqual(3);
+      expect(distintos('expresion'), region).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('ningún retrato se parece demasiado a otro (ajustes f8-a1 y f8-a2)', () => {
+    const firma = (r: Rasgos): unknown[] => [
+      r.cara ?? 'ovalada',
+      r.ojos ?? 'normales',
+      r.nariz ?? 'recta',
+      r.labios ?? 'medios',
+      r.orejas ?? 'normales',
+      r.cejas ?? 'normales',
+      r.expresion ?? 'neutra',
+      r.pelo,
+      r.colorFijo ? r.colorPelo : peloConEdad(r.colorPelo, r.edad),
+      r.barba,
+      r.gafas,
+      r.ropa,
+      r.colorRopa,
+      r.colorDetalle,
+      r.tocado,
+      Math.round(r.piel),
+    ];
+    const firmas = todosLosCargos().map((d) => [d.persona, firma(rasgosDe(d))] as const);
+    let minimo = Infinity;
+    let par = '';
+    for (let i = 0; i < firmas.length; i++) {
+      for (let j = i + 1; j < firmas.length; j++) {
+        const [pa, a] = firmas[i]!;
+        const [pb, b] = firmas[j]!;
+        if (pa === pb) continue;
+        const distintos = a.filter((x, k) => x !== b[k]).length;
+        if (distintos < minimo) [minimo, par] = [distintos, `${pa} y ${pb}`];
+      }
+    }
+    expect(minimo, par).toBeGreaterThanOrEqual(MINIMO_RASGOS_DISTINTOS);
   });
 
   it('accesible: con título se anuncia y sin él es decorativo', () => {
