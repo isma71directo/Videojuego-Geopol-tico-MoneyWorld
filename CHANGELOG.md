@@ -7,6 +7,44 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.8.2 - 2026-11-16
+
+Ajustes de la Fase 7 pedidos por el jugador al probar la v0.8.1.
+
+### Cambiado
+
+- **Colores de país rehechos:**
+  - Cada país lleva su color representativo, el que se le asocia al pensar en él y no solo el
+    principal de su bandera: España y Rumanía amarillo, Portugal y Reino Unido rojo, Italia verde
+    azulado, Países Bajos naranja, Francia azul, Brasil verde, Argentina celeste…
+  - Está en una tabla revisable de 185 países (`src/map/config/colores-pais.json`), con nombres
+    de color en español. Los territorios pequeños usan los colores de su bandera.
+  - Ya no hay paleta cerrada: cada país lleva una variante de su color (más clara, más oscura o
+    algo girada) para no parecerse a los de alrededor.
+  - Vecinos siempre claramente distintos. Ningún color casi igual a menos de 1.500 km, ni
+    repetido dentro de la misma zona del mapa. 212 de 223 países llevan su propio tono.
+  - Los colores se calculan una vez con un script nuevo (`19-colores-pais.ts`) y el mapa solo los
+    lee, así que abre igual de rápido.
+- **Barra de secciones como en los simuladores geopolíticos de PC:**
+  - Barra grande abajo con 8 apartados y sin «Más»: Gobierno, Ministerios, Política, Economía,
+    Mundo, Ejército, Investigación e Informes.
+  - Cada apartado abre encima una sub-barra con sus elementos, y cada elemento abre su ventana.
+  - Teclas: G, I, P, E, U, J, V y N. En la sub-barra, flechas, Intro y Escape.
+- **Gobierno y Ministerios, separados:**
+  - Gobierno: Presidencia, Consejo de Ministros, Presupuesto e Impuestos.
+  - Ministerios: los 19 ministerios. Cada uno tiene su ventana con resumen, presupuesto, leyes
+    del departamento, acciones e infraestructuras (si las tiene). Todo está vacío hasta su fase,
+    con el aviso de cuándo llega.
+  - El Consejo de Ministros enlaza con la ventana de cada ministerio.
+- La leyenda y la ficha del país quedan por encima de la barra.
+
+### Añadido
+
+- 23 iconos nuevos para los ministerios y las ventanas.
+- Galería:
+  - «Color de cada país» enseña el color pedido y el que lleva en el mapa.
+  - Nueva sección con los colores de referencia de la tabla.
+
 ## 0.8.1 - 2026-11-16
 
 Ajustes de la Fase 7 pedidos por el jugador al probar la v0.8.0 (opción B en los dos casos).
