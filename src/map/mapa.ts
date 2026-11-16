@@ -72,7 +72,8 @@ export type Objetivo =
   | { tipo: 'region'; region: RegionSenalada }
   | { tipo: 'ciudad'; ciudad: Ciudad };
 
-const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+/** La misma letra que la interfaz (Inter, tarea f7-t1), con las del sistema de respaldo. */
+const FUENTE_ROTULOS = "'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const DURACION_PULSO_MS = 520;
 /** Resolución del terreno respecto a la pantalla (el relieve usa 0,75). */
@@ -219,10 +220,17 @@ export class MapaMundo {
     this.ctx = this.lienzo.getContext('2d', { alpha: false })!;
     contenedor.appendChild(this.lienzo);
     this.camara = camaraInicial(contenedor.clientWidth || 1, contenedor.clientHeight || 1);
+    // Cuando llega la letra Inter, los nombres miden otra cosa: se vuelven a medir y a colocar.
+    document.fonts?.addEventListener?.('loadingdone', this.alCargarLetra);
     this.observador = new ResizeObserver(() => this.ajustarTamano());
     this.observador.observe(contenedor);
     this.ajustarTamano();
   }
+
+  private readonly alCargarLetra = (): void => {
+    this.anchosTexto.clear();
+    this.pedirDibujo();
+  };
 
   /** Descarga el nivel «mundo» y dibuja. El de detalle se descarga cuando hace falta. */
   async iniciar(): Promise<void> {
@@ -371,6 +379,44 @@ export class MapaMundo {
           : null;
     this.alSenalar?.(objetivo, x ?? 0, y ?? 0);
   };
+
+  /** Lo que hay en un punto de la pantalla del mapa: ciudad, región o país (o null si es mar). */
+  objetivoEn(x: number, y: number): Objetivo | null {
+    const ciudad = this.ciudadEn(x, y);
+    if (ciudad) return { tipo: 'ciudad', ciudad };
+    const pais = this.paisEn(x, y);
+    if (!pais) return null;
+    const region = this.regionEn(x, y, pais);
+    return region
+      ? { tipo: 'region', region: this.senalarRegion(region) }
+      : { tipo: 'pais', id: pais };
+  }
+
+  /** Lleva el punto (x, y) de la pantalla al centro, con un desplazamiento suave. */
+  centrarEn(x: number, y: number): void {
+    this.detenerAnimacion();
+    const inicio = this.camara;
+    const dx = inicio.ancho / 2 - x;
+    const dy = inicio.alto / 2 - y;
+    if (this.sinMovimiento) {
+      this.vista = desplazar(inicio, dx, dy);
+      return;
+    }
+    const t0 = performance.now();
+    const paso = (ahora: number): void => {
+      const t = Math.min(1, (ahora - t0) / 320);
+      const suave = 1 - (1 - t) ** 3;
+      this.vista = desplazar(inicio, dx * suave, dy * suave);
+      this.animacion = t < 1 ? requestAnimationFrame(paso) : null;
+    };
+    this.animacion = requestAnimationFrame(paso);
+  }
+
+  /** Vuelve a la vista del mundo entero. */
+  verMundo(): void {
+    this.detenerAnimacion();
+    this.vista = camaraInicial(this.camara.ancho, this.camara.alto);
+  }
 
   /** Clic sin arrastre: selecciona la ciudad, la región o el país (o nada si es mar). */
   alTocar = (x: number, y: number): void => {
@@ -858,6 +904,7 @@ export class MapaMundo {
 
   destruir(): void {
     this.detenerAnimacion();
+    document.fonts?.removeEventListener?.('loadingdone', this.alCargarLetra);
     this.observador.disconnect();
     this.lienzo.remove();
   }

@@ -67,7 +67,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, C para elegir la capa del mapa, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, C para elegir la capa del mapa, clic derecho (o la tecla de menú) para las acciones, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -243,6 +243,30 @@
         },
         "porRegiones": "Al acercarte, también por regiones.",
         "regionesDensidad": "La superficie de las regiones se mide en el mapa."
+      },
+      "menu": {
+        "etiqueta": "Acciones del mapa",
+        "verFicha": "Ver la ficha",
+        "verFichaDe": "Ver la ficha de {pais}",
+        "verRegion": "Ver la región",
+        "verCiudad": "Ver la ciudad",
+        "centrar": "Centrar el mapa aquí",
+        "acercar": "Acercar aquí",
+        "verMundo": "Ver el mundo entero"
+      }
+    },
+    "componentes": {
+      "cerrarVentana": "Cerrar la ventana «{titulo}»",
+      "cerrarPanel": "Cerrar el panel «{titulo}»",
+      "moverVentana": "Arrastra el título para mover la ventana (con el teclado: Alt + flechas)",
+      "sinDato": "—",
+      "graficos": {
+        "verTabla": "Ver como tabla",
+        "verGrafico": "Ver como gráfico",
+        "resumenLineas": "{titulo}: {series}, de {desde} a {hasta}. Usa las flechas para ver cada valor o la vista de tabla.",
+        "anio": "Año",
+        "nombre": "Nombre",
+        "valor": "Valor"
       }
     }
   },
@@ -356,7 +380,11 @@
       "abrirPanel": "Abrir un panel",
       "boton": "Pulsar un botón",
       "escuchar": "Escuchar: {efecto}",
-      "capa": "Cambiar la capa del mapa"
+      "capa": "Cambiar la capa del mapa",
+      "abrirVentana": "Abrir una ventana",
+      "cerrar": "Cerrar una ventana o un panel",
+      "pestana": "Cambiar de pestaña",
+      "menu": "Abrir el menú contextual"
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
@@ -365,6 +393,88 @@
     "capas": {
       "titulo": "Capas del mapa",
       "nota": "Rampas de color de cada capa, creadas con código. Van de oscuro a claro: más claro es más (en crecimiento e inflación, más lejos de cero). Se distinguen también con los tres tipos de daltonismo. En el mapa, el rayado marca los datos estimados."
+    },
+    "componentes": {
+      "ventanas": {
+        "titulo": "Componentes · Ventanas, paneles y pestañas",
+        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin. Al abrir, cerrar o cambiar de pestaña hay una animación corta y un sonido (nunca al pasar el ratón); con «reducir movimiento» activado en el sistema, sin animación.",
+        "abrir": "Ventana de {pais}",
+        "panelIzquierda": "Panel a la izquierda",
+        "panelDerecha": "Panel a la derecha",
+        "panelTitulo": "Panel lateral",
+        "panelTexto": "Los paneles van pegados a un lado; abrir otro en el mismo lado sustituye al anterior. Escape o la cruz lo cierran."
+      },
+      "pestanas": {
+        "etiqueta": "Datos de {pais}",
+        "resumen": "Resumen",
+        "region": "Su región",
+        "energia": "Energía"
+      },
+      "tabla": {
+        "titulo": "Componentes · Tablas y deslizadores",
+        "nota": "Los 20 países más poblados en 2010 (datos reales). Pulsa el título de una columna para ordenar y otra vez para darle la vuelta. Con el teclado: Tab hasta la tabla, flechas arriba y abajo para recorrer las filas e Intro para elegir.",
+        "etiqueta": "Países más poblados de 2010",
+        "pais": "País"
+      },
+      "deslizador": {
+        "iva": "IVA general (ejemplo, sin efecto)",
+        "ayuda": "Con el teclado: flechas, Re Pág, Av Pág, Inicio y Fin."
+      },
+      "menu": {
+        "titulo": "Componentes · Menú contextual e información",
+        "nota": "Haz clic derecho en el recuadro (o, con el foco en él, pulsa la tecla de menú o Mayús + F10). Pasa el ratón o lleva el foco a los indicadores para ver su explicación.",
+        "zona": "Haz clic derecho aquí",
+        "etiqueta": "Acciones de ejemplo",
+        "tituloMenu": "España",
+        "desactivada": "Opción que aún no se puede usar"
+      },
+      "info": {
+        "pib": {
+          "nombre": "PIB",
+          "texto": "Producto interior bruto: todo lo que produce el país en un año, en dólares de 2010."
+        },
+        "paro": {
+          "nombre": "Paro",
+          "texto": "Parte de la población activa que busca trabajo y no lo encuentra."
+        },
+        "inflacion": {
+          "nombre": "Inflación",
+          "texto": "Cuánto suben los precios en un año. Entre el 1 y el 3 % se considera sana."
+        },
+        "deuda": {
+          "nombre": "Deuda pública",
+          "texto": "Lo que debe el Estado, en porcentaje del PIB. Cuanto más alta, más caro le sale pedir prestado."
+        }
+      },
+      "graficos": {
+        "titulo": "Componentes · Gráficos",
+        "nota": "Gráficos en SVG propio. Pasa el ratón por las barras y las líneas (o usa las flechas con el foco en el gráfico) y prueba «Ver como tabla». Las barras y el mix eléctrico usan datos reales de 2010; las líneas, datos inventados hasta que el juego tenga años de historia.",
+        "pib": "Las 8 mayores economías de 2010 (PIB, miles de millones de $)",
+        "pibRegion": "PIB de 2010 en {region} (miles de millones de $)",
+        "mix": "Mix eléctrico de {pais} en 2010",
+        "lineas": "Ejemplo con datos inventados: índice de producción (2005 = 100)",
+        "serieA": "País A",
+        "serieB": "País B",
+        "serieC": "País C",
+        "mini": "Minigráfico (ejemplo)"
+      },
+      "mix": {
+        "carbon": "Carbón",
+        "gas": "Gas",
+        "petroleo": "Petróleo",
+        "nuclear": "Nuclear",
+        "hidraulica": "Hidráulica",
+        "eolica": "Eólica",
+        "solar": "Solar",
+        "biomasa": "Biomasa",
+        "otras": "Otras renovables"
+      },
+      "estado": {
+        "nada": "Aún no has elegido nada.",
+        "pais": "Has elegido {pais}.",
+        "iva": "IVA de ejemplo: {valor} %.",
+        "accion": "Has elegido «{accion}»."
+      }
     }
   }
 }

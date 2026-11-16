@@ -60,6 +60,7 @@ Los tests fallan si las tres cosas no coinciden.
   (hay un test que lo exige).
 - `CHANGELOG.md` — cambios de cada versión, además del `historial` de `roadmap.json`.
 - `src/sim/` — motor puro, sin interfaz. `src/ui/` y `src/map/` — interfaz y mapa.
+- `src/ui/componentes/` — componentes de interfaz reutilizables (ventanas, paneles, pestañas…); se prueban con happy-dom.
 - `src/av/` y `public/av/` — sonido, animaciones, escenas 3D y recursos audiovisuales; sus fuentes y
   licencias se anotan en `docs/creditos.md`.
 - `src/compartido/` — código que usan las dos webs (versión, hoja de ruta, reporte de fallos).

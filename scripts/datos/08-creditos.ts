@@ -38,6 +38,11 @@ const filasCommons = Object.entries(banderas.commons)
       `| ${nombres.get(id) ?? id} | [${celda(c.archivo)}](${c.url}) | ${celda(c.licencia)} | ${celda(c.autor)} | ${c.motivo} |`,
   );
 
+/** Versión del paquete de la tipografía Inter (tarea f7-t1), leída de su package.json. */
+const versionInter = leerJson<{ version: string }>(
+  'node_modules/@fontsource-variable/inter/package.json',
+).version;
+
 const texto = `# Créditos
 
 > Generado por \`npm run datos:construir\`. No se edita a mano.
@@ -59,6 +64,13 @@ Procedencia y licencia de todo el material de terceros que usa el juego. Lo que 
 
 El detalle de cada dato (fuente y año) está en \`public/data/paises-2010.json\` y en el
 [informe de cobertura](datos-cobertura.md).
+
+## Tipografía
+
+- **Inter**, de The Inter Project Authors (https://github.com/rsms/inter), en su versión variable,
+  incluida en el juego con el paquete \`@fontsource-variable/inter\` ${versionInter}. Licencia
+  [SIL Open Font License 1.1](https://openfontlicense.org): se puede usar, incluir y redistribuir
+  con el juego.
 
 ## Banderas
 

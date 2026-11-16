@@ -18,7 +18,16 @@ export interface Nota {
   volumen: number;
 }
 
-export type Efecto = 'seleccionar' | 'deseleccionar' | 'abrirPanel' | 'boton' | 'capa';
+export type Efecto =
+  | 'seleccionar'
+  | 'deseleccionar'
+  | 'abrirPanel'
+  | 'boton'
+  | 'capa'
+  | 'abrirVentana'
+  | 'cerrar'
+  | 'pestana'
+  | 'menu';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -66,6 +75,62 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
       frecuenciaFinal: 990,
       volumen: 0.12,
     },
+  ],
+  // Navegación (tarea f7-t4). Abrir una ventana: un tono que sube con un soplo breve.
+  abrirVentana: [
+    {
+      forma: 'ruido',
+      inicio: 0,
+      duracion: 0.12,
+      frecuencia: 1200,
+      frecuenciaFinal: 3000,
+      volumen: 0.05,
+    },
+    {
+      forma: 'sine',
+      inicio: 0,
+      duracion: 0.12,
+      frecuencia: 440,
+      frecuenciaFinal: 660,
+      volumen: 0.12,
+    },
+    { forma: 'triangle', inicio: 0.06, duracion: 0.14, frecuencia: 987.8, volumen: 0.06 },
+  ],
+  // Cerrar una ventana o un panel: lo mismo al revés, más corto y más bajo.
+  cerrar: [
+    {
+      forma: 'ruido',
+      inicio: 0,
+      duracion: 0.13,
+      frecuencia: 2400,
+      frecuenciaFinal: 700,
+      volumen: 0.05,
+    },
+    {
+      forma: 'sine',
+      inicio: 0.01,
+      duracion: 0.11,
+      frecuencia: 660,
+      frecuenciaFinal: 440,
+      volumen: 0.09,
+    },
+  ],
+  // Cambiar de pestaña: un clic suave, más bajo que el de un botón (se oye a menudo).
+  pestana: [
+    {
+      forma: 'triangle',
+      inicio: 0,
+      duracion: 0.04,
+      frecuencia: 1568,
+      frecuenciaFinal: 1318.5,
+      volumen: 0.07,
+    },
+    { forma: 'sine', inicio: 0.012, duracion: 0.05, frecuencia: 2637, volumen: 0.025 },
+  ],
+  // Abrir el menú contextual: dos golpecitos rápidos que suben.
+  menu: [
+    { forma: 'triangle', inicio: 0, duracion: 0.035, frecuencia: 880, volumen: 0.08 },
+    { forma: 'triangle', inicio: 0.035, duracion: 0.05, frecuencia: 1174.7, volumen: 0.07 },
   ],
 };
 

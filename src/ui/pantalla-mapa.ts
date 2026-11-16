@@ -17,6 +17,7 @@ import {
 import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
 import { contenidoLeyenda } from './leyenda';
 import { crearSelectorCapas, POLITICA } from './selector-capas';
+import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
@@ -333,11 +334,98 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       estado.textContent = t('juego.mapa.error');
     });
 
+  /**
+   * Menú contextual del mapa (tarea f7-t2, decisión del jugador): con el clic derecho sobre un
+   * país, una región o una ciudad, o con la tecla de menú (o Mayús + F10) sobre lo
+   * seleccionado. De momento, lo que ya se puede hacer: ver la ficha, centrar y acercar.
+   */
+  const nombrePais = (id: string): string => conjunto?.paises[id]?.nombre ?? id;
+  const abrirMenuMapa = (objetivo: Objetivo | null, x: number, y: number): void => {
+    const opciones: (OpcionMenu | typeof SEPARADOR)[] = [];
+    let titulo: string | undefined;
+    if (objetivo?.tipo === 'ciudad') {
+      const { ciudad } = objetivo;
+      titulo = ciudad.nombre;
+      opciones.push(
+        {
+          etiqueta: t('juego.mapa.menu.verCiudad'),
+          icono: 'poblacion',
+          accion: () => mapa.seleccionarCiudad(ciudad),
+        },
+        {
+          etiqueta: t('juego.mapa.menu.verFichaDe', { pais: nombrePais(ciudad.pais) }),
+          icono: 'politica',
+          accion: () => mapa.seleccionar(ciudad.pais),
+        },
+      );
+    } else if (objetivo?.tipo === 'region') {
+      const { region } = objetivo;
+      titulo = region.nombre;
+      opciones.push(
+        {
+          etiqueta: t('juego.mapa.menu.verRegion'),
+          icono: 'capas',
+          accion: () => mapa.seleccionarRegion(region.id),
+        },
+        {
+          etiqueta: t('juego.mapa.menu.verFichaDe', { pais: nombrePais(region.pais) }),
+          icono: 'politica',
+          accion: () => mapa.seleccionar(region.pais),
+        },
+      );
+    } else if (objetivo?.tipo === 'pais') {
+      titulo = nombrePais(objetivo.id);
+      opciones.push({
+        etiqueta: t('juego.mapa.menu.verFicha'),
+        icono: 'politica',
+        accion: () => mapa.seleccionar(objetivo.id),
+      });
+    }
+    if (opciones.length > 0) opciones.push(SEPARADOR);
+    opciones.push(
+      { etiqueta: t('juego.mapa.menu.centrar'), accion: () => mapa.centrarEn(x, y) },
+      {
+        etiqueta: t('juego.mapa.menu.acercar'),
+        atajo: '+',
+        accion: () => mapa.alPedirZoom(2, x, y),
+      },
+      { etiqueta: t('juego.mapa.menu.verMundo'), accion: () => mapa.verMundo() },
+    );
+    const caja = lienzo.getBoundingClientRect();
+    abrirMenuContextual({
+      etiqueta: t('juego.mapa.menu.etiqueta'),
+      ...(titulo ? { titulo } : {}),
+      opciones,
+      x: caja.left + x,
+      y: caja.top + y,
+    });
+  };
+  lienzo.addEventListener('contextmenu', (evento) => {
+    evento.preventDefault();
+    const caja = lienzo.getBoundingClientRect();
+    const x = evento.clientX - caja.left;
+    const y = evento.clientY - caja.top;
+    // Abierto desde el teclado, el navegador no da un punto del mapa: se usa lo seleccionado.
+    if (evento.clientX === 0 && evento.clientY === 0) abrirMenuTeclado();
+    else abrirMenuMapa(mapa.objetivoEn(x, y), x, y);
+  });
+  const abrirMenuTeclado = (): void => {
+    if (menuAbierto()) return;
+    abrirMenuMapa(seleccion, lienzo.clientWidth / 2, lienzo.clientHeight / 2);
+  };
+  lienzo.addEventListener('keydown', (evento) => {
+    if (evento.key === 'ContextMenu' || (evento.key === 'F10' && evento.shiftKey)) {
+      evento.preventDefault();
+      abrirMenuTeclado();
+    }
+  });
+
   const desconectar = conectarGestos(lienzo, mapa);
   // El mapa recibe el teclado nada más abrirse (flechas y +/−).
   lienzo.focus({ preventScroll: true });
 
   const cerrar = (): void => {
+    menuAbierto()?.cerrar(false);
     lienzo.removeEventListener('keydown', alternarMedidor);
     document.removeEventListener('keydown', alPulsarEscape);
     desconectar();

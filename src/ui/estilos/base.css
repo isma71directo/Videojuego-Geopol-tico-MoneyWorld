@@ -1,7 +1,11 @@
 /*
  * Base visual común del juego y de la Hoja de ruta.
  * Tema oscuro por defecto, colores accesibles y zonas táctiles de 44 px (GDD, sección 7).
+ * Tipografía Inter (tarea f7-t1, decisión del jugador): letra libre (licencia OFL) incluida en
+ * el juego, igual en todos los PC; el navegador solo descarga los alfabetos que usa.
  */
+@import '@fontsource-variable/inter/wght.css';
+
 :root {
   --fondo: #0b1220;
   --superficie: #121b2d;
@@ -19,7 +23,16 @@
 
   --radio: 12px;
   --tactil: 44px;
-  --fuente: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fuente:
+    'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --radio-pequeno: 8px;
+  --sombra-flotante: 0 14px 40px rgb(0 0 0 / 45%), 0 2px 8px rgb(0 0 0 / 30%);
+  --superficie-flotante: rgb(14 22 38 / 96%);
+  /* Capas por encima del mapa (que va en la 10). */
+  --capa-panel: 20;
+  --capa-ventana: 30;
+  --capa-menu: 60;
 
   color-scheme: dark;
 }

@@ -257,3 +257,77 @@
 .galeria__rampa span {
   flex: 1;
 }
+
+/* Muestrario de componentes (tarea f7-t3). */
+.muestrario__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.muestrario__tabla {
+  max-height: 360px;
+  margin-top: 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+}
+
+.muestrario__tabla + .deslizador {
+  max-width: 460px;
+  margin-top: 18px;
+}
+
+.muestrario__estado {
+  margin-top: 12px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.muestrario__zona {
+  display: grid;
+  min-height: 110px;
+  margin-top: 14px;
+  place-items: center;
+  border: 1px dashed var(--borde);
+  border-radius: var(--radio);
+  color: var(--texto-suave);
+  cursor: context-menu;
+}
+
+.muestrario__indicador {
+  padding: 6px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: help;
+}
+
+.muestrario__graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 28px;
+  margin-top: 16px;
+}
+
+.muestrario__mini {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.muestrario__dato {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 6%);
+}
+
+.muestrario__dato strong {
+  font-variant-numeric: tabular-nums;
+}

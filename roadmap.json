@@ -1,16 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.7.1",
-  "actualizado": "2026-11-16T07:10:35Z",
+  "versionActual": "0.8.0",
+  "actualizado": "2026-11-16T09:17:26Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "v0.7.1 lista en su rama: mapa político con 45 colores repartidos por parecido (ajuste f6-a1). Presentado al jugador el plan de la Fase 7 (componentes de interfaz).",
-    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 7, empezar por f7-t1 (base de interfaz y componentes reutilizables).",
+    "resumen": "Fase 7 completa en su rama y versión 0.8.0: tipografía Inter, ventanas movibles que recuerdan su sitio, paneles laterales, pestañas, tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa), información al pasar el ratón y gráficos en SVG con vista de tabla; muestrario en la galería, animaciones cortas y sonidos de navegación.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 7 como hecha y presentar el plan de la Fase 8.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.7.1",
-      "Prueba en el PC: abrir el mapa con el mundo entero a la vista y comprobar que los colores no se repiten cerca (Europa, África, América); acercarse a Europa y a África",
-      "Aprobar (o cambiar) el plan de la Fase 7: componentes de interfaz"
+      "Fusionar el PR de la Fase 7 (v0.8.0)",
+      "Prueba en el PC de la v0.8.0: en la galería, abrir las ventanas de España y Japón, moverlas arrastrando el título y con Alt + flechas, recargar y ver que recuerdan su sitio, cambiar de pestaña con el ratón y con las flechas, abrir los paneles a cada lado y cerrar con Escape; ordenar la tabla, mover el deslizador, hacer clic derecho en el recuadro, pasar el ratón por los indicadores y los gráficos y probar «Ver como tabla»; en el mapa, hacer clic derecho en un país y usar su menú (también con Mayús + F10). Escuchar los sonidos al abrir, cerrar y cambiar de pestaña",
+      "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
   },
   "etapas": [
@@ -502,29 +502,36 @@
       "objetivo": "Las piezas de interfaz que usarán todas las pantallas",
       "dependeDe": ["fase-6"],
       "hechoCuando": "Los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes",
-      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado",
-      "estado": "pendiente",
+      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado; en el mapa, hacer clic derecho en un país y usar su menú.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f7-t1",
-          "titulo": "Base de interfaz para PC: tema oscuro, tipografía y componentes reutilizables (paneles laterales y ventanas, pestañas, tablas, deslizadores, menús contextuales, información al pasar el ratón y gráficos básicos)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Base de interfaz para PC: tema oscuro, tipografía Inter, paneles laterales, ventanas flotantes movibles que recuerdan su sitio (varias a la vez) y pestañas",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3ab4e54"
         },
         {
           "id": "f7-t2",
-          "titulo": "Muestrario de los componentes en la galería audiovisual",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos (líneas, barras, barra de partes y minigráficos)",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f43b199"
         },
         {
           "id": "f7-t3",
-          "titulo": "Audiovisual: animaciones de hojas y pestañas y sonidos de navegación",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Muestrario de los componentes en la galería audiovisual",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b006f77"
+        },
+        {
+          "id": "f7-t4",
+          "titulo": "Audiovisual: animaciones de ventanas, hojas y pestañas y sonidos de navegación",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/abd3363"
         }
       ]
     },
@@ -4334,6 +4341,17 @@
       "cambios": [
         "Mapa político con 45 colores en lugar de 12, repartidos según lo que se parecen a la vista: vecinos nunca parecidos y ningún color repetido a menos de 1.500 km",
         "Los países muy grandes llevan colores distintos entre sí, ni muy claros ni azules, y la capa política deja ver algo menos el terreno"
+      ]
+    },
+    {
+      "version": "0.8.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Tipografía Inter (licencia OFL) en toda la interfaz",
+        "Ventanas flotantes que se mueven arrastrando el título o con Alt + flechas, recuerdan su sitio y pueden estar varias abiertas; paneles a los lados y pestañas",
+        "Tablas ordenables, deslizadores, información al pasar el ratón y menú contextual, también con clic derecho en el mapa (ver la ficha, centrar, acercar y ver el mundo)",
+        "Gráficos de líneas, barras, barra de partes y minigráficos, con colores aptos para daltónicos y vista de tabla",
+        "Muestrario de los componentes en la galería, animaciones cortas al abrir, cerrar y cambiar de pestaña y sonidos de navegación (nunca al pasar el ratón)"
       ]
     }
   ]

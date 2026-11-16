@@ -20,6 +20,13 @@ Procedencia y licencia de todo el material de terceros que usa el juego. Lo que 
 El detalle de cada dato (fuente y año) está en `public/data/paises-2010.json` y en el
 [informe de cobertura](datos-cobertura.md).
 
+## Tipografía
+
+- **Inter**, de The Inter Project Authors (https://github.com/rsms/inter), en su versión variable,
+  incluida en el juego con el paquete `@fontsource-variable/inter` 5.3.0. Licencia
+  [SIL Open Font License 1.1](https://openfontlicense.org): se puede usar, incluir y redistribuir
+  con el juego.
+
 ## Banderas
 
 Descargadas el 12/11/2026 con `scripts/datos/07-banderas.ts`.

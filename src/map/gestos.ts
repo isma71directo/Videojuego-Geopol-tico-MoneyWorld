@@ -43,6 +43,9 @@ export function conectarGestos(elemento: HTMLElement, destino: DestinoGestos): (
   };
 
   const alBajar = (evento: PointerEvent): void => {
+    // Con el ratón solo arrastra y selecciona el botón principal: el derecho abre el menú
+    // contextual (tarea f7-t2).
+    if (evento.pointerType === 'mouse' && evento.button !== 0) return;
     destino.alEmpezarGesto?.();
     // Mientras se arrastra no se señala nada; vuelve al mover el ratón sin pulsar.
     destino.alPasar?.(null, null);
