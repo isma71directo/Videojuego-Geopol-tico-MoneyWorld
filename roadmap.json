@@ -1,14 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.8.0",
-  "actualizado": "2026-11-16T10:18:24Z",
+  "versionActual": "0.8.1",
+  "actualizado": "2026-11-16T10:19:05Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-a2 hecha: barra de secciones abajo en el mapa (Gobierno · Economía · Política · Mundo · Ejército · Más, con las teclas G, E, P, U, J y S) que abre las 17 ventanas de las secciones con sus pestañas; cada pestaña dice qué tendrá y en qué fase se llena, y el Consejo de Ministros enseña los 20 ministerios. 17 iconos nuevos. Las ventanas se abren enteras a la vista.",
-    "siguientePaso": "Publicar la v0.8.1 (ajustes f7-a1 y f7-a2) y abrir su PR.",
+    "resumen": "Versión 0.8.1 publicada en su rama con los ajustes de la Fase 7 que pidió el jugador: color de cada país según su bandera y la lista de colores tradicionales (f7-a1) y barra de secciones con las 17 ventanas del juego, vacías hasta su fase (f7-a2).",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 7 como hecha y presentar el plan de la Fase 8 (ficha de país).",
     "pendienteDelJugador": [
-      "Prueba en el PC de la v0.8.0 (componentes en la galería y clic derecho en el mapa)"
+      "Fusionar el PR de la v0.8.1",
+      "Prueba en el PC de la v0.8.1: ver los colores de los países con el mundo entero y en Europa (España amarilla, Reino Unido rojo, Italia verde azulado…) y revisar la sección «Color de cada país» de la galería; abrir las secciones desde la barra de abajo y con las teclas G, E, P, U, J y S, recorrer sus pestañas y mover varias ventanas a la vez",
+      "Prueba en el PC de la v0.8.0: componentes en la galería y clic derecho en el mapa"
     ]
   },
   "etapas": [
@@ -549,7 +551,7 @@
           "origen": "Mensaje del jugador al probar la v0.8.0: esperaba la base de las ventanas de las secciones",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2c28fbd"
         }
       ]
     },
@@ -4370,6 +4372,17 @@
         "Tablas ordenables, deslizadores, información al pasar el ratón y menú contextual, también con clic derecho en el mapa (ver la ficha, centrar, acercar y ver el mundo)",
         "Gráficos de líneas, barras, barra de partes y minigráficos, con colores aptos para daltónicos y vista de tabla",
         "Muestrario de los componentes en la galería, animaciones cortas al abrir, cerrar y cambiar de pestaña y sonidos de navegación (nunca al pasar el ratón)"
+      ]
+    },
+    {
+      "version": "0.8.1",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Cada país lleva en el mapa político el color que se le asocia: el de su bandera o el de una lista de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado, Países Bajos naranja…), sin colores parecidos entre vecinos",
+        "Galería: el color de cada país, para revisarlo",
+        "Barra de secciones abajo en el mapa: Gobierno, Economía, Política, Mundo, Ejército y Más (teclas G, E, P, U, J y S)",
+        "Ventanas de las 17 secciones del juego con sus pestañas (Consejo de Ministros con los 20 ministerios, Parlamento y leyes con historial de leyes, Comercio, Diplomacia…), vacías hasta su fase y con el aviso de en qué fase se llena cada parte",
+        "17 iconos nuevos para las secciones"
       ]
     }
   ]
