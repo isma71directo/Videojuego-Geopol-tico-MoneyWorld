@@ -212,6 +212,8 @@ export class MapaMundo {
       agua?: string;
       ciudades?: string;
       regiones?: string;
+      /** Color de cada país, calculado de antemano por 19-colores-pais.ts (ajuste f7-a3). */
+      colores?: string;
     },
     private readonly estilo: Estilo,
   ) {
@@ -276,8 +278,20 @@ export class MapaMundo {
         })
         .catch(() => undefined);
     }
-    const topo = await this.descargar(this.urls.mundo);
-    this.colores = coloresDelMapa(topo, this.estilo.paleta);
+    const [topo, guardados] = await Promise.all([
+      this.descargar(this.urls.mundo),
+      this.urls.colores
+        ? fetch(this.urls.colores)
+            .then((r) =>
+              r.ok
+                ? (r.json() as Promise<{ colores: Record<string, string> }>)
+                : Promise.reject(new Error()),
+            )
+            .catch(() => null)
+        : Promise.resolve(null),
+    ]);
+    // Si faltara el archivo, se calculan aquí (es más lento: medio segundo).
+    this.colores = guardados ? new Map(Object.entries(guardados.colores)) : coloresDelMapa(topo);
     this.mundo = crearNivel(topo);
     this.pedirDibujo();
   }

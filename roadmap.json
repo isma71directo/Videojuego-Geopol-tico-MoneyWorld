@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.1",
-  "actualizado": "2026-11-16T10:33:19Z",
+  "actualizado": "2026-11-16T10:45:26Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "PR de la v0.8.1 fusionado. El jugador no da por buenos los colores (Rumanía debería ser amarilla y Portugal roja, y se vuelve a notar la repetición) y quiere la barra como en Power & Revolution: apartados con sub-barra, Gobierno y Ministerios separados, sin «Más». Plan de los ajustes de la v0.8.2 apuntado (f7-a3 y f7-a4).",
-    "siguientePaso": "f7-a3: tabla de colores representativos y colores libres sin repetición visible.",
+    "resumen": "f7-a3 hecha: tabla de colores representativos de 185 países (revisable, con nombres de color en español; los territorios pequeños usan su bandera) y colores libres alrededor de cada tono, calculados por 19-colores-pais.ts: vecinos siempre distintos, nada casi igual a menos de 1.500 km ni repetido en la misma zona, y 212 de 223 países con su propio tono. La galería enseña el color pedido y el del mapa de cada país.",
+    "siguientePaso": "f7-a4: barra de 8 apartados con sub-barra y ventanas de los ministerios.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.8.0 (componentes en la galería y clic derecho en el mapa)"
     ]
@@ -556,8 +556,8 @@
           "titulo": "Colores de país rehechos: cada país con su color representativo (el que se le asocia, no solo el principal de su bandera: Rumanía amarillo, Portugal rojo, España amarillo…) en una tabla completa y revisable, y colores libres alrededor de ese tono (no una paleta cerrada) para que, como en la v0.7.1, no se note la repetición: vecinos y países cercanos siempre con colores claramente distintos",
           "version": "0.8.2",
           "origen": "Mensaje del jugador al probar la v0.8.1",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {
@@ -565,8 +565,8 @@
           "titulo": "Barra de secciones como en los simuladores geopolíticos de PC: barra grande abajo con 8 apartados sin «Más» (Gobierno, Ministerios, Política, Economía, Mundo, Ejército, Investigación e Informes); cada uno abre una sub-barra con sus elementos y cada elemento, su ventana. Gobierno y Ministerios separados: cada uno de los 19 ministerios tiene su ventana (resumen, presupuesto, leyes del departamento, acciones e infraestructuras), vacía hasta su fase",
           "version": "0.8.2",
           "origen": "Mensaje del jugador al probar la v0.8.1 (referencia: Power & Revolution)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         }
       ]

@@ -139,6 +139,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       agua: './data/mapa-agua.json',
       ciudades: './data/ciudades-2010.json',
       regiones: './data/regiones-2010.json',
+      colores: './data/colores-pais.json',
     },
     ESTILO_MAPA,
   );
