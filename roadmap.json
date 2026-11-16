@@ -1,16 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.11.0",
-  "actualizado": "2026-11-16T23:01:00Z",
+  "actualizado": "2026-11-16T23:33:50Z",
   "faseActiva": "fase-11",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Fase 10 cerrada como v0.11.0: pantalla «Nueva partida» (mapa grande y panel), tesorería y popularidad iniciales estimadas con fórmula, pantalla de partida con barra superior y salida con confirmación, y transición al empezar. Con ella termina la Etapa A (prealfa). PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.11.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 11 (reloj del juego), que incluye decidir con él la unidad de tiempo visible (issue n.º 3: reloj por horas).",
-    "pendienteDelJugador": [
-      "Probar la v0.11.0 en el PC: desde el inicio, «Nueva partida»; elegir España en la lista y otro país en el mapa, mirar su tesorería y popularidad y «Cómo se estiman»; empezar y ver la transición; en la partida, revisar la barra superior (fecha, tesorería, popularidad y sus explicaciones), el contorno de tu país, abrir las secciones de abajo y salir con «Menú» (y con «atrás»), comprobando que pregunta",
-      "Fusionar el PR de la Fase 10"
-    ]
+    "resumen": "El jugador probó y fusionó la v0.11.0. Plan de la Fase 11 (reloj del juego) aprobado: el reloj corre por horas (issue n.º 3), ×1 = una hora cada 0,5 s (un día en 12 s), marca la hora local de la capital del jugador y el mapa tendrá noche y día; la fase pasa a 4 tareas.",
+    "siguientePaso": "f11-t1: motor del reloj por horas con sus pasos diarios, semanales, mensuales y anuales.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -732,26 +729,33 @@
       "objetivo": "El tiempo del juego avanza, se pausa y cambia de velocidad",
       "dependeDe": ["fase-10"],
       "hechoCuando": "El tiempo avanza a cada velocidad y se detiene al pausar",
-      "pruebaJugador": "Pausar, cambiar de velocidad y ver cómo avanza la fecha",
-      "estado": "pendiente",
+      "pruebaJugador": "Empezar una partida (empieza en pausa), ponerla en marcha y pausarla con el botón y con la barra espaciadora, cambiar entre ×1, ×2, ×4 y ×8 (también con las teclas 1 a 4) y ver cómo avanzan la fecha, la hora de tu capital y la noche sobre el mapa.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f11-t1",
-          "titulo": "Reloj con pausa y velocidades (×1, ×2, ×4 y ×8) y ritmos diario, semanal, mensual y anual",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Motor del reloj por horas (decisión del jugador, issue n.º 3): la partida guarda la hora; al avanzar salen los pasos diarios, semanales (lunes), mensuales (día 1) y anuales (1 de enero); pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en config/tiempo.json",
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f11-t2",
-          "titulo": "Decidir con el jugador la unidad de tiempo visible (idea de la issue n.º 3: reloj por horas del día, como en Power & Revolution) y aplicarla",
+          "titulo": "Hora de la capital: huso horario de cada país el 1 de enero de 2010 (base de datos IANA de husos horarios, dominio público); el reloj marca la hora local de la capital del jugador",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f11-t3",
-          "titulo": "Audiovisual: reloj animado del paso del tiempo y sonidos de pausa y de cambio de velocidad",
+          "titulo": "Controles del tiempo en la barra superior: pausa y ×1, ×2, ×4 y ×8 con el ratón y el teclado (espacio y 1 a 4); la fecha y la hora avanzan en pantalla; la partida empieza en pausa",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f11-t4",
+          "titulo": "Audiovisual: reloj animado con manecillas, sombra de la noche en el mapa que avanza con las horas (se puede quitar en Ajustes) y sonidos de pausa y de cambio de velocidad",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""

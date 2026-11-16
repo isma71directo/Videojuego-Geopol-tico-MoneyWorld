@@ -162,8 +162,8 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 ## 5. Bucle de juego, tiempo y roles
 
 **Tiempo**
-- Tiempo real con pausa. La unidad mínima es **1 día**.
-- Velocidades: Pausa · ×1 (1 día ≈ 2 s) · ×2 · ×4 · ×8.
+- Tiempo real con pausa. El reloj corre **por horas** (decisión del jugador, issue n.º 3, como en Power & Revolution) y marca la **hora local de la capital** del jugador; los días empiezan a su medianoche. La simulación sigue sus ritmos (abajo): lo diario se calcula al cambiar de día.
+- Velocidades: Pausa · ×1 (1 hora = 0,5 s; 1 día = 12 s) · ×2 (1 día = 6 s) · ×4 (3 s) · ×8 (1,5 s). Un año dura unos 73 min a ×1 y unos 9 min a ×8. La partida empieza en pausa.
 - Ritmos de simulación:
   - **Diario:** movimiento militar, combates, construcción, eventos.
   - **Semanal:** encuestas y opinión pública.
@@ -841,13 +841,14 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 11 — v0.12.0 · Reloj del juego
 **Objetivo:** el tiempo del juego avanza, se pausa y cambia de velocidad.
-**Tareas**
-1. Reloj con pausa y velocidades (×1, ×2, ×4 y ×8) y ritmos diario, semanal, mensual y anual.
-2. Decidir con el jugador la unidad de tiempo visible (idea de la issue n.º 3: reloj por horas del día, como en Power & Revolution) y aplicarla.
-3. **Audiovisual:** reloj animado del paso del tiempo y sonidos de pausa y de cambio de velocidad.
+**Tareas** (concretadas con el jugador el 16/11/2026: reloj por horas, ×1 = una hora cada 0,5 s, hora de la capital y noche y día en el mapa)
+1. Motor del reloj (`src/sim/reloj.ts`): la partida guarda la hora; al avanzar hora a hora salen los pasos diarios (cada medianoche), semanales (cada lunes), mensuales (cada día 1) y anuales (cada 1 de enero); pausa y velocidades ×1, ×2, ×4 y ×8 con el ritmo en `src/sim/config/tiempo.json`.
+2. Hora de la capital: huso horario de cada país el 1 de enero de 2010 (script con la base de datos IANA de husos horarios, dominio público); el reloj marca la hora local de la capital del jugador.
+3. Controles del tiempo en la barra superior: pausa y ×1, ×2, ×4 y ×8 con el ratón y con el teclado (espacio y 1 a 4); la fecha y la hora avanzan en pantalla; la partida empieza en pausa.
+4. **Audiovisual:** reloj animado con manecillas, sombra de la noche en el mapa que avanza con las horas (se puede quitar en Ajustes) y sonidos de pausa y de cambio de velocidad.
 
-**Tests:** un año de juego produce 365 pasos diarios, 52 semanales, 12 mensuales y 1 anual.
-**Prueba en el PC:** pausar, cambiar de velocidad y ver cómo avanza la fecha.
+**Tests:** un año de juego produce 365 pasos diarios, 52 semanales, 12 mensuales y 1 anual; un día, 24 horas; la hora de cada capital sale de su huso de 2010.
+**Prueba en el PC:** pausar, cambiar de velocidad y ver cómo avanzan la fecha, la hora y la noche sobre el mapa.
 **Hecho cuando:** el tiempo avanza a cada velocidad y se detiene al pausar.
 
 #### Fase 12 — v0.13.0 · Motor en segundo plano
@@ -2114,6 +2115,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 16/11/2026 | Retratos más variados: caras distintas en todos (forma, ojos, nariz, boca, orejas, cejas, arrugas y más tonos de piel), genéricos con peinados, barbas, ropa y complementos de cada región (sobre todo de África) y más de 170 homenajes (ajustes f8-a1 a f8-a3 de la v0.9.1) | Petición del jugador al probar la v0.9.0: que ningún retrato parezca ya visto ni se parezca a otro | 7.1, 13 |
 | 16/11/2026 | Fase 9 concretada con el jugador: el buscador encuentra países, regiones y ciudades; se abre con una lupa o la tecla B en una ventana central; la ficha de región, con pestañas como la de país, añade la actividad económica principal (DOSE) y los recursos de cada región (USGS y Wikidata); la fase pasa a 4 tareas | Plan de la Fase 9 aprobado por el jugador | 4, 9, 13 |
 | 16/11/2026 | Fase 10 concretada con el jugador: pantalla de nueva partida con mapa grande y panel; tesorería y popularidad iniciales provisionales estimadas con fórmulas documentadas (ingresos públicos del FMI; crecimiento, paro, inflación y años en el cargo); la fase pasa a 4 tareas | Plan de la Fase 10 aprobado por el jugador | 4, 9, 13 |
+| 16/11/2026 | Fase 11 concretada con el jugador (issue n.º 3): el reloj corre por horas y marca la hora local de la capital; ×1 = una hora cada 0,5 s; la partida empieza en pausa; noche y día en el mapa; la fase pasa a 4 tareas | Plan de la Fase 11 aprobado por el jugador | 5, 9, 13 |
 
 ---
 
@@ -2134,7 +2136,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Plataforma | Móvil y PC / solo PC | **Decidido por el jugador (12/11/2026):** solo PC, en el navegador, con ratón y teclado; los recursos y la jugabilidad están pensados para PC. Niveles de calidad para PC modestos y potentes |
 | Tipografía | La del sistema / una letra libre incluida en el juego | **Decidido por el jugador (16/11/2026):** Inter (licencia OFL), igual en todos los PC y con cifras legibles en tablas |
 | Ventanas | Fijas a los lados / movibles | **Decidido por el jugador (16/11/2026):** movibles, arrastrando el título; recuerdan su sitio y puede haber varias abiertas |
-| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | Petición del jugador (issue n.º 3): reloj por horas, manteniendo los ritmos diario, semanal, mensual y anual de la simulación. Concretar velocidades al planificar la Fase 11 (reloj del juego) |
+| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | **Decidido por el jugador (16/11/2026, issue n.º 3):** reloj por horas, con la hora local de la capital del jugador; ×1 = una hora cada 0,5 s (un día en 12 s), ×2, ×4 y ×8; la simulación mantiene sus ritmos diario, semanal, mensual y anual. Noche y día en el mapa |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
