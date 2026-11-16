@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.7.1",
-  "actualizado": "2026-11-16T07:18:39Z",
+  "actualizado": "2026-11-16T07:24:24Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Plan de la Fase 7 aprobado por el jugador: tipografía Inter, ventanas movibles, menú contextual con clic derecho en el mapa desde esta fase y la ficha del país con los componentes nuevos en la Fase 8. La tarea 1 del GDD se divide en dos (base y ventanas; componentes de datos).",
-    "siguientePaso": "Programar f7-t1: tema, tipografía Inter, paneles, ventanas movibles y pestañas.",
+    "resumen": "f7-t1 hecha: tipografía Inter (OFL, @fontsource-variable/inter, también en los nombres del mapa), tokens del tema oscuro y componentes en src/ui/componentes: ventanas flotantes movibles que recuerdan su sitio (varias a la vez, Alt + flechas, Escape), paneles laterales (uno por lado) y pestañas accesibles (flechas, Inicio, Fin). Tests con happy-dom a 1280 × 720 y 1920 × 1080.",
+    "siguientePaso": "f7-t2: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
@@ -506,7 +506,7 @@
         {
           "id": "f7-t1",
           "titulo": "Base de interfaz para PC: tema oscuro, tipografía Inter, paneles laterales, ventanas flotantes movibles que recuerdan su sitio (varias a la vez) y pestañas",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },

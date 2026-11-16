@@ -1,0 +1,180 @@
+/* Componentes de interfaz (Fase 7): ventanas flotantes, paneles laterales y pestañas. */
+
+/* ── Ventanas flotantes ───────────────────────────────────────────────────────── */
+.ventana {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--capa-ventana);
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie-flotante);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--sombra-flotante);
+  color: var(--texto);
+  font-size: 14px;
+  outline: none;
+}
+
+.ventana:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--acento),
+    var(--sombra-flotante);
+}
+
+.ventana__cabecera {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 8px 8px 14px;
+  border-bottom: 1px solid var(--borde);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.ventana--moviendo .ventana__cabecera {
+  cursor: grabbing;
+}
+
+.ventana__cabecera .icono,
+.panel__cabecera .icono {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: var(--acento);
+}
+
+.ventana__titulo,
+.panel__titulo {
+  flex: 1;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ventana__cerrar,
+.panel__cerrar {
+  display: grid;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radio-pequeno);
+  background: transparent;
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ventana__cerrar:hover,
+.panel__cerrar:hover {
+  background: rgb(255 255 255 / 8%);
+  color: var(--texto);
+}
+
+.ventana__cuerpo {
+  overflow: auto;
+  padding: 14px;
+}
+
+/* ── Paneles laterales ────────────────────────────────────────────────────────── */
+.panel {
+  position: fixed;
+  top: 64px;
+  bottom: 12px;
+  z-index: var(--capa-panel);
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100vw - 24px);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie-flotante);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--sombra-flotante);
+  color: var(--texto);
+  font-size: 14px;
+  outline: none;
+}
+
+.panel--izquierda {
+  left: 12px;
+}
+
+.panel--derecha {
+  right: 12px;
+}
+
+.panel__cabecera {
+  display: flex;
+  flex: none;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 8px 10px 16px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.panel__cuerpo {
+  flex: 1;
+  overflow: auto;
+  padding: 14px 16px;
+}
+
+/* ── Pestañas ─────────────────────────────────────────────────────────────────── */
+.pestanas__lista {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--borde);
+}
+
+.pestanas__pestana {
+  display: inline-flex;
+  flex: none;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: -1px;
+  padding: 8px 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--texto-suave);
+  font: inherit;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.pestanas__pestana .icono {
+  width: 18px;
+  height: 18px;
+}
+
+.pestanas__pestana:hover {
+  color: var(--texto);
+}
+
+.pestanas__pestana[aria-selected='true'] {
+  border-bottom-color: var(--acento);
+  color: var(--texto);
+}
+
+.pestanas__pestana:focus-visible {
+  outline-offset: -3px;
+}
+
+.pestanas__contenido {
+  padding: 14px 2px 2px;
+}
+
+.pestanas__contenido:focus-visible {
+  outline-offset: 2px;
+}

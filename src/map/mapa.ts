@@ -72,7 +72,8 @@ export type Objetivo =
   | { tipo: 'region'; region: RegionSenalada }
   | { tipo: 'ciudad'; ciudad: Ciudad };
 
-const FUENTE_ROTULOS = "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+/** La misma letra que la interfaz (Inter, tarea f7-t1), con las del sistema de respaldo. */
+const FUENTE_ROTULOS = "'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const DURACION_PULSO_MS = 520;
 /** Resolución del terreno respecto a la pantalla (el relieve usa 0,75). */
@@ -219,10 +220,17 @@ export class MapaMundo {
     this.ctx = this.lienzo.getContext('2d', { alpha: false })!;
     contenedor.appendChild(this.lienzo);
     this.camara = camaraInicial(contenedor.clientWidth || 1, contenedor.clientHeight || 1);
+    // Cuando llega la letra Inter, los nombres miden otra cosa: se vuelven a medir y a colocar.
+    document.fonts?.addEventListener?.('loadingdone', this.alCargarLetra);
     this.observador = new ResizeObserver(() => this.ajustarTamano());
     this.observador.observe(contenedor);
     this.ajustarTamano();
   }
+
+  private readonly alCargarLetra = (): void => {
+    this.anchosTexto.clear();
+    this.pedirDibujo();
+  };
 
   /** Descarga el nivel «mundo» y dibuja. El de detalle se descarga cuando hace falta. */
   async iniciar(): Promise<void> {
@@ -858,6 +866,7 @@ export class MapaMundo {
 
   destruir(): void {
     this.detenerAnimacion();
+    document.fonts?.removeEventListener?.('loadingdone', this.alCargarLetra);
     this.observador.disconnect();
     this.lienzo.remove();
   }

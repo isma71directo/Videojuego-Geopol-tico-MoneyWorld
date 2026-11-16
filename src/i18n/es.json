@@ -244,6 +244,11 @@
         "porRegiones": "Al acercarte, también por regiones.",
         "regionesDensidad": "La superficie de las regiones se mide en el mapa."
       }
+    },
+    "componentes": {
+      "cerrarVentana": "Cerrar la ventana «{titulo}»",
+      "cerrarPanel": "Cerrar el panel «{titulo}»",
+      "moverVentana": "Arrastra el título para mover la ventana (con el teclado: Alt + flechas)"
     }
   },
   "hojaDeRuta": {
