@@ -25,6 +25,7 @@ import { crearBarraSecciones } from './secciones';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
 import { avanzarPartida } from '../sim/partida';
+import { instanteUTC } from '../sim/reloj';
 import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
@@ -204,8 +205,24 @@ export function abrirPantallaMapa(
           partida.hora = nueva.hora;
           barraPartida?.actualizar(partida);
         },
+        // Manecillas y noche sin saltos dentro de cada hora (tarea f11-t4).
+        alFotograma: (fraccion) => {
+          barraPartida?.ponerFraccion(fraccion, (tiempo?.velocidad ?? 0) <= 2);
+          moverNoche(fraccion);
+        },
+        alCambiarVelocidad: (velocidad, antes) => {
+          reproducir(velocidad === 0 ? 'pausa' : antes === 0 ? 'seguir' : 'velocidad');
+          barraPartida?.marcarPausa(velocidad === 0);
+        },
       })
     : null;
+  /** La sombra de la noche, en el instante de la partida (si el jugador la quiere ver). */
+  const moverNoche = (fraccion = 0): void => {
+    if (!partida || !leerAjuste('nocheMapa')) return;
+    mapa.instanteNoche =
+      instanteUTC({ fecha: partida.fecha, hora: partida.hora }, partida.huso) +
+      fraccion * 3_600_000;
+  };
   const alTeclearTiempo = (evento: KeyboardEvent): void => {
     tiempo?.alTeclear(evento);
   };
@@ -289,6 +306,8 @@ export function abrirPantallaMapa(
 
   const mapa = crearMapaDelJuego(lienzo);
   if (partida) mapa.paisJugador = partida.jugador.paisId;
+  moverNoche(tiempo?.fraccionHora ?? 0);
+  if (tiempo) barraPartida?.marcarPausa(tiempo.velocidad === 0);
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };

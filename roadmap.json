@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.11.0",
-  "actualizado": "2026-11-16T23:46:32Z",
+  "actualizado": "2026-11-16T23:53:49Z",
   "faseActiva": "fase-11",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f11-t3 hecha: el tiempo corre. Junto a la fecha y la hora de la barra superior están la pausa y ×1, ×2, ×4 y ×8 (ratón, barra espaciadora y teclas 1 a 4); la partida empieza en pausa y, al seguir, vuelve a la última velocidad. Mientras corre, cada fotograma pide al motor las horas que tocan y la barra se repinta; en pausa no gasta nada. Al pedir salir (Menú o «atrás»), el tiempo se para y, si se cancela, sigue. Las herramientas del mapa (sonido, capas y buscador) pasan a una fila bajo la barra para que todo quepa a 1280 px.",
-    "siguientePaso": "f11-t4: reloj animado con manecillas, sombra de la noche en el mapa (con su ajuste) y sonidos de pausa y velocidad; después, cerrar la Fase 11 como v0.12.0.",
+    "resumen": "f11-t4 hecha: reloj de manecillas junto a la hora (se mueve sin saltos dentro de cada hora; a ×4 y ×8 solo la aguja de las horas; esfera oscura de noche; en pausa la hora parpadea despacio); noche y día en el mapa: una sombra suave con su crepúsculo, calculada con la posición real del Sol para la hora de la partida (en enero, noche polar en el Ártico), que avanza con las horas y se puede quitar en Ajustes; sonidos de pausa, seguir y cambio de velocidad, también en la galería.",
+    "siguientePaso": "Cerrar la Fase 11 como v0.12.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -751,12 +751,12 @@
           "titulo": "Controles del tiempo en la barra superior: pausa y ×1, ×2, ×4 y ×8 con el ratón y el teclado (espacio y 1 a 4); la fecha y la hora avanzan en pantalla; la partida empieza en pausa",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2130c72"
         },
         {
           "id": "f11-t4",
           "titulo": "Audiovisual: reloj animado con manecillas, sombra de la noche en el mapa que avanza con las horas (se puede quitar en Ajustes) y sonidos de pausa y de cambio de velocidad",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         }

@@ -143,6 +143,9 @@
 }
 
 .partida-barra__hora {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   min-width: 3.2em;
   padding: 1px 6px;
   border-radius: 6px;
@@ -241,6 +244,72 @@
 .tiempo__pausa[aria-pressed='true'] {
   background: rgb(242 184 75 / 18%);
   color: var(--en-curso);
+}
+
+/* Reloj de manecillas junto a la hora (tarea f11-t4). */
+.reloj {
+  display: inline-flex;
+}
+
+.reloj svg {
+  display: block;
+}
+
+.reloj__esfera {
+  fill: rgb(232 237 247 / 14%);
+  stroke: rgb(232 237 247 / 55%);
+  stroke-width: 1.2;
+  transition: fill 0.6s ease;
+}
+
+/* De noche, la esfera se oscurece. */
+.reloj--noche .reloj__esfera {
+  fill: rgb(18 28 70 / 95%);
+  stroke: rgb(143 211 255 / 60%);
+}
+
+.reloj__marca {
+  stroke: rgb(232 237 247 / 45%);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.reloj__marca--grande {
+  stroke: rgb(232 237 247 / 85%);
+  stroke-width: 1.4;
+}
+
+.reloj__horas {
+  stroke: var(--texto);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.reloj__minutos {
+  stroke: var(--acento);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.reloj__centro {
+  fill: var(--texto);
+}
+
+/* En pausa, la hora parpadea despacio: el tiempo está parado. */
+.partida-barra--pausa .partida-barra__hora {
+  animation: reloj-pausa 1.6s ease-in-out infinite;
+}
+
+@keyframes reloj-pausa {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partida-barra--pausa .partida-barra__hora {
+    animation: none;
+  }
 }
 
 /* Debajo de la barra superior de la partida. */

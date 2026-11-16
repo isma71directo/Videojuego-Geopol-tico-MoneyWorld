@@ -37,7 +37,9 @@
       "intensidadTerreno": "Intensidad del terreno",
       "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos).",
       "brilloAgua": "Brillo animado del agua",
-      "brilloAguaAyuda": "Un reflejo de luz suave que se mueve despacio sobre el mar. No se ve si el sistema pide reducir el movimiento."
+      "brilloAguaAyuda": "Un reflejo de luz suave que se mueve despacio sobre el mar. No se ve si el sistema pide reducir el movimiento.",
+      "nocheMapa": "Noche y día en el mapa",
+      "nocheMapaAyuda": "En la partida, una sombra suave cubre la parte del mundo donde es de noche y avanza con las horas."
     },
     "hoja": {
       "cerrar": "Cerrar"
@@ -1252,7 +1254,10 @@
       "pestana": "Cambiar de pestaña",
       "menu": "Abrir el menú contextual",
       "resaltar": "Llegar a un resultado del buscador",
-      "comenzar": "Empezar una partida"
+      "comenzar": "Empezar una partida",
+      "pausa": "Pausar el tiempo",
+      "seguir": "Seguir el tiempo",
+      "velocidad": "Cambiar la velocidad del tiempo"
     },
     "paleta": {
       "titulo": "Colores de referencia",
