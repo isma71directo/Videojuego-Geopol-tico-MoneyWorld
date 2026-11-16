@@ -136,6 +136,7 @@ describe('paises-2010.json (datos publicados)', () => {
       archivos: {
         bm: archivo('banco-mundial'),
         fmi: archivo('fmi'),
+        fiscal: archivo('fmi-fiscal'),
         energia: archivo('owid-energia'),
         emisiones: archivo('owid-emisiones'),
         recursos: archivo('recursos'),
@@ -215,6 +216,7 @@ function mundo(cambios: {
         ...cambios.bm,
       }),
       fmi: fuente({}),
+      fiscal: fuente({}),
       energia: fuente({}),
       emisiones: fuente({}),
       recursos: fuente(cambios.recursos ?? {}),

@@ -90,6 +90,9 @@ describe('ficha de país (tarea f8-t2)', () => {
     const espana = abrir(ficha('ESP'), 'Economía');
     expect(espana.textContent).toContain('PIB por sectores');
     expect(espana.textContent).toContain('Electricidad por fuente');
+    // Ingresos y gasto públicos del FMI (tarea f10-t2).
+    expect(espana.textContent).toMatch(/Ingresos públicos36,4 %/);
+    expect(espana.textContent).toMatch(/Gasto público45,8 %/);
   });
 
   it('la pestaña de fuentes dice de dónde sale cada dato, los cargos y el régimen', () => {

@@ -6,12 +6,13 @@
 import type { GrupoCampo } from '../../../src/datos/paises.ts';
 
 /** Archivo intermedio de fuentes/datos/ del que sale un indicador. */
-export type Archivo = 'bm' | 'fmi' | 'energia' | 'emisiones' | 'recursos' | 'superficie';
+export type Archivo = 'bm' | 'fmi' | 'fiscal' | 'energia' | 'emisiones' | 'recursos' | 'superficie';
 
 /** Sigla de cada archivo en el campo «origen». */
 export const SIGLA: Record<Archivo, string> = {
   bm: 'BM',
   fmi: 'FMI',
+  fiscal: 'FMI',
   energia: 'OWID',
   emisiones: 'OWID',
   recursos: 'OWID',
@@ -252,6 +253,29 @@ export const CAMPOS: Campo[] = [
     respaldo: 'mediana',
     limites: [-80, 80],
     habitual: [-15, 15],
+  },
+  // Fase 10: tesorería inicial provisional y, más adelante, el presupuesto.
+  {
+    clave: 'ingresosPublicosPib',
+    nombre: 'Ingresos públicos',
+    unidad: '% del PIB',
+    grupo: 'estado',
+    fuentes: [{ archivo: 'fiscal', indicador: 'ingresosPublicosPib' }],
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    limites: [0, 150],
+    habitual: [5, 60],
+  },
+  {
+    clave: 'gastoPublicoPib',
+    nombre: 'Gasto público',
+    unidad: '% del PIB',
+    grupo: 'estado',
+    fuentes: [{ archivo: 'fiscal', indicador: 'gastoPublicoPib' }],
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    limites: [0, 150],
+    habitual: [5, 65],
   },
   {
     clave: 'gastoSanidadPib',

@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.10.0",
-  "actualizado": "2026-11-16T19:12:02Z",
-  "faseActiva": "fase-10",
+  "versionActual": "0.11.0",
+  "actualizado": "2026-11-16T23:01:00Z",
+  "faseActiva": "fase-11",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Fase 9 cerrada como v0.10.0: buscador de países, regiones y ciudades (lupa y tecla B), ficha de región con pestañas, actividad económica y recursos de cada región, y resaltado animado del resultado. PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.10.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 10 (nueva partida).",
+    "resumen": "Fase 10 cerrada como v0.11.0: pantalla «Nueva partida» (mapa grande y panel), tesorería y popularidad iniciales estimadas con fórmula, pantalla de partida con barra superior y salida con confirmación, y transición al empezar. Con ella termina la Etapa A (prealfa). PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.11.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 11 (reloj del juego), que incluye decidir con él la unidad de tiempo visible (issue n.º 3: reloj por horas).",
     "pendienteDelJugador": [
-      "Probar la v0.10.0 en el PC: abrir el buscador con la lupa o la tecla B, buscar «Cataluña», «Texas», «Lagos» y «Antofagasta» (con y sin tildes) y revisar en sus fichas la actividad económica, los recursos, las ciudades y las fuentes",
-      "Fusionar el PR de la Fase 9"
+      "Probar la v0.11.0 en el PC: desde el inicio, «Nueva partida»; elegir España en la lista y otro país en el mapa, mirar su tesorería y popularidad y «Cómo se estiman»; empezar y ver la transición; en la partida, revisar la barra superior (fecha, tesorería, popularidad y sus explicaciones), el contorno de tu país, abrir las secciones de abajo y salir con «Menú» (y con «atrás»), comprobando que pregunta",
+      "Fusionar el PR de la Fase 10"
     ]
   },
   "etapas": [
@@ -691,29 +691,36 @@
       "objetivo": "Empezar una partida eligiendo cualquier país",
       "dependeDe": ["fase-9"],
       "hechoCuando": "Se puede empezar una partida con cualquier país jugable",
-      "pruebaJugador": "Crear una partida con España y otra con otro país; ver la barra superior y abrir las secciones",
-      "estado": "pendiente",
+      "pruebaJugador": "Crear una partida con España y otra con otro país (eligiéndolo en el mapa y en la lista ordenada); ver la barra superior con la fecha, la tesorería y la popularidad, abrir las secciones y volver al menú.",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f10-t1",
-          "titulo": "Pantalla «Nueva partida»: elegir país en el mapa o en una lista ordenable, dificultad, eventos históricos sí o no y semilla",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Pantalla «Nueva partida» con mapa grande y panel (decisión del jugador): lista de países jugables ordenable, resumen del país elegido con su líder, dificultad, eventos históricos y semilla; la partida se crea en el motor",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/00864a1"
         },
         {
           "id": "f10-t2",
-          "titulo": "Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería y popularidad provisional); la barra de secciones con sus ventanas vacías ya llegó en la v0.8.1 (ajuste f7-a2)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Ingresos y gasto públicos de 2010 (FMI) y valores iniciales provisionales estimados con fórmula (decisión del jugador): tesorería con los ingresos del Estado y popularidad con crecimiento, paro, inflación y años en el cargo",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/e776885"
         },
         {
           "id": "f10-t3",
+          "titulo": "Pantalla principal de partida: barra superior con la fecha (1 de enero de 2010), tesorería y popularidad, país del jugador destacado y salida al menú con confirmación",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8af36c5"
+        },
+        {
+          "id": "f10-t4",
           "titulo": "Audiovisual: animación de la elección de país y transición al comienzo de la partida",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/02753b6"
         }
       ]
     },
@@ -4492,6 +4499,17 @@
         "Ficha de región con pestañas: Resumen (capital, población, PIB, superficie, densidad, actividad principal y en qué destaca frente a su país), Economía (sectores y recursos), Ciudades y Fuentes",
         "Datos nuevos de cada región: peso de la agricultura, la industria y los servicios en 2010 (DOSE), recursos (grandes yacimientos del USGS y campos de petróleo y gas y minas de carbón de Wikidata), superficie, capital y ciudades principales",
         "Al llegar a un resultado, el contorno late tres veces y suena un tintineo; iconos de los recursos en la ficha y en la galería"
+      ]
+    },
+    {
+      "version": "0.11.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Nueva partida: mapa grande con la lista de los 221 países jugables (filtro con y sin tildes y orden por nombre, población, PIB, PIB por habitante o región) y panel con el país elegido, su líder, la dificultad, los eventos históricos y la semilla; se elige en el mapa o en la lista",
+        "Tesorería y popularidad iniciales provisionales estimadas con fórmula: la tesorería, los ingresos públicos de un mes (FMI); la popularidad, con el crecimiento, el paro, la inflación, los años del líder en el cargo y el régimen, con su desglose",
+        "Pantalla de partida: barra superior con el país del jugador, la fecha, la tesorería y la popularidad; el país del jugador destacado en el mapa; salir al menú pide confirmación (también con «atrás»)",
+        "Ingresos y gasto públicos de 2010 (FMI) en la ficha del país",
+        "Animación al elegir país y transición al empezar con la bandera, el nombre y la fecha, con una fanfarria corta; ventana de confirmación y transición en la galería"
       ]
     }
   ]

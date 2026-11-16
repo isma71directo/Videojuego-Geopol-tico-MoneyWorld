@@ -136,6 +136,8 @@ const CAMPOS_ECONOMIA = [
   'paro',
   'inflacion',
   'deudaPib',
+  'ingresosPublicosPib',
+  'gastoPublicoPib',
   'saldoFiscalPib',
   'cuentaCorrientePib',
   'comercioPib',

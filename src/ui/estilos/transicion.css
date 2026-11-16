@@ -1,0 +1,93 @@
+/* Transición al empezar una partida (tarea f10-t4). */
+.transicion {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--capa-menu) + 20);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.transicion__fondo {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgb(22 36 62 / 97%) 0%, rgb(6 11 20 / 99%) 70%);
+}
+
+.transicion__tarjeta {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.transicion__bandera {
+  position: relative;
+  display: inline-block;
+  height: 160px;
+  margin-bottom: 18px;
+}
+
+/* La sombra y el borde siguen la forma de la bandera (la de Nepal no es un rectángulo). */
+.transicion__bandera img {
+  display: block;
+  width: auto;
+  height: 100%;
+  border-radius: 6px;
+  filter: drop-shadow(0 0 1px rgb(255 255 255 / 35%)) drop-shadow(0 16px 26px rgb(0 0 0 / 60%));
+}
+
+/* Un brillo recorre la bandera, como una tela al viento; solo sobre la bandera (máscara). */
+.transicion__bandera::after {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 35%) 45%, transparent 60%)
+    100% 0 / 300% 100% no-repeat;
+  content: '';
+  mask: var(--bandera) center / 100% 100% no-repeat;
+  animation: transicion-brillo 1.3s ease-in-out 0.25s forwards;
+}
+
+@keyframes transicion-brillo {
+  to {
+    /* Con un fondo tres veces más ancho, de 100 % a 0 % la franja cruza de izquierda a derecha. */
+    background-position: 0% 0;
+  }
+}
+
+.transicion__rol {
+  margin: 0;
+  color: #8fd3ff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.transicion__pais {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.1;
+}
+
+.transicion__fecha {
+  margin: 4px 0 0;
+  color: var(--texto-suave);
+  font-size: 18px;
+}
+
+.transicion__saltar {
+  margin: 28px 0 0;
+  color: var(--pendiente);
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transicion__bandera::after {
+    display: none;
+  }
+}

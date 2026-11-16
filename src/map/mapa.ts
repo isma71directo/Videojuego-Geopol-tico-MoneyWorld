@@ -100,6 +100,9 @@ export const LATIDOS_RESALTADO = 3;
 const NITIDEZ_TERRENO = 0.4;
 /** Cambio de capa: los colores pasan de una capa a otra en este tiempo (tarea f6-t4). */
 const DURACION_CAMBIO_CAPA_MS = 450;
+/** Color del contorno del país del jugador (tarea f10-t3). */
+export const COLOR_JUGADOR = '#8fd3ff';
+
 /** El país seleccionado «se levanta» en este tiempo y proyecta su sombra. */
 const DURACION_ELEVACION_MS = 240;
 /**
@@ -210,6 +213,8 @@ export class MapaMundo {
   private raton: [number, number] | null = null;
   private camaraSenalada: Camara | null = null;
   private seleccionado: string | null = null;
+  /** País del jugador en una partida (tarea f10-t3): siempre lleva un contorno propio. */
+  private jugador: string | null = null;
   private readonly proyeccion = crearProyeccion();
   /** Capa de datos activa (Fase 6); null es la capa política, con un color por país. */
   private coloreado: Coloreado | null = null;
@@ -653,6 +658,16 @@ export class MapaMundo {
     this.pedirDibujo();
   }
 
+  /** País del jugador (o null en el mapa libre): se destaca con un contorno azul claro. */
+  set paisJugador(id: string | null) {
+    this.jugador = id;
+    this.pedirDibujo();
+  }
+
+  get paisJugador(): string | null {
+    return this.jugador;
+  }
+
   /** Formas cortas de los nombres largos («Rep. Checa»), para cuando el entero no cabe. */
   set nombresAbreviados(nombres: Map<string, string>) {
     this.nombresCortos = nombres;
@@ -1049,6 +1064,22 @@ export class MapaMundo {
   ): void {
     const { ctx } = this;
     this.resaltarRegiones(nivel, paises, camara);
+    // El país del jugador (tarea f10-t3): contorno doble, azul claro sobre una línea oscura,
+    // que se ve sobre cualquier color; si está seleccionado, manda el dorado de la selección.
+    const propio = paises.find((f) => f.id === this.jugador && f.id !== this.seleccionado);
+    if (propio) {
+      const camino = this.camino(nivel, propio);
+      ctx.fillStyle = 'rgba(143, 211, 255, 0.1)';
+      ctx.fill(camino);
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = 'rgba(6, 14, 28, 0.55)';
+      ctx.lineWidth = 4 / camara.k;
+      ctx.stroke(camino);
+      ctx.strokeStyle = COLOR_JUGADOR;
+      ctx.lineWidth = 2 / camara.k;
+      ctx.stroke(camino);
+      this.anillo(propio, camara, COLOR_JUGADOR);
+    }
     const senalada = paises.find((f) => f.id === this.senalado && f.id !== this.seleccionado);
     if (senalada) {
       const camino = this.camino(nivel, senalada);

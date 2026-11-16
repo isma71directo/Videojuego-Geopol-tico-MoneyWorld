@@ -14,7 +14,7 @@
       "sello": "Simulador geopolítico",
       "lema": "Dirige un país real a partir del 1 de enero de 2010.",
       "nuevaPartida": "Nueva partida",
-      "nuevaPartidaAviso": "Disponible a partir de la v0.5.0",
+      "nuevaPartidaAviso": "Elige un país y empieza el 1 de enero de 2010",
       "hojaDeRuta": "Hoja de ruta",
       "hojaDeRutaAviso": "Qué está hecho y qué viene después",
       "ajustes": "Ajustes",
@@ -964,6 +964,105 @@
         "capital": "Capital de {pais}"
       },
       "habitantes": "{n} hab."
+    },
+    "nuevaPartida": {
+      "titulo": "Nueva partida",
+      "volver": "Volver",
+      "fecha": "1 de enero de 2010",
+      "elige": "Elige tu país",
+      "eligeAyuda": "Haz clic en el mapa o en la lista. Puedes jugar con cualquiera de los {n} países.",
+      "filtrar": "Filtrar países",
+      "filtrarMarcador": "Escribe un nombre…",
+      "ordenar": "Ordenar por",
+      "criterios": {
+        "nombre": "Nombre",
+        "poblacion": "Población",
+        "pib": "PIB",
+        "pibPerCapita": "PIB por habitante",
+        "region": "Región del mundo"
+      },
+      "lista": "Países jugables",
+      "ninguno": "Ningún país se llama así.",
+      "noJugable": "{pais} no se puede elegir: {motivo}",
+      "motivos": {
+        "especial": "no tiene Estado propio.",
+        "pais": "su gobierno no se puede llevar en el juego.",
+        "dependiente": "es un territorio dependiente."
+      },
+      "sinElegir": "Aún no has elegido país.",
+      "resumen": {
+        "titulo": "Tu país",
+        "regimen": "Régimen",
+        "lider": "Gobierna",
+        "poblacion": "Población",
+        "pib": "PIB",
+        "pibPerCapita": "PIB por habitante",
+        "capital": "Capital",
+        "tesoreria": "Tesorería inicial",
+        "popularidad": "Popularidad inicial",
+        "desglose": "Cómo se estiman",
+        "provisional": "Estimaciones provisionales con fórmula: la tesorería son los ingresos públicos de un mes (FMI, 2010) y la popularidad parte de 50 y cambia con la economía y los años del líder en el cargo. Se sustituirán por el presupuesto y la opinión pública en fases posteriores.",
+        "factores": {
+          "base": "Punto de partida",
+          "crecimiento": "Crecimiento económico",
+          "paro": "Paro",
+          "inflacion": "Inflación",
+          "desgaste": "Desgaste por años en el cargo",
+          "lunaDeMiel": "Primer año de gobierno",
+          "regimen": "Régimen sin elecciones libres"
+        },
+        "ingresos": "Ingresos públicos de un mes ({porcentaje} del PIB al año)"
+      },
+      "opciones": {
+        "titulo": "Opciones de la partida",
+        "dificultad": "Dificultad",
+        "dificultades": {
+          "facil": {
+            "nombre": "Fácil",
+            "descripcion": "Votantes, mercados y rivales más pacientes."
+          },
+          "normal": {
+            "nombre": "Normal",
+            "descripcion": "El equilibrio pensado para el juego."
+          },
+          "realista": {
+            "nombre": "Realista",
+            "descripcion": "Tan exigente como el mundo real."
+          }
+        },
+        "dificultadAviso": "Sus efectos llegan con la revisión final del juego (Fase 103).",
+        "eventos": "Eventos históricos",
+        "eventosDescripcion": "Rescate de Grecia, Primavera Árabe, Fukushima… pueden ocurrir si la situación lo permite, sin guion fijo.",
+        "semilla": "Semilla",
+        "semillaDescripcion": "La misma semilla y las mismas decisiones dan la misma partida. Puede ser un número o una palabra.",
+        "semillaOtra": "Otra semilla al azar",
+        "semillaNoValida": "Escribe un número o una palabra."
+      },
+      "empezar": "Empezar con {pais}",
+      "empezarSin": "Elige un país para empezar"
+    },
+    "partida": {
+      "barra": "Estado de la partida",
+      "menu": "Menú",
+      "menuAyuda": "Salir al menú principal",
+      "pais": "Tu país: {pais}. Pulsa para ir a él en el mapa.",
+      "fecha": "Fecha",
+      "fechaAyuda": "Fecha de la partida. El reloj y sus velocidades llegan en la Fase 11.",
+      "tesoreria": "Tesorería",
+      "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 21.",
+      "popularidad": "Popularidad",
+      "popularidadAyuda": "Popularidad del gobierno. Estimación provisional con la economía, los años del líder en el cargo y el régimen. La opinión pública llega en la Fase 56.",
+      "salir": {
+        "titulo": "¿Salir al menú?",
+        "texto": "La partida aún no se puede guardar (llega en la Fase 14): si sales, se pierde y tendrás que empezar otra.",
+        "aceptar": "Salir al menú",
+        "cancelar": "Seguir jugando"
+      },
+      "transicion": {
+        "etiqueta": "Empieza la partida con {pais}",
+        "rol": "Al frente del Gobierno",
+        "saltar": "Pulsa cualquier tecla para seguir"
+      }
     }
   },
   "hojaDeRuta": {
@@ -1104,7 +1203,10 @@
       "gema": "Gemas",
       "pico": "Metales",
       "bateria": "Minerales estratégicos",
-      "cristales": "Minerales industriales"
+      "cristales": "Minerales industriales",
+      "calendario": "Fecha",
+      "popularidad": "Popularidad",
+      "salir": "Salir"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1137,7 +1239,8 @@
       "cerrar": "Cerrar una ventana o un panel",
       "pestana": "Cambiar de pestaña",
       "menu": "Abrir el menú contextual",
-      "resaltar": "Llegar a un resultado del buscador"
+      "resaltar": "Llegar a un resultado del buscador",
+      "comenzar": "Empezar una partida"
     },
     "paleta": {
       "titulo": "Colores de referencia",
@@ -1155,12 +1258,13 @@
     "componentes": {
       "ventanas": {
         "titulo": "Componentes · Ventanas, paneles y pestañas",
-        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin. Al abrir, cerrar o cambiar de pestaña hay una animación corta y un sonido (nunca al pasar el ratón); con «reducir movimiento» activado en el sistema, sin animación.",
+        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin. Al abrir, cerrar o cambiar de pestaña hay una animación corta y un sonido (nunca al pasar el ratón); con «reducir movimiento» activado en el sistema, sin animación. El último botón enseña la transición al empezar una partida (bandera, país y fecha, con su fanfarria); se salta con un clic o una tecla.",
         "abrir": "Ventana de {pais}",
         "panelIzquierda": "Panel a la izquierda",
         "panelDerecha": "Panel a la derecha",
         "panelTitulo": "Panel lateral",
-        "panelTexto": "Los paneles van pegados a un lado; abrir otro en el mismo lado sustituye al anterior. Escape o la cruz lo cierran."
+        "panelTexto": "Los paneles van pegados a un lado; abrir otro en el mismo lado sustituye al anterior. Escape o la cruz lo cierran.",
+        "transicion": "Empezar una partida con {pais}"
       },
       "pestanas": {
         "etiqueta": "Datos de {pais}",
@@ -1180,11 +1284,20 @@
       },
       "menu": {
         "titulo": "Componentes · Menú contextual e información",
-        "nota": "Haz clic derecho en el recuadro (o, con el foco en él, pulsa la tecla de menú o Mayús + F10). Pasa el ratón o lleva el foco a los indicadores para ver su explicación.",
+        "nota": "Haz clic derecho en el recuadro (o, con el foco en él, pulsa la tecla de menú o Mayús + F10). Pasa el ratón o lleva el foco a los indicadores para ver su explicación. El botón de confirmación abre la ventana que pregunta antes de algo que no se puede deshacer (como salir de una partida): empieza en «cancelar», y Escape o un clic fuera también cancelan.",
         "zona": "Haz clic derecho aquí",
         "etiqueta": "Acciones de ejemplo",
         "tituloMenu": "España",
-        "desactivada": "Opción que aún no se puede usar"
+        "desactivada": "Opción que aún no se puede usar",
+        "confirmar": "Pedir confirmación",
+        "confirmacion": {
+          "titulo": "¿Borrar la partida de ejemplo?",
+          "texto": "Es solo una prueba del muestrario: no se borra nada.",
+          "aceptar": "Borrar",
+          "cancelar": "Cancelar",
+          "si": "Has confirmado.",
+          "no": "Has cancelado."
+        }
       },
       "info": {
         "pib": {

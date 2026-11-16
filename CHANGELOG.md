@@ -7,6 +7,43 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.11.0 - 2026-11-16
+
+Fase 10: nueva partida. Con ella termina la Etapa A (prealfa).
+
+### Añadido
+
+- **Nueva partida** (decisión del jugador: mapa grande y panel):
+  - Lista de los 221 países jugables a la izquierda, con filtro (con y sin tildes) y orden por
+    nombre, población, PIB, PIB por habitante o región; se maneja también con las flechas.
+  - Un clic en el mapa (en un país, una de sus regiones o una ciudad) o en la lista elige el país.
+  - A la derecha, el país elegido con su bandera, su capital, su líder con su retrato, el régimen,
+    la población y el PIB, y las opciones: dificultad (Fácil, Normal o Realista), eventos
+    históricos y semilla (un número o una palabra; botón para otra al azar).
+  - La partida se crea en el motor (`src/sim/partida.ts`) el 1 de enero de 2010.
+- **Tesorería y popularidad iniciales** (decisión del jugador: estimadas con fórmula, provisionales
+  hasta el presupuesto y la opinión pública; parámetros en `src/sim/config/inicio.json`):
+  - Tesorería: los ingresos públicos de un mes.
+  - Popularidad: parte de 50 y cambia con el crecimiento, el paro, la inflación, los años del líder
+    en el cargo y el régimen, entre 15 y 85.
+  - «Nueva partida» enseña las dos, marcadas como estimación, con el desglose de la popularidad.
+- **Ingresos y gasto públicos de 2010** del FMI (Monitor Fiscal, `scripts/datos/23-fmi-fiscal.ts`):
+  190 países con dato real y el resto estimados con la mediana de su grupo; también en la ficha
+  del país.
+- **Pantalla de partida:**
+  - Barra superior con «Menú», el país del jugador (un clic lleva el mapa a él), la fecha, la
+    tesorería y la popularidad con un medidor, cada dato con su explicación; las herramientas del
+    mapa, a la derecha.
+  - El país del jugador lleva siempre un contorno azul claro en el mapa.
+  - Salir al menú pide confirmación, también con el botón «atrás» del navegador, y recargar avisa:
+    la partida aún no se guarda (llega en la Fase 14).
+- **Audiovisual:**
+  - Al elegir un país, su resumen entra con una animación y la bandera «salta».
+  - Transición al empezar: la bandera del país con un brillo, su nombre y la fecha, y una fanfarria
+    corta nueva; se salta con un clic o una tecla.
+  - Iconos de fecha, popularidad y salir.
+  - Galería: la ventana de confirmación, la transición y el sonido nuevo.
+
 ## 0.10.0 - 2026-11-16
 
 Fase 9: buscador y ficha de región.

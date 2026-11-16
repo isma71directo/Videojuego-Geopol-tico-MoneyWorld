@@ -58,6 +58,9 @@ import informe from './iconos/informe.svg?raw';
 import historial from './iconos/historial.svg?raw';
 import gobierno from './iconos/gobierno.svg?raw';
 import mundo from './iconos/mundo.svg?raw';
+import calendario from './iconos/calendario.svg?raw';
+import popularidad from './iconos/popularidad.svg?raw';
+import salir from './iconos/salir.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -143,6 +146,10 @@ const ICONOS = {
   guerra,
   informe,
   historial,
+  // Barra superior de la partida (tarea f10-t3).
+  calendario,
+  popularidad,
+  salir,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

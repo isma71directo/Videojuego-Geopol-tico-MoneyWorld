@@ -7,6 +7,20 @@ export function formatearFecha(fecha: string): string {
   return `${partes[3]}/${partes[2]}/${partes[1]}`;
 }
 
+const FECHA_LARGA = new Intl.DateTimeFormat('es-ES', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+/** Convierte «2010-01-01» en «1 de enero de 2010». Devuelve el texto tal cual si no es una fecha. */
+export function formatearFechaLarga(fecha: string): string {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return fecha;
+  const momento = new Date(`${fecha}T00:00:00Z`);
+  return Number.isNaN(momento.getTime()) ? fecha : FECHA_LARGA.format(momento);
+}
+
 /** Convierte una fecha ISO con hora en «11/11/2026, 16:30» (hora local del dispositivo). */
 export function formatearFechaHora(iso: string): string {
   const fecha = new Date(iso);

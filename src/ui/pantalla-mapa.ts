@@ -4,8 +4,8 @@ import type { ConjuntoPaises } from '../datos/paises';
 import type { ConjuntoEconomiaRegiones } from '../datos/regiones-economia';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
-import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
-import { ESTILO_MAPA } from '../map/estilo';
+import type { MapaMundo, Objetivo, RegionSenalada } from '../map/mapa';
+import type { Partida } from '../sim/partida';
 import { conectarGestos } from '../map/gestos';
 import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el, reemplazar } from './dom';
@@ -22,7 +22,9 @@ import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
+import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearBuscador } from './buscador';
+import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
@@ -35,16 +37,40 @@ function medidorActivo(): boolean {
 export interface PantallaMapa {
   elemento: HTMLElement;
   mapa: MapaMundo;
+  /** Partida que se juega en esta pantalla (null en el mapa libre). */
+  partida: Partida | null;
   cerrar(): void;
 }
 
-export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
-  const volver = el(
-    'button',
-    { class: 'boton mapa__volver', type: 'button', 'aria-label': t('juego.mapa.volver') },
-    '← ',
-    t('juego.mapa.volver'),
-  );
+export interface OpcionesPantallaMapa {
+  /** Partida empezada (tarea f10-t1): el mapa abre en el país del jugador. */
+  partida?: Partida | null;
+}
+
+export function abrirPantallaMapa(
+  alCerrar: () => void,
+  opciones: OpcionesPantallaMapa = {},
+): PantallaMapa {
+  const partida = opciones.partida ?? null;
+  // En una partida, «Menú» sale al inicio después de confirmarlo (tarea f10-t3).
+  const volver = partida
+    ? el(
+        'button',
+        {
+          class: 'boton mapa__volver mapa__menu',
+          type: 'button',
+          'aria-label': t('juego.partida.menuAyuda'),
+          title: t('juego.partida.menuAyuda'),
+        },
+        icono('salir'),
+        t('juego.partida.menu'),
+      )
+    : el(
+        'button',
+        { class: 'boton mapa__volver', type: 'button', 'aria-label': t('juego.mapa.volver') },
+        '← ',
+        t('juego.mapa.volver'),
+      );
   // Botón de silencio, siempre a mano (GDD 7.1); también con la tecla M.
   const botonSonido = el('button', { class: 'boton mapa__sonido', type: 'button' });
   const pintarBotonSonido = (): void => {
@@ -161,14 +187,28 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     buscador.alTeclear(evento);
   };
   document.addEventListener('keydown', alTeclearBuscador);
-  const barra = el(
-    'div',
-    { class: 'mapa__barra' },
-    volver,
-    botonSonido,
-    selector.elemento,
-    buscador.boton,
-  );
+  // Barra superior de la partida (tarea f10-t3): país, fecha, tesorería y popularidad, con las
+  // herramientas del mapa a la derecha. En el mapa libre, solo las herramientas.
+  const barraPartida = partida
+    ? crearBarraPartida({
+        partida,
+        alIrAlPais: () => {
+          reproducir('boton');
+          mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
+          lienzo.focus({ preventScroll: true });
+        },
+      })
+    : null;
+  const herramientas = [botonSonido, selector.elemento, buscador.boton];
+  const barra = barraPartida
+    ? el(
+        'header',
+        { class: 'mapa__barra mapa__barra--partida' },
+        volver,
+        barraPartida.elemento,
+        el('div', { class: 'mapa__herramientas' }, ...herramientas),
+      )
+    : el('div', { class: 'mapa__barra' }, volver, ...herramientas);
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -211,7 +251,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   document.addEventListener('keydown', alTeclearSecciones);
   const elemento = el(
     'section',
-    { class: 'mapa' },
+    { class: partida ? 'mapa mapa--partida' : 'mapa' },
     lienzo,
     brillo,
     barra,
@@ -224,22 +264,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   );
   document.body.appendChild(elemento);
 
-  const mapa = new MapaMundo(
-    lienzo,
-    {
-      mundo: './data/mapa-2010-mundo.json',
-      detalle: './data/mapa-2010-detalle.json',
-      relieve: './av/relieve/',
-      terreno: './av/terreno/',
-      agua: './data/mapa-agua.json',
-      ciudades: './data/ciudades-2010.json',
-      regiones: './data/regiones-2010.json',
-      colores: './data/colores-pais.json',
-    },
-    ESTILO_MAPA,
-  );
-  // Cuánto se ve el terreno bajo los países (Ajustes, tarea f6-t3).
-  mapa.terrenoVisible = leerAjuste('intensidadTerreno');
+  const mapa = crearMapaDelJuego(lienzo);
+  if (partida) mapa.paisJugador = partida.jugador.paisId;
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
@@ -472,6 +498,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
         }),
       );
       pintarCapa();
+      const propio = partida ? datos.paises[partida.jugador.paisId] : undefined;
+      if (propio) barraPartida?.ponerNombrePais(propio.nombre);
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.
@@ -496,6 +524,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       estado.remove();
       // Con los países del mapa ya cargados, la leyenda sabe si alguno se queda sin dato.
       pintarCapa();
+      // En una partida, el mapa va al país del jugador y abre su ficha.
+      if (partida) mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
     })
     .catch(() => {
       estado.textContent = t('juego.mapa.error');
@@ -598,6 +628,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     document.removeEventListener('keydown', alTeclearSecciones);
     document.removeEventListener('keydown', alTeclearBuscador);
     buscador.cerrar(false);
+    barraPartida?.destruir();
     secciones.destruir();
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
@@ -607,7 +638,13 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   };
   volver.addEventListener('click', () => {
     reproducir('boton');
-    alCerrar();
+    if (!partida) {
+      alCerrar();
+      return;
+    }
+    void confirmarSalidaDePartida().then((salir) => {
+      if (salir) alCerrar();
+    });
   });
-  return { elemento, mapa, cerrar };
+  return { elemento, mapa, partida, cerrar };
 }

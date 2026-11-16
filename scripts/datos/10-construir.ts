@@ -3,7 +3,7 @@
  * (no usa la red): une las fuentes, aplica los valores de respaldo, valida y escribe el
  * archivo que carga el juego y el informe de cobertura.
  *
- * Entrada: fuentes/datos/*.json (los generan los scripts 01 a 06 y 16) y, para la superficie
+ * Entrada: fuentes/datos/*.json (los generan los scripts 01 a 06, 16 y 23) y, para la superficie
  *          de los territorios sin dato oficial, public/data/mapa-2010-detalle.json (09).
  * Salida:  public/data/paises-2010.json y docs/datos-cobertura.md
  * Uso:     node scripts/datos/10-construir.ts
@@ -31,6 +31,7 @@ const entradas: Entradas = {
   archivos: {
     bm: archivo('banco-mundial'),
     fmi: archivo('fmi'),
+    fiscal: archivo('fmi-fiscal'),
     energia: archivo('owid-energia'),
     emisiones: archivo('owid-emisiones'),
     recursos: archivo('recursos'),
