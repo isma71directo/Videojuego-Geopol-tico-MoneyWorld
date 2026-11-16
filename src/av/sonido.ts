@@ -136,9 +136,9 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
   // Llegar a un resultado del buscador (tarea f9-t4): tres notas que suben y brillan, a la vez
   // que el contorno late en el mapa.
   resaltar: [
-    { forma: 'sine', inicio: 0, duracion: 0.12, frecuencia: 784, volumen: 0.12 },
-    { forma: 'sine', inicio: 0.09, duracion: 0.14, frecuencia: 1046.5, volumen: 0.11 },
-    { forma: 'triangle', inicio: 0.18, duracion: 0.3, frecuencia: 1568, volumen: 0.08 },
+    { forma: 'sine', inicio: 0, duracion: 0.1, frecuencia: 784, volumen: 0.12 },
+    { forma: 'sine', inicio: 0.07, duracion: 0.11, frecuencia: 1046.5, volumen: 0.11 },
+    { forma: 'triangle', inicio: 0.14, duracion: 0.15, frecuencia: 1568, volumen: 0.08 },
   ],
 };
 
