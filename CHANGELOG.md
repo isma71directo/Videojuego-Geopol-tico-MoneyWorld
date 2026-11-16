@@ -7,6 +7,23 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.7.1 - 2026-11-16
+
+Ajuste de la Fase 6 pedido por el jugador tras probar la v0.7.0.
+
+### Cambiado
+
+- **Mapa político con 45 colores** en lugar de 12: 15 tonos del círculo cromático con tres
+  luminosidades, creados con código en OKLCH.
+- **Reparto por parecido a la vista**, no solo por color idéntico:
+  - Dos vecinos nunca llevan colores parecidos.
+  - Con el mundo entero a la vista, ningún color se repite entre países a menos de 1.500 km
+    (antes había 55 pares).
+  - Los países muy grandes (Rusia, Canadá, Estados Unidos, China, Brasil, Australia…) llevan
+    colores distintos entre sí y evitan los tonos más claros y los azules, que sobre el terreno
+    parecían hielo o agua.
+- La capa política deja ver algo menos el terreno, para que los colores se distingan mejor.
+
 ## 0.7.0 - 2026-11-12
 
 Fase 6 · Capas del mapa.

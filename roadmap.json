@@ -1,13 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.7.0",
-  "actualizado": "2026-11-16T07:09:52Z",
+  "versionActual": "0.7.1",
+  "actualizado": "2026-11-16T07:10:35Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Ajuste f6-a1 hecho: el mapa político pasa de 12 a 45 colores (15 tonos × 3 luminosidades, creados en OKLCH) y el reparto tiene en cuenta lo que se parecen dos colores a la vista: vecinos nunca parecidos, ningún color repetido a menos de 1.500 km (antes, 55 pares), países muy grandes con colores distintos entre sí, ni muy claros ni azules. La capa política deja ver algo menos el terreno para que los colores se distingan mejor.",
-    "siguientePaso": "Publicar la v0.7.1 y abrir su PR; después, presentar el plan de la Fase 7 (componentes de interfaz) antes de programarla.",
-    "pendienteDelJugador": []
+    "resumen": "v0.7.1 lista en su rama: mapa político con 45 colores repartidos por parecido (ajuste f6-a1). Presentado al jugador el plan de la Fase 7 (componentes de interfaz).",
+    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 7, empezar por f7-t1 (base de interfaz y componentes reutilizables).",
+    "pendienteDelJugador": [
+      "Fusionar el PR de la v0.7.1",
+      "Prueba en el PC: abrir el mapa con el mundo entero a la vista y comprobar que los colores no se repiten cerca (Europa, África, América); acercarse a Europa y a África",
+      "Aprobar (o cambiar) el plan de la Fase 7: componentes de interfaz"
+    ]
   },
   "etapas": [
     {
@@ -486,7 +490,7 @@
           "origen": "Mensaje del jugador tras probar la v0.7.0",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/9329fcf"
         }
       ]
     },
@@ -4322,6 +4326,14 @@
         "Mapa más realista: colores del terreno de Natural Earth II bajo los países (intensidad en Ajustes) y mar más oscuro cuanto más profundo",
         "Volumen sin 3D: luz y sombra en los bordes, sombra de la costa sobre el mar, país seleccionado levantado y brillo suave del agua",
         "Cambio de capa con fundido de colores y sonido propio; rampas de las capas en la galería"
+      ]
+    },
+    {
+      "version": "0.7.1",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Mapa político con 45 colores en lugar de 12, repartidos según lo que se parecen a la vista: vecinos nunca parecidos y ningún color repetido a menos de 1.500 km",
+        "Los países muy grandes llevan colores distintos entre sí, ni muy claros ni azules, y la capa política deja ver algo menos el terreno"
       ]
     }
   ]
