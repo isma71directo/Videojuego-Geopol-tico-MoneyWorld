@@ -40,6 +40,8 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
         semilla: 7,
         fecha: FECHA_INICIO,
         hora: 0,
+        // Sin los husos, UTC (con ellos, la hora de la capital: tests/husos.test.ts).
+        huso: { zona: 'UTC', minutos: 0 },
         jugador: { paisId: id, rol: 'gobierno' },
         opciones: { dificultad: 'normal', eventosHistoricos: true },
         paises: partida.paises,

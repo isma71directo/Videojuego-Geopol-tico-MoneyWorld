@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.11.0",
-  "actualizado": "2026-11-16T23:36:11Z",
+  "actualizado": "2026-11-16T23:41:38Z",
   "faseActiva": "fase-11",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f11-t1 hecha: motor del reloj por horas (src/sim/reloj.ts, parámetros en src/sim/config/tiempo.json). La partida guarda la fecha y la hora (empieza el 1 de enero de 2010 a medianoche); al avanzar salen, en orden, los pasos diarios (cada medianoche), semanales (cada lunes), mensuales (cada día 1) y anuales (cada 1 de enero): un año da 365, 52, 12 y 1. Velocidades pausa, ×1 (una hora cada 0,5 s, un día en 12 s), ×2, ×4 y ×8, contando las horas fotograma a fotograma sin saltos si la pantalla se para.",
-    "siguientePaso": "f11-t2: huso horario de cada país el 1 de enero de 2010 (base de datos IANA) para que el reloj marque la hora de la capital del jugador.",
+    "resumen": "f11-t2 hecha: huso horario de los 223 países y territorios el 1 de enero de 2010 (scripts/datos/24-husos.ts con la base de datos IANA, dominio público; ocho territorios a mano con su motivo en manual/husos-2010.json). La partida guarda el huso de la capital del jugador; la barra superior enseña la hora junto a la fecha y explica que es la hora local de la capital (p. ej. Madrid, UTC+1); «Nueva partida» enseña el huso del país. Salen bien los casos de 2010: Caracas −4:30, Samoa −11, Katmandú +5:45 y el horario de verano del sur.",
+    "siguientePaso": "f11-t3: controles del tiempo en la barra superior (pausa, ×1 a ×8, espacio y 1 a 4); las herramientas del mapa pasan a una fila debajo de la barra para que quepa todo a 1280 px.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -737,20 +737,20 @@
           "titulo": "Motor del reloj por horas (decisión del jugador, issue n.º 3): la partida guarda la hora; al avanzar salen los pasos diarios, semanales (lunes), mensuales (día 1) y anuales (1 de enero); pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en config/tiempo.json",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/597c906"
         },
         {
           "id": "f11-t2",
           "titulo": "Hora de la capital: huso horario de cada país el 1 de enero de 2010 (base de datos IANA de husos horarios, dominio público); el reloj marca la hora local de la capital del jugador",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f11-t3",
           "titulo": "Controles del tiempo en la barra superior: pausa y ×1, ×2, ×4 y ×8 con el ratón y el teclado (espacio y 1 a 4); la fecha y la hora avanzan en pantalla; la partida empieza en pausa",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

@@ -1011,7 +1011,8 @@
           "lunaDeMiel": "Primer año de gobierno",
           "regimen": "Régimen sin elecciones libres"
         },
-        "ingresos": "Ingresos públicos de un mes ({porcentaje} del PIB al año)"
+        "ingresos": "Ingresos públicos de un mes ({porcentaje} del PIB al año)",
+        "huso": "Huso horario"
       },
       "opciones": {
         "titulo": "Opciones de la partida",
@@ -1047,7 +1048,7 @@
       "menuAyuda": "Salir al menú principal",
       "pais": "Tu país: {pais}. Pulsa para ir a él en el mapa.",
       "fecha": "Fecha",
-      "fechaAyuda": "Fecha de la partida. El reloj y sus velocidades llegan en la Fase 11.",
+      "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 0,5 s a ×1.",
       "tesoreria": "Tesorería",
       "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 21.",
       "popularidad": "Popularidad",
@@ -1062,7 +1063,8 @@
         "etiqueta": "Empieza la partida con {pais}",
         "rol": "Al frente del Gobierno",
         "saltar": "Pulsa cualquier tecla para seguir"
-      }
+      },
+      "hora": "Hora"
     }
   },
   "hojaDeRuta": {

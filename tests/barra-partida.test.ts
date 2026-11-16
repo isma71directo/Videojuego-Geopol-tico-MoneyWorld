@@ -55,7 +55,7 @@ describe('barra superior de la partida (tarea f10-t3)', () => {
     expect(texto).toContain('1 de enero de 2010');
     expect(texto).toContain('43.265 M$');
     expect(texto).toContain(`${partida.paises.ESP!.popularidad} %`);
-    expect(barra.elemento.querySelector('time')!.getAttribute('datetime')).toBe('2010-01-01');
+    expect(barra.elemento.querySelector('time')!.getAttribute('datetime')).toBe('2010-01-01T00:00');
     // El nombre llega con los datos; mientras, el código.
     const pais = barra.elemento.querySelector<HTMLButtonElement>('.partida-barra__pais')!;
     expect(pais.textContent).toBe('ESP');

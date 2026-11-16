@@ -499,7 +499,7 @@ export function abrirPantallaMapa(
       );
       pintarCapa();
       const propio = partida ? datos.paises[partida.jugador.paisId] : undefined;
-      if (propio) barraPartida?.ponerNombrePais(propio.nombre);
+      if (propio) barraPartida?.ponerNombrePais(propio.nombre, propio.capital);
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.

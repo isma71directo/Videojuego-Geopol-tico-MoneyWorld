@@ -14,6 +14,33 @@ import config from './config/tiempo.json';
 export const RITMOS = ['diario', 'semanal', 'mensual', 'anual'] as const;
 export type Ritmo = (typeof RITMOS)[number];
 
+/** Huso horario de la capital del jugador: zona IANA y minutos al este de UTC (tarea f11-t2). */
+export interface Huso {
+  zona: string;
+  minutos: number;
+}
+
+export const HUSO_UTC: Huso = { zona: 'UTC', minutos: 0 };
+
+/** «UTC+1», «UTC−4:30», «UTC+5:45» o «UTC». */
+export function etiquetaHuso(minutos: number): string {
+  if (minutos === 0) return 'UTC';
+  const abs = Math.abs(minutos);
+  const horas = Math.floor(abs / 60);
+  const resto = abs % 60;
+  return `UTC${minutos > 0 ? '+' : '−'}${horas}${resto ? `:${String(resto).padStart(2, '0')}` : ''}`;
+}
+
+/** Instante real (ms desde 1970, UTC) de un momento de la hora local de un huso. */
+export function instanteUTC(momento: Momento, huso: Huso): number {
+  return horaAbsoluta(momento) * MS_HORA - huso.minutos * 60_000;
+}
+
+/** «00:00» … «23:00». */
+export function textoHora(hora: number): string {
+  return `${String(hora).padStart(2, '0')}:00`;
+}
+
 /** Velocidades del reloj; 0 es la pausa. */
 export const VELOCIDADES = [0, ...config.velocidades] as readonly number[];
 export type Velocidad = number;

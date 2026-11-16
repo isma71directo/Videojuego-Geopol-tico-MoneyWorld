@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "formato": "prettier --write .",
     "formato:comprobar": "prettier --check .",
-    "datos:descargar": "node scripts/datos/01-paises.ts && node scripts/datos/02-banco-mundial.ts && node scripts/datos/03-fmi.ts && node scripts/datos/23-fmi-fiscal.ts && node scripts/datos/04-owid.ts && node scripts/datos/05-recursos.ts && node scripts/datos/06-territorios.ts && node scripts/datos/07-banderas.ts && node scripts/datos/09-fronteras.ts && node scripts/datos/11-relieve.ts && node --max-old-space-size=6000 scripts/datos/17-terreno.ts && node scripts/datos/12-agua.ts && node scripts/datos/16-superficie.ts && node --max-old-space-size=6000 scripts/datos/14-regiones.ts && node scripts/datos/13-ciudades.ts && node scripts/datos/20-gobiernos.ts",
+    "datos:descargar": "node scripts/datos/01-paises.ts && node scripts/datos/02-banco-mundial.ts && node scripts/datos/03-fmi.ts && node scripts/datos/23-fmi-fiscal.ts && node scripts/datos/04-owid.ts && node scripts/datos/05-recursos.ts && node scripts/datos/06-territorios.ts && node scripts/datos/07-banderas.ts && node scripts/datos/09-fronteras.ts && node scripts/datos/11-relieve.ts && node --max-old-space-size=6000 scripts/datos/17-terreno.ts && node scripts/datos/12-agua.ts && node scripts/datos/16-superficie.ts && node --max-old-space-size=6000 scripts/datos/14-regiones.ts && node scripts/datos/13-ciudades.ts && node scripts/datos/20-gobiernos.ts && node scripts/datos/24-husos.ts",
     "datos:construir": "node scripts/datos/10-construir.ts && node scripts/datos/15-regiones-datos.ts && node scripts/datos/21-regiones-economia.ts && node scripts/datos/22-buscador.ts && node scripts/datos/08-creditos.ts && npm run datos:colores",
     "datos:mapa": "node scripts/datos/09-fronteras.ts",
     "datos:relieve": "node scripts/datos/11-relieve.ts",
@@ -31,6 +31,7 @@
     "datos:regiones-economia": "node scripts/datos/21-regiones-economia.ts",
     "datos:colores": "node scripts/datos/18-colores-banderas.ts && node scripts/datos/19-colores-pais.ts",
     "datos:gobiernos": "node scripts/datos/20-gobiernos.ts",
+    "datos:husos": "node scripts/datos/24-husos.ts",
     "datos:fiscal": "node scripts/datos/23-fmi-fiscal.ts && node scripts/datos/10-construir.ts",
     "datos": "npm run datos:descargar && npm run datos:construir",
     "comprobar": "npm run lint && npm run formato:comprobar && npm run test && npm run compilar"

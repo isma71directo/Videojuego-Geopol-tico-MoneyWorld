@@ -16,6 +16,7 @@ para el proyecto. Los retratos se dibujan con código: son interpretaciones, nun
 | [Wikidata](https://www.wikidata.org) | Capitales de 2010 (nombre y, si no están en Natural Earth, posición), capitales de provincia de 2010 (nombre y posición), población de las ciudades y de las regiones (la de 2010 o la más cercana), población de territorios sin datos oficiales, superficie de las provincias, capitales de las regiones de varias provincias, campos de petróleo y gas y minas de carbón activos en 2010, y jefes de Estado y de Gobierno el 1 de enero de 2010 (con correcciones a mano anotadas en `scripts/datos/manual/gobiernos-2010.json`) | CC0 |
 | [DOSE](https://zenodo.org/records/20035157), de Wenz y otros | PIB, población y peso de cada sector (agricultura, industria y servicios) de 2010 por regiones (V2.14) | CC BY 4.0 |
 | [USGS, «Major Mineral Deposits of the World»](https://mrdata.usgs.gov/major-deposits/) (Open-File Report 2005-1294) | Grandes yacimientos minerales con su ubicación, para los recursos de cada región | Dominio público |
+| [Base de datos IANA de husos horarios (tzdata)](https://www.iana.org/time-zones) | Huso horario de cada país el 1 de enero de 2010, para la hora de la capital del jugador | Dominio público |
 | [CLDR](https://cldr.unicode.org) | Nombres de los países en español | Licencia Unicode |
 | [Natural Earth](https://www.naturalearthdata.com) | Fronteras, regiones y ciudades (1:10m), tierra firme, ríos, lagos, relieve sombreado con fondo oceánico y colores del terreno de Natural Earth II (1:50m) | Dominio público |
 

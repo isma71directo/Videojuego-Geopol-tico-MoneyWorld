@@ -16,6 +16,7 @@ import {
   puntosConSigno,
 } from '../compartido/formato';
 import { edadEn2010, jefeGobierno, type ConjuntoGobiernos } from '../datos/gobiernos';
+import type { ConjuntoHusos } from '../datos/husos';
 import type { ConjuntoPaises, PaisDatos } from '../datos/paises';
 import { t } from '../i18n';
 import { conectarGestos } from '../map/gestos';
@@ -30,6 +31,7 @@ import {
   type Dificultad,
   type Partida,
 } from '../sim/partida';
+import { etiquetaHuso } from '../sim/reloj';
 import { popularidadInicial, tesoreriaInicial } from '../sim/valores-iniciales';
 import { normalizarBusqueda } from './busqueda';
 import { animar, DURACIONES, FOTOGRAMAS } from './componentes/animacion';
@@ -96,7 +98,11 @@ export interface OpcionesPantallaNuevaPartida {
   alVolver: () => void;
   alEmpezar: (partida: Partida) => void;
   /** Datos ya cargados (en las pruebas); si no, se descargan. */
-  datos?: { paises: ConjuntoPaises; gobiernos: ConjuntoGobiernos | null };
+  datos?: {
+    paises: ConjuntoPaises;
+    gobiernos: ConjuntoGobiernos | null;
+    husos?: ConjuntoHusos | null;
+  };
   /** Sin mapa (en las pruebas). */
   sinMapa?: boolean;
 }
@@ -106,6 +112,8 @@ export function abrirPantallaNuevaPartida(
 ): PantallaNuevaPartida {
   let conjunto: ConjuntoPaises | null = null;
   let gobiernos: ConjuntoGobiernos | null = null;
+  /** Huso horario de cada país (tarea f11-t2): el reloj marca la hora de la capital. */
+  let husos: ConjuntoHusos | null = null;
   let elegido: string | null = null;
   let criterio: CriterioOrden = 'nombre';
   let dificultad: Dificultad = OPCIONES_POR_DEFECTO.dificultad;
@@ -245,6 +253,7 @@ export function abrirPantallaNuevaPartida(
       { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla },
       conjunto.paises,
       gobiernos?.paises ?? {},
+      husos?.paises ?? {},
     );
     // Una sola partida aunque se pulse dos veces.
     empezada = true;
@@ -481,6 +490,9 @@ export function abrirPantallaNuevaPartida(
           t('juego.nuevaPartida.resumen.pibPerCapita'),
           valor('pibPerCapita', dolaresPorPersona),
         ),
+        husos?.paises[pais.id]
+          ? fila(t('juego.nuevaPartida.resumen.huso'), etiquetaHuso(husos.paises[pais.id]![1]))
+          : null,
       ),
       ...valoresDeInicio(pais),
     );
@@ -614,9 +626,14 @@ export function abrirPantallaNuevaPartida(
     opciones.alVolver();
   });
 
-  const listo = (paises: ConjuntoPaises, gob: ConjuntoGobiernos | null): void => {
+  const listo = (
+    paises: ConjuntoPaises,
+    gob: ConjuntoGobiernos | null,
+    hus: ConjuntoHusos | null,
+  ): void => {
     conjunto = paises;
     gobiernos = gob;
+    husos = hus;
     const jugables = Object.values(paises.paises).filter((p) => p.jugable).length;
     ayuda.textContent = t('juego.nuevaPartida.eligeAyuda', { n: jugables });
     if (mapa) mapa.nombres = new Map(Object.values(paises.paises).map((p) => [p.id, p.nombre]));
@@ -626,8 +643,9 @@ export function abrirPantallaNuevaPartida(
   };
   pintarResumen();
   pintarEmpezar();
-  if (opciones.datos) listo(opciones.datos.paises, opciones.datos.gobiernos);
-  else {
+  if (opciones.datos) {
+    listo(opciones.datos.paises, opciones.datos.gobiernos, opciones.datos.husos ?? null);
+  } else {
     Promise.all([
       fetch('./data/paises-2010.json').then((r) =>
         r.ok ? (r.json() as Promise<ConjuntoPaises>) : Promise.reject(new Error(String(r.status))),
@@ -635,8 +653,11 @@ export function abrirPantallaNuevaPartida(
       fetch('./data/gobiernos-2010.json')
         .then((r) => (r.ok ? (r.json() as Promise<ConjuntoGobiernos>) : null))
         .catch(() => null),
+      fetch('./data/husos-2010.json')
+        .then((r) => (r.ok ? (r.json() as Promise<ConjuntoHusos>) : null))
+        .catch(() => null),
     ])
-      .then(([paises, gob]) => listo(paises, gob))
+      .then(([paises, gob, hus]) => listo(paises, gob, hus))
       .catch(() => {
         ayuda.textContent = t('juego.mapa.error');
       });
