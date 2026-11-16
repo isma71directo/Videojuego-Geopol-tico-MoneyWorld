@@ -7,6 +7,40 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.12.0 - 2026-11-16
+
+Fase 11: reloj del juego. Atiende la idea de la issue n.º 3 (que el juego corra por horas, como en
+Power & Revolution).
+
+### Añadido
+
+- **Reloj por horas** (decisión del jugador):
+  - La partida empieza el 1 de enero de 2010 a medianoche y en pausa, y avanza hora a hora.
+  - Marca la hora local de la capital del jugador, con su huso horario de 2010 (Madrid, UTC+1;
+    Caracas, UTC−4:30…).
+  - Al cambiar de día se dan los pasos de la simulación: diario cada medianoche, semanal cada
+    lunes, mensual cada día 1 y anual cada 1 de enero (un año: 365, 52, 12 y 1). Los sistemas de
+    las próximas fases los irán usando.
+  - Motor puro en `src/sim/reloj.ts`, con el ritmo en `src/sim/config/tiempo.json`.
+- **Controles del tiempo** en la barra superior: pausa y ×1 (una hora cada 0,5 s, un día en 12 s),
+  ×2, ×4 y ×8 (un día en 1,5 s), con el ratón, la barra espaciadora y las teclas 1 a 4. Al seguir,
+  vuelve a la última velocidad; al pedir salir, el tiempo se para.
+- **Husos horarios de 2010** de los 223 países y territorios (`scripts/datos/24-husos.ts`, base
+  de datos IANA, dominio público); «Nueva partida» enseña el del país elegido.
+- **Audiovisual:**
+  - Reloj de manecillas junto a la hora, que se mueve sin saltos; de noche, la esfera se oscurece,
+    y en pausa la hora parpadea despacio.
+  - Noche y día en el mapa: una sombra suave con su crepúsculo, calculada con la posición real del
+    Sol para la hora de la partida (en enero, noche polar en el Ártico). Avanza con las horas y se
+    puede quitar en Ajustes.
+  - Sonidos de pausa, seguir y cambio de velocidad (también en la galería).
+  - Iconos de pausa y seguir.
+
+### Cambiado
+
+- En la partida, las herramientas del mapa (sonido, capas y buscador) pasan a una fila bajo la
+  barra superior, para que quepa todo a 1280 px.
+
 ## 0.11.0 - 2026-11-16
 
 Fase 10: nueva partida. Con ella termina la Etapa A (prealfa).
