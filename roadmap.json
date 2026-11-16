@@ -5,8 +5,8 @@
   "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "PR de la v0.9.1 fusionado; el jugador da por buenos los retratos. Plan de la Fase 9 aprobado: buscador de países, regiones y ciudades (lupa y tecla B, ventana central) y ficha de región con pestañas, con actividad económica (DOSE) y recursos (USGS y Wikidata).",
-    "siguientePaso": "f9-t1: script de datos económicos y de recursos de cada región.",
+    "resumen": "f9-t1 hecha: script 21-regiones-economia.ts → public/data/regiones-2010-economia.json. De cada región: superficie (Wikidata en 2.641), capital solo si es segura (2.380: Natural Earth, Wikidata o la del país), ciudades principales, peso de la agricultura, la industria y los servicios en 2010 (DOSE, 954 regiones) y recursos (994 regiones): 3.139 grandes yacimientos del USGS (se descartan 18 con coordenadas erróneas) y 5.588 campos de petróleo, 293 de gas y 1.826 minas de carbón de Wikidata activos en 2010. Reproducible.",
+    "siguientePaso": "f9-t2: buscador de países, regiones y ciudades (lupa y tecla B, ventana central).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -653,15 +653,15 @@
         {
           "id": "f9-t1",
           "titulo": "Datos de cada región: capital regional, superficie, peso de cada sector (DOSE 2010) con su actividad económica principal y recursos (grandes yacimientos minerales del USGS y campos de petróleo, gas y carbón de Wikidata, asignados por su ubicación), con fuente",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f9-t2",
           "titulo": "Buscador de países, regiones y ciudades con autocompletado, con y sin tildes: lupa arriba y tecla B, que abren una ventana de búsqueda en el centro (decisión del jugador); al elegir, el mapa va hasta el resultado y abre su ficha",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {
