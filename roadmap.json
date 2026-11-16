@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.2",
-  "actualizado": "2026-11-16T12:12:10Z",
+  "actualizado": "2026-11-16T12:23:58Z",
   "faseActiva": "fase-8",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f8-t1 hecha: script 20-gobiernos.ts con el régimen y los jefes de Estado y de Gobierno de los 223 países el 1 de enero de 2010 (Wikidata, cargos con fechas; correcciones a mano anotadas para los que faltan y los regímenes que cambiaron desde 2010: Turquía, Irán, Afganistán, Birmania…). Cargos en español y en femenino cuando corresponde.",
-    "siguientePaso": "f8-t2: ficha de país con pestañas (Resumen, Economía, Sociedad y Fuentes).",
+    "resumen": "f8-t2 hecha: ficha de país en el panel de la derecha con pestañas (Resumen con régimen y jefes de Estado y de Gobierno, Economía con sectores y mix eléctrico, Sociedad y Fuentes), explicación de cada dato al pasar el ratón, estimados marcados y la última pestaña recordada al cambiar de país.",
+    "siguientePaso": "f8-t3: iconos de los 8 regímenes y generador de retratos ilustrados (busto) con código.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -585,20 +585,20 @@
           "titulo": "Datos de 2010 de régimen político y jefes de Estado y de Gobierno (Wikidata a 1 de enero de 2010, con el régimen corregido a mano y con fuente donde cambió desde 2010)",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/44ef44f"
         },
         {
           "id": "f8-t2",
           "titulo": "Ficha de país en panel lateral con pestañas (Resumen, Economía, Sociedad y Fuentes): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f8-t3",
           "titulo": "Audiovisual: iconos de los 8 regímenes y generador de retratos ilustrados (busto) dibujados con código; retratos genéricos de los países menores según su región y el estilo de su régimen",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

@@ -466,6 +466,11 @@ export function graficoBarras(opciones: OpcionesBarras): HTMLElement {
 export interface Parte {
   etiqueta: string;
   valor: number;
+  /**
+   * Color fijo (índice en COLORES_SERIES), para que una misma parte (el carbón, el gas…) lleve
+   * siempre el mismo color aunque falten otras (la leyenda sigue al ente, no a su posición).
+   */
+  color?: number;
 }
 
 /**
@@ -496,7 +501,7 @@ export function barraDePartes(opciones: {
       cuota >= 0.1 ? porcentaje.format(cuota) : '',
     );
     bloque.style.flexGrow = String(parte.valor);
-    bloque.style.background = COLORES_SERIES[i]!;
+    bloque.style.background = COLORES_SERIES[parte.color ?? i]!;
     return bloque;
   });
   const barra = el('div', { class: 'partes__barra' }, ...bloques);
@@ -505,7 +510,7 @@ export function barraDePartes(opciones: {
     { class: 'grafico__leyenda grafico__leyenda--partes' },
     ...partes.map((parte, i) => {
       const muestra = el('span', { class: 'grafico__muestra grafico__muestra--cuadro' });
-      muestra.style.background = COLORES_SERIES[i]!;
+      muestra.style.background = COLORES_SERIES[parte.color ?? i]!;
       return el('li', {}, muestra, `${parte.etiqueta} · ${formato(parte.valor)}`);
     }),
   );
