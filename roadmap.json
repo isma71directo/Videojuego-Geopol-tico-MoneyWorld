@@ -1,16 +1,14 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.2",
-  "actualizado": "2026-11-16T10:54:01Z",
-  "faseActiva": "fase-7",
+  "actualizado": "2026-11-16T11:11:35Z",
+  "faseActiva": "fase-8",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Versión 0.8.2 publicada en su rama con los ajustes de la Fase 7 que pidió el jugador: colores representativos sin repetición visible (f7-a3) y barra de 8 apartados con sub-barra y una ventana por ministerio (f7-a4).",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 7 como hecha y presentar el plan de la Fase 8 (ficha de país).",
+    "resumen": "El jugador da por buena la Fase 7 con sus ajustes (v0.8.2 fusionada): «ahora va pareciendo un juego». Fase 7 cerrada. Plan de la Fase 8 (ficha de país) presentado al jugador.",
+    "siguientePaso": "Esperar las decisiones del jugador sobre el plan de la Fase 8 y empezar por f8-t1 (régimen y cargos de 2010).",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.8.2",
-      "Prueba en el PC de la v0.8.2: mirar los colores con el mundo entero y en Europa y revisar la sección «Color de cada país» de la galería (decir qué colores cambiar); abrir cada apartado de la barra de abajo (también con G, I, P, E, U, J, V y N), elegir en su sub-barra y recorrer las ventanas, sobre todo las de los ministerios",
-      "Prueba en el PC de la v0.8.0: componentes en la galería y clic derecho en el mapa"
+      "Decidir las opciones del plan de la Fase 8: fuente del régimen y los cargos, retratos y forma de la ficha"
     ]
   },
   "etapas": [
@@ -503,7 +501,7 @@
       "dependeDe": ["fase-6"],
       "hechoCuando": "Los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes",
       "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado; en el mapa, hacer clic derecho en un país y usar su menú; abrir cada apartado de la barra de abajo, elegir en su sub-barra (también con sus teclas) y recorrer las ventanas; revisar el color de cada país.",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f7-t1",
