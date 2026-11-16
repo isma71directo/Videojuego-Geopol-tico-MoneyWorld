@@ -1,15 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.0",
-  "actualizado": "2026-11-16T09:50:36Z",
+  "actualizado": "2026-11-16T10:02:28Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "PR de la Fase 7 (v0.8.0) fusionado. El jugador da por buenos los colores de la v0.7.1 y pide que cada país lleve el color que se le asocia (ajuste f7-a1, apuntado en la Fase 7 porque la versión de la Fase 6 ya se había superado). También esperaba ver en el juego las ventanas de las futuras secciones (ministerios, comercio, diplomacia, parlamento, historial de leyes…); se le ha explicado que la Fase 7 hizo las piezas comunes y que la barra de secciones está prevista en la Fase 10.",
-    "siguientePaso": "Según lo que elija el jugador: hacer el ajuste f7-a1 (v0.8.1) y, si lo pide, adelantar las ventanas de las secciones; después, cerrar la Fase 7 y presentar el plan de la Fase 8.",
+    "resumen": "El jugador elige la opción B en los dos casos: colores de país por bandera más una lista de colores tradicionales (España amarillo, ya que Reino Unido es rojo; Marruecos rojo y verde) y adelantar ya la barra de secciones con sus ventanas. Plan de los ajustes de la v0.8.1 apuntado (f7-a1 y f7-a2).",
+    "siguientePaso": "f7-a1: script de colores de las banderas, lista tradicional y preferencia en el reparto de colores.",
     "pendienteDelJugador": [
-      "Elegir cómo se decide el color de cada país (ajuste f7-a1): solo por su bandera, o por su bandera más una lista de colores tradicionales que se pueda revisar",
-      "Decidir cuándo llegan al juego las ventanas de las secciones (Gobierno, Economía, Parlamento y leyes, Comercio y diplomacia…): en la Fase 10 como está previsto o ya, como ajuste de la Fase 7",
       "Prueba en el PC de la v0.8.0 (componentes en la galería y clic derecho en el mapa)"
     ]
   },
@@ -502,7 +500,7 @@
       "objetivo": "Las piezas de interfaz que usarán todas las pantallas",
       "dependeDe": ["fase-6"],
       "hechoCuando": "Los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes",
-      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado; en el mapa, hacer clic derecho en un país y usar su menú.",
+      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado; en el mapa, hacer clic derecho en un país y usar su menú; abrir las secciones desde la barra de abajo (y con sus teclas) y recorrer sus pestañas; ver los colores de los países.",
       "estado": "en-curso",
       "tareas": [
         {
@@ -537,9 +535,18 @@
       "ajustes": [
         {
           "id": "f7-a1",
-          "titulo": "Que el color de cada país en el mapa político, dentro de la paleta, sea el que se le asocia al pensar en él (España, rojo o amarillo; Italia, verde azulado…), sin repetir colores parecidos entre vecinos",
+          "titulo": "Color de cada país en el mapa político según el que se le asocia (opción B del jugador): el de su bandera, corregido por una lista revisable de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado, Países Bajos naranja…), dentro de la paleta y sin colores parecidos entre vecinos",
           "version": "0.8.1",
           "origen": "Mensaje del jugador al probar la v0.8.0 (sobre los colores de la v0.7.1; la versión de la Fase 6 ya se había superado)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-a2",
+          "titulo": "Barra de secciones en el mapa (Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado) que abre las ventanas de todas las secciones del juego (Consejo de Ministros con los 20 ministerios, Presupuesto, Impuestos, Parlamento y leyes con historial de leyes, Economía, Energía, Infraestructuras, Partidos, Sociedad, Población, Regiones, Comercio, Diplomacia, Ejército, Investigación, Informes y Comparador), con sus pestañas e iconos y el aviso de en qué fase se llena cada parte (opción B del jugador: adelantado de la Fase 10)",
+          "version": "0.8.1",
+          "origen": "Mensaje del jugador al probar la v0.8.0: esperaba la base de las ventanas de las secciones",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -622,7 +629,7 @@
       "objetivo": "Empezar una partida eligiendo cualquier país",
       "dependeDe": ["fase-9"],
       "hechoCuando": "Se puede empezar una partida con cualquier país jugable",
-      "pruebaJugador": "Crear una partida con España y otra con otro país; navegar por las secciones vacías",
+      "pruebaJugador": "Crear una partida con España y otra con otro país; ver la barra superior y abrir las secciones",
       "estado": "pendiente",
       "tareas": [
         {
@@ -634,7 +641,7 @@
         },
         {
           "id": "f10-t2",
-          "titulo": "Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería y popularidad provisional) y barra inferior de navegación (secciones vacías por ahora)",
+          "titulo": "Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería y popularidad provisional); la barra de secciones con sus ventanas vacías ya llegó en la v0.8.1 (ajuste f7-a2)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -2635,7 +2642,7 @@
         },
         {
           "id": "f67-t3",
-          "titulo": "Pantalla «Leyes» con buscador, filtros y previsión de votos",
+          "titulo": "Pantalla «Leyes» con buscador, filtros y previsión de votos, e historial de las leyes aprobadas y derogadas en la partida (petición del jugador)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""

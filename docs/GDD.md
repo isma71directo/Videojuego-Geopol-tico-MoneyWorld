@@ -522,7 +522,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
    - **Mapa vivo:** relieve sombreado y fondo oceánico, ríos y lagos, ciudades y, según avance el juego, infraestructuras, unidades, rutas comerciales y efectos (crisis, protestas, combates, desastres). Más detalle cuanto más se acerca el jugador.
    - **Modos de mapa:** el mismo mapa con distintas capas, cada una con su leyenda. Riqueza (de más rico a más pobre), población (total o densidad), crecimiento, paro, deuda, inflación y recursos llegan con el sistema de capas (Fase 6); la capa se elige en un desplegable que se abre con un clic o con la tecla C, y al acercarse, las de riqueza y población colorean también las regiones; relaciones, organizaciones y alianzas, comercio, energía, independentismo, conflictos, militar y elecciones llegan con su sistema.
    - Barra superior: fecha, controles de tiempo, tesorería, popularidad, alertas.
-   - Barra de menú: Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado para cada sección.
+   - Barra de menú: Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado para cada sección. **Decisión del jugador (16/11/2026, ajuste f7-a2 de la v0.8.1):** está abajo en el centro del mapa desde la v0.8.1, con todas las ventanas de las secciones creadas (vacías hasta su fase, con el aviso de en qué fase se llena cada pestaña). Atajos: la letra subrayada de cada nombre (G, E, P, U, J y S; la M sigue siendo silenciar). Reparto: **Gobierno** (Consejo de Ministros, Presupuesto, Impuestos, Parlamento y leyes), **Economía** (Economía, Energía, Infraestructuras), **Política** (Partidos y encuestas, Sociedad, Población, Regiones), **Mundo** (Comercio y Diplomacia, en dos ventanas como en sus fases), **Ejército** y **Más** (Investigación, Informes y noticias, Comparador).
    - **Capas del mapa:** político, alianzas, relaciones con mi país, PIB per cápita, crecimiento, paro, deuda, energía (mix y apagones), recursos, independentismo por región, conflictos, militar y elecciones.
    - Al pasar el ratón por un país se ve su nombre y sus datos clave; un clic abre su ficha y el clic derecho, un menú de acciones (diplomacia, comercio, ejército).
 4. **Consejo de Ministros:** cuadrícula de ministerios con su indicador principal y alertas.
@@ -821,7 +821,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Objetivo:** empezar una partida eligiendo cualquier país.
 **Tareas**
 1. Pantalla «Nueva partida»: elegir país en el mapa o en una lista ordenable, dificultad, eventos históricos sí o no y semilla.
-2. Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería y popularidad provisional) y barra inferior de navegación (secciones vacías por ahora).
+2. Pantalla principal de partida con barra superior (fecha 01/01/2010, tesorería y popularidad provisional). La barra de secciones con sus ventanas vacías ya llegó en la v0.8.1 (ajuste f7-a2, decisión del jugador).
 3. **Audiovisual:** animación de la elección de país y transición al comienzo de la partida.
 
 **Tests:** se puede crear una partida con cualquier país jugable.
@@ -1479,7 +1479,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Tareas**
 1. Mayorías y referéndums; leyes constitucionales.
 2. Gobierno por decreto en los regímenes autoritarios.
-3. Pantalla «Leyes» con buscador, filtros y previsión de votos.
+3. Pantalla «Leyes» con buscador, filtros y previsión de votos, e historial de las leyes aprobadas y derogadas en la partida (petición del jugador).
 4. **Audiovisual:** animación de la aprobación y la derogación de una ley.
 
 **Tests:** cada ley se puede aprobar o derogar con la mayoría que le corresponde.
@@ -2099,6 +2099,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 16/11/2026 | Fase 7 concretada con el jugador: tipografía Inter (OFL), ventanas movibles que recuerdan su sitio, menú contextual con clic derecho en el mapa desde esta fase; la ficha y el panel del país pasan a los componentes nuevos en la Fase 8; la tarea 1 se divide en dos (base y ventanas; componentes de datos) | Plan de la Fase 7 aprobado por el jugador | 7, 9, 13 |
 | 16/11/2026 | Los gráficos de sectores se sustituyen por una «barra de partes» (una barra dividida en tramos con su porcentaje y leyenda): se comparan mejor los tamaños y se lee igual con daltonismo; todos los gráficos tienen vista de tabla | Buenas prácticas de visualización de datos (f7-t2) | 7, 9 |
 | 16/11/2026 | Un ajuste de una fase cuya versión ya se ha superado va a la fase activa y sale en su siguiente versión de corrección | Petición del jugador sobre los colores del mapa al probar la v0.8.0 | 10, 12 |
+| 16/11/2026 | Color de cada país en el mapa político según el que se le asocia: el de su bandera (script `18-colores-banderas.ts`) corregido por una lista revisable de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado…), dentro de la paleta y sin colores parecidos entre vecinos; los países más grandes conservan antes su color (ajuste f7-a1) | Petición del jugador (opción B) | 7, 9, 13 |
+| 16/11/2026 | Barra de secciones y ventanas de todas las secciones adelantadas de la Fase 10 a la v0.8.1, vacías hasta su fase; historial de leyes en la pantalla «Leyes» (Fase 67) (ajuste f7-a2) | Petición del jugador (opción B): esperaba la base de las ventanas en la Fase 7 | 7, 9, 13 |
 
 ---
 
@@ -2125,6 +2127,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
 | Colores del terreno | A1: Natural Earth II (vegetación) / A2: hipsométrico (altitud) | **Decidido por el jugador (12/11/2026):** A1, Natural Earth II |
 | Elegir la capa del mapa | Un atajo por capa / Mayús + número / desplegable | **Decidido por el jugador (12/11/2026):** un desplegable que se abre con un clic o con la tecla C; sin atajo por capa |
+| Color de cada país | Reparto automático / por bandera (A) / por bandera y colores tradicionales (B) | **Decidido por el jugador (16/11/2026):** B. España amarillo (Reino Unido es rojo); Marruecos rojo y verde |
+| Ventanas de las secciones | En la Fase 10 (A) / ya, vacías hasta su fase (B) | **Decidido por el jugador (16/11/2026):** B, en la v0.8.1 |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer clic o tecla, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 | Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |
