@@ -295,6 +295,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
             )
           : contenidoPanel(pais!, conjunto!, quitar, {
               gobiernos,
+              colorPais: mapa.colorDePais(pais!.id),
               pestana: pestanaFicha,
               alCambiarPestana: (id) => {
                 pestanaFicha = id;

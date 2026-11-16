@@ -5,8 +5,8 @@
   "faseActiva": "fase-8",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f8-t2 hecha: ficha de país en el panel de la derecha con pestañas (Resumen con régimen y jefes de Estado y de Gobierno, Economía con sectores y mix eléctrico, Sociedad y Fuentes), explicación de cada dato al pasar el ratón, estimados marcados y la última pestaña recordada al cambiar de país.",
-    "siguientePaso": "f8-t3: iconos de los 8 regímenes y generador de retratos ilustrados (busto) con código.",
+    "resumen": "f8-t3 hecha: iconos de los 8 regímenes junto al régimen en la ficha y generador de retratos ilustrados (bustos dibujados con código en SVG, nunca fotografías). Cada jefe de Estado y de Gobierno tiene su retrato: genérico según la región del país, el estilo del régimen (uniforme en las juntas, túnica y kufiya en las monarquías del Golfo, boubou en el Sahel), el sexo y la edad, siempre igual para la misma persona, sobre el color del país en el mapa. La galería los muestra todos. Corregidos dos cargos que salían como «Anexo:…» (Letonia y Dominica).",
+    "siguientePaso": "f8-t4: rasgos propios (homenajes) de los líderes de 2010 de los países y figuras importantes en src/av/config/retratos-lideres.json; después, cerrar la Fase 8 como v0.9.0.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -592,20 +592,20 @@
           "titulo": "Ficha de país en panel lateral con pestañas (Resumen, Economía, Sociedad y Fuentes): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/740fa6c"
         },
         {
           "id": "f8-t3",
           "titulo": "Audiovisual: iconos de los 8 regímenes y generador de retratos ilustrados (busto) dibujados con código; retratos genéricos de los países menores según su región y el estilo de su régimen",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f8-t4",
           "titulo": "Audiovisual: retratos homenaje (interpretaciones ilustradas, sin fotografías) de los líderes de 2010 de los países y figuras importantes",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         }
       ]

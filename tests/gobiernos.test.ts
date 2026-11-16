@@ -50,7 +50,7 @@ describe('gobiernos de 2010 (tarea f8-t1)', () => {
         expect(persona!.nombre, id).not.toMatch(/^Q\d+$/);
         // En el cargo desde antes del 1 de enero de 2010, con su nombre en español.
         expect(cargo.desde <= '2010-01-01', `${id} ${cargo.desde}`).toBe(true);
-        expect(cargo.cargo, id).not.toMatch(/\b(of|the)\b/);
+        expect(cargo.cargo, id).not.toMatch(/\b(of|the)\b|Anexo/);
         expect(cargo.cargo.charAt(0), id).toBe(cargo.cargo.charAt(0).toUpperCase());
       }
     }

@@ -114,7 +114,8 @@
           "ambos": "Jefe de Estado y de Gobierno",
           "desde": "{cargo} · desde {anio}",
           "comoTerritorio": "Como territorio de {soberano}",
-          "sinEstado": "Sin Estado propio: territorio en disputa."
+          "sinEstado": "Sin Estado propio: territorio en disputa.",
+          "retrato": "Retrato ilustrado de {nombre}"
         },
         "pestanas": {
           "etiqueta": "Ficha de {pais}",
@@ -929,7 +930,15 @@
       "base": "Bases",
       "guerra": "Guerras",
       "informe": "Informes",
-      "historial": "Historial"
+      "historial": "Historial",
+      "regimen-parlamentario": "República parlamentaria",
+      "regimen-presidencial": "República presidencial",
+      "regimen-semipresidencial": "República semipresidencial",
+      "regimen-monarquia-parlamentaria": "Monarquía parlamentaria",
+      "regimen-monarquia-absoluta": "Monarquía absoluta",
+      "regimen-partido-unico": "Partido único",
+      "regimen-junta": "Junta militar",
+      "regimen-teocracia": "Teocracia"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1057,6 +1066,10 @@
         "iva": "IVA de ejemplo: {valor} %.",
         "accion": "Has elegido «{accion}»."
       }
+    },
+    "retratos": {
+      "titulo": "Retratos de los {n} jefes de Estado y de Gobierno de 2010",
+      "nota": "Ilustraciones dibujadas con código, nunca fotografías. Primero, los retratos homenaje de los líderes de los países y figuras importantes; después, los genéricos, según la región del país y el estilo de su régimen, siempre con la misma cara base y sin rasgos exagerados (cambian el tono de piel, el pelo, la ropa y los complementos). Si quieres cambiar alguno, dime cuál."
     }
   }
 }

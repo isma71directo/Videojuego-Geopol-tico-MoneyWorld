@@ -243,7 +243,8 @@ for (const pais of paises) {
     ficha.regimenFuente = `manual: ${corregido.motivo}`;
     continue;
   }
-  const forma = (formas.get(pais.id) ?? []).join('; ');
+  // Ordenadas, para que el archivo no cambie de una descarga a otra.
+  const forma = [...(formas.get(pais.id) ?? [])].sort().join('; ');
   const clara = FORMAS_CLARAS.find(([patron]) => patron.test(forma));
   // Si el presidente dirige el Gobierno, no es parlamentario aunque Wikidata lo diga.
   if (clara && !(clara[1] === 'parlamentario' && ficha.gobierno === 'estado')) {
@@ -330,9 +331,23 @@ const DEL_INGLES: [RegExp, string][] = [
 const nombresPaises = leerJson<{ paises: Record<string, { nombre: string; soberano?: string }> }>(
   'public/data/paises-2010.json',
 ).paises;
+/**
+ * Algunos cargos tienen en español el nombre de su lista en Wikipedia («Anexo:Primeros ministros
+ * de Letonia»): se quita el «Anexo:» y se pasa a singular.
+ */
+const DE_ANEXO: [RegExp, string][] = [
+  [/^primeros ministros\b/i, 'primer ministro'],
+  [/^presidentes\b/i, 'presidente'],
+  [/^gobernadores\b/i, 'gobernador'],
+  [/^reyes\b/i, 'rey'],
+];
 const ajustarCargo = (c: Cargo | null, pais: string): void => {
   if (!c) return;
   let texto = c.cargo;
+  if (/^anexo:/i.test(texto)) {
+    texto = texto.replace(/^anexo:\s*/i, '');
+    for (const [patron, singular] of DE_ANEXO) texto = texto.replace(patron, singular);
+  }
   const ingles = DEL_INGLES.find(([patron]) => patron.test(texto));
   if (ingles) texto = `${ingles[1]} de ${nombresPaises[pais]?.nombre ?? pais}`;
   if (datosPersonas[c.persona]?.sexo === 'm') {

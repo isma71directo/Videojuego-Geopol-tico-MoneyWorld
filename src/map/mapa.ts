@@ -296,6 +296,11 @@ export class MapaMundo {
     this.pedirDibujo();
   }
 
+  /** Color de un país en el mapa político (para el fondo de sus retratos, tarea f8-t3). */
+  colorDePais(id: string): string | undefined {
+    return this.colores.get(id);
+  }
+
   /** Detiene la animación en curso (al empezar un gesto nuevo). */
   detenerAnimacion(): void {
     if (this.animacion !== null) cancelAnimationFrame(this.animacion);

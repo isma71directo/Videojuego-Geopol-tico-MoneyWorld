@@ -8,6 +8,7 @@
 import { urlBandera } from '../av/banderas';
 import { dolares, dolaresPorPersona, enteros, personas, porcentaje } from '../compartido/formato';
 import {
+  edadEn2010,
   jefeGobierno,
   type CargoOcupado,
   type ConjuntoGobiernos,
@@ -17,6 +18,8 @@ import { esEstimado, type ConjuntoPaises, type PaisDatos } from '../datos/paises
 import { t } from '../i18n';
 import type { CapaDatos } from '../map/capas';
 import { el, type Hijo } from './dom';
+import { icono } from '../av/iconos';
+import { rasgosDe, svgRetrato, tono } from '../av/retratos';
 import { barraDePartes } from './componentes/graficos';
 import { conInformacion } from './componentes/info';
 import { crearPestanas } from './componentes/pestanas';
@@ -171,6 +174,8 @@ const twh = (valor: number): string => `${decimal1.format(valor)} TWh`;
 
 export interface OpcionesFicha {
   gobiernos?: ConjuntoGobiernos | null;
+  /** Color del país en el mapa: fondo de los retratos. */
+  colorPais?: string;
   /** Pestaña que se abre (la última que miró el jugador). */
   pestana?: string;
   alCambiarPestana?: (id: string) => void;
@@ -227,28 +232,46 @@ export function textoOrigen(origen: string | undefined, conjunto: ConjuntoPaises
   return detalle ? `${nombre} (${detalle})` : nombre;
 }
 
-/** Medallón con las iniciales (lo sustituyen los retratos de la tarea f8-t3). */
-function medallon(persona: Persona | undefined): HTMLElement {
-  const iniciales = (persona?.nombre ?? '?')
-    .split(/\s+/)
-    .filter((parte) => /^\p{Lu}/u.test(parte))
-    .slice(0, 2)
-    .map((parte) => parte.charAt(0))
-    .join('');
-  return el('span', { class: 'ficha-cargo__retrato', 'aria-hidden': 'true' }, iniciales || '?');
+/** Retrato ilustrado (busto) de quien ocupa un cargo (tareas f8-t3 y f8-t4). */
+function retrato(
+  cargo: CargoOcupado,
+  persona: Persona | undefined,
+  pais: PaisDatos,
+  regimen: string | null,
+  fondo: string,
+): HTMLElement {
+  const rasgos = rasgosDe({
+    pais: pais.id,
+    region: pais.region,
+    regimen,
+    sexo: persona?.sexo ?? null,
+    edad: edadEn2010(persona),
+    persona: cargo.persona,
+  });
+  const marco = el('span', {
+    class: 'ficha-cargo__retrato',
+    role: 'img',
+    'aria-label': t('juego.mapa.pais.cargos.retrato', { nombre: persona?.nombre ?? '' }),
+  });
+  // El SVG lo dibuja el propio juego (sin textos de fuera).
+  marco.innerHTML = svgRetrato(rasgos, tono(fondo, 0.7));
+  return marco;
 }
 
 function tarjetaCargo(
   rol: string,
   cargo: CargoOcupado,
   gobiernos: ConjuntoGobiernos,
+  pais: PaisDatos,
+  regimen: string | null,
+  fondo: string,
   nota?: string,
 ): HTMLElement {
   const persona = gobiernos.personas[cargo.persona];
   return el(
     'section',
     { class: 'ficha-cargo' },
-    medallon(persona),
+    retrato(cargo, persona, pais, regimen, fondo),
     el(
       'div',
       { class: 'ficha-cargo__texto' },
@@ -269,6 +292,7 @@ function bloqueGobierno(
   pais: PaisDatos,
   conjunto: ConjuntoPaises,
   gobiernos: ConjuntoGobiernos | null | undefined,
+  fondo: string,
 ): Hijo[] {
   if (!gobiernos) return [el('p', { class: 'panel-pais__pie' }, t('juego.mapa.pais.cargando'))];
   const gobierno = gobiernos.paises[pais.id];
@@ -277,7 +301,17 @@ function bloqueGobierno(
   }
   const soberano = pais.soberano ? conjunto.paises[pais.soberano]?.nombre : undefined;
   const regimen = gobierno.regimen
-    ? filaTexto(t('juego.mapa.pais.regimen'), t(`juego.mapa.pais.regimenes.${gobierno.regimen}`))
+    ? el(
+        'div',
+        { class: 'panel-pais__fila' },
+        el('dt', {}, t('juego.mapa.pais.regimen')),
+        el(
+          'dd',
+          { class: 'ficha-regimen' },
+          icono(`regimen-${gobierno.regimen}`),
+          t(`juego.mapa.pais.regimenes.${gobierno.regimen}`),
+        ),
+      )
     : null;
   const ambos = gobierno.gobierno === 'estado';
   const jefeGob = jefeGobierno(gobierno);
@@ -290,10 +324,21 @@ function bloqueGobierno(
         t(ambos ? 'juego.mapa.pais.cargos.ambos' : 'juego.mapa.pais.cargos.estado'),
         gobierno.estado,
         gobiernos,
+        // El jefe de Estado de un dependiente es el de su soberano: se le retrata como tal.
+        pais.soberano ? (conjunto.paises[pais.soberano] ?? pais) : pais,
+        pais.soberano ? (gobiernos.paises[pais.soberano]?.regimen ?? null) : gobierno.regimen,
+        fondo,
         soberano ? t('juego.mapa.pais.cargos.comoTerritorio', { soberano }) : undefined,
       ),
       !ambos && jefeGob
-        ? tarjetaCargo(t('juego.mapa.pais.cargos.gobierno'), jefeGob, gobiernos)
+        ? tarjetaCargo(
+            t('juego.mapa.pais.cargos.gobierno'),
+            jefeGob,
+            gobiernos,
+            pais,
+            gobierno.regimen,
+            fondo,
+          )
         : null,
     ),
   ];
@@ -304,9 +349,10 @@ function pestanaResumen(
   conjunto: ConjuntoPaises,
   gobiernos: ConjuntoGobiernos | null | undefined,
   estimados: Set<string>,
+  fondo: string,
 ): Hijo[] {
   return [
-    ...bloqueGobierno(pais, conjunto, gobiernos),
+    ...bloqueGobierno(pais, conjunto, gobiernos, fondo),
     el(
       'dl',
       { class: 'panel-pais__datos' },
@@ -451,7 +497,16 @@ export function contenidoPanel(
       {
         id: 'resumen',
         titulo: t('juego.mapa.pais.pestanas.resumen'),
-        contenido: () => conNota(pestanaResumen(pais, conjunto, opciones.gobiernos, estimados)),
+        contenido: () =>
+          conNota(
+            pestanaResumen(
+              pais,
+              conjunto,
+              opciones.gobiernos,
+              estimados,
+              opciones.colorPais ?? '#3a4a66',
+            ),
+          ),
       },
       {
         id: 'economia',
