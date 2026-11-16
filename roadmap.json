@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.7.0",
-  "actualizado": "2026-11-16T07:02:44Z",
+  "actualizado": "2026-11-16T07:09:52Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Fase 6 cerrada: el jugador ha probado la v0.7.0 y la da por buena. Pide de nuevo más colores en el mapa político, porque con el mundo entero a la vista se nota la paleta corta (ajuste f6-a1, v0.7.1).",
-    "siguientePaso": "Hacer el ajuste f6-a1 (paleta mucho más amplia y reparto por parecido de color, no solo por color idéntico) y publicar la v0.7.1; después, presentar el plan de la Fase 7 (componentes de interfaz).",
+    "resumen": "Ajuste f6-a1 hecho: el mapa político pasa de 12 a 45 colores (15 tonos × 3 luminosidades, creados en OKLCH) y el reparto tiene en cuenta lo que se parecen dos colores a la vista: vecinos nunca parecidos, ningún color repetido a menos de 1.500 km (antes, 55 pares), países muy grandes con colores distintos entre sí, ni muy claros ni azules. La capa política deja ver algo menos el terreno para que los colores se distingan mejor.",
+    "siguientePaso": "Publicar la v0.7.1 y abrir su PR; después, presentar el plan de la Fase 7 (componentes de interfaz) antes de programarla.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -484,7 +484,7 @@
           "titulo": "Más colores en el mapa político: muchos más tonos para los países y que no se note la repetición al ver el mundo entero (además de no repetir entre vecinos ni en el entorno)",
           "version": "0.7.1",
           "origen": "Mensaje del jugador tras probar la v0.7.0",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         }

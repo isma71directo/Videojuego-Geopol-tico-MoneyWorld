@@ -4,7 +4,15 @@ import { neighbors } from 'topojson-client';
 import { describe, expect, it } from 'vitest';
 import type { MultiPolygon, Polygon } from 'geojson';
 import { feature } from 'topojson-client';
-import { asignarColores, coloresDelMapa, indiceEstable, paisesCercanos } from '../src/map/colores';
+import {
+  asignarColores,
+  coloresDelMapa,
+  indiceEstable,
+  paisesCercanos,
+  parecidos,
+} from '../src/map/colores';
+import { distancia, oklabDeHex } from '../src/map/rampas';
+import { geoCentroid, geoDistance } from 'd3-geo';
 import { PALETA } from '../src/map/estilo';
 import { prepararFiguras, type TopologiaMapa } from '../src/map/geometria';
 import { camaraInicial } from '../src/map/camara';
@@ -28,7 +36,7 @@ function topologia(nivel: 'mundo' | 'detalle'): TopologiaMapa {
 
 describe('colores de país', () => {
   for (const nivel of ['mundo', 'detalle'] as const) {
-    it(`dos países vecinos nunca tienen el mismo color (mapa ${nivel})`, () => {
+    it(`dos países vecinos nunca tienen colores iguales ni parecidos (mapa ${nivel})`, () => {
       const topo = topologia(nivel);
       const geometrias = topo.objects.paises.geometries;
       const colores = coloresDelMapa(topo, PALETA);
@@ -38,7 +46,7 @@ describe('colores de país', () => {
         for (const j of vecinos[i]!) {
           const a = String(g.id);
           const b = String(geometrias[j]!.id);
-          expect(colores.get(a), `${a} y ${b}`).not.toBe(colores.get(b));
+          expect(distancia(colores.get(a)!, colores.get(b)!), `${a} y ${b}`).toBeGreaterThan(0.06);
           fronteras++;
         }
       });
@@ -47,25 +55,32 @@ describe('colores de país', () => {
     });
   }
 
-  it('cada país tiene siempre el mismo color, se cargue el nivel que se cargue', () => {
+  it('cada país tiene siempre el mismo color: se calculan una vez, con el mapa del mundo', () => {
     const mundo = coloresDelMapa(topologia('mundo'), PALETA);
     expect(coloresDelMapa(topologia('mundo'), PALETA)).toEqual(mundo);
-    expect(coloresDelMapa(topologia('detalle'), PALETA)).toEqual(mundo);
+    // El mapa los calcula al cargar el nivel «mundo» y los usa también en el de detalle.
+    const codigo = readFileSync(new URL('../src/map/mapa.ts', import.meta.url), 'utf8');
+    expect(codigo.match(/coloresDelMapa\(/g)).toHaveLength(1);
   });
 
-  it('en el entorno de un país (él y sus vecinos) ningún color se repite tres veces', () => {
+  it('en el entorno de un país (él y sus vecinos) casi nunca se repite un color', () => {
     const topo = topologia('mundo');
     const geometrias = topo.objects.paises.geometries;
     const colores = coloresDelMapa(topo, PALETA);
     const vecinos = neighbors(geometrias);
+    const repetidos: string[] = [];
     geometrias.forEach((g, i) => {
       const cuenta = new Map<string, number>();
       for (const k of [i, ...vecinos[i]!]) {
         const color = colores.get(String(geometrias[k]!.id))!;
         cuenta.set(color, (cuenta.get(color) ?? 0) + 1);
       }
-      expect(Math.max(...cuenta.values()), String(g.id)).toBeLessThan(3);
+      const maximo = Math.max(...cuenta.values());
+      expect(maximo, String(g.id)).toBeLessThanOrEqual(2);
+      if (maximo > 1) repetidos.push(String(g.id));
     });
+    // Solo en países con vecinos muy separados entre sí (Rusia: Lituania y Mongolia).
+    expect(repetidos.length, repetidos.join(', ')).toBeLessThanOrEqual(3);
   });
 
   it('los países cercanos sin frontera (islas, estrechos) tampoco repiten color', () => {
@@ -79,14 +94,46 @@ describe('colores de país', () => {
     const iguales = cercanos.flatMap((lista, i) =>
       lista.filter((j) => j > i && colores.get(ids[i]!) === colores.get(ids[j]!)),
     );
-    expect(iguales.length).toBeLessThanOrEqual(3);
+    expect(iguales).toHaveLength(0);
     for (const [a, b] of [
       ['GBR', 'FRA'],
       ['CUB', 'JAM'],
       ['JPN', 'KOR'],
       ['ESP', 'MAR'],
     ] as const) {
-      expect(colores.get(a), `${a} y ${b}`).not.toBe(colores.get(b));
+      expect(distancia(colores.get(a)!, colores.get(b)!), `${a} y ${b}`).toBeGreaterThan(0.06);
+    }
+  });
+
+  it('con el mundo entero a la vista, no se repite ningún color a menos de 1.500 km (ajuste f6-a1)', () => {
+    const topo = topologia('mundo');
+    const colores = coloresDelMapa(topo, PALETA);
+    const ids = topo.objects.paises.geometries.map((g) => String(g.id));
+    const centros = feature(topo, topo.objects.paises).features.map((f) => geoCentroid(f));
+    let parecidos = 0;
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i + 1; j < ids.length; j++) {
+        if (geoDistance(centros[i]!, centros[j]!) * 6371 > 1500) continue;
+        const d = distancia(colores.get(ids[i]!)!, colores.get(ids[j]!)!);
+        expect(d, `${ids[i]} y ${ids[j]}`).toBeGreaterThan(0);
+        if (d < 0.06) parecidos++;
+      }
+    }
+    // De unos 1.400 pares de países cercanos, muy pocos con colores algo parecidos.
+    expect(parecidos).toBeLessThan(45);
+  });
+
+  it('los países muy grandes llevan colores distintos entre sí, ni muy claros ni azules', () => {
+    const colores = coloresDelMapa(topologia('mundo'), PALETA);
+    const grandes = ['RUS', 'CAN', 'USA', 'CHN', 'BRA', 'AUS', 'IND', 'ARG', 'KAZ', 'DZA', 'GRL'];
+    for (const [i, a] of grandes.entries()) {
+      const [luz, x, y] = oklabDeHex(colores.get(a)!);
+      const tono = ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+      expect(luz, a).toBeLessThan(0.7);
+      expect(tono > 195 && tono < 265, `${a}: tono ${tono.toFixed(0)}`).toBe(false);
+      for (const b of grandes.slice(i + 1)) {
+        expect(colores.get(a), `${a} y ${b}`).not.toBe(colores.get(b));
+      }
     }
   });
 
@@ -96,7 +143,10 @@ describe('colores de país', () => {
       usos.set(color, (usos.get(color) ?? 0) + 1);
     }
     expect(usos.size).toBe(PALETA.length);
-    for (const veces of usos.values()) expect(veces).toBeGreaterThan(10);
+    for (const veces of usos.values()) {
+      expect(veces).toBeGreaterThanOrEqual(2);
+      expect(veces).toBeLessThanOrEqual(9);
+    }
   });
 
   it('el reparto también funciona en un caso pequeño', () => {
@@ -114,15 +164,19 @@ describe('colores de país', () => {
     expect(indiceEstable('ESP', 8)).toBe(indiceEstable('ESP', 8));
   });
 
-  it('la paleta tiene tonos claramente distintos', () => {
-    const rgb = (c: string): number[] => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+  it('la paleta tiene 45 tonos claramente distintos (ajuste f6-a1)', () => {
+    expect(PALETA.length).toBeGreaterThanOrEqual(45);
+    expect(new Set(PALETA).size).toBe(PALETA.length);
     for (let i = 0; i < PALETA.length; i++) {
       for (let j = i + 1; j < PALETA.length; j++) {
-        const [a, b] = [rgb(PALETA[i]!), rgb(PALETA[j]!)];
-        const distancia = Math.hypot(a[0]! - b[0]!, a[1]! - b[1]!, a[2]! - b[2]!);
-        expect(distancia, `${PALETA[i]} y ${PALETA[j]}`).toBeGreaterThan(40);
+        expect(distancia(PALETA[i]!, PALETA[j]!), `${PALETA[i]} y ${PALETA[j]}`).toBeGreaterThan(
+          0.035,
+        );
       }
     }
+    const parecido = parecidos(PALETA);
+    expect(parecido[0]![0]).toBe(1);
+    expect(Math.max(...parecido[0]!.slice(1))).toBeLessThan(1);
   });
 });
 

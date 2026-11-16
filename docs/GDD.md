@@ -2092,6 +2092,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | «Ajustes tras la prueba» en `roadmap.json`: lo que el jugador pide cambiar de una fase ya probada sale en una versión de corrección (x.y.Z). Primeros ajustes de la Fase 4 (v0.5.1): más colores, nombres de países y ciudades por tamaño y población de las ciudades con su ficha | Petición del jugador tras probar la v0.5.0 | 10, 11, 12 |
 | 12/11/2026 | Fase 6 concretada con el jugador: terreno de Natural Earth II (A1), capas en un desplegable con la tecla C (sin atajo por capa), población total o densidad, capas de riqueza y población también por región; las rampas van con el sistema de capas, los iconos con el desplegable y el efecto de volumen (C) con la tarea audiovisual | Plan de la Fase 6 aprobado por el jugador | 7, 9, 13 |
 | 12/11/2026 | Densidad de población con la superficie terrestre real (FAO, vía Banco Mundial) en lugar de la medida en el mapa, que falla en los archipiélagos (Feroe, Polinesia, Maldivas); el mapa solo se usa para los territorios sin dato y para las regiones | Mejora de la propuesta aprobada por el jugador (no inventar datos) | 4, 9 |
+| 16/11/2026 | Mapa político con 45 colores (15 tonos × 3 luminosidades) en lugar de 12, repartidos según lo que se parecen a la vista: nunca parecidos entre vecinos, ningún color repetido a menos de 1.500 km y colores distintos para los países muy grandes; la capa política deja ver algo menos el terreno | Petición del jugador tras probar la v0.7.0 (ajuste f6-a1) | 7, 9 |
 
 ---
 

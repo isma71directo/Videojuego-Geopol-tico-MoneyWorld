@@ -360,7 +360,7 @@
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
-      "nota": "Doce tonos apagados que dejan ver el relieve. Cada país tiene siempre el mismo, nunca el de un vecino y, en lo posible, tampoco el de los países de su entorno."
+      "nota": "45 tonos creados con código (15 tonos del círculo cromático con tres luminosidades). Cada país tiene siempre el mismo y nunca uno parecido al de un vecino; con el mundo entero a la vista, ningún color se repite a menos de 1.500 km y los países muy grandes llevan colores distintos entre sí."
     },
     "capas": {
       "titulo": "Capas del mapa",
