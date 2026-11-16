@@ -1,15 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.2",
-  "actualizado": "2026-11-16T11:11:35Z",
+  "actualizado": "2026-11-16T11:21:32Z",
   "faseActiva": "fase-8",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "El jugador da por buena la Fase 7 con sus ajustes (v0.8.2 fusionada): «ahora va pareciendo un juego». Fase 7 cerrada. Plan de la Fase 8 (ficha de país) presentado al jugador.",
-    "siguientePaso": "Esperar las decisiones del jugador sobre el plan de la Fase 8 y empezar por f8-t1 (régimen y cargos de 2010).",
-    "pendienteDelJugador": [
-      "Decidir las opciones del plan de la Fase 8: fuente del régimen y los cargos, retratos y forma de la ficha"
-    ]
+    "resumen": "Plan de la Fase 8 aprobado por el jugador: régimen y cargos de Wikidata (1A), retratos ilustrados propios como homenaje a los líderes de 2010 de los países importantes y genéricos para el resto (2), ficha con pestañas (3A). La tarea audiovisual se divide en dos (f8-t3 y f8-t4).",
+    "siguientePaso": "f8-t1: script de régimen y cargos a 1 de enero de 2010.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -579,26 +577,33 @@
       "objetivo": "Consultar los datos de cualquier país",
       "dependeDe": ["fase-7"],
       "hechoCuando": "Todos los países tienen una ficha completa",
-      "pruebaJugador": "Hacer clic en España, Japón y Somalilandia y revisar sus fichas",
-      "estado": "pendiente",
+      "pruebaJugador": "Hacer clic en España, Japón y Somalilandia y revisar sus fichas: régimen, jefe de Estado y de Gobierno con su retrato, datos y fuentes en cada pestaña.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f8-t1",
-          "titulo": "Datos de 2010 de régimen político y jefes de Estado y de Gobierno (script con fuente)",
+          "titulo": "Datos de 2010 de régimen político y jefes de Estado y de Gobierno (Wikidata a 1 de enero de 2010, con el régimen corregido a mano y con fuente donde cambió desde 2010)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f8-t2",
-          "titulo": "Ficha de país (panel lateral): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
+          "titulo": "Ficha de país en panel lateral con pestañas (Resumen, Economía, Sociedad y Fuentes): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f8-t3",
-          "titulo": "Audiovisual: iconos de los regímenes y retratos genéricos ilustrados para los cargos (sin fotografías de personas reales)",
+          "titulo": "Audiovisual: iconos de los 8 regímenes y generador de retratos ilustrados (busto) dibujados con código; retratos genéricos de los países menores según su región y el estilo de su régimen",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-t4",
+          "titulo": "Audiovisual: retratos homenaje (interpretaciones ilustradas, sin fotografías) de los líderes de 2010 de los países y figuras importantes",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
