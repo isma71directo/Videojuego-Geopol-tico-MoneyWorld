@@ -24,9 +24,9 @@
  * Uso:    node scripts/datos/15-regiones-datos.ts (después de 10-construir.ts y 14-regiones.ts)
  */
 import { descargarTexto, escribirJsonCompacto, leerCsv, leerJson } from './lib/comun.ts';
+import { URL_DOSE, resolverPorNombre } from './lib/dose.ts';
 import { consultarPoblaciones, elegirPoblacion } from './lib/poblacion-wikidata.ts';
 
-const URL_DOSE = 'https://zenodo.org/api/records/20035157/files/DOSE_V2.14.csv/content';
 const ANIO = 2010;
 /** Proporción mínima del PIB de DOSE de un país que tiene que casar para usarlo. */
 const COBERTURA_MINIMA = 0.95;
@@ -62,38 +62,6 @@ const regiones = leerJson<{ regiones: RegionFuente[] }>('fuentes/datos/regiones.
 const paises = leerJson<{ paises: Record<string, Pais> }>('public/data/paises-2010.json').paises;
 const manual = leerJson<ManualDose>('scripts/datos/manual/regiones-dose.json');
 const omitir = new Set(Object.keys(manual.omitir).filter((k) => !k.startsWith('_')));
-
-/** «Comunidad Foral de Navarra» → «foral navarra»: sin tildes, signos ni palabras de relleno. */
-const normalizar = (texto: string): string =>
-  texto
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, ' ')
-    .replace(
-      /\b(region|province|provincia|oblast|state|estado|departamento|department|governorate|prefecture|county|kraj|comunidad|autonomous|republic|of|de|del|la|el|the|and|y|city|ciudad)\b/g,
-      ' ',
-    )
-    .replace(/\s+/g, ' ')
-    .trim();
-
-/** Parecido entre dos textos (coeficiente de Dice sobre pares de letras), de 0 a 1. */
-function parecido(a: string, b: string): number {
-  const pares = (t: string): string[] => [...t].slice(0, -1).map((c, i) => c + t[i + 1]);
-  const pa = pares(a);
-  const pb = pares(b);
-  if (pa.length === 0 || pb.length === 0) return a === b ? 1 : 0;
-  const resto = [...pb];
-  let comunes = 0;
-  for (const par of pa) {
-    const i = resto.indexOf(par);
-    if (i >= 0) {
-      comunes++;
-      resto.splice(i, 1);
-    }
-  }
-  return (2 * comunes) / (pa.length + pb.length);
-}
 
 // DOSE: filas de 2010 con PIB, por país.
 console.log('Descargando DOSE (PIB regional) de Zenodo…');
@@ -140,25 +108,7 @@ for (const [pais, lista] of porPais) {
   }
 
   // 1. Regiones de DOSE de este país → regiones nuestras.
-  const porNombre = new Map<string, string>();
-  for (const region of lista) {
-    porNombre.set(normalizar(region.nombre), region.id);
-    for (const unidad of region.unidades) porNombre.set(normalizar(unidad.nombre), region.id);
-  }
-  const resolver = (nombre: string): string | null => {
-    const exacto = porNombre.get(normalizar(nombre));
-    if (exacto) return exacto;
-    let mejor: string | null = null;
-    let valor = 0.82;
-    for (const [clave, id] of porNombre) {
-      const p = parecido(normalizar(nombre), clave);
-      if (p >= valor) {
-        valor = p;
-        mejor = id;
-      }
-    }
-    return mejor;
-  };
+  const resolver = resolverPorNombre(lista);
   const filasDose = omitir.has(pais) ? [] : (dosePorPais.get(pais) ?? []);
   const destinos = new Map<Record<string, string>, string[]>();
   let pibCasado = 0;

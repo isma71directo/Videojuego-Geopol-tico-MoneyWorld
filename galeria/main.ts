@@ -24,6 +24,8 @@ import { t } from '../src/i18n';
 import { el, reemplazar, type Hijo } from '../src/ui/dom';
 import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { muestrario } from './muestrario';
+import { RECURSOS_POR_TIPO, type TipoRecurso } from '../src/datos/regiones-economia';
+import { iconoDeRecurso } from '../src/ui/ficha-region';
 
 /** Ruta desde /galeria/ hasta la raíz del juego. */
 const RAIZ = '../';
@@ -223,6 +225,37 @@ function retratos(gobiernos: ConjuntoGobiernos, conjunto: ConjuntoPaises): HTMLE
   );
 }
 
+/** Recursos de las regiones con su icono y el color de su tipo (tarea f9-t4). */
+function recursos(): HTMLElement {
+  return seccion(
+    t('galeria.recursos.titulo'),
+    t('galeria.recursos.nota'),
+    ...(Object.keys(RECURSOS_POR_TIPO) as TipoRecurso[]).map((tipo) =>
+      el(
+        'div',
+        { class: 'galeria__recursos-grupo' },
+        el('h3', {}, t(`juego.mapa.region.recursos.tipos.${tipo}`)),
+        el(
+          'ul',
+          { class: 'galeria__recursos' },
+          ...RECURSOS_POR_TIPO[tipo].map((recurso) =>
+            el(
+              'li',
+              {},
+              el(
+                'span',
+                { class: `galeria__recurso galeria__recurso--${tipo}` },
+                icono(iconoDeRecurso(recurso)),
+              ),
+              t(`juego.mapa.region.recursos.nombres.${recurso}`),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 /** Rampas de color de las capas del mapa (tarea f6-t4). */
 function capas(): HTMLElement {
   return seccion(
@@ -357,6 +390,7 @@ async function iniciar(): Promise<void> {
       referencias(),
       capas(),
       iconos(),
+      recursos(),
       sonidos(),
       retratos(gobiernos, conjunto),
       ...muestrario(conjunto, seccion),

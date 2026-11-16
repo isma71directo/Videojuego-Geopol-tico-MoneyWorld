@@ -1,6 +1,7 @@
 /** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
 import type { ConjuntoGobiernos } from '../datos/gobiernos';
 import type { ConjuntoPaises } from '../datos/paises';
+import type { ConjuntoEconomiaRegiones } from '../datos/regiones-economia';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
 import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
@@ -21,6 +22,8 @@ import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
+import { crearBuscador } from './buscador';
+import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
@@ -74,7 +77,98 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     },
     () => reproducir('boton'),
   );
-  const barra = el('div', { class: 'mapa__barra' }, volver, botonSonido, selector.elemento);
+  // Buscador (tarea f9-t2): lupa y tecla B, en una ventana en el centro (decisión del jugador).
+  /** Punto y caja (en grados) de cada región, para ir hasta ella antes de cargar sus fronteras. */
+  /** Mientras el mapa viaja a un resultado, la selección no suena (suena al llegar). */
+  let llegandoDeBusqueda = false;
+  const lugaresRegion = new Map<
+    string,
+    { etiqueta: [number, number]; caja: [number, number, number, number] }
+  >();
+  const buscador = crearBuscador({
+    entradas: async () => {
+      const respuesta = await fetch('./data/buscador-2010.json');
+      if (!respuesta.ok) throw new Error(String(respuesta.status));
+      const indice = (await respuesta.json()) as {
+        regiones: [
+          string,
+          string,
+          string,
+          number | null,
+          [number, number],
+          [number, number, number, number],
+        ][];
+      };
+      const enIngles = new Intl.DisplayNames(['en'], { type: 'region' });
+      const paises: EntradaBusqueda[] = Object.values(conjunto?.paises ?? {}).map((pais) => {
+        let ingles: string | undefined;
+        try {
+          ingles = pais.iso2 ? enIngles.of(pais.iso2) : undefined;
+        } catch {
+          ingles = undefined;
+        }
+        return {
+          tipo: 'pais',
+          id: pais.id,
+          nombre: pais.nombre,
+          pais: pais.id,
+          alias: [pais.id, ...(ingles ? [ingles] : [])],
+          peso: pais.datos.poblacion ?? 0,
+        };
+      });
+      const regiones: EntradaBusqueda[] = indice.regiones
+        // Las de los países de una sola región se llaman como el país: ya están.
+        .filter(([, nombre, pais]) => conjunto?.paises[pais]?.nombre !== nombre)
+        .map(([id, nombre, pais, poblacion, etiqueta, caja]) => {
+          lugaresRegion.set(id, { etiqueta, caja });
+          return { tipo: 'region', id, nombre, pais, peso: poblacion ?? 0 };
+        });
+      const ciudades: EntradaBusqueda[] = mapa.listaCiudades.map((ciudad) => ({
+        tipo: 'ciudad',
+        id: `${ciudad.pais}|${ciudad.nombre}`,
+        nombre: ciudad.nombre,
+        pais: ciudad.pais,
+        peso: ciudad.poblacion ?? 0,
+      }));
+      return [...paises, ...regiones, ...ciudades];
+    },
+    nombrePais: (id) => conjunto?.paises[id]?.nombre ?? id,
+    regionDelMundo: (id) => conjunto?.paises[id]?.regionNombre ?? '',
+    esCapital: (entrada) =>
+      mapa.listaCiudades.some(
+        (c) => c.capital && c.pais === entrada.pais && c.nombre === entrada.nombre,
+      ),
+    alElegir: (entrada) => {
+      reproducir('boton');
+      // Al llegar, el contorno late y suena un tintineo (tarea f9-t4), en lugar del sonido de
+      // seleccionar.
+      llegandoDeBusqueda = true;
+      const alLlegar = (): void => {
+        llegandoDeBusqueda = false;
+        reproducir('resaltar');
+      };
+      if (entrada.tipo === 'pais') mapa.irA({ tipo: 'pais', id: entrada.id }, alLlegar);
+      else if (entrada.tipo === 'ciudad') {
+        mapa.irA({ tipo: 'ciudad', nombre: entrada.nombre, pais: entrada.pais }, alLlegar);
+      } else {
+        const lugar = lugaresRegion.get(entrada.id);
+        if (lugar) mapa.irA({ tipo: 'region', id: entrada.id, ...lugar }, alLlegar);
+      }
+      lienzo.focus({ preventScroll: true });
+    },
+  });
+  const alTeclearBuscador = (evento: KeyboardEvent): void => {
+    buscador.alTeclear(evento);
+  };
+  document.addEventListener('keydown', alTeclearBuscador);
+  const barra = el(
+    'div',
+    { class: 'mapa__barra' },
+    volver,
+    botonSonido,
+    selector.elemento,
+    buscador.boton,
+  );
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -236,6 +330,26 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       });
   };
 
+  // Economía, recursos y ciudades de las regiones (tarea f9-t3): al abrir la ficha de una región.
+  let economiaRegiones: ConjuntoEconomiaRegiones | null = null;
+  let cargandoEconomia = false;
+  let pestanaRegion: string | undefined;
+  const cargarEconomiaRegiones = (): void => {
+    if (economiaRegiones || cargandoEconomia) return;
+    cargandoEconomia = true;
+    fetch('./data/regiones-2010-economia.json')
+      .then((r) =>
+        r.ok ? (r.json() as Promise<ConjuntoEconomiaRegiones>) : Promise.reject(new Error()),
+      )
+      .then((datos) => {
+        economiaRegiones = datos;
+        if (seleccion?.tipo === 'region') pintarPanel(seleccion);
+      })
+      .catch(() => {
+        cargandoEconomia = false;
+      });
+  };
+
   /** Recuadro al lado del ratón con la ficha breve de lo señalado (país, región o ciudad). */
   const mostrarRecuadro = (objetivo: Objetivo | null, x: number, y: number): void => {
     // Lo que se señala: el código del país, la región o la propia ciudad.
@@ -282,7 +396,10 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     const pais = objetivo.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
     if (objetivo.tipo === 'pais' && (!pais || !conjunto)) return false;
     const quitar = (): void => mapa.seleccionar(null);
-    if (objetivo.tipo === 'region') cargarDatosRegiones();
+    if (objetivo.tipo === 'region') {
+      cargarDatosRegiones();
+      cargarEconomiaRegiones();
+    }
     reemplazar(
       panel,
       ...(objetivo.tipo === 'ciudad'
@@ -290,8 +407,23 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
             mapa.seleccionar(objetivo.ciudad.pais),
           )
         : objetivo.tipo === 'region'
-          ? contenidoPanelRegion(objetivo.region, conjunto, datosDe(objetivo.region), quitar, () =>
-              mapa.seleccionar(objetivo.region.pais),
+          ? contenidoPanelRegion(
+              objetivo.region,
+              conjunto,
+              datosDe(objetivo.region),
+              quitar,
+              () => mapa.seleccionar(objetivo.region.pais),
+              {
+                economia: economiaRegiones
+                  ? (economiaRegiones.regiones[objetivo.region.id] ?? null)
+                  : undefined,
+                ...(pestanaRegion ? { pestana: pestanaRegion } : {}),
+                alCambiarPestana: (id) => {
+                  pestanaRegion = id;
+                },
+                alIrACiudad: (nombre) =>
+                  mapa.irA({ tipo: 'ciudad', nombre, pais: objetivo.region.pais }),
+              },
             )
           : contenidoPanel(pais!, conjunto!, quitar, {
               gobiernos,
@@ -313,7 +445,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       return;
     }
     if (panel.hidden) reproducir('abrirPanel');
-    reproducir('seleccionar');
+    if (!llegandoDeBusqueda) reproducir('seleccionar');
     panel.hidden = false;
   };
   const alPulsarEscape = (evento: KeyboardEvent): void => {
@@ -464,6 +596,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     lienzo.removeEventListener('keydown', alternarMedidor);
     document.removeEventListener('keydown', alPulsarEscape);
     document.removeEventListener('keydown', alTeclearSecciones);
+    document.removeEventListener('keydown', alTeclearBuscador);
+    buscador.cerrar(false);
     secciones.destruir();
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();

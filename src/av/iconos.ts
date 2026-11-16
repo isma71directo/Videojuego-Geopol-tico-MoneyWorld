@@ -2,7 +2,15 @@
  * Iconos vectoriales de los indicadores y de la interfaz (GDD, sección 7.1). Son SVG propios, dibujados con
  * trazo y `currentColor`, así que toman el color del texto que los rodea.
  */
+import bateria from './iconos/bateria.svg?raw';
+import buscar from './iconos/buscar.svg?raw';
+import cristales from './iconos/cristales.svg?raw';
+import gema from './iconos/gema.svg?raw';
+import lingote from './iconos/lingote.svg?raw';
+import pico from './iconos/pico.svg?raw';
+import uranio from './iconos/uranio.svg?raw';
 import capas from './iconos/capas.svg?raw';
+import ciudad from './iconos/ciudad.svg?raw';
 import carbon from './iconos/carbon.svg?raw';
 import crecimiento from './iconos/crecimiento.svg?raw';
 import densidad from './iconos/densidad.svg?raw';
@@ -69,6 +77,14 @@ import sonido from './iconos/sonido.svg?raw';
 
 const ICONOS = {
   poblacion,
+  buscar,
+  ciudad,
+  uranio,
+  lingote,
+  gema,
+  pico,
+  bateria,
+  cristales,
   pib,
   crecimiento,
   paro,

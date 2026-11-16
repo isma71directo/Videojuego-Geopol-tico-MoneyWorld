@@ -129,3 +129,51 @@ export function pellizcar(
   const [mx1, my1] = medio(despues);
   return desplazar(zoomEn(camara, factor, mx0, my0), mx1 - mx0, my1 - my0);
 }
+
+/**
+ * Cámara que encuadra una caja del mundo [x0, y0, x1, y1] dejando un margen (fracción de la
+ * pantalla a cada lado), centrada en `centro` si se da (tarea f9-t2: ir a un resultado).
+ */
+export function encuadrar(
+  camara: Camara,
+  caja: readonly [number, number, number, number],
+  margen = 0.15,
+  centro?: readonly [number, number],
+): Camara {
+  const [x0, y0, x1, y1] = caja;
+  const util = 1 - 2 * margen;
+  const k = Math.min(
+    (camara.ancho * util) / Math.max(x1 - x0, 1e-6),
+    (camara.alto * util) / Math.max(y1 - y0, 1e-6),
+  );
+  return limitar({
+    ...camara,
+    cx: centro?.[0] ?? (x0 + x1) / 2,
+    cy: centro?.[1] ?? (y0 + y1) / 2,
+    k,
+  });
+}
+
+/** Desplazamiento horizontal más corto de a hasta b (el mundo da la vuelta). */
+function dxCorto(a: number, b: number): number {
+  let dx = b - a;
+  if (dx > ANCHO_MUNDO / 2) dx -= ANCHO_MUNDO;
+  if (dx < -ANCHO_MUNDO / 2) dx += ANCHO_MUNDO;
+  return dx;
+}
+
+/**
+ * Punto intermedio (t de 0 a 1) de un viaje de la cámara: el centro va por el camino más
+ * corto y, si los dos sitios no caben a la vez en pantalla, el zoom se aleja a mitad de camino
+ * (para ver por dónde se va) y vuelve a acercarse. El zoom cambia de forma geométrica.
+ */
+export function interpolarCamara(a: Camara, b: Camara, t: number): Camara {
+  const dx = dxCorto(a.cx, b.cx);
+  const dy = b.cy - a.cy;
+  // Zoom con el que se verían los dos centros a la vez.
+  const distancia = Math.hypot(dx, dy);
+  const kAmbos = distancia > 0 ? (Math.min(a.ancho, a.alto) * 0.8) / distancia : Infinity;
+  const kMedio = Math.min(a.k, b.k, kAmbos);
+  const k = t < 0.5 ? a.k * (kMedio / a.k) ** (t * 2) : kMedio * (b.k / kMedio) ** ((t - 0.5) * 2);
+  return limitar({ ...a, cx: a.cx + dx * t, cy: a.cy + dy * t, k });
+}

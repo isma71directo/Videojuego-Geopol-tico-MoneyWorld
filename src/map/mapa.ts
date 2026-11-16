@@ -13,6 +13,8 @@ import {
 import {
   camaraInicial,
   desplazar,
+  encuadrar,
+  interpolarCamara,
   zoomEn,
   copiasVisibles,
   limitar,
@@ -31,6 +33,7 @@ import {
   ciudadEnPunto,
   ciudadVisible,
   colocarCiudades,
+  zoomDeAparicion,
   SEPARACION_NOMBRE,
   type CandidatoCiudad,
   type Ciudad,
@@ -57,6 +60,21 @@ export const ZOOM_DETALLE = 2.5;
 /** Las regiones se descargan la primera vez que el zoom (relativo al mundo) llega a este valor. */
 export const ZOOM_CARGA_REGIONES = 1.5;
 
+/** Adónde ir desde el buscador (tarea f9-t2). Las regiones llevan su punto y su caja en grados. */
+export type DestinoMapa =
+  | { tipo: 'pais'; id: string }
+  | {
+      tipo: 'region';
+      id: string;
+      etiqueta: readonly [number, number];
+      caja: readonly [number, number, number, number];
+    }
+  | { tipo: 'ciudad'; nombre: string; pais: string };
+
+/** Duración de un viaje de la cámara, según lo lejos que esté (ms). */
+const VIAJE_MINIMO_MS = 650;
+const VIAJE_MAXIMO_MS = 1300;
+
 /** Una región, tal como se la pasa el mapa a la interfaz. */
 export interface RegionSenalada {
   id: string;
@@ -76,6 +94,8 @@ export type Objetivo =
 const FUENTE_ROTULOS = "'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 
 const DURACION_PULSO_MS = 520;
+/** Latidos del contorno al llegar a un resultado del buscador (tarea f9-t4). */
+export const LATIDOS_RESALTADO = 3;
 /** Resolución del terreno respecto a la pantalla (el relieve usa 0,75). */
 const NITIDEZ_TERRENO = 0.4;
 /** Cambio de capa: los colores pasan de una capa a otra en este tiempo (tarea f6-t4). */
@@ -167,6 +187,10 @@ export class MapaMundo {
   /** Regiones de 2010 (Fase 5): se descargan al acercarse. */
   private regiones: CapaRegionesPreparada | null = null;
   private cargandoRegiones = false;
+  /** Región que se seleccionará en cuanto se descarguen las regiones (buscador). */
+  private regionPendiente: string | null = null;
+  /** Lo que se hace al seleccionar la región pendiente (resaltarla y avisar). */
+  private alLlegarPendiente: (() => void) | null = null;
   private readonly caminosRegion = new Map<string, Path2D>();
   private readonly fronterasRegion = new Map<string, Path2D>();
   /** Países que muestran sus regiones en el último fotograma, con su opacidad (0 a 1). */
@@ -179,6 +203,8 @@ export class MapaMundo {
   private ciudadesDibujadas: CiudadColocada[] = [];
   /** Momento en que empezó el pulso de la selección (animación de la tarea f4-t4). */
   private inicioPulso: number | null = null;
+  /** Veces que late el pulso de la selección: 1, o LATIDOS_RESALTADO tras el buscador. */
+  private latidos = 1;
   private pedirDibujoSiguiente = false;
   /** Última posición del ratón sin pulsar y la cámara con la que se miró qué había debajo. */
   private raton: [number, number] | null = null;
@@ -437,6 +463,107 @@ export class MapaMundo {
     this.vista = camaraInicial(this.camara.ancho, this.camara.alto);
   }
 
+  /** Ciudades del mapa (para el buscador). */
+  get listaCiudades(): readonly Ciudad[] {
+    return this.ciudades.map(({ ciudad }) => ciudad);
+  }
+
+  /**
+   * Viaje de la cámara hasta otra vista: se aleja si el destino está lejos y vuelve a
+   * acercarse (al instante si se pide reducir el movimiento). Al llegar, `alLlegar`.
+   */
+  volarA(destino: Camara, alLlegar?: () => void): void {
+    this.detenerAnimacion();
+    const inicio = this.camara;
+    const fin = limitar({ ...destino, ancho: inicio.ancho, alto: inicio.alto });
+    if (this.sinMovimiento) {
+      this.vista = fin;
+      alLlegar?.();
+      return;
+    }
+    // Más largo cuanto más cambia la vista (en pantallas de distancia y en saltos de zoom).
+    const pantallas =
+      Math.hypot(fin.cx - inicio.cx, fin.cy - inicio.cy) * Math.min(inicio.k, fin.k);
+    const saltos = Math.abs(Math.log2(fin.k / inicio.k));
+    const duracion = Math.min(
+      VIAJE_MAXIMO_MS,
+      VIAJE_MINIMO_MS + 90 * Math.log2(1 + pantallas / inicio.ancho) + 60 * saltos,
+    );
+    const t0 = performance.now();
+    const paso = (ahora: number): void => {
+      const t = Math.min(1, (ahora - t0) / duracion);
+      // Suave al salir y al llegar.
+      const suave = t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+      this.vista = interpolarCamara(inicio, fin, suave);
+      if (t < 1) this.animacion = requestAnimationFrame(paso);
+      else {
+        this.animacion = null;
+        alLlegar?.();
+      }
+    };
+    this.animacion = requestAnimationFrame(paso);
+  }
+
+  /** Va hasta un país, una región o una ciudad y lo selecciona (buscador, tarea f9-t2). */
+  irA(destino: DestinoMapa, alLlegar?: () => void): void {
+    const llegar = (): void => {
+      this.resaltarSeleccion();
+      alLlegar?.();
+    };
+    const camara = this.camara;
+    if (destino.tipo === 'pais') {
+      const figura = this.mundo?.figuras.paises.find((f) => f.id === destino.id);
+      if (!figura) {
+        this.seleccionar(destino.id);
+        return;
+      }
+      let caja = figura.caja;
+      // Los que cruzan el antimeridiano (Rusia, Fiyi…): una caja centrada en su etiqueta.
+      if (caja[2] - caja[0] > ANCHO_MUNDO * 0.5 && figura.etiqueta) {
+        const [ex] = figura.etiqueta;
+        caja = [ex - ANCHO_MUNDO * 0.2, caja[1], ex + ANCHO_MUNDO * 0.2, caja[3]];
+      }
+      this.volarA(encuadrar(camara, caja, 0.16), () => {
+        this.seleccionar(destino.id);
+        llegar();
+      });
+      return;
+    }
+    if (destino.tipo === 'region') {
+      const [lon0, lat0, lon1, lat1] = destino.caja;
+      const centro = this.proyeccion([destino.etiqueta[0], destino.etiqueta[1]]);
+      const a = this.proyeccion([lon0, lat1]);
+      const b = this.proyeccion([lon1, lat0]);
+      if (!centro || !a || !b) return;
+      // Si la caja cruza el antimeridiano, una caja pequeña alrededor de la etiqueta.
+      const caja: [number, number, number, number] =
+        lon0 <= lon1 ? [a[0], a[1], b[0], b[1]] : [centro[0] - 20, a[1], centro[0] + 20, b[1]];
+      this.volarA(encuadrar(camara, caja, 0.2), () => {
+        if (this.regiones) {
+          this.seleccionarRegion(destino.id);
+          llegar();
+        } else {
+          // Se seleccionará cuando lleguen (la carga se pide al dibujar).
+          this.regionPendiente = destino.id;
+          this.alLlegarPendiente = llegar;
+          this.pedirDibujo();
+        }
+      });
+      return;
+    }
+    const encontrada = this.ciudades.find(
+      ({ ciudad }) => ciudad.nombre === destino.nombre && ciudad.pais === destino.pais,
+    );
+    if (!encontrada) return;
+    // Lo bastante cerca para que se vea su nombre (y nunca más lejos de lo que ya estaba).
+    const zoomWebDestino = Math.max(zoomDeAparicion(encontrada.ciudad) + 0.6, 5.2);
+    const k = Math.max(camara.k, (256 * 2 ** zoomWebDestino) / ANCHO_MUNDO);
+    this.volarA({ ...camara, cx: encontrada.x, cy: encontrada.y, k }, () => {
+      this.seleccionarCiudad(encontrada.ciudad);
+      llegar();
+    });
+  }
+
   /** Clic sin arrastre: selecciona la ciudad, la región o el país (o nada si es mar). */
   alTocar = (x: number, y: number): void => {
     const ciudad = this.ciudadEn(x, y);
@@ -553,6 +680,7 @@ export class MapaMundo {
     this.ciudadSeleccionada = null;
     this.regionSeleccionada = null;
     this.inicioPulso = id && !this.sinMovimiento ? performance.now() : null;
+    this.latidos = 1;
     this.inicioElevacion = performance.now();
     this.pedirDibujo();
     this.alSeleccionar?.(id ? { tipo: 'pais', id } : null);
@@ -566,6 +694,7 @@ export class MapaMundo {
     this.ciudadSeleccionada = null;
     this.regionSeleccionada = region;
     this.inicioPulso = this.sinMovimiento ? null : performance.now();
+    this.latidos = 1;
     this.pedirDibujo();
     this.alSeleccionar?.({
       tipo: 'region',
@@ -579,6 +708,7 @@ export class MapaMundo {
     this.regionSeleccionada = null;
     this.ciudadSeleccionada = ciudad;
     this.inicioPulso = this.sinMovimiento ? null : performance.now();
+    this.latidos = 1;
     this.pedirDibujo();
     this.alSeleccionar?.({ tipo: 'ciudad', ciudad });
   }
@@ -596,17 +726,41 @@ export class MapaMundo {
   }
 
   /**
+   * Latido en curso del pulso de la selección: su progreso (0 a 1) y su fuerza (cada latido,
+   * más suave que el anterior), o null si ya terminó.
+   */
+  private latidoActual(): { progreso: number; fuerza: number } | null {
+    if (this.inicioPulso === null) return null;
+    const transcurrido = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
+    if (transcurrido >= this.latidos) {
+      this.inicioPulso = null;
+      this.latidos = 1;
+      return null;
+    }
+    const latido = Math.floor(transcurrido);
+    return { progreso: transcurrido - latido, fuerza: 1 - latido / (this.latidos + 1) };
+  }
+
+  /**
+   * Resalta lo seleccionado al llegar desde el buscador (tarea f9-t4): el contorno late varias
+   * veces (nada si se pide reducir el movimiento).
+   */
+  private resaltarSeleccion(): void {
+    if (this.sinMovimiento) return;
+    this.latidos = LATIDOS_RESALTADO;
+    this.inicioPulso = performance.now();
+    this.pedirDibujo();
+  }
+
+  /**
    * Pulso de la selección: un destello dorado que se abre y se desvanece en medio segundo
    * (sin él si el dispositivo pide reducir el movimiento).
    */
   private pulso(camino: Path2D, figura: Figura, camara: Camara): void {
-    if (this.inicioPulso === null) return;
-    const progreso = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
-    if (progreso >= 1) {
-      this.inicioPulso = null;
-      return;
-    }
-    const resto = 1 - progreso;
+    const latido = this.latidoActual();
+    if (!latido) return;
+    const { progreso, fuerza } = latido;
+    const resto = (1 - progreso) * fuerza;
     const { ctx } = this;
     ctx.fillStyle = `rgba(255, 214, 120, ${0.22 * resto})`;
     ctx.fill(camino);
@@ -633,7 +787,9 @@ export class MapaMundo {
   /** Descarga las regiones la primera vez que el zoom pasa de ZOOM_CARGA_REGIONES. */
   private capaRegiones(): CapaRegionesPreparada | null {
     if (this.regiones || !this.urls.regiones) return this.regiones;
-    if (!this.cargandoRegiones && zoomRelativo(this.camara) >= ZOOM_CARGA_REGIONES) {
+    const hacenFalta =
+      zoomRelativo(this.camara) >= ZOOM_CARGA_REGIONES || this.regionPendiente !== null;
+    if (!this.cargandoRegiones && hacenFalta) {
       this.cargandoRegiones = true;
       fetch(this.urls.regiones)
         .then((r) =>
@@ -643,6 +799,14 @@ export class MapaMundo {
           this.regiones = prepararRegiones(topo);
           this.inicioRegiones = performance.now();
           this.pedirDibujo();
+          const pendiente = this.regionPendiente;
+          const alLlegar = this.alLlegarPendiente;
+          this.regionPendiente = null;
+          this.alLlegarPendiente = null;
+          if (pendiente) {
+            this.seleccionarRegion(pendiente);
+            alLlegar?.();
+          }
         })
         .catch(() => {
           // Sin conexión, el mapa sigue sin regiones; se reintenta en el próximo zoom.
@@ -810,18 +974,15 @@ export class MapaMundo {
       ctx.strokeStyle = seleccionada ? '#ffd678' : 'rgba(255, 255, 255, 0.85)';
       ctx.lineWidth = (seleccionada ? 2.2 : 1.5) / camara.k;
       ctx.stroke(camino);
-      if (seleccionada && this.inicioPulso !== null) {
-        const progreso = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
-        if (progreso < 1) {
-          ctx.fillStyle = `rgba(255, 214, 120, ${0.22 * (1 - progreso)})`;
-          ctx.fill(camino);
-          ctx.strokeStyle = `rgba(255, 214, 120, ${0.6 * (1 - progreso)})`;
-          ctx.lineWidth = (2.2 + 9 * progreso) / camara.k;
-          ctx.stroke(camino);
-          this.pedirDibujoSiguiente = true;
-        } else {
-          this.inicioPulso = null;
-        }
+      const latido = seleccionada ? this.latidoActual() : null;
+      if (latido) {
+        const resto = (1 - latido.progreso) * latido.fuerza;
+        ctx.fillStyle = `rgba(255, 214, 120, ${0.22 * resto})`;
+        ctx.fill(camino);
+        ctx.strokeStyle = `rgba(255, 214, 120, ${0.6 * resto})`;
+        ctx.lineWidth = (2.2 + 9 * latido.progreso) / camara.k;
+        ctx.stroke(camino);
+        this.pedirDibujoSiguiente = true;
       }
       ctx.restore();
     };
@@ -1177,14 +1338,11 @@ export class MapaMundo {
         });
       }
       anillo(x, y, 8, '#ffd678', 2.4);
-      if (this.inicioPulso !== null) {
-        const progreso = (performance.now() - this.inicioPulso) / DURACION_PULSO_MS;
-        if (progreso < 1) {
-          anillo(x, y, 8 + 18 * progreso, `rgba(255, 214, 120, ${0.7 * (1 - progreso)})`, 2);
-          this.pedirDibujoSiguiente = true;
-        } else {
-          this.inicioPulso = null;
-        }
+      const latido = this.latidoActual();
+      if (latido) {
+        const resto = (1 - latido.progreso) * latido.fuerza;
+        anillo(x, y, 8 + 18 * latido.progreso, `rgba(255, 214, 120, ${0.7 * resto})`, 2);
+        this.pedirDibujoSiguiente = true;
       }
     }
   }

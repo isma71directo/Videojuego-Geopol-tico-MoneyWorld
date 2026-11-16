@@ -248,7 +248,143 @@
         "estimado": "* Estimación: no hay dato real de 2010 de esta región.",
         "ajustado": "Datos de 2010, ajustados para que las regiones sumen el total del país.",
         "verPais": "Ver la ficha de {pais}",
-        "cerrar": "Cerrar ficha de la región"
+        "cerrar": "Cerrar ficha de la región",
+        "pestanas": {
+          "resumen": "Resumen",
+          "economia": "Economía",
+          "ciudades": "Ciudades",
+          "fuentes": "Fuentes",
+          "etiqueta": "Ficha de {region}"
+        },
+        "pais": "País",
+        "capital": "Capital",
+        "ciudadPrincipal": "Ciudad principal",
+        "superficie": "Superficie",
+        "densidad": "Densidad",
+        "km2": "{n} km²",
+        "habKm2": "{n} hab./km²",
+        "actividad": "Actividad principal",
+        "actividadTexto": "{sector} ({peso})",
+        "destaca": "Destaca {sector}: {peso} de su economía, más que la media de {pais} ({media}).",
+        "cargandoEconomia": "Cargando la economía y los recursos de la región…",
+        "explicacion": {
+          "poblacion": "Habitantes en 2010.",
+          "pib": "Producto interior bruto de la región en 2010, en dólares.",
+          "superficie": "Extensión de la región.",
+          "densidad": "Habitantes por km².",
+          "actividad": "Sector con más peso en el valor añadido de la región en 2010: agricultura, industria o servicios.",
+          "capital": "Solo se da cuando es segura; si no, la ciudad más poblada."
+        },
+        "sectores": {
+          "titulo": "Valor añadido por sectores (2010)",
+          "agricultura": "Agricultura",
+          "industria": "Industria",
+          "servicios": "Servicios",
+          "delPais": "Sin dato de la región: reparto de {pais} (Banco Mundial, 2010).",
+          "sinDato": "Sin dato del reparto por sectores.",
+          "industriaNota": "En DOSE, la industria incluye las manufacturas y, según el país, la minería y la energía."
+        },
+        "sectoresArticulo": {
+          "agricultura": "la agricultura",
+          "industria": "la industria",
+          "servicios": "los servicios"
+        },
+        "recursos": {
+          "titulo": "Recursos",
+          "yacimientos": "{n} yacimientos",
+          "yacimiento": "1 yacimiento",
+          "ejemplos": "Por ejemplo: {lista}",
+          "nada": "Sin yacimientos registrados en las fuentes. No quiere decir que la región no tenga recursos.",
+          "nota": "Grandes yacimientos minerales (USGS, 2005) y campos de petróleo y gas y minas de carbón activos en 2010 (Wikidata). No es un inventario completo.",
+          "tipos": {
+            "energia": "Energía",
+            "preciosos": "Metales preciosos y gemas",
+            "metales": "Metales",
+            "estrategicos": "Minerales estratégicos",
+            "industriales": "Minerales industriales"
+          },
+          "nombres": {
+            "petroleo": "Petróleo",
+            "gas": "Gas natural",
+            "carbon": "Carbón",
+            "uranio": "Uranio",
+            "oro": "Oro",
+            "plata": "Plata",
+            "platino": "Platino y paladio",
+            "diamantes": "Diamantes",
+            "piedras-preciosas": "Piedras preciosas",
+            "cobre": "Cobre",
+            "hierro": "Hierro",
+            "bauxita": "Bauxita (aluminio)",
+            "zinc": "Zinc",
+            "plomo": "Plomo",
+            "niquel": "Níquel",
+            "estano": "Estaño",
+            "cromo": "Cromo",
+            "manganeso": "Manganeso",
+            "molibdeno": "Molibdeno",
+            "titanio": "Titanio",
+            "vanadio": "Vanadio",
+            "circonio": "Circonio",
+            "mercurio": "Mercurio",
+            "antimonio": "Antimonio",
+            "bismuto": "Bismuto",
+            "litio": "Litio",
+            "cobalto": "Cobalto",
+            "tierras-raras": "Tierras raras",
+            "niobio-tantalio": "Niobio y tántalo",
+            "wolframio": "Wolframio",
+            "grafito": "Grafito",
+            "berilio": "Berilio",
+            "fosfatos": "Fosfatos",
+            "potasa": "Potasa",
+            "sal": "Sal",
+            "azufre": "Azufre",
+            "fluorita": "Fluorita",
+            "barita": "Barita",
+            "yeso": "Yeso",
+            "magnesio": "Magnesio",
+            "boro": "Boro",
+            "carbonato-sodio": "Carbonato de sodio",
+            "sulfato-sodio": "Sulfato de sodio",
+            "yodo": "Yodo",
+            "arcillas": "Arcillas",
+            "talco": "Talco",
+            "amianto": "Amianto",
+            "estroncio": "Estroncio",
+            "caliza": "Caliza",
+            "granate": "Granate",
+            "otros-minerales": "Otros minerales"
+          }
+        },
+        "ciudades": {
+          "titulo": "Ciudades principales",
+          "vacia": "No hay en el mapa ciudades de más de 100 000 habitantes ni capitales en esta región.",
+          "capitalPais": "Capital del país",
+          "capitalRegion": "Capital de la región",
+          "ir": "Ir a {ciudad} en el mapa",
+          "sinPoblacion": "Sin dato"
+        },
+        "fuentesRegion": {
+          "poblacion": "Población",
+          "pib": "PIB",
+          "sectores": "Sectores",
+          "sectoresDose": "DOSE (2010)",
+          "sectoresConjunto": "DOSE (2010), de una región más amplia que la incluye",
+          "sectoresPais": "Banco Mundial (2010), los del país",
+          "recursos": "Recursos",
+          "recursosFuente": "USGS, Major Mineral Deposits of the World (2005), y Wikidata (activos en 2010)",
+          "superficie": "Superficie",
+          "superficieWd": "Wikidata (suma de sus provincias)",
+          "superficieMapa": "Medida en el mapa (estimada)",
+          "superficiePais": "La del país",
+          "capital": "Capital",
+          "capitalNe": "Natural Earth",
+          "capitalWd": "Wikidata (capital de la entidad a la que pertenecen sus provincias)",
+          "capitalPais": "La capital del país",
+          "ciudades": "Ciudades",
+          "ciudadesFuente": "Natural Earth y Wikidata (población de 2010 o la más cercana)"
+        }
       },
       "capas": {
         "politica": {
@@ -806,6 +942,28 @@
           "acciones": "competencias, financiación regional y diálogo"
         }
       }
+    },
+    "buscador": {
+      "abrir": "Buscar",
+      "atajo": "Buscar un país, una región o una ciudad (tecla B)",
+      "titulo": "Buscar en el mapa",
+      "marcador": "Busca un país, una región o una ciudad…",
+      "cargando": "Cargando las regiones…",
+      "vacio": "No hay nada que se llame «{texto}».",
+      "ayuda": "↑ ↓ para elegir · Intro para ir · Esc para cerrar",
+      "resultados": "{n} resultados",
+      "tipos": {
+        "pais": "País",
+        "region": "Región",
+        "ciudad": "Ciudad"
+      },
+      "contexto": {
+        "pais": "País · {region}",
+        "region": "Región de {pais}",
+        "ciudad": "Ciudad de {pais}",
+        "capital": "Capital de {pais}"
+      },
+      "habitantes": "{n} hab."
     }
   },
   "hojaDeRuta": {
@@ -938,7 +1096,15 @@
       "regimen-monarquia-absoluta": "Monarquía absoluta",
       "regimen-partido-unico": "Partido único",
       "regimen-junta": "Junta militar",
-      "regimen-teocracia": "Teocracia"
+      "regimen-teocracia": "Teocracia",
+      "buscar": "Buscar",
+      "ciudad": "Ciudad",
+      "uranio": "Uranio",
+      "lingote": "Metales preciosos",
+      "gema": "Gemas",
+      "pico": "Metales",
+      "bateria": "Minerales estratégicos",
+      "cristales": "Minerales industriales"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -970,7 +1136,8 @@
       "abrirVentana": "Abrir una ventana",
       "cerrar": "Cerrar una ventana o un panel",
       "pestana": "Cambiar de pestaña",
-      "menu": "Abrir el menú contextual"
+      "menu": "Abrir el menú contextual",
+      "resaltar": "Llegar a un resultado del buscador"
     },
     "paleta": {
       "titulo": "Colores de referencia",
@@ -1070,6 +1237,10 @@
     "retratos": {
       "titulo": "Retratos de los {n} jefes de Estado y de Gobierno de 2010",
       "nota": "Ilustraciones dibujadas con código, nunca fotografías. Primero, los {homenajes} retratos homenaje de los líderes de los países y figuras importantes; después, los genéricos, que visten y se peinan según la región del país y el estilo de su régimen. Cada cara es distinta (forma, ojos, nariz, boca, orejas y cejas), sin rasgos exagerados. Si quieres cambiar alguno, dime cuál."
+    },
+    "recursos": {
+      "titulo": "Recursos de las regiones",
+      "nota": "Iconos de la ficha de región: uno propio para la energía y uno por tipo para el resto, sobre el color de su tipo."
     }
   }
 }
