@@ -1,16 +1,14 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.7.1",
-  "actualizado": "2026-11-16T07:10:35Z",
+  "actualizado": "2026-11-16T07:18:39Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "v0.7.1 lista en su rama: mapa político con 45 colores repartidos por parecido (ajuste f6-a1). Presentado al jugador el plan de la Fase 7 (componentes de interfaz).",
-    "siguientePaso": "Cuando el jugador apruebe el plan de la Fase 7, empezar por f7-t1 (base de interfaz y componentes reutilizables).",
+    "resumen": "Plan de la Fase 7 aprobado por el jugador: tipografía Inter, ventanas movibles, menú contextual con clic derecho en el mapa desde esta fase y la ficha del país con los componentes nuevos en la Fase 8. La tarea 1 del GDD se divide en dos (base y ventanas; componentes de datos).",
+    "siguientePaso": "Programar f7-t1: tema, tipografía Inter, paneles, ventanas movibles y pestañas.",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.7.1",
-      "Prueba en el PC: abrir el mapa con el mundo entero a la vista y comprobar que los colores no se repiten cerca (Europa, África, América); acercarse a Europa y a África",
-      "Aprobar (o cambiar) el plan de la Fase 7: componentes de interfaz"
+      "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
   },
   "etapas": [
@@ -502,26 +500,33 @@
       "objetivo": "Las piezas de interfaz que usarán todas las pantallas",
       "dependeDe": ["fase-6"],
       "hechoCuando": "Los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes",
-      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado",
-      "estado": "pendiente",
+      "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado; en el mapa, hacer clic derecho en un país y usar su menú.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f7-t1",
-          "titulo": "Base de interfaz para PC: tema oscuro, tipografía y componentes reutilizables (paneles laterales y ventanas, pestañas, tablas, deslizadores, menús contextuales, información al pasar el ratón y gráficos básicos)",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Base de interfaz para PC: tema oscuro, tipografía Inter, paneles laterales, ventanas flotantes movibles que recuerdan su sitio (varias a la vez) y pestañas",
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f7-t2",
-          "titulo": "Muestrario de los componentes en la galería audiovisual",
+          "titulo": "Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos (líneas, barras, sectores y minigráficos)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f7-t3",
-          "titulo": "Audiovisual: animaciones de hojas y pestañas y sonidos de navegación",
+          "titulo": "Muestrario de los componentes en la galería audiovisual",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f7-t4",
+          "titulo": "Audiovisual: animaciones de ventanas, hojas y pestañas y sonidos de navegación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
