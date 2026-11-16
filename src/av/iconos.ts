@@ -17,6 +17,29 @@ import pib from './iconos/pib.svg?raw';
 import poblacion from './iconos/poblacion.svg?raw';
 import politica from './iconos/politica.svg?raw';
 import silencio from './iconos/silencio.svg?raw';
+import hacienda from './iconos/hacienda.svg?raw';
+import interior from './iconos/interior.svg?raw';
+import justicia from './iconos/justicia.svg?raw';
+import sanidad from './iconos/sanidad.svg?raw';
+import educacion from './iconos/educacion.svg?raw';
+import ciencia from './iconos/ciencia.svg?raw';
+import trabajo from './iconos/trabajo.svg?raw';
+import industria from './iconos/industria.svg?raw';
+import transportes from './iconos/transportes.svg?raw';
+import telecomunicaciones from './iconos/telecomunicaciones.svg?raw';
+import agricultura from './iconos/agricultura.svg?raw';
+import medioambiente from './iconos/medioambiente.svg?raw';
+import vivienda from './iconos/vivienda.svg?raw';
+import cultura from './iconos/cultura.svg?raw';
+import igualdad from './iconos/igualdad.svg?raw';
+import estrella from './iconos/estrella.svg?raw';
+import ley from './iconos/ley.svg?raw';
+import organizaciones from './iconos/organizaciones.svg?raw';
+import equipamiento from './iconos/equipamiento.svg?raw';
+import base from './iconos/base.svg?raw';
+import guerra from './iconos/guerra.svg?raw';
+import informe from './iconos/informe.svg?raw';
+import historial from './iconos/historial.svg?raw';
 import gobierno from './iconos/gobierno.svg?raw';
 import mundo from './iconos/mundo.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
@@ -72,6 +95,30 @@ const ICONOS = {
   investigacion,
   noticias,
   comparador,
+  // Ministerios y ventanas de la barra (ajuste f7-a4).
+  hacienda,
+  interior,
+  justicia,
+  sanidad,
+  educacion,
+  ciencia,
+  trabajo,
+  industria,
+  transportes,
+  telecomunicaciones,
+  agricultura,
+  medioambiente,
+  vivienda,
+  cultura,
+  igualdad,
+  estrella,
+  ley,
+  organizaciones,
+  equipamiento,
+  base,
+  guerra,
+  informe,
+  historial,
 };
 
 export type NombreIcono = keyof typeof ICONOS;

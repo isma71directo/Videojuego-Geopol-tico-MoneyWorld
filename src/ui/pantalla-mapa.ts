@@ -306,7 +306,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     panel.hidden = false;
   };
   const alPulsarEscape = (evento: KeyboardEvent): void => {
-    if (evento.key === 'Escape' && mapa.haySeleccion) {
+    if (evento.key === 'Escape' && mapa.haySeleccion && !evento.defaultPrevented) {
       evento.preventDefault();
       mapa.seleccionar(null);
       lienzo.focus({ preventScroll: true });
@@ -439,6 +439,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     lienzo.removeEventListener('keydown', alternarMedidor);
     document.removeEventListener('keydown', alPulsarEscape);
     document.removeEventListener('keydown', alTeclearSecciones);
+    secciones.destruir();
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

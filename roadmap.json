@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.1",
-  "actualizado": "2026-11-16T10:45:26Z",
+  "actualizado": "2026-11-16T10:53:22Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-a3 hecha: tabla de colores representativos de 185 países (revisable, con nombres de color en español; los territorios pequeños usan su bandera) y colores libres alrededor de cada tono, calculados por 19-colores-pais.ts: vecinos siempre distintos, nada casi igual a menos de 1.500 km ni repetido en la misma zona, y 212 de 223 países con su propio tono. La galería enseña el color pedido y el del mapa de cada país.",
-    "siguientePaso": "f7-a4: barra de 8 apartados con sub-barra y ventanas de los ministerios.",
+    "resumen": "f7-a4 hecha: barra grande abajo con 8 apartados (Gobierno, Ministerios, Política, Economía, Mundo, Ejército, Investigación e Informes; teclas G, I, P, E, U, J, V y N) que abren una sub-barra con sus elementos; 19 ministerios con su ventana (resumen, presupuesto, leyes, acciones e infraestructuras) y el Consejo de Ministros enlaza con cada uno. 23 iconos nuevos. La leyenda y la ficha del país quedan encima de la barra.",
+    "siguientePaso": "Publicar la v0.8.2 (ajustes f7-a3 y f7-a4) y abrir su PR.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.8.0 (componentes en la galería y clic derecho en el mapa)"
     ]
@@ -558,14 +558,14 @@
           "origen": "Mensaje del jugador al probar la v0.8.1",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6923eeb"
         },
         {
           "id": "f7-a4",
           "titulo": "Barra de secciones como en los simuladores geopolíticos de PC: barra grande abajo con 8 apartados sin «Más» (Gobierno, Ministerios, Política, Economía, Mundo, Ejército, Investigación e Informes); cada uno abre una sub-barra con sus elementos y cada elemento, su ventana. Gobierno y Ministerios separados: cada uno de los 19 ministerios tiene su ventana (resumen, presupuesto, leyes del departamento, acciones e infraestructuras), vacía hasta su fase",
           "version": "0.8.2",
           "origen": "Mensaje del jugador al probar la v0.8.1 (referencia: Power & Revolution)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         }
