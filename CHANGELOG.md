@@ -7,6 +7,45 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.8.0 - 2026-11-16
+
+Fase 7 · Componentes de interfaz.
+
+### Añadido
+
+- **Tipografía Inter** (licencia SIL Open Font License) en toda la interfaz y en los nombres del
+  mapa, con cifras de ancho fijo en las tablas.
+- **Ventanas flotantes** (decisión del jugador: movibles):
+  - Se mueven arrastrando el título o con Alt + flechas (con Mayúsculas, más deprisa) y nunca
+    se salen de la pantalla.
+  - Recuerdan dónde se dejaron, puede haber varias abiertas y la que se toca pasa delante.
+  - Escape cierra la que tiene el foco.
+- **Paneles laterales**, uno por lado, y **pestañas** que se recorren con las flechas, Inicio y
+  Fin.
+- **Componentes de datos:**
+  - Tablas ordenables con el ratón y el teclado.
+  - Deslizadores con su valor a la vista.
+  - Información al pasar el ratón o al llevar el foco a un indicador.
+  - Menú contextual.
+- **Clic derecho en el mapa** (también Mayús + F10 o la tecla de menú sobre lo seleccionado):
+  ver la ficha del país, centrar el mapa, acercar y ver el mundo entero.
+- **Gráficos en SVG propio:**
+  - Líneas con guía y valores al pasar el ratón, barras, minigráficos y una «barra de partes»
+    en lugar de los gráficos de sectores.
+  - Colores de serie comprobados para daltonismo y una vista «Ver como tabla» en todos.
+- **Muestrario en la galería** con todos los componentes. Usa datos reales de 2010 (población,
+  PIB y mix eléctrico); los ejemplos inventados van marcados como tales.
+- **Animaciones cortas** al abrir y cerrar ventanas, paneles y menús. Al cambiar de pestaña, la
+  raya se desliza y el contenido entra desde el lado. Con «reducir movimiento» activado en el
+  sistema, todo es instantáneo.
+- **Sonidos de navegación** sintetizados: abrir una ventana, cerrar, cambiar de pestaña y abrir
+  el menú. Nunca suenan al pasar el ratón.
+
+### Cambiado
+
+- En los paneles estrechos, las pestañas se compactan para que se vean todas.
+- El menú del mapa ya no suena dos veces al abrirse.
+
 ## 0.7.1 - 2026-11-16
 
 Ajuste de la Fase 6 pedido por el jugador tras probar la v0.7.0.

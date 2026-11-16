@@ -1,13 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.7.1",
-  "actualizado": "2026-11-16T07:32:48Z",
+  "versionActual": "0.8.0",
+  "actualizado": "2026-11-16T09:17:26Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-t4 hecha: ventanas, paneles y menús aparecen y se van con una animación corta (sin animación con «reducir movimiento»); al cambiar de pestaña la raya se desliza y el contenido entra desde el lado; sonidos nuevos al abrir y cerrar ventanas y paneles, al cambiar de pestaña y al abrir el menú (nunca al pasar el ratón).",
-    "siguientePaso": "Cerrar la Fase 7 (v0.8.0) y abrir su PR.",
+    "resumen": "Fase 7 completa en su rama y versión 0.8.0: tipografía Inter, ventanas movibles que recuerdan su sitio, paneles laterales, pestañas, tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa), información al pasar el ratón y gráficos en SVG con vista de tabla; muestrario en la galería, animaciones cortas y sonidos de navegación.",
+    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 7 como hecha y presentar el plan de la Fase 8.",
     "pendienteDelJugador": [
+      "Fusionar el PR de la Fase 7 (v0.8.0)",
+      "Prueba en el PC de la v0.8.0: en la galería, abrir las ventanas de España y Japón, moverlas arrastrando el título y con Alt + flechas, recargar y ver que recuerdan su sitio, cambiar de pestaña con el ratón y con las flechas, abrir los paneles a cada lado y cerrar con Escape; ordenar la tabla, mover el deslizador, hacer clic derecho en el recuadro, pasar el ratón por los indicadores y los gráficos y probar «Ver como tabla»; en el mapa, hacer clic derecho en un país y usar su menú (también con Mayús + F10). Escuchar los sonidos al abrir, cerrar y cambiar de pestaña",
       "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
   },
@@ -529,7 +531,7 @@
           "titulo": "Audiovisual: animaciones de ventanas, hojas y pestañas y sonidos de navegación",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/abd3363"
         }
       ]
     },
@@ -4339,6 +4341,17 @@
       "cambios": [
         "Mapa político con 45 colores en lugar de 12, repartidos según lo que se parecen a la vista: vecinos nunca parecidos y ningún color repetido a menos de 1.500 km",
         "Los países muy grandes llevan colores distintos entre sí, ni muy claros ni azules, y la capa política deja ver algo menos el terreno"
+      ]
+    },
+    {
+      "version": "0.8.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Tipografía Inter (licencia OFL) en toda la interfaz",
+        "Ventanas flotantes que se mueven arrastrando el título o con Alt + flechas, recuerdan su sitio y pueden estar varias abiertas; paneles a los lados y pestañas",
+        "Tablas ordenables, deslizadores, información al pasar el ratón y menú contextual, también con clic derecho en el mapa (ver la ficha, centrar, acercar y ver el mundo)",
+        "Gráficos de líneas, barras, barra de partes y minigráficos, con colores aptos para daltónicos y vista de tabla",
+        "Muestrario de los componentes en la galería, animaciones cortas al abrir, cerrar y cambiar de pestaña y sonidos de navegación (nunca al pasar el ratón)"
       ]
     }
   ]
