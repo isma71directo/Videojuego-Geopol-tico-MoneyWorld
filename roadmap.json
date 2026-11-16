@@ -5,12 +5,9 @@
   "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Fase 8 cerrada como v0.9.0: ficha de país con pestañas, régimen y cargos de 2010 y retratos ilustrados (97 homenajes y genéricos para el resto). PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.9.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 9 (buscador y ficha de región).",
-    "pendienteDelJugador": [
-      "Probar la v0.9.0 en el PC: hacer clic en España, Japón y Somalilandia y revisar sus fichas (régimen, jefe de Estado y de Gobierno con su retrato, datos y fuentes en cada pestaña); mirar los retratos de la galería y decir qué homenajes cambiarías",
-      "Fusionar el PR de la Fase 8"
-    ]
+    "resumen": "PR de la Fase 8 (v0.9.0) fusionado. El jugador pide más homenajes, mejorar los actuales y retratos genéricos más variados (sobre todo en África): apuntado como ajustes f8-a1, f8-a2 y f8-a3 de la v0.9.1.",
+    "siguientePaso": "f8-a1: caras distintas (forma de la cara, ojos, nariz, boca, orejas, cejas, arrugas y más tonos de piel).",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -610,6 +607,35 @@
           "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/580c29b"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f8-a1",
+          "titulo": "Caras distintas en todos los retratos: forma de la cara, ojos, nariz, boca, orejas, cejas y arrugas variables y más tonos de piel; los genéricos los reparten según la persona y su región, sin exagerar rasgos, con un test que impide que dos retratos se parezcan",
+          "version": "0.9.1",
+          "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
+          "enlace": ""
+        },
+        {
+          "id": "f8-a2",
+          "titulo": "Genéricos con más peinados, barbas, ropa y complementos de cada región, con especial atención a África (pelo afro corto y alto, rapado, trenzas, canas en las sienes, gele, agbada con gorro fila, kente, kanzu, dashiki, boubou bordado) y también guayabera, barong, batik, songkok, chaqueta nehru, hiyab, corbatas con dibujo e insignia con los colores de la bandera",
+          "version": "0.9.1",
+          "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f8-a3",
+          "titulo": "Homenajes revisados con los rasgos nuevos (cara, nariz, ojos, boca) y muchos más homenajes: de los países más poblados y de cada región, hasta superar los 170",
+          "version": "0.9.1",
+          "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
