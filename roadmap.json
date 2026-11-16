@@ -5,8 +5,8 @@
   "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f9-t2 hecha: buscador con lupa arriba y tecla B, en una ventana en el centro. Encuentra los 223 países (también por su nombre en inglés y su código), 2.700 regiones y 4.200 ciudades, con y sin tildes, por cualquier palabra y con alguna errata; resalta la coincidencia y dice de qué país es cada resultado y su población. Al elegir (Intro o clic), la cámara viaja hasta el sitio (alejándose a mitad de camino si está lejos) y abre su ficha. Índice ligero de regiones en buscador-2010.json (script 22).",
-    "siguientePaso": "f9-t3: ficha de región con pestañas (Resumen, Economía, Ciudades y Fuentes).",
+    "resumen": "f9-t3 hecha: ficha de región con pestañas. Resumen: país, capital (o ciudad principal), población, PIB, PIB por habitante, superficie, densidad, actividad principal y en qué destaca frente a su país (Texas: la industria). Economía: barra de sectores (DOSE o, si no hay, los del país, dicho) y recursos agrupados por tipo con sus yacimientos y ejemplos. Ciudades: las principales con su población; un clic lleva a ellas. Fuentes de cada dato. La pestaña elegida se recuerda.",
+    "siguientePaso": "f9-t4: resaltado animado del resultado del buscador (contorno que late y sonido) e iconos de los recursos; después, cerrar la Fase 9 como v0.10.0.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -662,20 +662,20 @@
           "titulo": "Buscador de países, regiones y ciudades con autocompletado, con y sin tildes: lupa arriba y tecla B, que abren una ventana de búsqueda en el centro (decisión del jugador); al elegir, el mapa va hasta el resultado y abre su ficha",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/95111f9"
         },
         {
           "id": "f9-t3",
           "titulo": "Ficha de región con pestañas como la de país (decisión del jugador): Resumen (país, capital, población, PIB, PIB por habitante, superficie, densidad y actividad principal), Economía (sectores y recursos), Ciudades y Fuentes",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f9-t4",
           "titulo": "Audiovisual: resaltado animado del resultado en el mapa (la cámara viaja hasta él y su contorno late, con un sonido suave) e iconos de los recursos en la ficha y en la galería",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         }
       ]

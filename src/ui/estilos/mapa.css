@@ -805,3 +805,173 @@
   color: var(--texto-suave);
   font-size: 12px;
 }
+
+/* Ficha de región (tarea f9-t3). */
+.ficha-region__destaca {
+  margin: 4px 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--acento);
+  border-radius: 0 var(--radio-pequeno) var(--radio-pequeno) 0;
+  background: rgb(90 176 255 / 8%);
+  color: var(--texto);
+  font-size: 13px;
+}
+
+.ficha-recursos__titulo {
+  margin: 14px 0 6px;
+  font-size: 15px;
+}
+
+.ficha-recursos {
+  display: grid;
+  gap: 10px;
+}
+
+.ficha-recursos__tipo {
+  margin: 0 0 4px;
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ficha-recursos__lista {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ficha-recursos__recurso {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ficha-recursos__marca {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  place-items: center;
+  border-radius: 7px;
+  background: var(--color-recurso, #7c89a3);
+  color: #0b1220;
+}
+
+.ficha-recursos__marca .icono {
+  width: 18px;
+  height: 18px;
+}
+
+.ficha-recursos__marca--energia {
+  --color-recurso: #f2b84b;
+}
+
+.ficha-recursos__marca--preciosos {
+  --color-recurso: #e8d27a;
+}
+
+.ficha-recursos__marca--metales {
+  --color-recurso: #9fb7d0;
+}
+
+.ficha-recursos__marca--estrategicos {
+  --color-recurso: #c49cf2;
+}
+
+.ficha-recursos__marca--industriales {
+  --color-recurso: #8fcfb0;
+}
+
+.ficha-recursos__texto {
+  display: grid;
+  min-width: 0;
+}
+
+.ficha-recursos__cuenta,
+.ficha-recursos__ejemplos {
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.ficha-recursos__ejemplos {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ficha-recursos__nada {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.ficha-ciudades {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ficha-ciudades__boton {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: var(--radio-pequeno);
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ficha-ciudades__boton:hover,
+.ficha-ciudades__boton:focus-visible {
+  background: rgb(90 176 255 / 12%);
+}
+
+.ficha-ciudades__icono {
+  display: grid;
+  color: var(--texto-suave);
+}
+
+.ficha-ciudades__icono--pais,
+.ficha-ciudades__icono--region {
+  color: #e8d27a;
+}
+
+.ficha-ciudades__icono .icono {
+  width: 18px;
+  height: 18px;
+}
+
+.ficha-ciudades__nombre {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ficha-ciudades__marca {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgb(232 210 122 / 16%);
+  color: #e8d27a;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.ficha-ciudades__poblacion {
+  color: var(--texto-suave);
+  font-size: 13px;
+  white-space: nowrap;
+}

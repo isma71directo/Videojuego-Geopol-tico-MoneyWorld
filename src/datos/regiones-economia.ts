@@ -110,3 +110,50 @@ export interface ConjuntoEconomiaRegiones {
   notas: Record<string, string>;
   regiones: Record<string, EconomiaRegion>;
 }
+
+export const SECTORES = ['agricultura', 'industria', 'servicios'] as const;
+export type Sector = (typeof SECTORES)[number];
+
+export interface Actividad {
+  /** El sector que más pesa en la región. */
+  principal: Sector;
+  peso: number;
+  /**
+   * El sector en el que la región destaca respecto a su país (pesa al menos un 30 % más que en
+   * la media del país y un 10 % de la economía de la región), si lo hay y no es el principal.
+   */
+  destaca: { sector: Sector; peso: number; mediaPais: number } | null;
+}
+
+/** Peso de cada sector en un país a partir de sus porcentajes del PIB (null si falta alguno). */
+export function sectoresDePais(
+  agricultura: number | null | undefined,
+  industria: number | null | undefined,
+  servicios: number | null | undefined,
+): [number, number, number] | null {
+  const valores = [agricultura, industria, servicios];
+  if (valores.some((v) => v === null || v === undefined || v < 0)) return null;
+  const suma = (valores as number[]).reduce((s, v) => s + v, 0);
+  return suma > 0 ? ((valores as number[]).map((v) => v / suma) as [number, number, number]) : null;
+}
+
+/** Actividad económica principal de una región y en qué destaca frente a su país. */
+export function actividadPrincipal(
+  sectores: readonly [number, number, number],
+  pais: readonly [number, number, number] | null,
+): Actividad {
+  const indice = sectores.indexOf(Math.max(...sectores));
+  const principal = SECTORES[indice]!;
+  let destaca: Actividad['destaca'] = null;
+  if (pais) {
+    let mejor = 1.3;
+    SECTORES.forEach((sector, i) => {
+      const razon = pais[i]! > 0 ? sectores[i]! / pais[i]! : 0;
+      if (sector !== principal && sectores[i]! >= 0.1 && razon >= mejor) {
+        mejor = razon;
+        destaca = { sector, peso: sectores[i]!, mediaPais: pais[i]! };
+      }
+    });
+  }
+  return { principal, peso: sectores[indice]!, destaca };
+}

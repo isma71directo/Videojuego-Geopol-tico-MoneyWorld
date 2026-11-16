@@ -1,6 +1,7 @@
 /** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
 import type { ConjuntoGobiernos } from '../datos/gobiernos';
 import type { ConjuntoPaises } from '../datos/paises';
+import type { ConjuntoEconomiaRegiones } from '../datos/regiones-economia';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
 import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
@@ -320,6 +321,26 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       });
   };
 
+  // Economía, recursos y ciudades de las regiones (tarea f9-t3): al abrir la ficha de una región.
+  let economiaRegiones: ConjuntoEconomiaRegiones | null = null;
+  let cargandoEconomia = false;
+  let pestanaRegion: string | undefined;
+  const cargarEconomiaRegiones = (): void => {
+    if (economiaRegiones || cargandoEconomia) return;
+    cargandoEconomia = true;
+    fetch('./data/regiones-2010-economia.json')
+      .then((r) =>
+        r.ok ? (r.json() as Promise<ConjuntoEconomiaRegiones>) : Promise.reject(new Error()),
+      )
+      .then((datos) => {
+        economiaRegiones = datos;
+        if (seleccion?.tipo === 'region') pintarPanel(seleccion);
+      })
+      .catch(() => {
+        cargandoEconomia = false;
+      });
+  };
+
   /** Recuadro al lado del ratón con la ficha breve de lo señalado (país, región o ciudad). */
   const mostrarRecuadro = (objetivo: Objetivo | null, x: number, y: number): void => {
     // Lo que se señala: el código del país, la región o la propia ciudad.
@@ -366,7 +387,10 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     const pais = objetivo.tipo === 'pais' && conjunto ? conjunto.paises[objetivo.id] : undefined;
     if (objetivo.tipo === 'pais' && (!pais || !conjunto)) return false;
     const quitar = (): void => mapa.seleccionar(null);
-    if (objetivo.tipo === 'region') cargarDatosRegiones();
+    if (objetivo.tipo === 'region') {
+      cargarDatosRegiones();
+      cargarEconomiaRegiones();
+    }
     reemplazar(
       panel,
       ...(objetivo.tipo === 'ciudad'
@@ -374,8 +398,23 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
             mapa.seleccionar(objetivo.ciudad.pais),
           )
         : objetivo.tipo === 'region'
-          ? contenidoPanelRegion(objetivo.region, conjunto, datosDe(objetivo.region), quitar, () =>
-              mapa.seleccionar(objetivo.region.pais),
+          ? contenidoPanelRegion(
+              objetivo.region,
+              conjunto,
+              datosDe(objetivo.region),
+              quitar,
+              () => mapa.seleccionar(objetivo.region.pais),
+              {
+                economia: economiaRegiones
+                  ? (economiaRegiones.regiones[objetivo.region.id] ?? null)
+                  : undefined,
+                ...(pestanaRegion ? { pestana: pestanaRegion } : {}),
+                alCambiarPestana: (id) => {
+                  pestanaRegion = id;
+                },
+                alIrACiudad: (nombre) =>
+                  mapa.irA({ tipo: 'ciudad', nombre, pais: objetivo.region.pais }),
+              },
             )
           : contenidoPanel(pais!, conjunto!, quitar, {
               gobiernos,
