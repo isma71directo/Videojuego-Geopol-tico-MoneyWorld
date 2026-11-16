@@ -1098,7 +1098,13 @@
       "regimen-junta": "Junta militar",
       "regimen-teocracia": "Teocracia",
       "buscar": "Buscar",
-      "ciudad": "Ciudad"
+      "ciudad": "Ciudad",
+      "uranio": "Uranio",
+      "lingote": "Metales preciosos",
+      "gema": "Gemas",
+      "pico": "Metales",
+      "bateria": "Minerales estratégicos",
+      "cristales": "Minerales industriales"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1130,7 +1136,8 @@
       "abrirVentana": "Abrir una ventana",
       "cerrar": "Cerrar una ventana o un panel",
       "pestana": "Cambiar de pestaña",
-      "menu": "Abrir el menú contextual"
+      "menu": "Abrir el menú contextual",
+      "resaltar": "Llegar a un resultado del buscador"
     },
     "paleta": {
       "titulo": "Colores de referencia",
@@ -1230,6 +1237,10 @@
     "retratos": {
       "titulo": "Retratos de los {n} jefes de Estado y de Gobierno de 2010",
       "nota": "Ilustraciones dibujadas con código, nunca fotografías. Primero, los {homenajes} retratos homenaje de los líderes de los países y figuras importantes; después, los genéricos, que visten y se peinan según la región del país y el estilo de su régimen. Cada cara es distinta (forma, ojos, nariz, boca, orejas y cejas), sin rasgos exagerados. Si quieres cambiar alguno, dime cuál."
+    },
+    "recursos": {
+      "titulo": "Recursos de las regiones",
+      "nota": "Iconos de la ficha de región: uno propio para la energía y uno por tipo para el resto, sobre el color de su tipo."
     }
   }
 }

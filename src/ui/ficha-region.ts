@@ -24,7 +24,7 @@ import { el, type Hijo } from './dom';
 import { barraDePartes } from './componentes/graficos';
 import { conInformacion } from './componentes/info';
 import { crearPestanas } from './componentes/pestanas';
-import { icono } from '../av/iconos';
+import { icono, type NombreIcono } from '../av/iconos';
 import { nombreCapa, textoValorCapa } from './leyenda';
 
 /** Datos de una región en /public/data/regiones-2010-datos.json. */
@@ -577,12 +577,32 @@ export function contenidoPanelRegion(
   ];
 }
 
-/** Marca de color del recurso (su icono llega en la tarea f9-t4). */
+/** Icono de cada recurso (tarea f9-t4): el suyo en la energía y uno por tipo en el resto. */
+export function iconoDeRecurso(recurso: Recurso): NombreIcono {
+  if (recurso === 'petroleo' || recurso === 'gas' || recurso === 'carbon' || recurso === 'uranio') {
+    return recurso;
+  }
+  if (recurso === 'diamantes' || recurso === 'piedras-preciosas') return 'gema';
+  const POR_TIPO: Record<TipoRecurso, NombreIcono> = {
+    energia: 'energia',
+    preciosos: 'lingote',
+    metales: 'pico',
+    estrategicos: 'bateria',
+    industriales: 'cristales',
+  };
+  return POR_TIPO[tipoDeRecurso(recurso)];
+}
+
+/** Icono del recurso sobre el color de su tipo. */
 function iconoRecurso(recurso: Recurso): HTMLElement {
-  return el('span', {
-    class: `ficha-recursos__marca ficha-recursos__marca--${tipoDeRecurso(recurso)}`,
-    'aria-hidden': 'true',
-  });
+  return el(
+    'span',
+    {
+      class: `ficha-recursos__marca ficha-recursos__marca--${tipoDeRecurso(recurso)}`,
+      'aria-hidden': 'true',
+    },
+    icono(iconoDeRecurso(recurso)),
+  );
 }
 
 /** Icono de una ciudad de la lista: estrella si es capital, edificio si no. */

@@ -419,3 +419,59 @@
   width: 100%;
   height: 100%;
 }
+
+/* Recursos de las regiones (tarea f9-t4): icono sobre el color de su tipo. */
+.galeria__recursos-grupo h3 {
+  margin: 14px 0 8px;
+  font-size: 14px;
+}
+
+.galeria__recursos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.galeria__recursos li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.galeria__recurso {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  place-items: center;
+  border-radius: 8px;
+  color: #0b1220;
+}
+
+.galeria__recurso .icono {
+  width: 20px;
+  height: 20px;
+}
+
+.galeria__recurso--energia {
+  background: #f2b84b;
+}
+
+.galeria__recurso--preciosos {
+  background: #e8d27a;
+}
+
+.galeria__recurso--metales {
+  background: #9fb7d0;
+}
+
+.galeria__recurso--estrategicos {
+  background: #c49cf2;
+}
+
+.galeria__recurso--industriales {
+  background: #8fcfb0;
+}

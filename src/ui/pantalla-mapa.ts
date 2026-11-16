@@ -79,6 +79,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   );
   // Buscador (tarea f9-t2): lupa y tecla B, en una ventana en el centro (decisión del jugador).
   /** Punto y caja (en grados) de cada región, para ir hasta ella antes de cargar sus fronteras. */
+  /** Mientras el mapa viaja a un resultado, la selección no suena (suena al llegar). */
+  let llegandoDeBusqueda = false;
   const lugaresRegion = new Map<
     string,
     { etiqueta: [number, number]; caja: [number, number, number, number] }
@@ -138,12 +140,19 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       ),
     alElegir: (entrada) => {
       reproducir('boton');
-      if (entrada.tipo === 'pais') mapa.irA({ tipo: 'pais', id: entrada.id });
+      // Al llegar, el contorno late y suena un tintineo (tarea f9-t4), en lugar del sonido de
+      // seleccionar.
+      llegandoDeBusqueda = true;
+      const alLlegar = (): void => {
+        llegandoDeBusqueda = false;
+        reproducir('resaltar');
+      };
+      if (entrada.tipo === 'pais') mapa.irA({ tipo: 'pais', id: entrada.id }, alLlegar);
       else if (entrada.tipo === 'ciudad') {
-        mapa.irA({ tipo: 'ciudad', nombre: entrada.nombre, pais: entrada.pais });
+        mapa.irA({ tipo: 'ciudad', nombre: entrada.nombre, pais: entrada.pais }, alLlegar);
       } else {
         const lugar = lugaresRegion.get(entrada.id);
-        if (lugar) mapa.irA({ tipo: 'region', id: entrada.id, ...lugar });
+        if (lugar) mapa.irA({ tipo: 'region', id: entrada.id, ...lugar }, alLlegar);
       }
       lienzo.focus({ preventScroll: true });
     },
@@ -436,7 +445,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       return;
     }
     if (panel.hidden) reproducir('abrirPanel');
-    reproducir('seleccionar');
+    if (!llegandoDeBusqueda) reproducir('seleccionar');
     panel.hidden = false;
   };
   const alPulsarEscape = (evento: KeyboardEvent): void => {

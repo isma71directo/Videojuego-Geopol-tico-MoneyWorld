@@ -10,7 +10,16 @@ import {
   type ConjuntoEconomiaRegiones,
 } from '../src/datos/regiones-economia';
 import type { RegionSenalada } from '../src/map/mapa';
-import { contenidoPanelRegion, type ConjuntoRegiones } from '../src/ui/ficha-region';
+import {
+  contenidoPanelRegion,
+  iconoDeRecurso,
+  type ConjuntoRegiones,
+} from '../src/ui/ficha-region';
+import { NOMBRES_ICONOS } from '../src/av/iconos';
+import { EFECTOS } from '../src/av/sonido';
+import { LATIDOS_RESALTADO } from '../src/map/mapa';
+import { t } from '../src/i18n';
+import { RECURSOS } from '../src/datos/regiones-economia';
 import { el } from '../src/ui/dom';
 
 const leer = <T>(ruta: string): T => JSON.parse(readFileSync(resolve(ruta), 'utf8')) as T;
@@ -163,5 +172,34 @@ describe('ficha de región (tarea f9-t3)', () => {
       expect(f.textContent, id).not.toMatch(/juego\.mapa\./);
       document.body.replaceChildren();
     }
+  });
+});
+
+describe('audiovisual de la Fase 9 (tarea f9-t4)', () => {
+  it('cada recurso tiene un icono registrado; la energía, el suyo', () => {
+    for (const recurso of RECURSOS) {
+      expect(NOMBRES_ICONOS as string[], recurso).toContain(iconoDeRecurso(recurso));
+      expect(t(`juego.mapa.region.recursos.nombres.${recurso}`), recurso).not.toMatch(/^juego\./);
+    }
+    expect(iconoDeRecurso('petroleo')).toBe('petroleo');
+    expect(iconoDeRecurso('uranio')).toBe('uranio');
+    expect(iconoDeRecurso('diamantes')).toBe('gema');
+    expect(iconoDeRecurso('oro')).toBe('lingote');
+    expect(iconoDeRecurso('cobre')).toBe('pico');
+    expect(iconoDeRecurso('litio')).toBe('bateria');
+    expect(iconoDeRecurso('potasa')).toBe('cristales');
+  });
+
+  it('la ficha muestra el icono de cada recurso', () => {
+    const economia = abrir(ficha('USA-texas'), 'Economía');
+    const primero = economia.querySelector('.ficha-recursos__recurso')!;
+    expect(primero.querySelector('.ficha-recursos__marca--energia svg')).not.toBeNull();
+    document.body.replaceChildren();
+  });
+
+  it('al llegar desde el buscador: varios latidos y un sonido con nombre en la galería', () => {
+    expect(LATIDOS_RESALTADO).toBeGreaterThan(1);
+    expect(EFECTOS.resaltar.length).toBeGreaterThan(0);
+    expect(t('galeria.sonidos.resaltar')).not.toMatch(/^galeria\./);
   });
 });

@@ -27,7 +27,8 @@ export type Efecto =
   | 'abrirVentana'
   | 'cerrar'
   | 'pestana'
-  | 'menu';
+  | 'menu'
+  | 'resaltar';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -131,6 +132,13 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
   menu: [
     { forma: 'triangle', inicio: 0, duracion: 0.035, frecuencia: 880, volumen: 0.08 },
     { forma: 'triangle', inicio: 0.035, duracion: 0.05, frecuencia: 1174.7, volumen: 0.07 },
+  ],
+  // Llegar a un resultado del buscador (tarea f9-t4): tres notas que suben y brillan, a la vez
+  // que el contorno late en el mapa.
+  resaltar: [
+    { forma: 'sine', inicio: 0, duracion: 0.12, frecuencia: 784, volumen: 0.12 },
+    { forma: 'sine', inicio: 0.09, duracion: 0.14, frecuencia: 1046.5, volumen: 0.11 },
+    { forma: 'triangle', inicio: 0.18, duracion: 0.3, frecuencia: 1568, volumen: 0.08 },
   ],
 };
 
