@@ -1,0 +1,38 @@
+{
+  "$comentario": "Valores iniciales PROVISIONALES de cada país el 1 de enero de 2010 (tarea f10-t2, decisión del jugador: estimados con fórmula). Se sustituyen por el presupuesto (Fase 21) y por la opinión pública (Fase 56). Las fórmulas están explicadas en docs/GDD.md, sección 13, y se aplican en src/sim/valores-iniciales.ts.",
+  "tesoreria": {
+    "$comentario": "Tesorería = ingresos públicos (% del PIB, FMI) × PIB × meses / 12. Es el dinero en caja para empezar: los ingresos de un mes. Se redondea al millón de dólares.",
+    "mesesDeIngresos": 1,
+    "redondeo": 1000000
+  },
+  "popularidad": {
+    "$comentario": "Popularidad = base + suma de los factores, dentro de los límites. Cada factor económico es (valor − referencia) × peso, recortado a [mínimo, máximo]. Los años en el cargo son los del jefe de Gobierno (o del jefe de Estado si también gobierna) desde su llegada hasta el 1 de enero de 2010.",
+    "base": 50,
+    "limites": [15, 85],
+    "factores": {
+      "crecimiento": {
+        "campo": "crecimientoPib",
+        "referencia": 2,
+        "peso": 2,
+        "minimo": -10,
+        "maximo": 10
+      },
+      "paro": { "campo": "paro", "referencia": 7, "peso": -0.6, "minimo": -12, "maximo": 6 },
+      "inflacion": {
+        "campo": "inflacion",
+        "referencia": 3,
+        "peso": -0.5,
+        "minimo": -10,
+        "maximo": 3
+      }
+    },
+    "desgastePorAnio": -1.2,
+    "desgasteMaximo": -12,
+    "lunaDeMiel": { "aniosMenos": 1, "puntos": 6 },
+    "regimenesCerrados": {
+      "$comentario": "Sin prensa libre ni elecciones competitivas, el apoyo declarado al gobierno suele ser mayor.",
+      "regimenes": ["partido-unico", "monarquia-absoluta", "junta", "teocracia"],
+      "puntos": 5
+    }
+  }
+}

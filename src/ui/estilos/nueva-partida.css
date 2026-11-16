@@ -272,6 +272,45 @@
   margin-top: 8px;
 }
 
+/* Valores iniciales provisionales (tarea f10-t2). */
+.nueva-partida__iniciales {
+  margin-top: 4px;
+}
+
+.nueva-partida__iniciales .panel-pais__fila dd {
+  color: var(--texto);
+  font-weight: 600;
+}
+
+.nueva-partida__desglose {
+  font-size: 13px;
+}
+
+.nueva-partida__desglose summary {
+  cursor: pointer;
+  color: var(--acento);
+}
+
+.nueva-partida__desglose ul {
+  display: grid;
+  gap: 2px;
+  margin: 6px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nueva-partida__desglose li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--texto-suave);
+}
+
+.nueva-partida__puntos {
+  color: var(--texto);
+  font-variant-numeric: tabular-nums;
+}
+
 .nueva-partida__aviso:empty {
   display: none;
 }

@@ -22,6 +22,7 @@ npm run datos             # las dos cosas seguidas
 | `01-paises.ts`        | Tabla de países y territorios de 2010 (Banco Mundial, Wikidata, CLDR y tabla manual)                        | `fuentes/datos/paises.json`                                |
 | `02-banco-mundial.ts` | Indicadores WDI de 2008–2010                                                                                | `fuentes/datos/banco-mundial.json`                         |
 | `03-fmi.ts`           | Indicadores WEO de 2008–2010                                                                                | `fuentes/datos/fmi.json`                                   |
+| `23-fmi-fiscal.ts`    | Ingresos y gasto públicos de 2008–2010 (FMI, Monitor Fiscal)                                                | `fuentes/datos/fmi-fiscal.json`                            |
 | `04-owid.ts`          | Energía y emisiones de Our World in Data                                                                    | `fuentes/datos/owid-*.json`                                |
 | `05-recursos.ts`      | Reservas y producción de recursos naturales                                                                 | `fuentes/datos/recursos.json`                              |
 | `06-territorios.ts`   | Población de los territorios sin datos oficiales (Wikidata)                                                 | `fuentes/datos/territorios.json`                           |

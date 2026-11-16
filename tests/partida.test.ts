@@ -40,7 +40,9 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
         fecha: FECHA_INICIO,
         jugador: { paisId: id, rol: 'gobierno' },
         opciones: { dificultad: 'normal', eventosHistoricos: true },
+        paises: partida.paises,
       });
+      expect(partida.paises[id]).toBeDefined();
     }
     expect(FECHA_INICIO).toBe('2010-01-01');
   });
@@ -135,6 +137,21 @@ describe('pantalla «Nueva partida» (tarea f10-t1)', () => {
     expect(resumen).toContain('Rodríguez Zapatero');
     expect(resumen).toContain('Monarquía parlamentaria');
     expect(document.querySelector('.nueva-partida__retrato svg')).not.toBeNull();
+    // Tesorería y popularidad iniciales, marcadas como estimación, y cómo se estiman.
+    const tesoreria = document.querySelector('.nueva-partida__inicio--tesoreria dd')!;
+    expect(tesoreria.textContent).toMatch(/^43\.\d{3} M\$\*$/);
+    expect(tesoreria.classList.contains('es-estimado')).toBe(true);
+    const popularidad = document.querySelector('.nueva-partida__inicio--popularidad dd')!;
+    expect(popularidad.textContent).toMatch(/^\d{2} %\*$/);
+    const factores = [...document.querySelectorAll<HTMLElement>('.nueva-partida__desglose li')];
+    expect(factores.map((f) => f.dataset.factor)).toEqual([
+      'base',
+      'crecimiento',
+      'paro',
+      'inflacion',
+      'desgaste',
+    ]);
+    expect(factores[4]!.textContent).toMatch(/Desgaste por años en el cargo−6,9/);
     expect(boton().disabled).toBe(false);
     expect(boton().textContent).toBe('Empezar con España');
     // Opciones: dificultad realista, sin eventos y una semilla escrita.
@@ -154,6 +171,9 @@ describe('pantalla «Nueva partida» (tarea f10-t1)', () => {
         opciones: { dificultad: 'realista', eventosHistoricos: false },
       }),
     );
+    // La partida empieza con la popularidad que se ha enseñado.
+    const partida = alEmpezar.mock.calls[0]![0] as Partida;
+    expect(`${partida.paises.ESP!.popularidad} %*`).toBe(popularidad.textContent);
   });
 
   it('un país no jugable no se puede elegir y lo dice', () => {

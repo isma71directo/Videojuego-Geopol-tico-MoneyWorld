@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.10.0",
-  "actualizado": "2026-11-16T19:12:02Z",
+  "actualizado": "2026-11-16T19:47:33Z",
   "faseActiva": "fase-10",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f10-t1 hecha: «Nueva partida» ya funciona desde el inicio. Mapa a pantalla completa con la lista de los 221 países jugables a la izquierda (filtro con y sin tildes; orden por nombre, población, PIB, PIB por habitante o región) y, a la derecha, el país elegido con su líder y su retrato, la dificultad (Fácil, Normal o Realista), los eventos históricos y la semilla (número o palabra; botón para otra al azar). Se elige con un clic en el mapa o en la lista (o con las flechas). «Empezar» crea la partida en el motor (src/sim/partida.ts) y abre el mapa en el país del jugador. El mapa libre sigue en el inicio.",
-    "siguientePaso": "f10-t2: ingresos y gasto públicos del FMI y tesorería y popularidad iniciales estimadas.",
+    "resumen": "f10-t2 hecha: ingresos y gasto públicos de 2010 del FMI (Monitor Fiscal, script 23-fmi-fiscal.ts; 190 países con dato real y el resto estimados con la mediana de su grupo) en paises-2010.json y en la ficha del país. Tesorería y popularidad iniciales provisionales con fórmula (decisión del jugador), en src/sim/valores-iniciales.ts con los parámetros en src/sim/config/inicio.json y explicadas en el GDD (sección 13): la tesorería son los ingresos públicos de un mes y la popularidad parte de 50 y cambia con el crecimiento, el paro, la inflación, los años del líder en el cargo y el régimen (entre 15 y 85). La partida guarda los valores de todos los países jugables y la pantalla «Nueva partida» los enseña con su desglose (España: 43.265 M$ y 32 %).",
+    "siguientePaso": "f10-t3: pantalla principal de partida con barra superior (fecha, tesorería y popularidad), país del jugador destacado y salida al menú con confirmación.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -696,20 +696,20 @@
           "titulo": "Pantalla «Nueva partida» con mapa grande y panel (decisión del jugador): lista de países jugables ordenable, resumen del país elegido con su líder, dificultad, eventos históricos y semilla; la partida se crea en el motor",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/00864a1"
         },
         {
           "id": "f10-t2",
           "titulo": "Ingresos y gasto públicos de 2010 (FMI) y valores iniciales provisionales estimados con fórmula (decisión del jugador): tesorería con los ingresos del Estado y popularidad con crecimiento, paro, inflación y años en el cargo",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f10-t3",
           "titulo": "Pantalla principal de partida: barra superior con la fecha (1 de enero de 2010), tesorería y popularidad, país del jugador destacado y salida al menú con confirmación",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

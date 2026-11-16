@@ -93,7 +93,7 @@ function buscar(
 
 function codigoEn(pais: PaisBase, archivo: Archivo): string | null {
   if (archivo === 'bm') return pais.codigos.bm;
-  if (archivo === 'fmi') return pais.codigos.fmi;
+  if (archivo === 'fmi' || archivo === 'fiscal') return pais.codigos.fmi;
   return pais.codigos.owid;
 }
 
@@ -107,7 +107,8 @@ function valorReal(pais: PaisBase, campo: Campo, entradas: Entradas): Valor | nu
       campo.soloOtroAnio ? `EST:anio-${anio}` : `${SIGLA[fuente.archivo]}:${anio}`;
 
     // El FMI ya da unido el Sudán de 2010; las demás fuentes lo dan por partes.
-    const componentes = fuente.archivo === 'fmi' ? undefined : pais.componentes;
+    const componentes =
+      fuente.archivo === 'fmi' || fuente.archivo === 'fiscal' ? undefined : pais.componentes;
     if (!componentes) {
       const codigo = codigoEn(pais, fuente.archivo);
       const hallado = codigo ? buscar(archivo, fuente.indicador, codigo, anios) : null;

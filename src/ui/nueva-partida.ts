@@ -7,7 +7,14 @@
 import { urlBandera } from '../av/banderas';
 import { icono } from '../av/iconos';
 import { rasgosDe, svgRetrato, tono } from '../av/retratos';
-import { dolares, dolaresPorPersona, personas } from '../compartido/formato';
+import {
+  dolares,
+  dolaresPorPersona,
+  enteros,
+  personas,
+  porcentaje,
+  puntosConSigno,
+} from '../compartido/formato';
 import { edadEn2010, jefeGobierno, type ConjuntoGobiernos } from '../datos/gobiernos';
 import type { ConjuntoPaises, PaisDatos } from '../datos/paises';
 import { t } from '../i18n';
@@ -16,12 +23,14 @@ import type { MapaMundo, Objetivo } from '../map/mapa';
 import {
   crearPartida,
   DIFICULTADES,
+  FECHA_INICIO,
   OPCIONES_POR_DEFECTO,
   semillaAlAzar,
   semillaDeTexto,
   type Dificultad,
   type Partida,
 } from '../sim/partida';
+import { popularidadInicial, tesoreriaInicial } from '../sim/valores-iniciales';
 import { normalizarBusqueda } from './busqueda';
 import { el, reemplazar } from './dom';
 import { crearMapaDelJuego } from './mapa-del-juego';
@@ -232,6 +241,7 @@ export function abrirPantallaNuevaPartida(
     const partida = crearPartida(
       { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla },
       conjunto.paises,
+      gobiernos?.paises ?? {},
     );
     reproducir('abrirVentana');
     opciones.alEmpezar(partida);
@@ -348,6 +358,61 @@ export function abrirPantallaNuevaPartida(
     );
   }
 
+  /** Tesorería y popularidad iniciales (provisionales), con el desglose de la popularidad. */
+  function valoresDeInicio(pais: PaisDatos): HTMLElement[] {
+    const gobierno = gobiernos?.paises[pais.id];
+    const popularidad = popularidadInicial(pais.datos, gobierno, FECHA_INICIO);
+    const ingresos = pais.datos.ingresosPublicosPib;
+    const fila = (clase: string, titulo: string, valor: string, nota?: string): HTMLElement =>
+      el(
+        'div',
+        { class: `panel-pais__fila nueva-partida__inicio nueva-partida__inicio--${clase}` },
+        el('dt', {}, titulo),
+        el('dd', { class: 'es-estimado', title: nota }, `${valor}*`),
+      );
+    return [
+      el(
+        'dl',
+        { class: 'panel-pais__datos nueva-partida__iniciales' },
+        fila(
+          'tesoreria',
+          t('juego.nuevaPartida.resumen.tesoreria'),
+          dolares(tesoreriaInicial(pais.datos)),
+          typeof ingresos === 'number'
+            ? t('juego.nuevaPartida.resumen.ingresos', { porcentaje: porcentaje(ingresos) })
+            : undefined,
+        ),
+        fila(
+          'popularidad',
+          t('juego.nuevaPartida.resumen.popularidad'),
+          `${enteros(popularidad.valor)} %`,
+        ),
+      ),
+      el(
+        'details',
+        { class: 'nueva-partida__desglose' },
+        el('summary', {}, t('juego.nuevaPartida.resumen.desglose')),
+        el(
+          'ul',
+          {},
+          ...popularidad.desglose.map((aporte) =>
+            el(
+              'li',
+              { 'data-factor': aporte.factor },
+              el('span', {}, t(`juego.nuevaPartida.resumen.factores.${aporte.factor}`)),
+              el(
+                'span',
+                { class: 'nueva-partida__puntos' },
+                aporte.factor === 'base' ? enteros(aporte.puntos) : puntosConSigno(aporte.puntos),
+              ),
+            ),
+          ),
+        ),
+        el('p', { class: 'nueva-partida__nota' }, t('juego.nuevaPartida.resumen.provisional')),
+      ),
+    ];
+  }
+
   function pintarResumen(): void {
     const pais = elegido ? conjunto?.paises[elegido] : undefined;
     if (!pais) {
@@ -407,6 +472,7 @@ export function abrirPantallaNuevaPartida(
           valor('pibPerCapita', dolaresPorPersona),
         ),
       ),
+      ...valoresDeInicio(pais),
     );
   }
 

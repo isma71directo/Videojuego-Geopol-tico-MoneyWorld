@@ -997,7 +997,21 @@
         "poblacion": "Población",
         "pib": "PIB",
         "pibPerCapita": "PIB por habitante",
-        "capital": "Capital"
+        "capital": "Capital",
+        "tesoreria": "Tesorería inicial",
+        "popularidad": "Popularidad inicial",
+        "desglose": "Cómo se estiman",
+        "provisional": "Estimaciones provisionales con fórmula: la tesorería son los ingresos públicos de un mes (FMI, 2010) y la popularidad parte de 50 y cambia con la economía y los años del líder en el cargo. Se sustituirán por el presupuesto y la opinión pública en fases posteriores.",
+        "factores": {
+          "base": "Punto de partida",
+          "crecimiento": "Crecimiento económico",
+          "paro": "Paro",
+          "inflacion": "Inflación",
+          "desgaste": "Desgaste por años en el cargo",
+          "lunaDeMiel": "Primer año de gobierno",
+          "regimen": "Régimen sin elecciones libres"
+        },
+        "ingresos": "Ingresos públicos de un mes ({porcentaje} del PIB al año)"
       },
       "opciones": {
         "titulo": "Opciones de la partida",
