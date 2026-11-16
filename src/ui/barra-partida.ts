@@ -44,6 +44,8 @@ export interface OpcionesBarraPartida {
   partida: Partida;
   /** Un clic en el país lleva el mapa hasta él. */
   alIrAlPais: () => void;
+  /** Controles del tiempo (tarea f11-t3): van justo después de la fecha y la hora. */
+  controles?: HTMLElement;
 }
 
 export interface BarraPartida {
@@ -130,6 +132,7 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
       fecha,
       hora,
     ),
+    opciones.controles ?? null,
     dato(
       'tesoreria',
       'hacienda',

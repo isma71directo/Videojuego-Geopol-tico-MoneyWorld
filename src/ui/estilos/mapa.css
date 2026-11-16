@@ -180,6 +180,69 @@
   }
 }
 
+/* Herramientas del mapa en la partida (tarea f11-t3): en una fila debajo de la barra superior,
+   a la izquierda, para que la barra quede para la partida. */
+.mapa__herramientas--partida {
+  position: absolute;
+  top: calc(68px + env(safe-area-inset-top));
+  left: calc(10px + env(safe-area-inset-left));
+  margin-left: 0;
+}
+
+/* Controles del tiempo (tarea f11-t3): pausa y ×1, ×2, ×4 y ×8. */
+.tiempo {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radio-pequeno);
+  background: rgb(255 255 255 / 5%);
+}
+
+.tiempo__boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.tiempo__boton:hover {
+  background: rgb(255 255 255 / 8%);
+  color: var(--texto);
+}
+
+.tiempo__boton:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+
+.tiempo__boton .icono {
+  width: 16px;
+  height: 16px;
+}
+
+.tiempo__velocidad[aria-pressed='true'] {
+  background: var(--acento);
+  color: var(--sobre-acento);
+}
+
+/* En pausa, el botón de seguir se ve en ámbar: el tiempo está parado. */
+.tiempo__pausa[aria-pressed='true'] {
+  background: rgb(242 184 75 / 18%);
+  color: var(--en-curso);
+}
+
 /* Debajo de la barra superior de la partida. */
 .mapa--partida .panel-pais {
   top: calc(68px + env(safe-area-inset-top));

@@ -1064,7 +1064,15 @@
         "rol": "Al frente del Gobierno",
         "saltar": "Pulsa cualquier tecla para seguir"
       },
-      "hora": "Hora"
+      "hora": "Hora",
+      "tiempo": {
+        "etiqueta": "Velocidad del tiempo",
+        "pausar": "Pausar (espacio)",
+        "seguir": "Seguir (espacio)",
+        "velocidad": "Velocidad ×{n} (tecla {tecla})",
+        "enPausa": "En pausa",
+        "aVelocidad": "Velocidad ×{n}"
+      }
     }
   },
   "hojaDeRuta": {
@@ -1208,7 +1216,9 @@
       "cristales": "Minerales industriales",
       "calendario": "Fecha",
       "popularidad": "Popularidad",
-      "salir": "Salir"
+      "salir": "Salir",
+      "pausa": "Pausa",
+      "seguir": "Seguir"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",

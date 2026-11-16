@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.11.0",
-  "actualizado": "2026-11-16T23:41:38Z",
+  "actualizado": "2026-11-16T23:46:32Z",
   "faseActiva": "fase-11",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f11-t2 hecha: huso horario de los 223 países y territorios el 1 de enero de 2010 (scripts/datos/24-husos.ts con la base de datos IANA, dominio público; ocho territorios a mano con su motivo en manual/husos-2010.json). La partida guarda el huso de la capital del jugador; la barra superior enseña la hora junto a la fecha y explica que es la hora local de la capital (p. ej. Madrid, UTC+1); «Nueva partida» enseña el huso del país. Salen bien los casos de 2010: Caracas −4:30, Samoa −11, Katmandú +5:45 y el horario de verano del sur.",
-    "siguientePaso": "f11-t3: controles del tiempo en la barra superior (pausa, ×1 a ×8, espacio y 1 a 4); las herramientas del mapa pasan a una fila debajo de la barra para que quepa todo a 1280 px.",
+    "resumen": "f11-t3 hecha: el tiempo corre. Junto a la fecha y la hora de la barra superior están la pausa y ×1, ×2, ×4 y ×8 (ratón, barra espaciadora y teclas 1 a 4); la partida empieza en pausa y, al seguir, vuelve a la última velocidad. Mientras corre, cada fotograma pide al motor las horas que tocan y la barra se repinta; en pausa no gasta nada. Al pedir salir (Menú o «atrás»), el tiempo se para y, si se cancela, sigue. Las herramientas del mapa (sonido, capas y buscador) pasan a una fila bajo la barra para que todo quepa a 1280 px.",
+    "siguientePaso": "f11-t4: reloj animado con manecillas, sombra de la noche en el mapa (con su ajuste) y sonidos de pausa y velocidad; después, cerrar la Fase 11 como v0.12.0.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -744,20 +744,20 @@
           "titulo": "Hora de la capital: huso horario de cada país el 1 de enero de 2010 (base de datos IANA de husos horarios, dominio público); el reloj marca la hora local de la capital del jugador",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/95522c1"
         },
         {
           "id": "f11-t3",
           "titulo": "Controles del tiempo en la barra superior: pausa y ×1, ×2, ×4 y ×8 con el ratón y el teclado (espacio y 1 a 4); la fecha y la hora avanzan en pantalla; la partida empieza en pausa",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f11-t4",
           "titulo": "Audiovisual: reloj animado con manecillas, sombra de la noche en el mapa que avanza con las horas (se puede quitar en Ajustes) y sonidos de pausa y de cambio de velocidad",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         }
       ]
