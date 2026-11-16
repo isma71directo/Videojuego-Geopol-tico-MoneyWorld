@@ -67,7 +67,7 @@
     },
     "mapa": {
       "volver": "Volver",
-      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, C para elegir la capa del mapa, M para silenciar el sonido y F para ver el rendimiento.",
+      "etiqueta": "Mapa del mundo de 2010. Arrastra para moverte, usa la rueda para acercar (al acercarte aparecen las regiones), haz clic en un país, una región o una ciudad para ver su ficha, Escape para quitar la selección, C para elegir la capa del mapa, clic derecho (o la tecla de menú) para las acciones, M para silenciar el sonido y F para ver el rendimiento.",
       "cargando": "Cargando el mapa…",
       "error": "No se ha podido cargar el mapa. Comprueba la conexión.",
       "pais": {
@@ -243,12 +243,31 @@
         },
         "porRegiones": "Al acercarte, también por regiones.",
         "regionesDensidad": "La superficie de las regiones se mide en el mapa."
+      },
+      "menu": {
+        "etiqueta": "Acciones del mapa",
+        "verFicha": "Ver la ficha",
+        "verFichaDe": "Ver la ficha de {pais}",
+        "verRegion": "Ver la región",
+        "verCiudad": "Ver la ciudad",
+        "centrar": "Centrar el mapa aquí",
+        "acercar": "Acercar aquí",
+        "verMundo": "Ver el mundo entero"
       }
     },
     "componentes": {
       "cerrarVentana": "Cerrar la ventana «{titulo}»",
       "cerrarPanel": "Cerrar el panel «{titulo}»",
-      "moverVentana": "Arrastra el título para mover la ventana (con el teclado: Alt + flechas)"
+      "moverVentana": "Arrastra el título para mover la ventana (con el teclado: Alt + flechas)",
+      "sinDato": "—",
+      "graficos": {
+        "verTabla": "Ver como tabla",
+        "verGrafico": "Ver como gráfico",
+        "resumenLineas": "{titulo}: {series}, de {desde} a {hasta}. Usa las flechas para ver cada valor o la vista de tabla.",
+        "anio": "Año",
+        "nombre": "Nombre",
+        "valor": "Valor"
+      }
     }
   },
   "hojaDeRuta": {

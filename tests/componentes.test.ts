@@ -13,6 +13,25 @@ import { abrirPanel, panelEn } from '../src/ui/componentes/panel';
 import { crearPestanas } from '../src/ui/componentes/pestanas';
 import { abrirVentana, cerrarVentanas, ventanasAbiertas } from '../src/ui/componentes/ventana';
 import { el } from '../src/ui/dom';
+import {
+  COLORES_SERIES,
+  ajustarAlPaso,
+  escalaLineal,
+  formatoEje,
+  marcasBonitas,
+  ordenarFilas,
+  posicionInformacion,
+} from '../src/ui/componentes/escalas';
+import { crearTabla } from '../src/ui/componentes/tabla';
+import { crearDeslizador } from '../src/ui/componentes/deslizador';
+import { conInformacion, ESPERA_INFORMACION_MS } from '../src/ui/componentes/info';
+import { abrirMenuContextual, menuAbierto, SEPARADOR } from '../src/ui/componentes/menu';
+import {
+  barraDePartes,
+  graficoBarras,
+  graficoLineas,
+  minigrafico,
+} from '../src/ui/componentes/graficos';
 
 const PANTALLAS = [
   { ancho: 1280, alto: 720 },
@@ -254,5 +273,335 @@ describe('pestañas (tarea f7-t1)', () => {
     // Cada contenido se crea una sola vez.
     expect(creadas).toEqual(['resumen', 'economia', 'politica']);
     expect(cambios).toEqual(['economia', 'politica', 'resumen', 'politica', 'resumen', 'economia']);
+  });
+});
+
+describe('cuentas de tablas, gráficos e información (tarea f7-t2)', () => {
+  it('escalas y marcas redondas de los ejes', () => {
+    const x = escalaLineal([2000, 2010], [0, 100]);
+    expect(x(2005)).toBe(50);
+    expect(marcasBonitas(0, 37)).toEqual([0, 10, 20, 30, 40]);
+    expect(marcasBonitas(-2.3, 8.1)).toEqual([-5, 0, 5, 10]);
+    expect(marcasBonitas(0.1, 0.3, 3)).toEqual([0.1, 0.2, 0.3]);
+    expect(formatoEje([0, 2500, 5000])(2500)).toBe('2.500');
+    expect(formatoEje([0, 20000])(20000)).toMatch(/^20\smil$/);
+    expect(formatoEje([-5, 5])(-5)).toBe('−5');
+  });
+
+  it('ordena filas: cifras, textos en español y los vacíos al final', () => {
+    const filas = [
+      { n: 'Ávila', v: 3 },
+      { n: 'Albacete', v: null },
+      { n: 'Zamora', v: 10 },
+      { n: 'cáceres', v: 1 },
+    ];
+    expect(ordenarFilas(filas, (f) => f.v, 'desc').map((f) => f.n)).toEqual([
+      'Zamora',
+      'Ávila',
+      'cáceres',
+      'Albacete',
+    ]);
+    expect(ordenarFilas(filas, (f) => f.v, 'asc').map((f) => f.n)).toEqual([
+      'cáceres',
+      'Ávila',
+      'Zamora',
+      'Albacete',
+    ]);
+    expect(ordenarFilas(filas, (f) => f.n, 'asc').map((f) => f.n)).toEqual([
+      'Albacete',
+      'Ávila',
+      'cáceres',
+      'Zamora',
+    ]);
+  });
+
+  for (const pantalla of PANTALLAS) {
+    it(`la información cabe en la pantalla (${pantalla.ancho} × ${pantalla.alto})`, () => {
+      const info = { ancho: 200, alto: 60 };
+      const arriba = posicionInformacion({ x: 500, y: 300, ancho: 40, alto: 20 }, info, pantalla);
+      expect(arriba).toEqual({ x: 420, y: 232, lado: 'arriba' });
+      const abajo = posicionInformacion({ x: 2, y: 10, ancho: 40, alto: 20 }, info, pantalla);
+      expect(abajo).toEqual({ x: 8, y: 38, lado: 'abajo' });
+      const borde = posicionInformacion(
+        { x: pantalla.ancho - 10, y: 400, ancho: 10, alto: 10 },
+        info,
+        pantalla,
+      );
+      expect(borde.x + info.ancho).toBeLessThanOrEqual(pantalla.ancho - 8);
+    });
+  }
+
+  it('los deslizadores se quedan en su intervalo y en un múltiplo del paso', () => {
+    expect(ajustarAlPaso(23.3, 0, 50, 0.5)).toBe(23.5);
+    expect(ajustarAlPaso(-4, 0, 50, 1)).toBe(0);
+    expect(ajustarAlPaso(99, 0, 50, 1)).toBe(50);
+  });
+
+  it('los colores de las series son los ocho validados, en su orden', () => {
+    expect(COLORES_SERIES).toHaveLength(8);
+    expect(new Set(COLORES_SERIES).size).toBe(8);
+  });
+});
+
+describe('tablas ordenables (tarea f7-t2)', () => {
+  const paises = [
+    { nombre: 'España', paro: 19.9 },
+    { nombre: 'Alemania', paro: 7.0 },
+    { nombre: 'Grecia', paro: 12.7 },
+  ];
+  const columnas = [
+    { id: 'nombre', titulo: 'País', valor: (p: (typeof paises)[number]) => p.nombre },
+    {
+      id: 'paro',
+      titulo: 'Paro',
+      valor: (p: (typeof paises)[number]) => p.paro,
+      formato: (v: number | string) => `${v} %`,
+    },
+  ];
+
+  it('ordena al pulsar el título de una columna, y al revés la segunda vez', () => {
+    const tabla = crearTabla({ etiqueta: 'Paro', columnas, filas: paises });
+    document.body.appendChild(tabla.elemento);
+    const [nombre, paro] = [...tabla.elemento.querySelectorAll<HTMLButtonElement>('th button')];
+    paro!.click();
+    expect(tabla.filasVisibles.map((p) => p.nombre)).toEqual(['España', 'Grecia', 'Alemania']);
+    expect(paro!.closest('th')!.getAttribute('aria-sort')).toBe('descending');
+    paro!.click();
+    expect(tabla.filasVisibles.map((p) => p.nombre)).toEqual(['Alemania', 'Grecia', 'España']);
+    expect(paro!.closest('th')!.getAttribute('aria-sort')).toBe('ascending');
+    nombre!.click();
+    expect(tabla.filasVisibles.map((p) => p.nombre)).toEqual(['Alemania', 'España', 'Grecia']);
+    expect(paro!.closest('th')!.hasAttribute('aria-sort')).toBe(false);
+    const celdas = [...tabla.elemento.querySelectorAll('tbody tr:first-child td')];
+    expect(celdas.map((c) => c.textContent)).toEqual(['Alemania', '7 %']);
+    expect(celdas[1]!.classList.contains('tabla__numero')).toBe(true);
+  });
+
+  it('con acción por fila, las flechas recorren las filas e Intro elige', () => {
+    const elegidas: string[] = [];
+    const tabla = crearTabla({
+      etiqueta: 'Paro',
+      columnas,
+      filas: paises,
+      alElegir: (p) => elegidas.push(p.nombre),
+    });
+    document.body.appendChild(tabla.elemento);
+    const filas = [...tabla.elemento.querySelectorAll<HTMLElement>('tbody tr')];
+    expect(filas.map((f) => f.tabIndex)).toEqual([0, -1, -1]);
+    filas[0]!.focus();
+    tecla(filas[0]!, 'ArrowDown');
+    expect(document.activeElement).toBe(filas[1]);
+    tecla(filas[1]!, 'Enter');
+    filas[2]!.click();
+    expect(elegidas).toEqual(['Alemania', 'Grecia']);
+  });
+});
+
+describe('deslizadores (tarea f7-t2)', () => {
+  it('muestra el valor con su unidad y avisa al moverse', () => {
+    const cambios: number[] = [];
+    const deslizador = crearDeslizador({
+      etiqueta: 'IVA',
+      min: 0,
+      max: 30,
+      paso: 0.5,
+      valor: 16,
+      formato: (v) => `${v} %`,
+      alCambiar: (v) => cambios.push(v),
+    });
+    document.body.appendChild(deslizador.elemento);
+    expect(deslizador.elemento.querySelector('output')!.textContent).toBe('16 %');
+    expect(deslizador.control.getAttribute('aria-valuetext')).toBe('16 %');
+    expect(deslizador.elemento.querySelector('label')!.getAttribute('for')).toBe(
+      deslizador.control.id,
+    );
+    deslizador.control.value = '21';
+    deslizador.control.dispatchEvent(new Event('input', { bubbles: true }));
+    expect(cambios).toEqual([21]);
+    expect(deslizador.elemento.querySelector('output')!.textContent).toBe('21 %');
+    deslizador.ponerValor(80);
+    expect(deslizador.valor).toBe(30);
+  });
+});
+
+describe('información al pasar el ratón (tarea f7-t2)', () => {
+  it('aparece con el foco y tras un instante con el ratón; se va al salir', () => {
+    vi.useFakeTimers();
+    const boton = el('button', { type: 'button' }, 'PIB');
+    document.body.appendChild(boton);
+    const quitar = conInformacion(boton, () => ['Producto interior bruto de 2010']);
+    boton.dispatchEvent(new FocusEvent('focus'));
+    const info = document.getElementById('info-emergente')!;
+    expect(info.hidden).toBe(false);
+    expect(info.textContent).toBe('Producto interior bruto de 2010');
+    expect(boton.getAttribute('aria-describedby')).toBe('info-emergente');
+    boton.dispatchEvent(new FocusEvent('blur'));
+    expect(info.hidden).toBe(true);
+    boton.dispatchEvent(new PointerEvent('pointerenter'));
+    expect(info.hidden).toBe(true);
+    vi.advanceTimersByTime(ESPERA_INFORMACION_MS + 10);
+    expect(info.hidden).toBe(false);
+    boton.dispatchEvent(new PointerEvent('pointerleave'));
+    expect(info.hidden).toBe(true);
+    quitar();
+    vi.useRealTimers();
+  });
+});
+
+describe('menú contextual (tarea f7-t2)', () => {
+  beforeEach(() => ponerPantalla(1280, 720));
+
+  it('se abre con el foco en la primera opción y se maneja con el teclado', () => {
+    const origen = el('button', { type: 'button' }, 'Mapa');
+    document.body.appendChild(origen);
+    origen.focus();
+    const hechas: string[] = [];
+    const menu = abrirMenuContextual({
+      etiqueta: 'Acciones',
+      titulo: 'España',
+      x: 100,
+      y: 100,
+      opciones: [
+        { etiqueta: 'Ver la ficha', accion: () => hechas.push('ficha') },
+        SEPARADOR,
+        { etiqueta: 'Desactivada', desactivada: true, accion: () => hechas.push('no') },
+        { etiqueta: 'Centrar', accion: () => hechas.push('centrar') },
+      ],
+    });
+    const opciones = [...menu.elemento.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')];
+    expect(menu.elemento.getAttribute('role')).toBe('menu');
+    expect(opciones).toHaveLength(3);
+    expect(document.activeElement).toBe(opciones[0]);
+    tecla(opciones[0]!, 'ArrowUp');
+    expect(document.activeElement).toBe(opciones[2]);
+    opciones[1]!.click();
+    expect(hechas).toEqual([]);
+    expect(menu.abierto).toBe(true);
+    const enDocumento = vi.fn();
+    document.addEventListener('keydown', enDocumento);
+    tecla(opciones[2]!, 'Escape');
+    document.removeEventListener('keydown', enDocumento);
+    expect(menu.abierto).toBe(false);
+    expect(enDocumento).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(origen);
+  });
+
+  it('elegir una opción la hace y cierra el menú; solo hay un menú a la vez', () => {
+    const hechas: string[] = [];
+    const primero = abrirMenuContextual({
+      etiqueta: 'A',
+      x: 10,
+      y: 10,
+      opciones: [{ etiqueta: 'Uno', accion: () => hechas.push('uno') }],
+    });
+    const segundo = abrirMenuContextual({
+      etiqueta: 'B',
+      x: 1270,
+      y: 700,
+      opciones: [{ etiqueta: 'Dos', accion: () => hechas.push('dos') }],
+    });
+    expect(primero.abierto).toBe(false);
+    expect(menuAbierto()).toBe(segundo);
+    // Abierto junto al borde, no se sale de la pantalla.
+    const [, x, y] = /translate\((\d+)px, (\d+)px\)/.exec(segundo.elemento.style.transform)!;
+    expect(Number(x) + 220).toBeLessThanOrEqual(1280);
+    expect(Number(y)).toBeLessThan(720);
+    segundo.elemento.querySelector<HTMLButtonElement>('[role="menuitem"]')!.click();
+    expect(hechas).toEqual(['dos']);
+    expect(menuAbierto()).toBeNull();
+  });
+});
+
+describe('gráficos básicos (tarea f7-t2)', () => {
+  const series = [
+    {
+      nombre: 'España',
+      puntos: [
+        [2008, 11.3],
+        [2009, 17.9],
+        [2010, 19.9],
+      ] as [number, number][],
+    },
+    {
+      nombre: 'Alemania',
+      puntos: [
+        [2008, 7.5],
+        [2009, 7.7],
+        [2010, 7.0],
+      ] as [number, number][],
+    },
+  ];
+
+  it('líneas: una por serie, leyenda, valores con las flechas y vista de tabla', () => {
+    const figura = graficoLineas({ titulo: 'Paro', series, formatoY: (v) => `${v} %` });
+    document.body.appendChild(figura);
+    expect(figura.querySelectorAll('.grafico__linea')).toHaveLength(2);
+    expect(figura.querySelectorAll('.grafico__leyenda li')).toHaveLength(2);
+    const dibujo = figura.querySelector('svg')!;
+    expect(dibujo.getAttribute('aria-label')).toContain('España, Alemania');
+    tecla(dibujo, 'End');
+    const info = figura.querySelector<HTMLElement>('.grafico__info')!;
+    expect(info.hidden).toBe(false);
+    expect(info.textContent).toContain('2010');
+    expect(info.textContent).toContain('19.9 %');
+    tecla(dibujo, 'ArrowLeft');
+    expect(info.textContent).toContain('2009');
+    const alternar = figura.querySelector<HTMLButtonElement>('.grafico__alternar')!;
+    alternar.click();
+    const filas = figura.querySelectorAll('.tabla tbody tr');
+    expect(filas).toHaveLength(3);
+    expect(figura.querySelector<HTMLElement>('.grafico__lienzo')!.hidden).toBe(true);
+    alternar.click();
+    expect(figura.querySelector<HTMLElement>('.grafico__lienzo')!.hidden).toBe(false);
+  });
+
+  it('una sola serie no lleva leyenda (el título ya la nombra)', () => {
+    const figura = graficoLineas({ titulo: 'Paro de España', series: [series[0]!] });
+    expect(figura.querySelector('.grafico__leyenda')).toBeNull();
+  });
+
+  it('barras: una por dato, con su valor en el extremo', () => {
+    const figura = graficoBarras({
+      titulo: 'PIB',
+      barras: [
+        { etiqueta: 'España', valor: 1430 },
+        { etiqueta: 'Italia', valor: 2130 },
+      ],
+      formato: (v) => `${v} mil M$`,
+    });
+    const barras = figura.querySelectorAll('.grafico__barra');
+    expect(barras).toHaveLength(2);
+    expect(barras[1]!.getAttribute('aria-label')).toBe('Italia: 2130 mil M$');
+    expect([...figura.querySelectorAll('.grafico__valor')].map((v) => v.textContent)).toEqual([
+      '1430 mil M$',
+      '2130 mil M$',
+    ]);
+  });
+
+  it('barra de partes: cada parte con su porcentaje y leyenda; sin las vacías', () => {
+    const figura = barraDePartes({
+      titulo: 'Mix eléctrico',
+      partes: [
+        { etiqueta: 'Gas', valor: 64 },
+        { etiqueta: 'Nuclear', valor: 62 },
+        { etiqueta: 'Eólica', valor: 44 },
+        { etiqueta: 'Solar', valor: 7 },
+        { etiqueta: 'Carbón', valor: 0 },
+      ],
+    });
+    const bloques = [...figura.querySelectorAll<HTMLElement>('.partes__bloque')];
+    expect(bloques).toHaveLength(4);
+    expect(bloques[0]!.textContent).toMatch(/36\s?%/);
+    // La solar (4 %) es demasiado estrecha para escribir dentro: va en la leyenda y en la tabla.
+    expect(bloques[3]!.textContent).toBe('');
+    expect(bloques[3]!.getAttribute('aria-label')).toMatch(/Solar: 7 \(4\s?%\)/);
+    expect(figura.querySelectorAll('.grafico__leyenda li')).toHaveLength(4);
+  });
+
+  it('minigráfico: una línea y un punto en el último valor', () => {
+    const mini = minigrafico([1, 3, 2, 5], { etiqueta: 'Tendencia' });
+    expect(mini.querySelector('path')!.getAttribute('d')!.split('L')).toHaveLength(4);
+    expect(mini.querySelectorAll('circle')).toHaveLength(1);
+    expect(mini.getAttribute('aria-label')).toBe('Tendencia');
   });
 });

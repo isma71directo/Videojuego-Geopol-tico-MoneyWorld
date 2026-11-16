@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.7.1",
-  "actualizado": "2026-11-16T07:24:24Z",
+  "actualizado": "2026-11-16T07:32:48Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-t1 hecha: tipografía Inter (OFL, @fontsource-variable/inter, también en los nombres del mapa), tokens del tema oscuro y componentes en src/ui/componentes: ventanas flotantes movibles que recuerdan su sitio (varias a la vez, Alt + flechas, Escape), paneles laterales (uno por lado) y pestañas accesibles (flechas, Inicio, Fin). Tests con happy-dom a 1280 × 720 y 1920 × 1080.",
-    "siguientePaso": "f7-t2: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos.",
+    "resumen": "f7-t2 hecha: tablas ordenables, deslizadores, información al pasar el ratón, menú contextual (también con clic derecho o Mayús + F10 en el mapa: ver la ficha, centrar, acercar y ver el mundo) y gráficos en SVG propio (líneas con guía y valores, barras, barra de partes en lugar de sectores y minigráficos), con vista de tabla y colores de serie validados para daltonismo.",
+    "siguientePaso": "f7-t3: muestrario de todos los componentes en la galería.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
@@ -508,13 +508,13 @@
           "titulo": "Base de interfaz para PC: tema oscuro, tipografía Inter, paneles laterales, ventanas flotantes movibles que recuerdan su sitio (varias a la vez) y pestañas",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3ab4e54"
         },
         {
           "id": "f7-t2",
           "titulo": "Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos (líneas, barras, sectores y minigráficos)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

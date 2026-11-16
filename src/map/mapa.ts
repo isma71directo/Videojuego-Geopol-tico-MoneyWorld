@@ -380,6 +380,44 @@ export class MapaMundo {
     this.alSenalar?.(objetivo, x ?? 0, y ?? 0);
   };
 
+  /** Lo que hay en un punto de la pantalla del mapa: ciudad, región o país (o null si es mar). */
+  objetivoEn(x: number, y: number): Objetivo | null {
+    const ciudad = this.ciudadEn(x, y);
+    if (ciudad) return { tipo: 'ciudad', ciudad };
+    const pais = this.paisEn(x, y);
+    if (!pais) return null;
+    const region = this.regionEn(x, y, pais);
+    return region
+      ? { tipo: 'region', region: this.senalarRegion(region) }
+      : { tipo: 'pais', id: pais };
+  }
+
+  /** Lleva el punto (x, y) de la pantalla al centro, con un desplazamiento suave. */
+  centrarEn(x: number, y: number): void {
+    this.detenerAnimacion();
+    const inicio = this.camara;
+    const dx = inicio.ancho / 2 - x;
+    const dy = inicio.alto / 2 - y;
+    if (this.sinMovimiento) {
+      this.vista = desplazar(inicio, dx, dy);
+      return;
+    }
+    const t0 = performance.now();
+    const paso = (ahora: number): void => {
+      const t = Math.min(1, (ahora - t0) / 320);
+      const suave = 1 - (1 - t) ** 3;
+      this.vista = desplazar(inicio, dx * suave, dy * suave);
+      this.animacion = t < 1 ? requestAnimationFrame(paso) : null;
+    };
+    this.animacion = requestAnimationFrame(paso);
+  }
+
+  /** Vuelve a la vista del mundo entero. */
+  verMundo(): void {
+    this.detenerAnimacion();
+    this.vista = camaraInicial(this.camara.ancho, this.camara.alto);
+  }
+
   /** Clic sin arrastre: selecciona la ciudad, la región o el país (o nada si es mar). */
   alTocar = (x: number, y: number): void => {
     const ciudad = this.ciudadEn(x, y);
