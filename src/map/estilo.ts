@@ -1,28 +1,31 @@
 /**
  * Estilo visual del mapa (tareas audiovisuales de las Fases 3 y 4): océano, agua, bordes y una
- * paleta de colores de país suaves que combinan con el relieve. Qué color lleva cada país lo
- * decide colores.ts (siempre el mismo y nunca el de un vecino).
+ * paleta de colores de país que combinan con el terreno. Qué color lleva cada país lo decide
+ * colores.ts (siempre el mismo, nunca uno parecido al de un vecino).
  */
 import type { Estilo } from './mapa';
+import { hexDeOklch } from './rampas';
 
 /**
- * Tonos de mapa político, apagados para el tema oscuro y para que se lea el relieve.
- * Doce tonos bien distintos entre sí (ajuste f4-a1: el jugador pidió más colores).
+ * Tonos del mapa político (ajuste f6-a1: el jugador pidió muchos más colores para que no se
+ * note la repetición al ver el mundo entero). Se crean con código en OKLCH: 15 tonos del
+ * círculo cromático, cada 24°, con tres luminosidades (cada nivel girado unos grados para que
+ * no coincidan los tonos). En total, 45 colores; colores.ts evita que los parecidos queden
+ * cerca. Croma moderado: van semitransparentes sobre el terreno y con el tema oscuro.
  */
-export const PALETA = [
-  '#6f8fb5', // azul
-  '#7fa66b', // verde
-  '#cc9459', // ocre
-  '#9b7fb8', // violeta
-  '#4fae96', // turquesa
-  '#b86b6b', // teja
-  '#a9ae5c', // oliva
-  '#c587a5', // rosa
-  '#8a7a58', // caqui
-  '#6cb6cf', // celeste
-  '#d3ab98', // arena
-  '#4f8486', // petróleo
+const TONOS_PALETA = 15;
+const NIVELES_PALETA: readonly (readonly [number, number, number])[] = [
+  // [luminosidad, croma, giro del tono en grados]
+  [0.61, 0.12, 0],
+  [0.69, 0.115, 8],
+  [0.77, 0.105, 16],
 ];
+
+export const PALETA: readonly string[] = NIVELES_PALETA.flatMap(([luz, croma, giro]) =>
+  Array.from({ length: TONOS_PALETA }, (_, i) =>
+    hexDeOklch([luz, croma, (i * 360) / TONOS_PALETA + giro]),
+  ),
+);
 
 export const ESTILO_MAPA: Estilo = {
   fondo: '#060b14',

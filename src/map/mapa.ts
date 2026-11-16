@@ -408,7 +408,7 @@ export class MapaMundo {
   private opacidadPaises(): number {
     if (!this.terreno) return 1;
     const i = this.intensidadTerreno;
-    return this.coloreado ? 1 - 0.3 * i : 1 - 0.65 * i;
+    return this.coloreado ? 1 - 0.3 * i : 1 - 0.55 * i;
   }
 
   /** Capa de datos que se pinta (o null para volver a la capa política). */
