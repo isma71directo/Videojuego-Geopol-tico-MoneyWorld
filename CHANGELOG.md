@@ -7,6 +7,43 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.9.0 - 2026-11-16
+
+Fase 8: ficha de país.
+
+### Añadido
+
+- **Ficha de país** en el panel de la derecha, con cuatro pestañas:
+  - **Resumen:** régimen político con su icono, jefe de Estado y jefe de Gobierno con su retrato,
+    cargo y año de llegada; capital, región, nivel de renta, población, PIB y PIB por habitante.
+  - **Economía:** PIB, crecimiento, paro, inflación, deuda, saldo fiscal, cuenta corriente y
+    comercio; PIB por sectores y electricidad por fuente, con sus barras.
+  - **Sociedad:** población, superficie, densidad, esperanza de vida, alfabetización, acceso a la
+    electricidad, internet, gasto en sanidad, educación y defensa, efectivos militares y CO₂.
+  - **Fuentes:** de dónde sale cada dato, los cargos y el régimen.
+  - Cada dato explica qué es al pasar el ratón y los estimados llevan asterisco y aviso.
+  - La pestaña elegida se recuerda al cambiar de país.
+- **Gobiernos de 2010** (`scripts/datos/20-gobiernos.ts`, Wikidata):
+  - Régimen (uno de los 8 del GDD) y jefes de Estado y de Gobierno de los 223 países a 1 de enero
+    de 2010.
+  - Correcciones a mano en `scripts/datos/manual/gobiernos-2010.json`, cada una con su motivo:
+    regímenes que han cambiado desde 2010, cargos que faltan, erratas de Wikidata y nombres de país
+    de 2010.
+  - Los cargos van en femenino cuando los ocupa una mujer.
+  - Los territorios dependientes muestran el jefe de Estado de su soberano.
+- **Retratos ilustrados** (`src/av/retratos.ts`): bustos dibujados con código en SVG, nunca
+  fotografías, sobre el color del país en el mapa.
+  - **97 homenajes** a los líderes de 2010 de los países y figuras importantes: todos los del G20,
+    el papa, Jameneí, Kim Jong-il, Gadafi, Chávez, Raúl Castro…
+  - Cada homenaje es reconocible por su pelo, barba, gafas, ropa, tocado o gesto: la media melena
+    de Merkel, la trenza de Timoshenko, el sombrero y las perlas de Isabel II, la boina de Chávez,
+    el gorro karakul de Karzai, el turbante de Manmohan Singh…
+  - El resto lleva un retrato genérico, respetuoso y siempre igual para la misma persona, según la
+    región del país, el estilo de su régimen (uniforme en las juntas, túnica y kufiya en las
+    monarquías del Golfo, boubou en el Sahel), el sexo y la edad.
+- **Iconos de los 8 regímenes.**
+- **Galería:** los iconos de los regímenes y los 326 retratos, primero los homenajes.
+
 ## 0.8.2 - 2026-11-16
 
 Ajustes de la Fase 7 pedidos por el jugador al probar la v0.8.1.

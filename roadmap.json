@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.8.2",
-  "actualizado": "2026-11-16T12:23:58Z",
-  "faseActiva": "fase-8",
+  "versionActual": "0.9.0",
+  "actualizado": "2026-11-16T12:50:56Z",
+  "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f8-t4 hecha: 97 retratos homenaje de los líderes de 2010 (todos los jefes de Estado y de Gobierno del G20 y figuras como el papa, Jameneí, Kim Jong-il, Gadafi, Chávez o Raúl Castro), con rasgos nuevos en el dibujo: media melena de Merkel, trenza de Timoshenko, sombrero y perlas de Isabel II, cejas de Zapatero, boina de Chávez, gorro karakul y chapan de Karzai, turbante de Manmohan Singh, sari y velo, gafas de sol, gestos… Corregidas erratas de Wikidata (nombre de Daniel Ortega, cargo de Medvédev, nombres de país de hoy).",
-    "siguientePaso": "Cerrar la Fase 8 como v0.9.0 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 8 cerrada como v0.9.0: ficha de país con pestañas, régimen y cargos de 2010 y retratos ilustrados (97 homenajes y genéricos para el resto). PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.9.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 9 (buscador y ficha de región).",
+    "pendienteDelJugador": [
+      "Probar la v0.9.0 en el PC: hacer clic en España, Japón y Somalilandia y revisar sus fichas (régimen, jefe de Estado y de Gobierno con su retrato, datos y fuentes en cada pestaña); mirar los retratos de la galería y decir qué homenajes cambiarías",
+      "Fusionar el PR de la Fase 8"
+    ]
   },
   "etapas": [
     {
@@ -578,7 +581,7 @@
       "dependeDe": ["fase-7"],
       "hechoCuando": "Todos los países tienen una ficha completa",
       "pruebaJugador": "Hacer clic en España, Japón y Somalilandia y revisar sus fichas: régimen, jefe de Estado y de Gobierno con su retrato, datos y fuentes en cada pestaña.",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f8-t1",
@@ -606,7 +609,7 @@
           "titulo": "Audiovisual: retratos homenaje (interpretaciones ilustradas, sin fotografías) de los líderes de 2010 de los países y figuras importantes",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/580c29b"
         }
       ]
     },
@@ -4421,6 +4424,17 @@
         "Barra grande abajo con 8 apartados sin «Más» (Gobierno, Ministerios, Política, Economía, Mundo, Ejército, Investigación e Informes), cada uno con su sub-barra",
         "Gobierno separado de Ministerios: los 19 ministerios con su ventana (resumen, presupuesto, leyes, acciones e infraestructuras), vacía hasta su fase",
         "23 iconos nuevos para los ministerios y las ventanas"
+      ]
+    },
+    {
+      "version": "0.9.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Ficha de país en el panel de la derecha con cuatro pestañas: Resumen, Economía, Sociedad y Fuentes (la última elegida se recuerda al cambiar de país)",
+        "Régimen político de 2010 con su icono y jefes de Estado y de Gobierno a 1 de enero de 2010, de Wikidata con correcciones a mano anotadas",
+        "Cada dato explica qué es al pasar el ratón, los estimados van marcados y la pestaña Fuentes dice de dónde sale cada uno",
+        "Retratos ilustrados (bustos dibujados con código, nunca fotografías) de todos los cargos: 97 homenajes a los líderes de 2010 de los países y figuras importantes y retratos genéricos según la región y el régimen para el resto",
+        "Galería: los iconos de los 8 regímenes y todos los retratos"
       ]
     }
   ]
