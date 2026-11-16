@@ -2073,7 +2073,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 3. **Con una *issue*:** desde el botón del juego o desde GitHub, con las etiquetas `fallo`, `idea` o `datos`. Claude las revisa al empezar cada sesión.
 4. **Editando el GDD:** el jugador cambia `docs/GDD.md` y avisa a Claude para que adapte el código y la Hoja de ruta.
 
-**Ajustes tras la prueba:** si al probar una fase el jugador pide cambiar algo de lo que esa fase entregó (colores, cuándo aparece algo, un dato que falta…), se apunta en los `ajustes` de esa fase y sale en una versión de corrección (p. ej. 0.5.1) antes de seguir con la fase siguiente.
+**Ajustes tras la prueba:** si al probar una fase el jugador pide cambiar algo de lo que esa fase entregó (colores, cuándo aparece algo, un dato que falta…), se apunta en los `ajustes` de esa fase y sale en una versión de corrección (p. ej. 0.5.1) antes de seguir con la fase siguiente. Si la versión de esa fase ya se ha superado, el ajuste va a la fase activa y sale en su siguiente versión de corrección (p. ej. un cambio de colores del mapa pedido al probar la v0.8.0 sale en la 0.8.1).
 
 **Registro de cambios de diseño**
 
@@ -2098,6 +2098,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 16/11/2026 | Mapa político con 45 colores (15 tonos × 3 luminosidades) en lugar de 12, repartidos según lo que se parecen a la vista: nunca parecidos entre vecinos, ningún color repetido a menos de 1.500 km y colores distintos para los países muy grandes; la capa política deja ver algo menos el terreno | Petición del jugador tras probar la v0.7.0 (ajuste f6-a1) | 7, 9 |
 | 16/11/2026 | Fase 7 concretada con el jugador: tipografía Inter (OFL), ventanas movibles que recuerdan su sitio, menú contextual con clic derecho en el mapa desde esta fase; la ficha y el panel del país pasan a los componentes nuevos en la Fase 8; la tarea 1 se divide en dos (base y ventanas; componentes de datos) | Plan de la Fase 7 aprobado por el jugador | 7, 9, 13 |
 | 16/11/2026 | Los gráficos de sectores se sustituyen por una «barra de partes» (una barra dividida en tramos con su porcentaje y leyenda): se comparan mejor los tamaños y se lee igual con daltonismo; todos los gráficos tienen vista de tabla | Buenas prácticas de visualización de datos (f7-t2) | 7, 9 |
+| 16/11/2026 | Un ajuste de una fase cuya versión ya se ha superado va a la fase activa y sale en su siguiente versión de corrección | Petición del jugador sobre los colores del mapa al probar la v0.8.0 | 10, 12 |
 
 ---
 
