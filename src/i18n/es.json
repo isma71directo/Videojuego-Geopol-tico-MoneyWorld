@@ -268,6 +268,361 @@
         "nombre": "Nombre",
         "valor": "Valor"
       }
+    },
+    "secciones": {
+      "etiqueta": "Secciones del gobierno",
+      "tecla": "Tecla {tecla}",
+      "ayudaGrupo": "{grupo} · tecla {tecla}: {secciones}",
+      "llega": "Se llena en la Fase {n} · {fase} (v{version})",
+      "vacia": "Esta parte de la ventana todavía está vacía: así se ve dónde irá cada cosa.",
+      "grupos": {
+        "gobierno": "Gobierno",
+        "economia": "Economía",
+        "politica": "Política",
+        "mundo": "Mundo",
+        "ejercito": "Ejército",
+        "mas": "Más"
+      },
+      "consejo": {
+        "titulo": "Consejo de Ministros",
+        "pestanas": {
+          "ministerios": {
+            "titulo": "Ministerios",
+            "texto": "Los 20 ministerios con su ministro, su presupuesto, sus indicadores clave y sus alertas. Se podrá nombrar y cesar ministros y crear, fusionar o suprimir ministerios."
+          },
+          "asesores": {
+            "titulo": "Asesores",
+            "texto": "Cada ministro avisa de los problemas y propone medidas («El paro juvenil supera el 40 %. Propuesta: plan de empleo joven»)."
+          }
+        }
+      },
+      "presupuesto": {
+        "titulo": "Presupuesto",
+        "pestanas": {
+          "partidas": {
+            "titulo": "Ingresos y gastos",
+            "texto": "Ingresos y gastos por partida y ministerio con deslizadores, previsión a 12 meses y comparación con el año anterior."
+          },
+          "deuda": {
+            "titulo": "Deuda",
+            "texto": "Déficit, emisión de bonos, intereses, prima de riesgo y rating; impago y ayuda del FMI."
+          }
+        }
+      },
+      "impuestos": {
+        "titulo": "Impuestos",
+        "pestanas": {
+          "impuestos": {
+            "titulo": "Impuestos",
+            "texto": "Todos los impuestos con sus tipos, su recaudación, la economía sumergida y la evasión."
+          },
+          "simulador": {
+            "titulo": "Simulador",
+            "texto": "Qué pasa si cambias un impuesto: «si subes el IVA un punto, recaudarás X», con sus efectos en el consumo, la inversión y la desigualdad."
+          }
+        }
+      },
+      "parlamento": {
+        "titulo": "Parlamento y leyes",
+        "pestanas": {
+          "hemiciclo": {
+            "titulo": "Hemiciclo",
+            "texto": "Una o dos cámaras con los escaños de 2010 y las votaciones escaño a escaño."
+          },
+          "negociacion": {
+            "titulo": "Negociación",
+            "texto": "Negociación de apoyos, coaliciones, gobiernos en minoría, moción de censura y cuestión de confianza."
+          },
+          "leyes": {
+            "titulo": "Leyes",
+            "texto": "Catálogo de leyes con buscador, filtros y previsión de votos."
+          },
+          "historial": {
+            "titulo": "Historial de leyes",
+            "texto": "Las leyes aprobadas y derogadas durante la partida, con su fecha y su votación (petición del jugador)."
+          }
+        }
+      },
+      "economia": {
+        "titulo": "Economía",
+        "pestanas": {
+          "indicadores": {
+            "titulo": "Indicadores",
+            "texto": "Gráficos históricos de PIB, paro, inflación y deuda, mes a mes."
+          },
+          "banco": {
+            "titulo": "Banco central",
+            "texto": "Tipos de interés y su evolución; en la zona euro, las decisiones del BCE."
+          },
+          "sectores": {
+            "titulo": "Sectores",
+            "texto": "Los sectores productivos, sus insumos y los planes industriales."
+          },
+          "empresas": {
+            "titulo": "Empresas",
+            "texto": "Empresas públicas y privadas por sector: nacionalizar, privatizar, rescatar y crear empresas públicas."
+          }
+        }
+      },
+      "energia": {
+        "titulo": "Energía",
+        "pestanas": {
+          "mix": {
+            "titulo": "Mix y demanda",
+            "texto": "Cómo se produce la electricidad (mix) y cuánta se consume."
+          },
+          "red": {
+            "titulo": "Red y precios",
+            "texto": "La red eléctrica, el precio de la electricidad y los apagones."
+          },
+          "combustibles": {
+            "titulo": "Combustibles",
+            "texto": "Petróleo y gas producidos o importados, gasoductos, gas natural licuado y reservas estratégicas."
+          }
+        }
+      },
+      "infraestructuras": {
+        "titulo": "Infraestructuras",
+        "pestanas": {
+          "obras": {
+            "titulo": "Obras",
+            "texto": "Infraestructuras por región y cola de obras por ministerio, con prioridades y retrasos."
+          },
+          "transporte": {
+            "titulo": "Transporte",
+            "texto": "Carreteras, ferrocarril, alta velocidad, puertos y aeropuertos por región, y su conectividad."
+          }
+        }
+      },
+      "partidos": {
+        "titulo": "Partidos y elecciones",
+        "pestanas": {
+          "partidos": {
+            "titulo": "Partidos",
+            "texto": "Los partidos con su ideología, sus líderes y su vida interna: fundar, fusionar, dividir e ilegalizar."
+          },
+          "encuestas": {
+            "titulo": "Encuestas",
+            "texto": "Encuestas semanales de intención de voto, con su margen de error."
+          },
+          "elecciones": {
+            "titulo": "Elecciones",
+            "texto": "Campaña (mítines, debates y promesas) y noche electoral con los resultados en el mapa."
+          }
+        }
+      },
+      "sociedad": {
+        "titulo": "Sociedad",
+        "pestanas": {
+          "grupos": {
+            "titulo": "Grupos sociales",
+            "texto": "Los grupos sociales con su tamaño, sus prioridades y su satisfacción."
+          },
+          "temas": {
+            "titulo": "Opinión pública",
+            "texto": "Temas de preocupación, popularidad del gobierno y valoración de los ministros."
+          },
+          "medios": {
+            "titulo": "Medios",
+            "texto": "Libertad de prensa, medios públicos y privados y su efecto en la opinión pública."
+          }
+        }
+      },
+      "poblacion": {
+        "titulo": "Población",
+        "pestanas": {
+          "poblacion": {
+            "titulo": "Población",
+            "texto": "Población por región, urbanización y migraciones, con su capa del mapa."
+          }
+        }
+      },
+      "regiones": {
+        "titulo": "Regiones",
+        "pestanas": {
+          "regiones": {
+            "titulo": "Regiones",
+            "texto": "Autonomía, competencias y financiación de cada región; gobiernos y elecciones regionales."
+          },
+          "independentismo": {
+            "titulo": "Independentismo",
+            "texto": "Apoyo a la independencia por región y acciones del gobierno central: diálogo, referéndum o intervención."
+          }
+        }
+      },
+      "comercio": {
+        "titulo": "Comercio",
+        "pestanas": {
+          "socios": {
+            "titulo": "Socios",
+            "texto": "Los socios comerciales principales y las dependencias de cada producto."
+          },
+          "politica": {
+            "titulo": "Política comercial",
+            "texto": "Aranceles, cuotas, tratados de libre comercio, uniones aduaneras, embargos y sanciones."
+          }
+        }
+      },
+      "diplomacia": {
+        "titulo": "Diplomacia",
+        "pestanas": {
+          "relaciones": {
+            "titulo": "Relaciones",
+            "texto": "Relaciones con cada país, alianzas e imagen internacional."
+          },
+          "acciones": {
+            "titulo": "Acciones",
+            "texto": "Embajadas, visitas oficiales, cumbres, tratados, ayudas, préstamos y sanciones."
+          },
+          "organizaciones": {
+            "titulo": "Organizaciones",
+            "texto": "ONU, UE, OTAN, Mercosur, OPEP, G20 y las demás, con sus votaciones, adhesiones y salidas."
+          }
+        }
+      },
+      "ejercito": {
+        "titulo": "Ejército",
+        "pestanas": {
+          "fuerzas": {
+            "titulo": "Fuerzas armadas",
+            "texto": "Efectivos, presupuesto, preparación, moral y reclutamiento."
+          },
+          "equipamiento": {
+            "titulo": "Equipamiento",
+            "texto": "Catálogo de equipamiento militar, compras a otros países y fabricación propia."
+          },
+          "guerras": {
+            "titulo": "Guerras",
+            "texto": "Guerras en curso (en 2010, Afganistán e Irak), frentes y bajas."
+          }
+        }
+      },
+      "investigacion": {
+        "titulo": "Investigación",
+        "pestanas": {
+          "arbol": {
+            "titulo": "Árbol tecnológico",
+            "texto": "El árbol de tecnologías por ramas, navegable y con zoom."
+          },
+          "proyectos": {
+            "titulo": "Proyectos",
+            "texto": "Cola de proyectos, prioridades y puntos de investigación por rama."
+          }
+        }
+      },
+      "informes": {
+        "titulo": "Informes y noticias",
+        "pestanas": {
+          "noticias": {
+            "titulo": "Noticias",
+            "texto": "Teletipo de noticias y centro de notificaciones."
+          },
+          "informe": {
+            "titulo": "Informe del mes",
+            "texto": "Resumen de cada mes con lo más importante para tu país."
+          },
+          "historial": {
+            "titulo": "Historial de la partida",
+            "texto": "Línea de tiempo con los hechos clave de la partida e informe anual del país."
+          }
+        }
+      },
+      "comparador": {
+        "titulo": "Comparador",
+        "pestanas": {
+          "comparador": {
+            "titulo": "Comparar países",
+            "texto": "Compara tu país con otros en gráficos."
+          },
+          "clasificaciones": {
+            "titulo": "Clasificaciones",
+            "texto": "Clasificaciones mundiales: PIB, potencia militar, felicidad, tecnología…"
+          }
+        }
+      },
+      "ministeriosNota": "Cada ministerio tendrá ministro, presupuesto, indicadores clave, infraestructuras propias y acciones (GDD, sección 6.4).",
+      "ministerios": {
+        "presidencia": {
+          "nombre": "Presidencia",
+          "indicadores": "Popularidad, estabilidad y cohesión del gobierno"
+        },
+        "economia": {
+          "nombre": "Economía y Hacienda",
+          "indicadores": "Crecimiento, déficit, deuda y recaudación"
+        },
+        "exteriores": {
+          "nombre": "Exteriores",
+          "indicadores": "Relaciones, tratados e imagen internacional"
+        },
+        "defensa": {
+          "nombre": "Defensa",
+          "indicadores": "Fuerza militar, preparación y moral"
+        },
+        "interior": {
+          "nombre": "Interior",
+          "indicadores": "Criminalidad, terrorismo y orden público"
+        },
+        "justicia": {
+          "nombre": "Justicia",
+          "indicadores": "Independencia judicial, corrupción y prisiones"
+        },
+        "sanidad": {
+          "nombre": "Sanidad",
+          "indicadores": "Esperanza de vida, listas de espera y camas"
+        },
+        "educacion": {
+          "nombre": "Educación",
+          "indicadores": "Alfabetización, nivel educativo y abandono"
+        },
+        "ciencia": {
+          "nombre": "Ciencia e Investigación",
+          "indicadores": "Puntos de investigación y patentes"
+        },
+        "trabajo": {
+          "nombre": "Trabajo y Seguridad Social",
+          "indicadores": "Paro, pensiones y salario mínimo"
+        },
+        "industria": {
+          "nombre": "Industria y Comercio",
+          "indicadores": "Producción industrial y exportaciones"
+        },
+        "energia": {
+          "nombre": "Energía",
+          "indicadores": "Mix, precio de la electricidad, apagones y dependencia"
+        },
+        "transportes": {
+          "nombre": "Transportes e Infraestructuras",
+          "indicadores": "Calidad de la red de transporte"
+        },
+        "telecomunicaciones": {
+          "nombre": "Telecomunicaciones y Digital",
+          "indicadores": "Cobertura, velocidad y ciberseguridad"
+        },
+        "agricultura": {
+          "nombre": "Agricultura, Pesca y Alimentación",
+          "indicadores": "Producción agraria y autosuficiencia"
+        },
+        "medioambiente": {
+          "nombre": "Medio Ambiente",
+          "indicadores": "Emisiones, contaminación y espacios protegidos"
+        },
+        "vivienda": {
+          "nombre": "Vivienda",
+          "indicadores": "Precio de la vivienda y sinhogarismo"
+        },
+        "cultura": {
+          "nombre": "Cultura y Deporte",
+          "indicadores": "Satisfacción cultural y turismo"
+        },
+        "igualdad": {
+          "nombre": "Igualdad y Asuntos Sociales",
+          "indicadores": "Pobreza, desigualdad (Gini) y dependencia"
+        },
+        "territorial": {
+          "nombre": "Administraciones Territoriales",
+          "indicadores": "Tensión territorial y nivel de autonomía"
+        }
+      }
     }
   },
   "hojaDeRuta": {
@@ -352,7 +707,24 @@
       "densidad": "Densidad de población",
       "petroleo": "Petróleo",
       "gas": "Gas natural",
-      "carbon": "Carbón"
+      "carbon": "Carbón",
+      "gobierno": "Gobierno",
+      "mundo": "Mundo",
+      "ejercito": "Ejército",
+      "mas": "Más secciones",
+      "ministros": "Consejo de Ministros",
+      "presupuesto": "Presupuesto",
+      "impuestos": "Impuestos",
+      "parlamento": "Parlamento",
+      "infraestructuras": "Infraestructuras",
+      "urna": "Partidos y elecciones",
+      "sociedad": "Sociedad",
+      "regiones": "Regiones",
+      "comercio": "Comercio",
+      "diplomacia": "Diplomacia",
+      "investigacion": "Investigación",
+      "noticias": "Informes y noticias",
+      "comparador": "Comparador"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -389,6 +761,11 @@
     "paleta": {
       "titulo": "Paleta del mapa político",
       "nota": "45 tonos creados con código (15 tonos del círculo cromático con tres luminosidades). Cada país tiene siempre el mismo y nunca uno parecido al de un vecino; con el mundo entero a la vista, ningún color se repite a menos de 1.500 km y los países muy grandes llevan colores distintos entre sí."
+    },
+    "coloresPais": {
+      "titulo": "Color de cada país",
+      "nota": "El color de cada país en el mapa político es, dentro de la paleta, el que se le asocia: el de su bandera o, en los marcados con ★, el de la lista de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado, Países Bajos naranja…). Dos vecinos nunca llevan colores parecidos, así que algunos países llevan su segundo color o uno cercano. Si quieres cambiar alguno, dímelo.",
+      "tradicional": "Color de la lista de colores tradicionales"
     },
     "capas": {
       "titulo": "Capas del mapa",

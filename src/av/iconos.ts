@@ -17,6 +17,23 @@ import pib from './iconos/pib.svg?raw';
 import poblacion from './iconos/poblacion.svg?raw';
 import politica from './iconos/politica.svg?raw';
 import silencio from './iconos/silencio.svg?raw';
+import gobierno from './iconos/gobierno.svg?raw';
+import mundo from './iconos/mundo.svg?raw';
+import ejercito from './iconos/ejercito.svg?raw';
+import mas from './iconos/mas.svg?raw';
+import ministros from './iconos/ministros.svg?raw';
+import presupuesto from './iconos/presupuesto.svg?raw';
+import impuestos from './iconos/impuestos.svg?raw';
+import parlamento from './iconos/parlamento.svg?raw';
+import infraestructuras from './iconos/infraestructuras.svg?raw';
+import urna from './iconos/urna.svg?raw';
+import sociedad from './iconos/sociedad.svg?raw';
+import regiones from './iconos/regiones.svg?raw';
+import comercio from './iconos/comercio.svg?raw';
+import diplomacia from './iconos/diplomacia.svg?raw';
+import investigacion from './iconos/investigacion.svg?raw';
+import noticias from './iconos/noticias.svg?raw';
+import comparador from './iconos/comparador.svg?raw';
 import sonido from './iconos/sonido.svg?raw';
 
 const ICONOS = {
@@ -37,6 +54,24 @@ const ICONOS = {
   petroleo,
   gas,
   carbon,
+  // Barra de secciones y sus ventanas (ajuste f7-a2).
+  gobierno,
+  mundo,
+  ejercito,
+  mas,
+  ministros,
+  presupuesto,
+  impuestos,
+  parlamento,
+  infraestructuras,
+  urna,
+  sociedad,
+  regiones,
+  comercio,
+  diplomacia,
+  investigacion,
+  noticias,
+  comparador,
 };
 
 export type NombreIcono = keyof typeof ICONOS;

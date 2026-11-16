@@ -7,6 +7,42 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.8.1 - 2026-11-16
+
+Ajustes de la Fase 7 pedidos por el jugador al probar la v0.8.0 (opción B en los dos casos).
+
+### Añadido
+
+- **Barra de secciones** abajo en el centro del mapa: Gobierno · Economía · Política · Mundo ·
+  Ejército · Más. Cada botón tiene su letra subrayada como atajo (G, E, P, U, J y S; la M sigue
+  siendo silenciar) y abre un menú con sus secciones.
+- **Ventanas de las 17 secciones del juego**, con sus pestañas, hechas con los componentes de
+  la Fase 7:
+  - Consejo de Ministros, con los 20 ministerios del GDD.
+  - Presupuesto, Impuestos y Parlamento y leyes, con historial de leyes.
+  - Economía, Energía, Infraestructuras, Partidos y elecciones, Sociedad, Población y
+    Regiones.
+  - Comercio, Diplomacia, Ejército, Investigación, Informes y noticias y Comparador.
+
+  Por ahora están vacías: cada pestaña dice qué tendrá y en qué fase se llena. Se pueden abrir
+  varias a la vez y moverlas.
+
+- **17 iconos nuevos** para las secciones, dibujados con código.
+- **Galería: «Color de cada país»**, con la bandera y el color de los 223 países y territorios,
+  para revisarlos.
+
+### Cambiado
+
+- **Color de cada país según el que se le asocia**, dentro de la paleta:
+  - El de su bandera (un script nuevo saca sus colores principales) o el de una lista
+    revisable de colores tradicionales: España amarillo, Reino Unido rojo, Marruecos rojo y
+    verde, Italia verde azulado, Países Bajos naranja, Francia azul, Irlanda y Portugal verde…
+  - Dos vecinos siguen sin llevar nunca colores parecidos, así que algunos países llevan su
+    segundo color o uno cercano.
+  - 178 de 223 llevan su color o uno muy cercano. Ningún color se repite a menos de 1.500 km
+    ni más de 10 veces en el mundo.
+- Las ventanas se abren enteras a la vista aunque sean altas.
+
 ## 0.8.0 - 2026-11-16
 
 Fase 7 · Componentes de interfaz.

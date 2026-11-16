@@ -1,0 +1,226 @@
+{
+  "nota": "Barra de secciones del mapa y ventanas de cada sección (ajuste f7-a2, decisión del jugador). Cada pestaña dice en qué fase de la hoja de ruta se llena; los textos están en src/i18n/es.json (juego.secciones).",
+  "grupos": [
+    {
+      "id": "gobierno",
+      "tecla": "g",
+      "icono": "gobierno",
+      "secciones": ["consejo", "presupuesto", "impuestos", "parlamento"]
+    },
+    {
+      "id": "economia",
+      "tecla": "e",
+      "icono": "pib",
+      "secciones": ["economia", "energia", "infraestructuras"]
+    },
+    {
+      "id": "politica",
+      "tecla": "p",
+      "icono": "urna",
+      "secciones": ["partidos", "sociedad", "poblacion", "regiones"]
+    },
+    {
+      "id": "mundo",
+      "tecla": "u",
+      "icono": "mundo",
+      "secciones": ["comercio", "diplomacia"]
+    },
+    {
+      "id": "ejercito",
+      "tecla": "j",
+      "icono": "ejercito",
+      "secciones": ["ejercito"]
+    },
+    {
+      "id": "mas",
+      "tecla": "s",
+      "icono": "mas",
+      "secciones": ["investigacion", "informes", "comparador"]
+    }
+  ],
+  "secciones": {
+    "consejo": {
+      "icono": "ministros",
+      "pestanas": {
+        "ministerios": 26,
+        "asesores": 27
+      }
+    },
+    "presupuesto": {
+      "icono": "presupuesto",
+      "pestanas": {
+        "partidas": 23,
+        "deuda": 23
+      }
+    },
+    "impuestos": {
+      "icono": "impuestos",
+      "pestanas": {
+        "impuestos": 25,
+        "simulador": 25
+      }
+    },
+    "parlamento": {
+      "icono": "parlamento",
+      "pestanas": {
+        "hemiciclo": 61,
+        "negociacion": 62,
+        "leyes": 67,
+        "historial": 67
+      }
+    },
+    "economia": {
+      "icono": "crecimiento",
+      "pestanas": {
+        "indicadores": 17,
+        "banco": 18,
+        "sectores": 46,
+        "empresas": 47
+      }
+    },
+    "energia": {
+      "icono": "energia",
+      "pestanas": {
+        "mix": 40,
+        "red": 40,
+        "combustibles": 40
+      }
+    },
+    "infraestructuras": {
+      "icono": "infraestructuras",
+      "pestanas": {
+        "obras": 36,
+        "transporte": 37
+      }
+    },
+    "partidos": {
+      "icono": "urna",
+      "pestanas": {
+        "partidos": 60,
+        "encuestas": 64,
+        "elecciones": 65
+      }
+    },
+    "sociedad": {
+      "icono": "sociedad",
+      "pestanas": {
+        "grupos": 56,
+        "temas": 56,
+        "medios": 57
+      }
+    },
+    "poblacion": {
+      "icono": "poblacion",
+      "pestanas": {
+        "poblacion": 29
+      }
+    },
+    "regiones": {
+      "icono": "regiones",
+      "pestanas": {
+        "regiones": 71,
+        "independentismo": 72
+      }
+    },
+    "comercio": {
+      "icono": "comercio",
+      "pestanas": {
+        "socios": 50,
+        "politica": 50
+      }
+    },
+    "diplomacia": {
+      "icono": "diplomacia",
+      "pestanas": {
+        "relaciones": 51,
+        "acciones": 52,
+        "organizaciones": 53
+      }
+    },
+    "ejercito": {
+      "icono": "ejercito",
+      "pestanas": {
+        "fuerzas": 79,
+        "equipamiento": 79,
+        "guerras": 82
+      }
+    },
+    "investigacion": {
+      "icono": "investigacion",
+      "pestanas": {
+        "arbol": 77,
+        "proyectos": 77
+      }
+    },
+    "informes": {
+      "icono": "noticias",
+      "pestanas": {
+        "noticias": 27,
+        "informe": 27,
+        "historial": 99
+      }
+    },
+    "comparador": {
+      "icono": "comparador",
+      "pestanas": {
+        "comparador": 98,
+        "clasificaciones": 98
+      }
+    }
+  },
+  "ministerios": [
+    "presidencia",
+    "economia",
+    "exteriores",
+    "defensa",
+    "interior",
+    "justicia",
+    "sanidad",
+    "educacion",
+    "ciencia",
+    "trabajo",
+    "industria",
+    "energia",
+    "transportes",
+    "telecomunicaciones",
+    "agricultura",
+    "medioambiente",
+    "vivienda",
+    "cultura",
+    "igualdad",
+    "territorial"
+  ],
+  "fases": {
+    "17": "Pantalla de Economía",
+    "18": "Banco central y tipos de interés",
+    "23": "Pantalla de Presupuesto",
+    "25": "Impuestos: efectos y simulador",
+    "26": "Consejo de Ministros",
+    "27": "Asesores, noticias e informe del mes",
+    "29": "Población por región",
+    "36": "Obras",
+    "37": "Transporte",
+    "40": "Combustibles y pantalla de Energía",
+    "46": "Política industrial",
+    "47": "Empresas",
+    "50": "Comercio: política comercial",
+    "51": "Relaciones internacionales",
+    "52": "Acciones diplomáticas",
+    "53": "Organizaciones internacionales",
+    "56": "Opinión pública",
+    "57": "Medios de comunicación",
+    "60": "Líderes y vida de los partidos",
+    "61": "Parlamento: votaciones",
+    "62": "Parlamento: negociación y confianza",
+    "64": "Voto y encuestas",
+    "65": "Campaña y noche electoral",
+    "67": "Leyes: aprobación",
+    "71": "Gobiernos y elecciones regionales",
+    "72": "Independentismo",
+    "77": "Árbol de investigación",
+    "79": "Equipamiento militar",
+    "82": "Guerra: declaración y frentes",
+    "98": "Comparador y clasificaciones",
+    "99": "Informes e historial de la partida"
+  }
+}

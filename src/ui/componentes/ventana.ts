@@ -12,7 +12,7 @@ import { icono as crearIcono, type NombreIcono } from '../../av/iconos';
 import { t } from '../../i18n';
 import { el, type Hijo } from '../dom';
 import { alReves, animar, DURACIONES, FOTOGRAMAS, retirar } from './animacion';
-import { limitarVentana, pasoConTecla, posicionEnCascada } from './geometria';
+import { limitarVentana, MARGEN_PANTALLA, pasoConTecla, posicionEnCascada } from './geometria';
 import { sonar } from './sonidos';
 import '../estilos/componentes.css';
 
@@ -224,7 +224,10 @@ export function abrirVentana(
   contenedor.appendChild(elemento);
   ventana.alFrente();
   const inicial = leerPosicion(opciones.id) ?? posicionEnCascada(creadas++, pantalla(), ancho);
-  colocar(inicial.x, inicial.y, false);
+  // Al abrirse, entera a la vista si cabe: sube lo que haga falta (después se puede bajar).
+  const alto = elemento.offsetHeight;
+  const sobra = inicial.y + alto - (pantalla().alto - MARGEN_PANTALLA);
+  colocar(inicial.x, sobra > 0 ? Math.max(MARGEN_PANTALLA, inicial.y - sobra) : inicial.y, false);
   elemento.focus({ preventScroll: true });
   void animar(elemento, FOTOGRAMAS.ventana, DURACIONES.abrirVentana);
   sonar('abrirVentana');
