@@ -7,9 +7,13 @@ import { feature } from 'topojson-client';
 import {
   asignarColores,
   coloresDelMapa,
+  costesPreferencia,
+  desajusteColor,
+  importancia,
   indiceEstable,
   paisesCercanos,
   parecidos,
+  preferenciasDeColor,
 } from '../src/map/colores';
 import { distancia, oklabDeHex } from '../src/map/rampas';
 import { geoCentroid, geoDistance } from 'd3-geo';
@@ -119,8 +123,10 @@ describe('colores de país', () => {
         if (d < 0.06) parecidos++;
       }
     }
-    // De unos 1.400 pares de países cercanos, muy pocos con colores algo parecidos.
-    expect(parecidos).toBeLessThan(45);
+    // De unos 1.400 pares de países cercanos, pocos con colores algo parecidos. Con los colores de
+    // bandera (ajuste f7-a1) hay algunos más que antes (eran menos de 45; ahora, unos 65 de 1.400): muchas banderas son
+    // rojas, y sus países llevan variantes del mismo rojo.
+    expect(parecidos).toBeLessThan(70);
   });
 
   it('los países muy grandes llevan colores distintos entre sí, ni muy claros ni azules', () => {
@@ -137,16 +143,15 @@ describe('colores de país', () => {
     }
   });
 
-  it('se usan todos los colores de la paleta de forma equilibrada', () => {
+  it('se usan casi todos los colores de la paleta y ninguno demasiadas veces', () => {
     const usos = new Map<string, number>();
     for (const color of coloresDelMapa(topologia('mundo'), PALETA).values()) {
       usos.set(color, (usos.get(color) ?? 0) + 1);
     }
-    expect(usos.size).toBe(PALETA.length);
-    for (const veces of usos.values()) {
-      expect(veces).toBeGreaterThanOrEqual(2);
-      expect(veces).toBeLessThanOrEqual(9);
-    }
+    // Con los colores de bandera (ajuste f7-a1), algún tono que no está en ninguna bandera puede
+    // quedarse sin usar; ninguno se repite más de 10 veces en todo el mundo.
+    expect(usos.size).toBeGreaterThanOrEqual(PALETA.length - 5);
+    for (const veces of usos.values()) expect(veces).toBeLessThanOrEqual(10);
   });
 
   it('el reparto también funciona en un caso pequeño', () => {
@@ -177,6 +182,88 @@ describe('colores de país', () => {
     const parecido = parecidos(PALETA);
     expect(parecido[0]![0]).toBe(1);
     expect(Math.max(...parecido[0]!.slice(1))).toBeLessThan(1);
+  });
+});
+
+describe('color de cada país según el que se le asocia (ajuste f7-a1)', () => {
+  const tono = (hex: string): number => {
+    const [, a, b] = oklabDeHex(hex);
+    return ((Math.atan2(b, a) * 180) / Math.PI + 360) % 360;
+  };
+  const entre = (h: number, desde: number, hasta: number): boolean =>
+    desde <= hasta ? h >= desde && h <= hasta : h >= desde || h <= hasta;
+
+  it('los preferidos salen de la lista tradicional y después de la bandera, sin blancos ni negros', () => {
+    const preferencias = preferenciasDeColor();
+    // Todos los países y territorios del mapa tienen algún color preferido.
+    for (const g of topologia('mundo').objects.paises.geometries) {
+      expect(preferencias.get(String(g.id))?.colores.length, String(g.id)).toBeGreaterThan(0);
+    }
+    expect(preferencias.get('ESP')).toEqual({ colores: ['#f1bf00', '#aa151b'], tradicional: true });
+    expect(preferencias.get('MAR')!.colores.slice(0, 2)).toEqual(['#c1272d', '#006233']);
+    // Japón: el blanco de la bandera no cuenta; queda el rojo.
+    const japon = preferencias.get('JPN')!;
+    expect(japon.tradicional).toBe(false);
+    expect(japon.colores).toHaveLength(1);
+    expect(entre(tono(japon.colores[0]!), 340, 40)).toBe(true);
+    // Una lista propia: la bandera solo añade lo que no se parezca a lo ya pedido.
+    const propias = preferenciasDeColor(
+      {
+        AAA: [
+          ['#ff0000', 0.5],
+          ['#ffffff', 0.4, 'neutro'],
+          ['#00ff00', 0.05],
+        ],
+      },
+      { AAA: ['#fe0101'] },
+    );
+    expect(propias.get('AAA')).toEqual({ colores: ['#fe0101'], tradicional: true });
+  });
+
+  it('el desajuste mide pasos de tono y de luminosidad de la paleta', () => {
+    const rojo = PALETA[1]!; // segundo tono del primer nivel (24°)
+    expect(desajusteColor(rojo, rojo, 0.61, 0.77)).toBeCloseTo(0, 5);
+    // El tono siguiente de la paleta (otros 24°) está a un paso.
+    expect(desajusteColor(PALETA[2]!, rojo, 0.61, 0.77)).toBeCloseTo(1, 1);
+    // Un rojo muy oscuro de bandera busca el rojo más oscuro de la paleta.
+    const costes = costesPreferencia({ colores: ['#8b0000'], tradicional: false }, PALETA);
+    expect(costes.indexOf(Math.min(...costes))).toBeLessThan(15);
+    expect(importancia(500_000, true)).toBeGreaterThan(importancia(500_000, false));
+    expect(importancia(10_000_000, false)).toBeGreaterThan(importancia(500, false));
+  });
+
+  it('cada país lleva su color: España amarillo, Reino Unido rojo, Italia verde azulado…', () => {
+    const colores = coloresDelMapa(topologia('mundo'), PALETA);
+    const esperado: [string, number, number][] = [
+      ['ESP', 70, 110], // amarillo (decisión del jugador)
+      ['GBR', 345, 40], // rojo
+      ['MAR', 345, 40], // rojo (o verde, si no pudiera)
+      ['ITA', 160, 200], // verde azulado
+      ['NLD', 45, 75], // naranja
+      ['FRA', 225, 285], // azul
+      ['PRT', 120, 170], // verde
+      ['IRL', 120, 170], // verde
+      ['BRA', 120, 170], // verde
+      ['CHN', 345, 40], // rojo
+      ['CAN', 345, 50], // rojo
+      ['TUR', 345, 50], // rojo
+    ];
+    for (const [id, desde, hasta] of esperado) {
+      const h = tono(colores.get(id)!);
+      expect(entre(h, desde, hasta), `${id}: tono ${h.toFixed(0)}`).toBe(true);
+    }
+  });
+
+  it('la gran mayoría de los países lleva uno de sus colores o uno muy cercano', () => {
+    const colores = coloresDelMapa(topologia('mundo'), PALETA);
+    const preferencias = preferenciasDeColor();
+    let cerca = 0;
+    for (const [id, color] of colores) {
+      const coste = costesPreferencia(preferencias.get(id), PALETA)[PALETA.indexOf(color)]!;
+      // Hasta un paso y medio: su tono con otra luminosidad o el tono de al lado.
+      if (coste <= 1.6) cerca++;
+    }
+    expect(cerca / colores.size).toBeGreaterThan(0.75);
   });
 });
 

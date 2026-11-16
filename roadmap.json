@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.0",
-  "actualizado": "2026-11-16T10:02:28Z",
+  "actualizado": "2026-11-16T10:10:20Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "El jugador elige la opción B en los dos casos: colores de país por bandera más una lista de colores tradicionales (España amarillo, ya que Reino Unido es rojo; Marruecos rojo y verde) y adelantar ya la barra de secciones con sus ventanas. Plan de los ajustes de la v0.8.1 apuntado (f7-a1 y f7-a2).",
-    "siguientePaso": "f7-a1: script de colores de las banderas, lista tradicional y preferencia en el reparto de colores.",
+    "resumen": "f7-a1 hecha: cada país lleva, dentro de la paleta, el color de su bandera o el de la lista de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo, Italia verde azulado, Países Bajos naranja…); 178 de 223 países llevan su color o uno muy cercano, ningún color se repite a menos de 1.500 km y ninguno más de 10 veces. La galería tiene una sección con el color de cada país para revisarlo.",
+    "siguientePaso": "f7-a2: barra de secciones en el mapa y ventanas de todas las secciones.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.8.0 (componentes en la galería y clic derecho en el mapa)"
     ]
@@ -538,8 +538,8 @@
           "titulo": "Color de cada país en el mapa político según el que se le asocia (opción B del jugador): el de su bandera, corregido por una lista revisable de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado, Países Bajos naranja…), dentro de la paleta y sin colores parecidos entre vecinos",
           "version": "0.8.1",
           "origen": "Mensaje del jugador al probar la v0.8.0 (sobre los colores de la v0.7.1; la versión de la Fase 6 ya se había superado)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {
@@ -547,8 +547,8 @@
           "titulo": "Barra de secciones en el mapa (Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado) que abre las ventanas de todas las secciones del juego (Consejo de Ministros con los 20 ministerios, Presupuesto, Impuestos, Parlamento y leyes con historial de leyes, Economía, Energía, Infraestructuras, Partidos, Sociedad, Población, Regiones, Comercio, Diplomacia, Ejército, Investigación, Informes y Comparador), con sus pestañas e iconos y el aviso de en qué fase se llena cada parte (opción B del jugador: adelantado de la Fase 10)",
           "version": "0.8.1",
           "origen": "Mensaje del jugador al probar la v0.8.0: esperaba la base de las ventanas de las secciones",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         }
       ]

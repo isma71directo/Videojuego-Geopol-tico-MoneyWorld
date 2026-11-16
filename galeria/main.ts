@@ -12,6 +12,7 @@ import { EFECTOS, MotorSonido, type Efecto } from '../src/av/sonido';
 import { capaPorId, COLOR_SIN_RESERVAS } from '../src/map/capas';
 import { etiquetaCapa, opcionesCapas, POLITICA } from '../src/ui/selector-capas';
 import { PALETA } from '../src/map/estilo';
+import { coloresDelMapa, preferenciasDeColor } from '../src/map/colores';
 import type { ConjuntoPaises, PaisDatos } from '../src/datos/paises';
 import { vistaPreviaMapa, type TopologiaMapa } from '../src/map/vista-previa';
 import { t } from '../src/i18n';
@@ -112,6 +113,53 @@ function paleta(): HTMLElement {
         const muestra = el('span', { class: 'galeria__color', 'aria-hidden': 'true' });
         muestra.style.background = color;
         return el('li', {}, muestra, el('code', {}, color));
+      }),
+    ),
+  );
+}
+
+/**
+ * Color de cada país en el mapa político (ajuste f7-a1): para que el jugador revise si cada uno
+ * lleva el que se le asocia. Se calcula igual que en el juego, con el mapa del mundo.
+ */
+function coloresPaises(topo: TopologiaMapa, conjunto: ConjuntoPaises): HTMLElement {
+  const colores = coloresDelMapa(topo, PALETA);
+  const preferencias = preferenciasDeColor();
+  const paises = [...colores.keys()]
+    .map((id) => ({ id, nombre: conjunto.paises[id]?.nombre ?? id }))
+    .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+  return seccion(
+    t('galeria.coloresPais.titulo'),
+    t('galeria.coloresPais.nota'),
+    el(
+      'ul',
+      { class: 'galeria__colores-pais' },
+      ...paises.map(({ id, nombre }) => {
+        const muestra = el('span', { class: 'galeria__color-pais', 'aria-hidden': 'true' });
+        muestra.style.background = colores.get(id)!;
+        const tradicional = preferencias.get(id)?.tradicional ?? false;
+        return el(
+          'li',
+          { title: colores.get(id)! },
+          el('img', {
+            src: urlBandera(id, RAIZ),
+            alt: '',
+            width: 32,
+            height: 24,
+            loading: 'lazy',
+            decoding: 'async',
+          }),
+          muestra,
+          el('span', {}, nombre),
+          tradicional
+            ? el(
+                'span',
+                { class: 'galeria__tradicional', title: t('galeria.coloresPais.tradicional') },
+                '★',
+                el('span', { class: 'oculto-visual' }, t('galeria.coloresPais.tradicional')),
+              )
+            : null,
+        );
       }),
     ),
   );
@@ -245,6 +293,7 @@ async function iniciar(): Promise<void> {
       cabecera(),
       mapa(topo, conjunto),
       paleta(),
+      coloresPaises(topo, conjunto),
       capas(),
       iconos(),
       sonidos(),

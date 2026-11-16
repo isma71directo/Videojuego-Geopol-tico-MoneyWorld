@@ -8,3 +8,5 @@ fuentes/
 docs/datos-cobertura.md
 public/av/
 docs/creditos.md
+# Generado por scripts/datos/18-colores-banderas.ts (una línea por país).
+src/map/config/colores-banderas.json

@@ -390,6 +390,11 @@
       "titulo": "Paleta del mapa político",
       "nota": "45 tonos creados con código (15 tonos del círculo cromático con tres luminosidades). Cada país tiene siempre el mismo y nunca uno parecido al de un vecino; con el mundo entero a la vista, ningún color se repite a menos de 1.500 km y los países muy grandes llevan colores distintos entre sí."
     },
+    "coloresPais": {
+      "titulo": "Color de cada país",
+      "nota": "El color de cada país en el mapa político es, dentro de la paleta, el que se le asocia: el de su bandera o, en los marcados con ★, el de la lista de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado, Países Bajos naranja…). Dos vecinos nunca llevan colores parecidos, así que algunos países llevan su segundo color o uno cercano. Si quieres cambiar alguno, dímelo.",
+      "tradicional": "Color de la lista de colores tradicionales"
+    },
     "capas": {
       "titulo": "Capas del mapa",
       "nota": "Rampas de color de cada capa, creadas con código. Van de oscuro a claro: más claro es más (en crecimiento e inflación, más lejos de cero). Se distinguen también con los tres tipos de daltonismo. En el mapa, el rayado marca los datos estimados."
