@@ -1069,7 +1069,7 @@
     },
     "retratos": {
       "titulo": "Retratos de los {n} jefes de Estado y de Gobierno de 2010",
-      "nota": "Ilustraciones dibujadas con código, nunca fotografías. Primero, los retratos homenaje de los líderes de los países y figuras importantes; después, los genéricos, según la región del país y el estilo de su régimen, siempre con la misma cara base y sin rasgos exagerados (cambian el tono de piel, el pelo, la ropa y los complementos). Si quieres cambiar alguno, dime cuál."
+      "nota": "Ilustraciones dibujadas con código, nunca fotografías. Primero, los {homenajes} retratos homenaje de los líderes de los países y figuras importantes; después, los genéricos, que visten y se peinan según la región del país y el estilo de su régimen. Cada cara es distinta (forma, ojos, nariz, boca, orejas y cejas), sin rasgos exagerados. Si quieres cambiar alguno, dime cuál."
     }
   }
 }
