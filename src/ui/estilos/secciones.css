@@ -1,63 +1,158 @@
-/* Barra de secciones del mapa y ventanas de cada sección (ajuste f7-a2). */
+/* Barra de secciones del mapa (ajustes f7-a2 y f7-a4): grande, abajo, con su sub-barra encima. */
 .secciones {
   position: absolute;
-  bottom: calc(14px + env(safe-area-inset-bottom));
-  left: 50%;
-  translate: -50% 0;
-  padding: 5px;
-  border: 1px solid var(--borde);
-  border-radius: 14px;
-  background: rgb(14 22 38 / 90%);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.secciones__barra {
+  display: flex;
+  justify-content: center;
+  padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--borde);
+  background: rgb(10 16 28 / 92%);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 -8px 24px rgb(0 0 0 / 30%);
+  pointer-events: auto;
 }
 
 .secciones__lista {
   display: flex;
-  gap: 2px;
+  gap: 4px;
 }
 
-.secciones__grupo {
-  display: inline-flex;
-  gap: 7px;
-  align-items: center;
-  padding: 8px 11px;
+.secciones__apartado {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  justify-items: center;
+  min-width: 96px;
+  padding: 6px 10px 7px;
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: var(--texto);
+  color: var(--texto-suave);
   font: inherit;
-  font-size: 13.5px;
-  font-weight: 550;
+  font-size: 12.5px;
+  font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 120ms ease-out;
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out;
 }
 
-.secciones__grupo .icono {
-  width: 18px;
-  height: 18px;
+.secciones__apartado .icono {
+  width: 24px;
+  height: 24px;
   color: var(--acento);
 }
 
-.secciones__grupo u {
+.secciones__apartado u {
   text-decoration-color: var(--acento);
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
 
-.secciones__grupo:hover {
+.secciones__apartado:hover {
   background: var(--superficie-2);
+  color: var(--texto);
 }
 
-.secciones__grupo[aria-expanded='true'] {
+/* El apartado abierto: fondo y una raya arriba que lo une con su sub-barra. */
+.secciones__apartado[aria-expanded='true'] {
   background: var(--superficie-2);
-  box-shadow: inset 0 0 0 1px var(--acento);
+  color: var(--texto);
 }
 
-.secciones__grupo:focus-visible {
+.secciones__apartado[aria-expanded='true']::before {
+  position: absolute;
+  top: -7px;
+  right: 18px;
+  left: 18px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--acento);
+  content: '';
+}
+
+.secciones__apartado:focus-visible,
+.secciones__elemento:focus-visible {
   outline: 2px solid var(--acento);
   outline-offset: 1px;
+}
+
+/* Sub-barra con los elementos del apartado abierto. */
+.secciones__sub {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  max-width: calc(100vw - 24px);
+  padding: 10px 12px 12px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: rgb(14 22 38 / 96%);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--sombra-flotante);
+  translate: -50% 0;
+  pointer-events: auto;
+}
+
+.secciones__sub[hidden] {
+  display: none;
+}
+
+.secciones__sub-titulo {
+  margin: 0 0 8px 4px;
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.secciones__elementos {
+  display: grid;
+  grid-template-columns: repeat(var(--columnas, 6), 92px);
+  gap: 6px;
+}
+
+.secciones__elemento {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  justify-items: center;
+  width: 100%;
+  min-height: 70px;
+  padding: 9px 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 3%);
+  color: var(--texto);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  /* Las palabras largas («Telecomunicaciones») se parten con guion para caber. */
+  hyphens: auto;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.secciones__elemento .icono {
+  width: 24px;
+  height: 24px;
+  color: var(--acento);
+}
+
+.secciones__elemento:hover {
+  border-color: var(--borde);
+  background: var(--superficie-2);
 }
 
 /* Contenido de una pestaña vacía. */
@@ -75,6 +170,13 @@
   color: var(--en-curso);
   font-size: 12.5px;
   font-weight: 600;
+}
+
+/* Sin fase todavía: más discreto (va detrás para sustituir a la regla anterior). */
+.seccion__fase--sin {
+  border-color: var(--borde);
+  background: rgb(255 255 255 / 4%);
+  color: var(--texto-suave);
 }
 
 .seccion__texto {
@@ -120,13 +222,30 @@
   overflow: auto;
 }
 
-.seccion__ministerios li {
+.seccion__ministerios button {
   display: grid;
-  gap: 2px;
+  grid-template-columns: 20px 1fr;
+  gap: 2px 8px;
+  width: 100%;
   padding: 7px 9px;
   border: 1px solid var(--borde);
   border-radius: var(--radio-pequeno);
   background: rgb(255 255 255 / 3%);
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.seccion__ministerios button:hover {
+  border-color: var(--acento);
+}
+
+.seccion__ministerios .icono {
+  grid-row: span 2;
+  width: 20px;
+  height: 20px;
+  color: var(--acento);
 }
 
 .seccion__ministerios strong {

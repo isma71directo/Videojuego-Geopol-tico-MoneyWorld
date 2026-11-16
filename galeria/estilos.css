@@ -365,13 +365,27 @@
   box-shadow: inset 0 0 0 1px rgb(255 255 255 / 12%);
 }
 
-.galeria__colores-pais li > span:nth-child(3) {
+.galeria__color-pedido {
+  flex: none;
+  width: 10px;
+  height: 24px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 12%);
+}
+
+.galeria__color-nombre {
+  display: grid;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.galeria__color-nombre > * {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.galeria__tradicional {
-  flex: none;
-  color: var(--en-curso);
+.galeria__color-nombre small {
+  color: var(--texto-suave);
+  font-size: 0.7rem;
 }

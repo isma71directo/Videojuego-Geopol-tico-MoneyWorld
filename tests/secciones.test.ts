@@ -1,20 +1,25 @@
 // @vitest-environment happy-dom
-/** Barra de secciones del mapa y ventanas de cada sección (ajuste f7-a2). */
+/** Barra de secciones del mapa, sub-barras y ventanas (ajustes f7-a2 y f7-a4). */
 import { afterEach, describe, expect, it } from 'vitest';
 import roadmapJson from '../roadmap.json';
 import { NOMBRES_ICONOS } from '../src/av/iconos';
 import { t } from '../src/i18n';
-import { menuAbierto } from '../src/ui/componentes/menu';
 import { cerrarVentanas, ventanasAbiertas } from '../src/ui/componentes/ventana';
 import {
-  GRUPOS,
+  APARTADOS,
   MINISTERIOS,
   NOMBRES_FASES,
+  PREFIJO_MINISTERIO,
   SECCIONES,
-  abrirSeccion,
+  abrirElemento,
   contenidoPestana,
   crearBarraSecciones,
   etiquetaConAtajo,
+  iconoElemento,
+  ministerioDe,
+  nombreElemento,
+  pestanasDe,
+  tituloElemento,
   versionDeFase,
 } from '../src/ui/secciones';
 
@@ -27,8 +32,8 @@ const roadmap = roadmapJson as unknown as { fases: FaseRoadmap[] };
 const fase = (n: number): FaseRoadmap | undefined =>
   roadmap.fases.find((f) => f.id === `fase-${n}`);
 
-/** Un texto existe si t() no devuelve la propia clave. */
-const existe = (clave: string): boolean => t(clave) !== clave;
+/** Un texto existe si t() no devuelve la propia clave ni deja marcas sin sustituir. */
+const existe = (texto: string, clave: string): boolean => texto !== clave && !/\{\w+\}/.test(texto);
 
 function tecla(destino: EventTarget, key: string, extra: KeyboardEventInit = {}): KeyboardEvent {
   const evento = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true, ...extra });
@@ -36,142 +41,176 @@ function tecla(destino: EventTarget, key: string, extra: KeyboardEventInit = {})
   return evento;
 }
 
-describe('secciones del juego: configuración (ajuste f7-a2)', () => {
-  it('seis grupos como en el GDD, cada uno con una tecla propia que está en su nombre', () => {
-    expect(GRUPOS.map((g) => g.id)).toEqual([
+const todosLosElementos = (): string[] => APARTADOS.flatMap((a) => a.elementos);
+
+describe('secciones: configuración (ajuste f7-a4)', () => {
+  it('8 apartados sin «Más», cada uno con su tecla, que está en su nombre', () => {
+    expect(APARTADOS.map((a) => a.id)).toEqual([
       'gobierno',
-      'economia',
+      'ministerios',
       'politica',
+      'economia',
       'mundo',
       'ejercito',
-      'mas',
+      'investigacion',
+      'informes',
     ]);
-    const teclas = GRUPOS.map((g) => g.tecla);
+    const teclas = APARTADOS.map((a) => a.tecla);
     expect(new Set(teclas).size).toBe(teclas.length);
     // Teclas que ya usa el mapa: M (silencio), C (capas) y F (medidor).
     for (const ocupada of ['m', 'c', 'f']) expect(teclas).not.toContain(ocupada);
-    for (const grupo of GRUPOS) {
-      const nombre = t(`juego.secciones.grupos.${grupo.id}`);
-      expect(nombre.toLowerCase(), grupo.id).toContain(grupo.tecla);
-      expect(NOMBRES_ICONOS, grupo.id).toContain(grupo.icono);
+    for (const apartado of APARTADOS) {
+      const nombre = t(`juego.secciones.apartados.${apartado.id}`);
+      expect(nombre).not.toBe('Más');
+      expect(nombre.toLowerCase(), apartado.id).toContain(apartado.tecla);
+      expect(NOMBRES_ICONOS, apartado.id).toContain(apartado.icono);
     }
   });
 
-  it('cada sección está en un solo grupo y tiene textos, icono y pestañas', () => {
-    const enGrupos = GRUPOS.flatMap((g) => g.secciones);
-    expect(new Set(enGrupos).size).toBe(enGrupos.length);
-    expect([...SECCIONES.keys()].sort()).toEqual([...enGrupos].sort());
-    // Las del GDD (sección 7) y las que piden sus fases: 17 ventanas.
-    expect(SECCIONES.size).toBe(17);
-    for (const seccion of SECCIONES.values()) {
-      expect(existe(`juego.secciones.${seccion.id}.titulo`), seccion.id).toBe(true);
-      expect(NOMBRES_ICONOS, seccion.id).toContain(seccion.icono);
-      expect(seccion.pestanas.length, seccion.id).toBeGreaterThan(0);
-      for (const pestana of seccion.pestanas) {
-        const base = `juego.secciones.${seccion.id}.pestanas.${pestana.id}`;
-        expect(existe(`${base}.titulo`), base).toBe(true);
-        expect(existe(`${base}.texto`), base).toBe(true);
+  it('Gobierno y Ministerios van separados: 19 ministerios con su propia ventana', () => {
+    const gobierno = APARTADOS.find((a) => a.id === 'gobierno')!;
+    expect(gobierno.elementos).toEqual(['presidencia', 'consejo', 'presupuesto', 'impuestos']);
+    const ministerios = APARTADOS.find((a) => a.id === 'ministerios')!;
+    expect(ministerios.elementos).toHaveLength(19);
+    expect(MINISTERIOS.size).toBe(20);
+    for (const elemento of ministerios.elementos) {
+      expect(elemento.startsWith(PREFIJO_MINISTERIO), elemento).toBe(true);
+      expect(ministerioDe(elemento), elemento).not.toBeNull();
+    }
+    // Cada elemento está en un solo apartado.
+    const todos = todosLosElementos();
+    expect(new Set(todos).size).toBe(todos.length);
+  });
+
+  it('cada elemento tiene icono, nombre, título y textos en todas sus pestañas', () => {
+    for (const elemento of todosLosElementos()) {
+      const icono = iconoElemento(elemento);
+      expect(icono, elemento).not.toBeNull();
+      expect(NOMBRES_ICONOS, elemento).toContain(icono);
+      expect(existe(nombreElemento(elemento), elemento)).toBe(true);
+      expect(existe(tituloElemento(elemento), elemento)).toBe(true);
+      const pestanas = pestanasDe(elemento);
+      expect(pestanas.length, elemento).toBeGreaterThan(0);
+      for (const pestana of pestanas) {
+        const texto = contenidoPestana(elemento, pestana).querySelector('.seccion__texto')!;
+        expect(existe(texto.textContent!, pestana.id), `${elemento}.${pestana.id}`).toBe(true);
       }
     }
-    // Lo que pidió el jugador: departamentos, comercio, diplomacia, parlamento e historial de leyes.
-    expect(SECCIONES.get('parlamento')!.pestanas.map((p) => p.id)).toContain('historial');
-    for (const id of ['consejo', 'comercio', 'diplomacia', 'parlamento']) {
-      expect(SECCIONES.has(id), id).toBe(true);
-    }
+    expect(tituloElemento('ministerio-sanidad')).toBe('Ministerio de Sanidad');
+  });
+
+  it('cada ministerio: resumen, presupuesto, leyes, acciones e infraestructuras si las tiene', () => {
+    expect(pestanasDe('ministerio-sanidad').map((p) => p.id)).toEqual([
+      'resumen',
+      'presupuesto',
+      'leyes',
+      'acciones',
+      'infraestructuras',
+    ]);
+    expect(pestanasDe('ministerio-trabajo').map((p) => p.id)).not.toContain('infraestructuras');
+    // Las acciones llegan en la fase de su sistema (Sanidad, en la 32).
+    expect(pestanasDe('ministerio-sanidad').find((p) => p.id === 'acciones')!.fase).toBe(32);
+    // Cultura y Deporte no tiene fase todavía: se dice así, sin inventar una.
+    const cultura = pestanasDe('ministerio-cultura').find((p) => p.id === 'acciones')!;
+    expect(cultura.fase).toBeNull();
+    expect(contenidoPestana('ministerio-cultura', cultura).textContent).toContain(
+      'Todavía no tiene fase',
+    );
   });
 
   it('la fase de cada pestaña existe en la hoja de ruta, con su nombre y su versión', () => {
-    for (const seccion of SECCIONES.values()) {
-      for (const pestana of seccion.pestanas) {
+    for (const elemento of todosLosElementos()) {
+      for (const pestana of pestanasDe(elemento)) {
+        if (pestana.fase === null) continue;
         const enRoadmap = fase(pestana.fase);
-        expect(enRoadmap, `${seccion.id}.${pestana.id}`).toBeDefined();
+        expect(enRoadmap, `${elemento}.${pestana.id}`).toBeDefined();
         expect(NOMBRES_FASES[String(pestana.fase)]).toBe(enRoadmap!.nombre);
         expect(versionDeFase(pestana.fase)).toBe(enRoadmap!.version);
-        // Las secciones aún no se han hecho: todas sus fases están por llegar.
         expect(pestana.fase).toBeGreaterThan(7);
       }
     }
   });
 
-  it('los 20 ministerios del GDD (6.4), con nombre e indicadores', () => {
-    expect(MINISTERIOS).toHaveLength(20);
-    for (const id of MINISTERIOS) {
-      expect(existe(`juego.secciones.ministerios.${id}.nombre`), id).toBe(true);
-      expect(existe(`juego.secciones.ministerios.${id}.indicadores`), id).toBe(true);
-    }
-  });
-
   it('subraya la letra del atajo en el nombre', () => {
-    const [antes, letra, despues] = etiquetaConAtajo('Mundo', 'u');
+    const [antes, letra, despues] = etiquetaConAtajo('Ministerios', 'i');
     expect(antes).toBe('M');
-    expect((letra as HTMLElement).outerHTML).toBe('<u>u</u>');
-    expect(despues).toBe('ndo');
-    expect(etiquetaConAtajo('Gobierno', 'g')[0]).toBe('');
+    expect((letra as HTMLElement).outerHTML).toBe('<u>i</u>');
+    expect(despues).toBe('nisterios');
     expect(etiquetaConAtajo('Sin letra', 'z')).toEqual(['Sin letra']);
   });
 });
 
-describe('barra de secciones y ventanas (ajuste f7-a2)', () => {
+describe('barra, sub-barras y ventanas (ajuste f7-a4)', () => {
+  let barraActual: ReturnType<typeof crearBarraSecciones> | null = null;
   afterEach(() => {
-    menuAbierto()?.cerrar(false, true);
+    barraActual?.destruir();
+    barraActual = null;
     cerrarVentanas();
     document.body.replaceChildren();
   });
 
   function barra(): ReturnType<typeof crearBarraSecciones> {
-    const creada = crearBarraSecciones();
-    document.body.appendChild(creada.elemento);
-    return creada;
+    barraActual = crearBarraSecciones();
+    document.body.appendChild(barraActual.elemento);
+    return barraActual;
   }
+  const subbarra = (): HTMLElement => document.querySelector('.secciones__sub')!;
+  const elementos = (): HTMLButtonElement[] => [
+    ...document.querySelectorAll<HTMLButtonElement>('.secciones__elemento'),
+  ];
 
-  it('dibuja un botón por grupo, con su atajo para los lectores de pantalla', () => {
-    const { elemento } = barra();
-    const botones = [...elemento.querySelectorAll<HTMLButtonElement>('.secciones__grupo')];
-    expect(botones).toHaveLength(6);
-    expect(botones[0]!.getAttribute('aria-keyshortcuts')).toBe('G');
-    expect(botones[0]!.querySelector('u')!.textContent).toBe('G');
-    // Ejército solo tiene una sección: abre su ventana directamente, sin menú.
-    const ejercito = elemento.querySelector('[data-grupo="ejercito"]')!;
-    expect(ejercito.hasAttribute('aria-haspopup')).toBe(false);
-  });
-
-  it('un clic en un grupo abre el menú con sus secciones y elegir una abre su ventana', () => {
-    const { elemento } = barra();
-    const gobierno = elemento.querySelector<HTMLButtonElement>('[data-grupo="gobierno"]')!;
-    gobierno.click();
-    const menu = menuAbierto();
-    expect(menu).not.toBeNull();
-    expect(gobierno.getAttribute('aria-expanded')).toBe('true');
-    const opciones = [...menu!.elemento.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')];
-    expect(opciones.map((o) => o.querySelector('.menu__texto')!.textContent)).toEqual([
-      'Consejo de Ministros',
-      'Presupuesto',
-      'Impuestos',
-      'Parlamento y leyes',
-    ]);
-    opciones[3]!.click();
-    expect(menuAbierto()).toBeNull();
-    const ventana = ventanasAbiertas().find((v) => v.id === 'seccion-parlamento')!;
-    expect(ventana).toBeDefined();
-    const pestanas = [...ventana.elemento.querySelectorAll('[role="tab"]')].map(
-      (p) => p.textContent,
-    );
-    expect(pestanas).toEqual(['Hemiciclo', 'Negociación', 'Leyes', 'Historial de leyes']);
-    expect(ventana.elemento.querySelector('.seccion__fase')!.textContent).toBe(
-      'Se llena en la Fase 61 · Parlamento: votaciones (v0.62.0)',
-    );
-  });
-
-  it('las teclas abren los grupos desde el mapa, pero no mientras se escribe', () => {
+  it('un clic en un apartado abre su sub-barra; otro clic la cierra', () => {
     const secciones = barra();
-    expect(secciones.alTeclear(tecla(document.body, 'u'))).toBe(true);
-    expect(menuAbierto()!.elemento.textContent).toContain('Diplomacia');
-    // La misma tecla lo cierra.
-    expect(secciones.alTeclear(tecla(document.body, 'U'))).toBe(true);
-    expect(menuAbierto()).toBeNull();
-    // Ejército (J) abre su ventana sin menú.
+    const botones = document.querySelectorAll<HTMLButtonElement>('.secciones__apartado');
+    expect(botones).toHaveLength(8);
+    const ministerios = document.querySelector<HTMLButtonElement>('[data-apartado="ministerios"]')!;
+    expect(subbarra().hidden).toBe(true);
+    ministerios.click();
+    expect(secciones.abierto).toBe('ministerios');
+    expect(subbarra().hidden).toBe(false);
+    expect(ministerios.getAttribute('aria-expanded')).toBe('true');
+    expect(elementos()).toHaveLength(19);
+    expect(subbarra().querySelector('.secciones__sub-titulo')!.textContent).toBe('Ministerios');
+    ministerios.click();
+    expect(secciones.abierto).toBeNull();
+    expect(subbarra().hidden).toBe(true);
+  });
+
+  it('elegir un ministerio abre su ventana y la sub-barra sigue abierta para abrir más', () => {
+    const secciones = barra();
+    secciones.alternarApartado('ministerios', false);
+    elementos()
+      .find((b) => b.dataset.elemento === 'ministerio-sanidad')!
+      .click();
+    const ventana = ventanasAbiertas().find((v) => v.id === 'seccion-ministerio-sanidad')!;
+    expect(ventana).toBeDefined();
+    const pestanas = [...ventana.elemento.querySelectorAll('[role="tab"]')].map((p) =>
+      p.textContent?.trim(),
+    );
+    expect(pestanas).toEqual(['Resumen', 'Presupuesto', 'Leyes', 'Acciones', 'Infraestructuras']);
+    expect(ventana.elemento.querySelector('.seccion__fase')!.textContent).toBe(
+      'Se llena en la Fase 26 · Consejo de Ministros (v0.27.0)',
+    );
+    expect(secciones.abierto).toBe('ministerios');
+  });
+
+  it('con el teclado: la letra abre la sub-barra, las flechas la recorren y Escape la cierra', () => {
+    const secciones = barra();
+    expect(secciones.alTeclear(tecla(document.body, 'g'))).toBe(true);
+    expect(secciones.abierto).toBe('gobierno');
+    expect(document.activeElement).toBe(elementos()[0]);
+    tecla(document.activeElement!, 'ArrowRight');
+    expect(document.activeElement).toBe(elementos()[1]);
+    tecla(document.activeElement!, 'End');
+    expect(document.activeElement).toBe(elementos()[3]);
+    tecla(document.activeElement!, 'Escape');
+    expect(secciones.abierto).toBeNull();
+    expect(document.activeElement).toBe(document.querySelector('[data-apartado="gobierno"]'));
+    // Otra letra cambia de apartado; la misma lo cierra.
     secciones.alTeclear(tecla(document.body, 'j'));
-    expect(ventanasAbiertas().map((v) => v.id)).toContain('seccion-ejercito');
+    expect(secciones.abierto).toBe('ejercito');
+    secciones.alTeclear(tecla(document.body, 'J'));
+    expect(secciones.abierto).toBeNull();
     // Con Ctrl, otra letra o escribiendo en un campo, no hace nada.
     expect(secciones.alTeclear(tecla(document.body, 'g', { ctrlKey: true }))).toBe(false);
     expect(secciones.alTeclear(tecla(document.body, 'x'))).toBe(false);
@@ -180,23 +219,42 @@ describe('barra de secciones y ventanas (ajuste f7-a2)', () => {
     expect(secciones.alTeclear(tecla(campo, 'g'))).toBe(false);
   });
 
-  it('cada sección se abre una vez y todas muestran en qué fase se llenan', () => {
-    for (const id of SECCIONES.keys()) {
-      const ventana = abrirSeccion(id)!;
-      expect(ventana.elemento.querySelector('.seccion__fase'), id).not.toBeNull();
-      // Abrirla otra vez la trae delante, no abre otra.
-      expect(abrirSeccion(id)).toBe(ventana);
-    }
-    expect(ventanasAbiertas()).toHaveLength(SECCIONES.size);
-    expect(abrirSeccion('no-existe')).toBeNull();
+  it('Investigación, que solo tiene un elemento, abre su ventana sin sub-barra', () => {
+    const secciones = barra();
+    secciones.alTeclear(tecla(document.body, 'v'));
+    expect(secciones.abierto).toBeNull();
+    expect(ventanasAbiertas().map((v) => v.id)).toContain('seccion-investigacion');
   });
 
-  it('el Consejo de Ministros enseña los 20 ministerios', () => {
-    const contenido = contenidoPestana('consejo', { id: 'ministerios', fase: 26 });
-    expect(contenido.querySelectorAll('.seccion__ministerios li')).toHaveLength(20);
-    expect(contenido.textContent).toContain('Economía y Hacienda');
-    // Una sección de una sola pestaña no lleva barra de pestañas.
-    const poblacion = abrirSeccion('poblacion')!;
-    expect(poblacion.elemento.querySelector('[role="tablist"]')).toBeNull();
+  it('un clic en el mapa cierra la sub-barra; uno en una ventana, no', () => {
+    const secciones = barra();
+    secciones.alternarApartado('politica', false);
+    const ventana = abrirElemento('leyes')!;
+    ventana.elemento.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+    expect(secciones.abierto).toBe('politica');
+    const mapa = document.createElement('div');
+    document.body.appendChild(mapa);
+    mapa.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+    expect(secciones.abierto).toBeNull();
+  });
+
+  it('cada elemento se abre una vez y el Consejo de Ministros enlaza con cada ministerio', () => {
+    for (const elemento of todosLosElementos()) {
+      const ventana = abrirElemento(elemento)!;
+      expect(ventana, elemento).not.toBeNull();
+      expect(abrirElemento(elemento)).toBe(ventana);
+    }
+    expect(ventanasAbiertas()).toHaveLength(todosLosElementos().length);
+    expect(abrirElemento('no-existe')).toBeNull();
+    cerrarVentanas();
+    const consejo = contenidoPestana('consejo', { id: 'ministerios', fase: 26 });
+    document.body.appendChild(consejo);
+    const tarjetas = consejo.querySelectorAll<HTMLButtonElement>('.seccion__ministerios button');
+    expect(tarjetas).toHaveLength(20);
+    tarjetas[1]!.click();
+    expect(ventanasAbiertas().map((v) => v.id)).toEqual(['seccion-ministerio-economia']);
+    // Las secciones de una sola pestaña no llevan barra de pestañas.
+    expect(abrirElemento('poblacion')!.elemento.querySelector('[role="tablist"]')).toBeNull();
+    expect(SECCIONES.has('poblacion')).toBe(true);
   });
 });

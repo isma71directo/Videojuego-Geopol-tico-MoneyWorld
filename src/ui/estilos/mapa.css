@@ -137,7 +137,8 @@
   top: calc(56px + env(safe-area-inset-top));
   right: calc(10px + env(safe-area-inset-right));
   width: 300px;
-  max-height: calc(100% - 76px);
+  /* Termina encima de la barra de secciones (ajuste f7-a4). */
+  max-height: calc(100% - 142px);
   overflow-y: auto;
   padding: 14px 16px;
   border: 1px solid var(--borde);
@@ -264,7 +265,8 @@
 /* Leyenda de la capa del mapa, abajo a la izquierda (tarea f6-t1). */
 .leyenda {
   position: absolute;
-  bottom: calc(14px + env(safe-area-inset-bottom));
+  /* Encima de la barra de secciones (ajuste f7-a4). */
+  bottom: calc(86px + env(safe-area-inset-bottom));
   left: calc(10px + env(safe-area-inset-left));
   min-width: 190px;
   max-width: 260px;

@@ -11,8 +11,8 @@ import { NOMBRES_ICONOS, icono } from '../src/av/iconos';
 import { EFECTOS, MotorSonido, type Efecto } from '../src/av/sonido';
 import { capaPorId, COLOR_SIN_RESERVAS } from '../src/map/capas';
 import { etiquetaCapa, opcionesCapas, POLITICA } from '../src/ui/selector-capas';
-import { PALETA } from '../src/map/estilo';
-import { coloresDelMapa, preferenciasDeColor } from '../src/map/colores';
+import { preferenciasDeColor } from '../src/map/colores';
+import tablaColores from '../src/map/config/colores-pais.json';
 import type { ConjuntoPaises, PaisDatos } from '../src/datos/paises';
 import { vistaPreviaMapa, type TopologiaMapa } from '../src/map/vista-previa';
 import { t } from '../src/i18n';
@@ -102,30 +102,32 @@ function sonidos(): HTMLElement {
   );
 }
 
-function paleta(): HTMLElement {
+/** Colores de referencia de la tabla de colores representativos (ajuste f7-a3). */
+function referencias(): HTMLElement {
   return seccion(
     t('galeria.paleta.titulo'),
     t('galeria.paleta.nota'),
     el(
       'ul',
       { class: 'galeria__paleta' },
-      ...PALETA.map((color) => {
+      ...Object.entries(tablaColores.colores).map(([nombre, color]) => {
         const muestra = el('span', { class: 'galeria__color', 'aria-hidden': 'true' });
         muestra.style.background = color;
-        return el('li', {}, muestra, el('code', {}, color));
+        return el('li', {}, muestra, el('span', {}, nombre));
       }),
     ),
   );
 }
 
 /**
- * Color de cada país en el mapa político (ajuste f7-a1): para que el jugador revise si cada uno
- * lleva el que se le asocia. Se calcula igual que en el juego, con el mapa del mundo.
+ * Color de cada país en el mapa político (ajustes f7-a1 y f7-a3): para que el jugador revise si
+ * cada uno lleva el que se le asocia. Son los mismos que usa el juego (data/colores-pais.json):
+ * a la izquierda, el color pedido en la tabla (o el de la bandera); a la derecha, el del mapa.
  */
-function coloresPaises(topo: TopologiaMapa, conjunto: ConjuntoPaises): HTMLElement {
-  const colores = coloresDelMapa(topo, PALETA);
+function coloresPaises(colores: Record<string, string>, conjunto: ConjuntoPaises): HTMLElement {
   const preferencias = preferenciasDeColor();
-  const paises = [...colores.keys()]
+  const tabla = tablaColores.paises as Record<string, readonly string[]>;
+  const paises = Object.keys(colores)
     .map((id) => ({ id, nombre: conjunto.paises[id]?.nombre ?? id }))
     .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
   return seccion(
@@ -135,12 +137,14 @@ function coloresPaises(topo: TopologiaMapa, conjunto: ConjuntoPaises): HTMLEleme
       'ul',
       { class: 'galeria__colores-pais' },
       ...paises.map(({ id, nombre }) => {
+        const pedido = el('span', { class: 'galeria__color-pedido', 'aria-hidden': 'true' });
+        pedido.style.background = preferencias.get(id)?.colores[0] ?? 'transparent';
         const muestra = el('span', { class: 'galeria__color-pais', 'aria-hidden': 'true' });
-        muestra.style.background = colores.get(id)!;
-        const tradicional = preferencias.get(id)?.tradicional ?? false;
+        muestra.style.background = colores[id]!;
+        const deseado = tabla[id]?.join(', ') ?? t('galeria.coloresPais.bandera');
         return el(
           'li',
-          { title: colores.get(id)! },
+          { title: `${deseado} → ${colores[id]!}` },
           el('img', {
             src: urlBandera(id, RAIZ),
             alt: '',
@@ -149,16 +153,14 @@ function coloresPaises(topo: TopologiaMapa, conjunto: ConjuntoPaises): HTMLEleme
             loading: 'lazy',
             decoding: 'async',
           }),
+          pedido,
           muestra,
-          el('span', {}, nombre),
-          tradicional
-            ? el(
-                'span',
-                { class: 'galeria__tradicional', title: t('galeria.coloresPais.tradicional') },
-                '★',
-                el('span', { class: 'oculto-visual' }, t('galeria.coloresPais.tradicional')),
-              )
-            : null,
+          el(
+            'span',
+            { class: 'galeria__color-nombre' },
+            el('span', {}, nombre),
+            el('small', {}, deseado),
+          ),
         );
       }),
     ),
@@ -284,16 +286,17 @@ async function iniciar(): Promise<void> {
     el('p', { class: 'galeria__nota' }, t('galeria.cargando')),
   );
   try {
-    const [conjunto, topo] = await Promise.all([
+    const [conjunto, topo, coloresPais] = await Promise.all([
       descargar<ConjuntoPaises>('data/paises-2010.json'),
       descargar<TopologiaMapa>('data/mapa-2010-mundo.json'),
+      descargar<{ colores: Record<string, string> }>('data/colores-pais.json'),
     ]);
     reemplazar(
       raiz,
       cabecera(),
       mapa(topo, conjunto),
-      paleta(),
-      coloresPaises(topo, conjunto),
+      coloresPaises(coloresPais.colores, conjunto),
+      referencias(),
       capas(),
       iconos(),
       sonidos(),

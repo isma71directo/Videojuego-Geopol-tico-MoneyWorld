@@ -1,44 +1,83 @@
 {
-  "nota": "Barra de secciones del mapa y ventanas de cada sección (ajuste f7-a2, decisión del jugador). Cada pestaña dice en qué fase de la hoja de ruta se llena; los textos están en src/i18n/es.json (juego.secciones).",
-  "grupos": [
+  "nota": "Barra de secciones del mapa (ajuste f7-a4, decisión del jugador): 8 apartados; cada uno abre una sub-barra con sus elementos y cada elemento, su ventana. Cada pestaña dice en qué fase de la hoja de ruta se llena. Los textos están en src/i18n/es.json (juego.secciones).",
+  "apartados": [
     {
       "id": "gobierno",
       "tecla": "g",
       "icono": "gobierno",
-      "secciones": ["consejo", "presupuesto", "impuestos", "parlamento"]
+      "elementos": ["presidencia", "consejo", "presupuesto", "impuestos"]
     },
     {
-      "id": "economia",
-      "tecla": "e",
-      "icono": "pib",
-      "secciones": ["economia", "energia", "infraestructuras"]
+      "id": "ministerios",
+      "tecla": "i",
+      "icono": "ministros",
+      "elementos": [
+        "ministerio-economia",
+        "ministerio-exteriores",
+        "ministerio-defensa",
+        "ministerio-interior",
+        "ministerio-justicia",
+        "ministerio-sanidad",
+        "ministerio-educacion",
+        "ministerio-ciencia",
+        "ministerio-trabajo",
+        "ministerio-industria",
+        "ministerio-energia",
+        "ministerio-transportes",
+        "ministerio-telecomunicaciones",
+        "ministerio-agricultura",
+        "ministerio-medioambiente",
+        "ministerio-vivienda",
+        "ministerio-cultura",
+        "ministerio-igualdad",
+        "ministerio-territorial"
+      ]
     },
     {
       "id": "politica",
       "tecla": "p",
       "icono": "urna",
-      "secciones": ["partidos", "sociedad", "poblacion", "regiones"]
+      "elementos": ["parlamento", "leyes", "partidos", "sociedad", "poblacion", "regiones"]
+    },
+    {
+      "id": "economia",
+      "tecla": "e",
+      "icono": "pib",
+      "elementos": ["economia", "sectores", "comercio"]
     },
     {
       "id": "mundo",
       "tecla": "u",
       "icono": "mundo",
-      "secciones": ["comercio", "diplomacia"]
+      "elementos": ["diplomacia", "organizaciones"]
     },
     {
       "id": "ejercito",
       "tecla": "j",
       "icono": "ejercito",
-      "secciones": ["ejercito"]
+      "elementos": ["fuerzas", "equipamiento", "bases", "guerras"]
     },
     {
-      "id": "mas",
-      "tecla": "s",
-      "icono": "mas",
-      "secciones": ["investigacion", "informes", "comparador"]
+      "id": "investigacion",
+      "tecla": "v",
+      "icono": "investigacion",
+      "elementos": ["investigacion"]
+    },
+    {
+      "id": "informes",
+      "tecla": "n",
+      "icono": "noticias",
+      "elementos": ["noticias", "informe", "historial", "comparador"]
     }
   ],
   "secciones": {
+    "presidencia": {
+      "icono": "estrella",
+      "pestanas": {
+        "resumen": 26,
+        "acciones": 62
+      }
+    },
     "consejo": {
       "icono": "ministros",
       "pestanas": {
@@ -64,33 +103,14 @@
       "icono": "parlamento",
       "pestanas": {
         "hemiciclo": 61,
-        "negociacion": 62,
-        "leyes": 67,
+        "negociacion": 62
+      }
+    },
+    "leyes": {
+      "icono": "ley",
+      "pestanas": {
+        "catalogo": 67,
         "historial": 67
-      }
-    },
-    "economia": {
-      "icono": "crecimiento",
-      "pestanas": {
-        "indicadores": 17,
-        "banco": 18,
-        "sectores": 46,
-        "empresas": 47
-      }
-    },
-    "energia": {
-      "icono": "energia",
-      "pestanas": {
-        "mix": 40,
-        "red": 40,
-        "combustibles": 40
-      }
-    },
-    "infraestructuras": {
-      "icono": "infraestructuras",
-      "pestanas": {
-        "obras": 36,
-        "transporte": 37
       }
     },
     "partidos": {
@@ -122,6 +142,20 @@
         "independentismo": 72
       }
     },
+    "economia": {
+      "icono": "crecimiento",
+      "pestanas": {
+        "indicadores": 17,
+        "banco": 18
+      }
+    },
+    "sectores": {
+      "icono": "industria",
+      "pestanas": {
+        "sectores": 46,
+        "empresas": 47
+      }
+    },
     "comercio": {
       "icono": "comercio",
       "pestanas": {
@@ -133,16 +167,42 @@
       "icono": "diplomacia",
       "pestanas": {
         "relaciones": 51,
-        "acciones": 52,
-        "organizaciones": 53
+        "acciones": 52
       }
     },
-    "ejercito": {
+    "organizaciones": {
+      "icono": "organizaciones",
+      "pestanas": {
+        "organizaciones": 53,
+        "obligaciones": 54
+      }
+    },
+    "fuerzas": {
       "icono": "ejercito",
       "pestanas": {
-        "fuerzas": 79,
-        "equipamiento": 79,
-        "guerras": 82
+        "fuerzas": 78,
+        "reclutamiento": 78
+      }
+    },
+    "equipamiento": {
+      "icono": "equipamiento",
+      "pestanas": {
+        "catalogo": 79,
+        "compras": 79
+      }
+    },
+    "bases": {
+      "icono": "base",
+      "pestanas": {
+        "bases": 81,
+        "logistica": 81
+      }
+    },
+    "guerras": {
+      "icono": "guerra",
+      "pestanas": {
+        "guerras": 82,
+        "paz": 85
       }
     },
     "investigacion": {
@@ -152,11 +212,22 @@
         "proyectos": 77
       }
     },
-    "informes": {
+    "noticias": {
       "icono": "noticias",
       "pestanas": {
-        "noticias": 27,
-        "informe": 27,
+        "noticias": 27
+      }
+    },
+    "informe": {
+      "icono": "informe",
+      "pestanas": {
+        "mensual": 27,
+        "anual": 99
+      }
+    },
+    "historial": {
+      "icono": "historial",
+      "pestanas": {
         "historial": 99
       }
     },
@@ -168,45 +239,140 @@
       }
     }
   },
-  "ministerios": [
-    "presidencia",
-    "economia",
-    "exteriores",
-    "defensa",
-    "interior",
-    "justicia",
-    "sanidad",
-    "educacion",
-    "ciencia",
-    "trabajo",
-    "industria",
-    "energia",
-    "transportes",
-    "telecomunicaciones",
-    "agricultura",
-    "medioambiente",
-    "vivienda",
-    "cultura",
-    "igualdad",
-    "territorial"
-  ],
+  "ministerios": {
+    "presidencia": {
+      "icono": "estrella",
+      "faseAcciones": 26,
+      "infraestructuras": false
+    },
+    "economia": {
+      "icono": "hacienda",
+      "faseAcciones": 22,
+      "infraestructuras": false
+    },
+    "exteriores": {
+      "icono": "diplomacia",
+      "faseAcciones": 52,
+      "infraestructuras": false
+    },
+    "defensa": {
+      "icono": "ejercito",
+      "faseAcciones": 78,
+      "infraestructuras": true
+    },
+    "interior": {
+      "icono": "interior",
+      "faseAcciones": 86,
+      "infraestructuras": true
+    },
+    "justicia": {
+      "icono": "justicia",
+      "faseAcciones": 86,
+      "infraestructuras": true
+    },
+    "sanidad": {
+      "icono": "sanidad",
+      "faseAcciones": 32,
+      "infraestructuras": true
+    },
+    "educacion": {
+      "icono": "educacion",
+      "faseAcciones": 34,
+      "infraestructuras": true
+    },
+    "ciencia": {
+      "icono": "ciencia",
+      "faseAcciones": 76,
+      "infraestructuras": true
+    },
+    "trabajo": {
+      "icono": "trabajo",
+      "faseAcciones": 31,
+      "infraestructuras": false
+    },
+    "industria": {
+      "icono": "industria",
+      "faseAcciones": 46,
+      "infraestructuras": false
+    },
+    "energia": {
+      "icono": "energia",
+      "faseAcciones": 40,
+      "infraestructuras": true
+    },
+    "transportes": {
+      "icono": "transportes",
+      "faseAcciones": 37,
+      "infraestructuras": true
+    },
+    "telecomunicaciones": {
+      "icono": "telecomunicaciones",
+      "faseAcciones": 41,
+      "infraestructuras": true
+    },
+    "agricultura": {
+      "icono": "agricultura",
+      "faseAcciones": 42,
+      "infraestructuras": true
+    },
+    "medioambiente": {
+      "icono": "medioambiente",
+      "faseAcciones": 88,
+      "infraestructuras": false
+    },
+    "vivienda": {
+      "icono": "vivienda",
+      "faseAcciones": 42,
+      "infraestructuras": true
+    },
+    "cultura": {
+      "icono": "cultura",
+      "faseAcciones": null,
+      "infraestructuras": false
+    },
+    "igualdad": {
+      "icono": "igualdad",
+      "faseAcciones": 30,
+      "infraestructuras": false
+    },
+    "territorial": {
+      "icono": "regiones",
+      "faseAcciones": 70,
+      "infraestructuras": false
+    }
+  },
+  "pestanasMinisterio": {
+    "resumen": 26,
+    "presupuesto": 26,
+    "leyes": 67,
+    "acciones": null,
+    "infraestructuras": 35
+  },
   "fases": {
     "17": "Pantalla de Economía",
     "18": "Banco central y tipos de interés",
+    "22": "Deuda, prima de riesgo y rating",
     "23": "Pantalla de Presupuesto",
     "25": "Impuestos: efectos y simulador",
     "26": "Consejo de Ministros",
     "27": "Asesores, noticias e informe del mes",
     "29": "Población por región",
-    "36": "Obras",
+    "30": "Mercado laboral",
+    "31": "Pensiones y huelgas",
+    "32": "Sanidad",
+    "34": "Educación",
+    "35": "Infraestructuras",
     "37": "Transporte",
     "40": "Combustibles y pantalla de Energía",
+    "41": "Telecomunicaciones",
+    "42": "Vivienda y agua",
     "46": "Política industrial",
     "47": "Empresas",
     "50": "Comercio: política comercial",
     "51": "Relaciones internacionales",
     "52": "Acciones diplomáticas",
     "53": "Organizaciones internacionales",
+    "54": "Organizaciones: beneficios y obligaciones",
     "56": "Opinión pública",
     "57": "Medios de comunicación",
     "60": "Líderes y vida de los partidos",
@@ -215,11 +381,18 @@
     "64": "Voto y encuestas",
     "65": "Campaña y noche electoral",
     "67": "Leyes: aprobación",
+    "70": "Autonomía regional",
     "71": "Gobiernos y elecciones regionales",
     "72": "Independentismo",
+    "76": "Investigación",
     "77": "Árbol de investigación",
+    "78": "Fuerzas armadas",
     "79": "Equipamiento militar",
+    "81": "Bases y logística",
     "82": "Guerra: declaración y frentes",
+    "85": "Paz y fronteras",
+    "86": "Interior y justicia",
+    "88": "Emisiones y clima",
     "98": "Comparador y clasificaciones",
     "99": "Informes e historial de la partida"
   }

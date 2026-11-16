@@ -272,16 +272,32 @@
     "secciones": {
       "etiqueta": "Secciones del gobierno",
       "tecla": "Tecla {tecla}",
-      "ayudaGrupo": "{grupo} · tecla {tecla}: {secciones}",
       "llega": "Se llena en la Fase {n} · {fase} (v{version})",
+      "sinFase": "Todavía no tiene fase en la hoja de ruta: está en el diseño (GDD, sección 6.4) y se planificará más adelante.",
       "vacia": "Esta parte de la ventana todavía está vacía: así se ve dónde irá cada cosa.",
-      "grupos": {
+      "cerrarSubbarra": "Cerrar {apartado}",
+      "apartados": {
         "gobierno": "Gobierno",
-        "economia": "Economía",
+        "ministerios": "Ministerios",
         "politica": "Política",
+        "economia": "Economía",
         "mundo": "Mundo",
         "ejercito": "Ejército",
-        "mas": "Más"
+        "investigacion": "Investigación",
+        "informes": "Informes"
+      },
+      "presidencia": {
+        "titulo": "Presidencia",
+        "pestanas": {
+          "resumen": {
+            "titulo": "Gobierno",
+            "texto": "Popularidad, estabilidad y cohesión del gobierno, y el equipo de ministros."
+          },
+          "acciones": {
+            "titulo": "Acciones",
+            "texto": "Remodelar el gobierno, comunicación y cuestión de confianza ante el parlamento."
+          }
+        }
       },
       "consejo": {
         "titulo": "Consejo de Ministros",
@@ -323,7 +339,7 @@
         }
       },
       "parlamento": {
-        "titulo": "Parlamento y leyes",
+        "titulo": "Parlamento",
         "pestanas": {
           "hemiciclo": {
             "titulo": "Hemiciclo",
@@ -332,65 +348,19 @@
           "negociacion": {
             "titulo": "Negociación",
             "texto": "Negociación de apoyos, coaliciones, gobiernos en minoría, moción de censura y cuestión de confianza."
-          },
-          "leyes": {
-            "titulo": "Leyes",
-            "texto": "Catálogo de leyes con buscador, filtros y previsión de votos."
+          }
+        }
+      },
+      "leyes": {
+        "titulo": "Leyes",
+        "pestanas": {
+          "catalogo": {
+            "titulo": "Catálogo",
+            "texto": "Todas las leyes con buscador, filtros por ministerio y previsión de votos: proponerlas, aprobarlas o derogarlas."
           },
           "historial": {
             "titulo": "Historial de leyes",
             "texto": "Las leyes aprobadas y derogadas durante la partida, con su fecha y su votación (petición del jugador)."
-          }
-        }
-      },
-      "economia": {
-        "titulo": "Economía",
-        "pestanas": {
-          "indicadores": {
-            "titulo": "Indicadores",
-            "texto": "Gráficos históricos de PIB, paro, inflación y deuda, mes a mes."
-          },
-          "banco": {
-            "titulo": "Banco central",
-            "texto": "Tipos de interés y su evolución; en la zona euro, las decisiones del BCE."
-          },
-          "sectores": {
-            "titulo": "Sectores",
-            "texto": "Los sectores productivos, sus insumos y los planes industriales."
-          },
-          "empresas": {
-            "titulo": "Empresas",
-            "texto": "Empresas públicas y privadas por sector: nacionalizar, privatizar, rescatar y crear empresas públicas."
-          }
-        }
-      },
-      "energia": {
-        "titulo": "Energía",
-        "pestanas": {
-          "mix": {
-            "titulo": "Mix y demanda",
-            "texto": "Cómo se produce la electricidad (mix) y cuánta se consume."
-          },
-          "red": {
-            "titulo": "Red y precios",
-            "texto": "La red eléctrica, el precio de la electricidad y los apagones."
-          },
-          "combustibles": {
-            "titulo": "Combustibles",
-            "texto": "Petróleo y gas producidos o importados, gasoductos, gas natural licuado y reservas estratégicas."
-          }
-        }
-      },
-      "infraestructuras": {
-        "titulo": "Infraestructuras",
-        "pestanas": {
-          "obras": {
-            "titulo": "Obras",
-            "texto": "Infraestructuras por región y cola de obras por ministerio, con prioridades y retrasos."
-          },
-          "transporte": {
-            "titulo": "Transporte",
-            "texto": "Carreteras, ferrocarril, alta velocidad, puertos y aeropuertos por región, y su conectividad."
           }
         }
       },
@@ -450,6 +420,32 @@
           }
         }
       },
+      "economia": {
+        "titulo": "Economía",
+        "pestanas": {
+          "indicadores": {
+            "titulo": "Indicadores",
+            "texto": "Gráficos históricos de PIB, paro, inflación y deuda, mes a mes."
+          },
+          "banco": {
+            "titulo": "Banco central",
+            "texto": "Tipos de interés y su evolución; en la zona euro, las decisiones del BCE."
+          }
+        }
+      },
+      "sectores": {
+        "titulo": "Sectores y empresas",
+        "pestanas": {
+          "sectores": {
+            "titulo": "Sectores",
+            "texto": "Los sectores productivos, sus insumos y los planes industriales."
+          },
+          "empresas": {
+            "titulo": "Empresas",
+            "texto": "Empresas públicas y privadas por sector: nacionalizar, privatizar, rescatar y crear empresas públicas."
+          }
+        }
+      },
       "comercio": {
         "titulo": "Comercio",
         "pestanas": {
@@ -473,27 +469,71 @@
           "acciones": {
             "titulo": "Acciones",
             "texto": "Embajadas, visitas oficiales, cumbres, tratados, ayudas, préstamos y sanciones."
-          },
-          "organizaciones": {
-            "titulo": "Organizaciones",
-            "texto": "ONU, UE, OTAN, Mercosur, OPEP, G20 y las demás, con sus votaciones, adhesiones y salidas."
           }
         }
       },
-      "ejercito": {
-        "titulo": "Ejército",
+      "organizaciones": {
+        "titulo": "Organizaciones",
+        "pestanas": {
+          "organizaciones": {
+            "titulo": "Miembros",
+            "texto": "ONU, UE, OTAN, Mercosur, OPEP, G20 y las demás, con sus miembros y sus votaciones."
+          },
+          "obligaciones": {
+            "titulo": "Beneficios y obligaciones",
+            "texto": "Lo que da y lo que exige cada organización: adhesiones, salidas y expulsiones."
+          }
+        }
+      },
+      "fuerzas": {
+        "titulo": "Fuerzas armadas",
         "pestanas": {
           "fuerzas": {
-            "titulo": "Fuerzas armadas",
-            "texto": "Efectivos, presupuesto, preparación, moral y reclutamiento."
+            "titulo": "Fuerzas",
+            "texto": "Efectivos, presupuesto, preparación, moral y experiencia de cada rama."
           },
-          "equipamiento": {
-            "titulo": "Equipamiento",
-            "texto": "Catálogo de equipamiento militar, compras a otros países y fabricación propia."
+          "reclutamiento": {
+            "titulo": "Reclutamiento",
+            "texto": "Ejército profesional, servicio obligatorio y reservistas."
+          }
+        }
+      },
+      "equipamiento": {
+        "titulo": "Equipamiento",
+        "pestanas": {
+          "catalogo": {
+            "titulo": "Catálogo",
+            "texto": "Equipamiento militar por tipo y generación tecnológica."
           },
+          "compras": {
+            "titulo": "Compras",
+            "texto": "Compras a otros países y fabricación propia."
+          }
+        }
+      },
+      "bases": {
+        "titulo": "Bases",
+        "pestanas": {
+          "bases": {
+            "titulo": "Bases",
+            "texto": "Bases propias y en el extranjero por acuerdo."
+          },
+          "logistica": {
+            "titulo": "Logística",
+            "texto": "Abastecimiento y despliegue de las unidades."
+          }
+        }
+      },
+      "guerras": {
+        "titulo": "Guerras",
+        "pestanas": {
           "guerras": {
             "titulo": "Guerras",
             "texto": "Guerras en curso (en 2010, Afganistán e Irak), frentes y bajas."
+          },
+          "paz": {
+            "titulo": "Paz",
+            "texto": "Negociaciones de paz y cambios de fronteras."
           }
         }
       },
@@ -510,20 +550,34 @@
           }
         }
       },
-      "informes": {
-        "titulo": "Informes y noticias",
+      "noticias": {
+        "titulo": "Noticias",
         "pestanas": {
           "noticias": {
             "titulo": "Noticias",
             "texto": "Teletipo de noticias y centro de notificaciones."
-          },
-          "informe": {
+          }
+        }
+      },
+      "informe": {
+        "titulo": "Informes",
+        "pestanas": {
+          "mensual": {
             "titulo": "Informe del mes",
             "texto": "Resumen de cada mes con lo más importante para tu país."
           },
+          "anual": {
+            "titulo": "Informe anual",
+            "texto": "Balance de cada año del país."
+          }
+        }
+      },
+      "historial": {
+        "titulo": "Historial de la partida",
+        "pestanas": {
           "historial": {
-            "titulo": "Historial de la partida",
-            "texto": "Línea de tiempo con los hechos clave de la partida e informe anual del país."
+            "titulo": "Historial",
+            "texto": "Línea de tiempo con los hechos clave de la partida."
           }
         }
       },
@@ -540,87 +594,143 @@
           }
         }
       },
+      "ministerio": {
+        "titulo": "Ministerio de {nombre}",
+        "pestanas": {
+          "resumen": {
+            "titulo": "Resumen",
+            "texto": "El ministro (competencia, ideología, partido y lealtad), sus alertas y sus indicadores clave: {indicadores}."
+          },
+          "presupuesto": {
+            "titulo": "Presupuesto",
+            "texto": "Cuánto dinero recibe el ministerio y cómo se reparte entre sus partidas."
+          },
+          "leyes": {
+            "titulo": "Leyes",
+            "texto": "Las leyes de este ministerio: proponerlas, llevarlas al parlamento y aprobarlas o derogarlas."
+          },
+          "acciones": {
+            "titulo": "Acciones",
+            "texto": "Las decisiones del ministerio: {acciones}."
+          },
+          "infraestructuras": {
+            "titulo": "Infraestructuras",
+            "texto": "Sus infraestructuras por región ({infraestructuras}), su estado y su cola de obras."
+          }
+        }
+      },
       "ministeriosNota": "Cada ministerio tendrá ministro, presupuesto, indicadores clave, infraestructuras propias y acciones (GDD, sección 6.4).",
       "ministerios": {
         "presidencia": {
           "nombre": "Presidencia",
-          "indicadores": "Popularidad, estabilidad y cohesión del gobierno"
+          "indicadores": "Popularidad, estabilidad y cohesión del gobierno",
+          "acciones": "remodelar el gobierno, comunicación y cuestión de confianza"
         },
         "economia": {
           "nombre": "Economía y Hacienda",
-          "indicadores": "Crecimiento, déficit, deuda y recaudación"
+          "indicadores": "Crecimiento, déficit, deuda y recaudación",
+          "acciones": "presupuesto, impuestos y emisión de deuda"
         },
         "exteriores": {
           "nombre": "Exteriores",
-          "indicadores": "Relaciones, tratados e imagen internacional"
+          "indicadores": "Relaciones, tratados e imagen internacional",
+          "acciones": "embajadas, visitas, tratados y sanciones"
         },
         "defensa": {
           "nombre": "Defensa",
-          "indicadores": "Fuerza militar, preparación y moral"
+          "indicadores": "Fuerza militar, preparación y moral",
+          "acciones": "reclutamiento, compras y despliegues",
+          "infraestructuras": "bases militares"
         },
         "interior": {
           "nombre": "Interior",
-          "indicadores": "Criminalidad, terrorismo y orden público"
+          "indicadores": "Criminalidad, terrorismo y orden público",
+          "acciones": "policía, control fronterizo y gestión de protestas",
+          "infraestructuras": "comisarías y puestos fronterizos"
         },
         "justicia": {
           "nombre": "Justicia",
-          "indicadores": "Independencia judicial, corrupción y prisiones"
+          "indicadores": "Independencia judicial, corrupción y prisiones",
+          "acciones": "reformas judiciales, indultos y lucha anticorrupción",
+          "infraestructuras": "prisiones"
         },
         "sanidad": {
           "nombre": "Sanidad",
-          "indicadores": "Esperanza de vida, listas de espera y camas"
+          "indicadores": "Esperanza de vida, listas de espera y camas",
+          "acciones": "hospitales, personal, vacunación y epidemias",
+          "infraestructuras": "hospitales, centros de salud y hospitales militares"
         },
         "educacion": {
           "nombre": "Educación",
-          "indicadores": "Alfabetización, nivel educativo y abandono"
+          "indicadores": "Alfabetización, nivel educativo y abandono",
+          "acciones": "colegios, universidades, becas y profesorado",
+          "infraestructuras": "colegios, institutos, universidades y centros de FP"
         },
         "ciencia": {
           "nombre": "Ciencia e Investigación",
-          "indicadores": "Puntos de investigación y patentes"
+          "indicadores": "Puntos de investigación y patentes",
+          "acciones": "centros de I+D, prioridades y cooperación",
+          "infraestructuras": "centros de I+D, laboratorios y bases de lanzamiento espacial"
         },
         "trabajo": {
           "nombre": "Trabajo y Seguridad Social",
-          "indicadores": "Paro, pensiones y salario mínimo"
+          "indicadores": "Paro, pensiones y salario mínimo",
+          "acciones": "reformas laborales, edad de jubilación y prestaciones"
         },
         "industria": {
           "nombre": "Industria y Comercio",
-          "indicadores": "Producción industrial y exportaciones"
+          "indicadores": "Producción industrial y exportaciones",
+          "acciones": "subvenciones, aranceles y tratados comerciales"
         },
         "energia": {
           "nombre": "Energía",
-          "indicadores": "Mix, precio de la electricidad, apagones y dependencia"
+          "indicadores": "Mix, precio de la electricidad, apagones y dependencia",
+          "acciones": "centrales, red, interconexiones y reservas",
+          "infraestructuras": "centrales, líneas de alta tensión, subestaciones, interconexiones y almacenamiento"
         },
         "transportes": {
           "nombre": "Transportes e Infraestructuras",
-          "indicadores": "Calidad de la red de transporte"
+          "indicadores": "Calidad de la red de transporte",
+          "acciones": "carreteras, ferrocarril, puertos y aeropuertos",
+          "infraestructuras": "carreteras, autopistas, ferrocarril, alta velocidad, metro, puertos y aeropuertos"
         },
         "telecomunicaciones": {
           "nombre": "Telecomunicaciones y Digital",
-          "indicadores": "Cobertura, velocidad y ciberseguridad"
+          "indicadores": "Cobertura, velocidad y ciberseguridad",
+          "acciones": "fibra, 4G/5G y ciberdefensa",
+          "infraestructuras": "fibra, antenas 3G/4G/5G, centros de datos y cables submarinos"
         },
         "agricultura": {
           "nombre": "Agricultura, Pesca y Alimentación",
-          "indicadores": "Producción agraria y autosuficiencia"
+          "indicadores": "Producción agraria y autosuficiencia",
+          "acciones": "ayudas, regadíos y cuotas",
+          "infraestructuras": "presas, depuradoras, desaladoras y regadíos"
         },
         "medioambiente": {
           "nombre": "Medio Ambiente",
-          "indicadores": "Emisiones, contaminación y espacios protegidos"
+          "indicadores": "Emisiones, contaminación y espacios protegidos",
+          "acciones": "normativa, energías limpias y reforestación"
         },
         "vivienda": {
           "nombre": "Vivienda",
-          "indicadores": "Precio de la vivienda y sinhogarismo"
+          "indicadores": "Precio de la vivienda y sinhogarismo",
+          "acciones": "vivienda pública y regulación del alquiler",
+          "infraestructuras": "vivienda pública"
         },
         "cultura": {
           "nombre": "Cultura y Deporte",
-          "indicadores": "Satisfacción cultural y turismo"
+          "indicadores": "Satisfacción cultural y turismo",
+          "acciones": "eventos, patrimonio y candidaturas olímpicas"
         },
         "igualdad": {
           "nombre": "Igualdad y Asuntos Sociales",
-          "indicadores": "Pobreza, desigualdad (Gini) y dependencia"
+          "indicadores": "Pobreza, desigualdad (Gini) y dependencia",
+          "acciones": "rentas mínimas y ayudas"
         },
         "territorial": {
           "nombre": "Administraciones Territoriales",
-          "indicadores": "Tensión territorial y nivel de autonomía"
+          "indicadores": "Tensión territorial y nivel de autonomía",
+          "acciones": "competencias, financiación regional y diálogo"
         }
       }
     }
@@ -724,7 +834,30 @@
       "diplomacia": "Diplomacia",
       "investigacion": "Investigación",
       "noticias": "Informes y noticias",
-      "comparador": "Comparador"
+      "comparador": "Comparador",
+      "hacienda": "Economía y Hacienda",
+      "interior": "Interior",
+      "justicia": "Justicia",
+      "sanidad": "Sanidad",
+      "educacion": "Educación",
+      "ciencia": "Ciencia",
+      "trabajo": "Trabajo",
+      "industria": "Industria",
+      "transportes": "Transportes",
+      "telecomunicaciones": "Telecomunicaciones",
+      "agricultura": "Agricultura",
+      "medioambiente": "Medio ambiente",
+      "vivienda": "Vivienda",
+      "cultura": "Cultura y deporte",
+      "igualdad": "Igualdad",
+      "estrella": "Presidencia",
+      "ley": "Leyes",
+      "organizaciones": "Organizaciones",
+      "equipamiento": "Equipamiento militar",
+      "base": "Bases",
+      "guerra": "Guerras",
+      "informe": "Informes",
+      "historial": "Historial"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -759,13 +892,13 @@
       "menu": "Abrir el menú contextual"
     },
     "paleta": {
-      "titulo": "Paleta del mapa político",
-      "nota": "45 tonos creados con código (15 tonos del círculo cromático con tres luminosidades). Cada país tiene siempre el mismo y nunca uno parecido al de un vecino; con el mundo entero a la vista, ningún color se repite a menos de 1.500 km y los países muy grandes llevan colores distintos entre sí."
+      "titulo": "Colores de referencia",
+      "nota": "Los nombres de color que usa la tabla de colores representativos (src/map/config/colores-pais.json). Cada país lleva un tono cercano al suyo: más claro, más oscuro o algo girado, para que no se parezca a los de su alrededor."
     },
     "coloresPais": {
       "titulo": "Color de cada país",
-      "nota": "El color de cada país en el mapa político es, dentro de la paleta, el que se le asocia: el de su bandera o, en los marcados con ★, el de la lista de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo y verde, Italia verde azulado, Países Bajos naranja…). Dos vecinos nunca llevan colores parecidos, así que algunos países llevan su segundo color o uno cercano. Si quieres cambiar alguno, dímelo.",
-      "tradicional": "Color de la lista de colores tradicionales"
+      "nota": "Para cada país: su bandera, el color pedido en la tabla (o el de su bandera, en los territorios pequeños) y el color que lleva en el mapa, con lo que pide la tabla debajo del nombre. Dos vecinos nunca llevan colores parecidos y en una misma zona del mapa no se repite un color casi igual, así que algunos llevan una variante más clara u oscura o su segundo color. Si quieres cambiar alguno, dime cuál y qué color querrías.",
+      "bandera": "colores de su bandera"
     },
     "capas": {
       "titulo": "Capas del mapa",
