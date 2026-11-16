@@ -130,6 +130,11 @@
 }
 
 /* ── Pestañas ─────────────────────────────────────────────────────────────────── */
+.pestanas {
+  /* Las pestañas se compactan según el ancho de su caja (panel estrecho o ventana). */
+  container-type: inline-size;
+}
+
 .pestanas__lista {
   display: flex;
   gap: 2px;
@@ -169,6 +174,19 @@
 
 .pestanas__pestana:focus-visible {
   outline-offset: -3px;
+}
+
+/* Va detrás de las reglas anteriores para poder sustituirlas. */
+@container (max-width: 360px) {
+  .pestanas__pestana {
+    gap: 5px;
+    padding: 8px;
+  }
+
+  .pestanas__pestana .icono {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .pestanas__contenido {

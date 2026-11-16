@@ -5,8 +5,8 @@
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-t2 hecha: tablas ordenables, deslizadores, información al pasar el ratón, menú contextual (también con clic derecho o Mayús + F10 en el mapa: ver la ficha, centrar, acercar y ver el mundo) y gráficos en SVG propio (líneas con guía y valores, barras, barra de partes en lugar de sectores y minigráficos), con vista de tabla y colores de serie validados para daltonismo.",
-    "siguientePaso": "f7-t3: muestrario de todos los componentes en la galería.",
+    "resumen": "f7-t3 hecha: la galería tiene un muestrario de los componentes (ventanas de España y Japón con pestañas, paneles a cada lado, tabla de los 20 países más poblados, deslizador de ejemplo, menú contextual, información de indicadores y gráficos de barras, líneas, barra de partes y minigráfico; los datos inventados van marcados). Las pestañas se compactan en los paneles estrechos.",
+    "siguientePaso": "f7-t4: animaciones de ventanas, hojas y pestañas y sonidos de navegación; después, cerrar la Fase 7 (v0.8.0).",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
@@ -512,16 +512,16 @@
         },
         {
           "id": "f7-t2",
-          "titulo": "Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos (líneas, barras, sectores y minigráficos)",
+          "titulo": "Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa: ver la ficha, centrar y acercar), información al pasar el ratón y gráficos básicos (líneas, barras, barra de partes y minigráficos)",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f43b199"
         },
         {
           "id": "f7-t3",
           "titulo": "Muestrario de los componentes en la galería audiovisual",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

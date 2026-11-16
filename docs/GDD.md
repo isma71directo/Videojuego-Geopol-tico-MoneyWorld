@@ -785,7 +785,7 @@ interface EstadoPartida {
 **Objetivo:** las piezas de interfaz que usarán todas las pantallas.
 **Tareas**
 1. Base de interfaz para PC: tema oscuro, tipografía Inter (letra libre, licencia OFL, incluida en el juego; decisión del jugador), paneles laterales, ventanas flotantes que se mueven arrastrando el título y recuerdan su sitio (decisión del jugador), con varias abiertas a la vez, y pestañas.
-2. Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa, con lo que ya se puede hacer: ver la ficha, centrar y acercar; decisión del jugador), información al pasar el ratón y gráficos básicos (líneas, barras, sectores y minigráficos).
+2. Componentes de datos: tablas ordenables, deslizadores, menú contextual (también con clic derecho en el mapa, con lo que ya se puede hacer: ver la ficha, centrar y acercar; decisión del jugador), información al pasar el ratón y gráficos básicos (líneas, barras, barra de partes en lugar de sectores y minigráficos).
 3. Muestrario de los componentes en la galería audiovisual.
 4. **Audiovisual:** animaciones de ventanas, hojas y pestañas y sonidos de navegación (sin sonido al pasar el ratón).
 
@@ -2097,6 +2097,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 12/11/2026 | Densidad de población con la superficie terrestre real (FAO, vía Banco Mundial) en lugar de la medida en el mapa, que falla en los archipiélagos (Feroe, Polinesia, Maldivas); el mapa solo se usa para los territorios sin dato y para las regiones | Mejora de la propuesta aprobada por el jugador (no inventar datos) | 4, 9 |
 | 16/11/2026 | Mapa político con 45 colores (15 tonos × 3 luminosidades) en lugar de 12, repartidos según lo que se parecen a la vista: nunca parecidos entre vecinos, ningún color repetido a menos de 1.500 km y colores distintos para los países muy grandes; la capa política deja ver algo menos el terreno | Petición del jugador tras probar la v0.7.0 (ajuste f6-a1) | 7, 9 |
 | 16/11/2026 | Fase 7 concretada con el jugador: tipografía Inter (OFL), ventanas movibles que recuerdan su sitio, menú contextual con clic derecho en el mapa desde esta fase; la ficha y el panel del país pasan a los componentes nuevos en la Fase 8; la tarea 1 se divide en dos (base y ventanas; componentes de datos) | Plan de la Fase 7 aprobado por el jugador | 7, 9, 13 |
+| 16/11/2026 | Los gráficos de sectores se sustituyen por una «barra de partes» (una barra dividida en tramos con su porcentaje y leyenda): se comparan mejor los tamaños y se lee igual con daltonismo; todos los gráficos tienen vista de tabla | Buenas prácticas de visualización de datos (f7-t2) | 7, 9 |
 
 ---
 
