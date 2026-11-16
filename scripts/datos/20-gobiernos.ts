@@ -53,6 +53,10 @@ interface CorreccionCargos {
 interface Manual {
   cargos: Record<string, CorreccionCargos>;
   regimenes: Record<string, { regimen: Regimen; motivo: string }>;
+  /** Nombres de persona mal escritos en Wikidata, por su identificador. */
+  nombres: Record<string, { nombre: string; motivo: string }>;
+  /** Textos de cargo que se cambian tal cual (erratas, nombres de país de hoy…). */
+  textosCargo: { buscar: string; cambiar: string; motivo: string }[];
 }
 interface PaisFuente {
   id: string;
@@ -301,6 +305,9 @@ for (const fila of filasPersonas) {
       previa?.nacimiento ?? (fila.nacimiento ? Number(fila.nacimiento.value.slice(0, 4)) : null),
   };
 }
+for (const [id, { nombre }] of Object.entries(manual.nombres)) {
+  if (datosPersonas[id]) datosPersonas[id].nombre = nombre;
+}
 const sinNombre = Object.keys(datosPersonas).filter((id) => datosPersonas[id]!.nombre === id);
 
 // 7. Cargos en femenino si los ocupa una mujer (Wikidata los nombra en masculino) y con
@@ -353,7 +360,10 @@ const ajustarCargo = (c: Cargo | null, pais: string): void => {
   if (datosPersonas[c.persona]?.sexo === 'm') {
     for (const [patron, femenino] of FEMENINOS) texto = texto.replace(patron, femenino);
   }
-  c.cargo = texto.charAt(0).toUpperCase() + texto.slice(1);
+  texto = texto.charAt(0).toUpperCase() + texto.slice(1);
+  // Al final, con la mayúscula ya puesta, las correcciones a mano de texto.
+  for (const { buscar, cambiar } of manual.textosCargo) texto = texto.replace(buscar, cambiar);
+  c.cargo = texto;
 };
 for (const [id, ficha] of Object.entries(resultado)) {
   // Los dependientes comparten el jefe de Estado del soberano: se copia antes de tocarlo, y su

@@ -116,12 +116,51 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
   });
 
   it('un homenaje cambia solo lo que dice y el resto sale del genérico', () => {
-    const [persona, propios] = Object.entries(RASGOS_LIDERES)[0] ?? [];
-    if (!persona || !propios) return; // Los homenajes llegan en la tarea f8-t4.
+    // Berlusconi: pelo oscuro aunque tuviera 74 años (el color del homenaje no encanece).
+    const persona = 'Q11860';
     expect(tieneHomenaje(persona)).toBe(true);
-    const rasgos = rasgosDe({ ...base, persona });
+    const propios = RASGOS_LIDERES[persona]!;
+    const rasgos = rasgosDe({ ...base, pais: 'ITA', edad: 74, persona });
     expect(rasgos).toMatchObject(propios);
-    expect(rasgos.ropa).toBeDefined();
+    expect(rasgos.colorFijo).toBe(true);
+    expect(svgRetrato(rasgos, '#334455')).toContain(`fill="${propios.colorPelo}"`);
+    // Lo que el homenaje no dice (la edad) sale de los datos.
+    expect(rasgos.edad).toBe(74);
+    expect(tieneHomenaje('Q12345')).toBe(false);
+  });
+
+  it('los homenajes (tarea f8-t4) son de personas con cargo en 2010 y con su sexo', () => {
+    const lideres = leer<{ lideres: Record<string, { quien: string; rasgos: object }> }>(
+      'src/av/config/retratos-lideres.json',
+    ).lideres;
+    expect(Object.keys(lideres).length).toBeGreaterThanOrEqual(80);
+    const conCargo = new Set(
+      Object.values(gobiernos.paises).flatMap((g) =>
+        [g.estado, jefeGobierno(g)].filter((c) => c !== null).map((c) => c.persona),
+      ),
+    );
+    for (const [persona, { quien, rasgos }] of Object.entries(lideres)) {
+      expect(conCargo.has(persona), persona).toBe(true);
+      expect(quien, persona).toContain(gobiernos.personas[persona]!.nombre);
+      const sexo = (rasgos as { sexo?: string }).sexo;
+      if (sexo) expect(sexo, persona).toBe(gobiernos.personas[persona]!.sexo);
+      const gafas = (rasgos as { gafas?: string }).gafas;
+      if (gafas) expect(['ninguna', 'finas', 'gruesas', 'redondas', 'sol']).toContain(gafas);
+    }
+  });
+
+  it('los jefes de Estado y de Gobierno del G20 y las grandes figuras tienen homenaje', () => {
+    const g20 = 'USA CHN JPN DEU FRA GBR ITA ESP RUS IND BRA CAN AUS KOR MEX IDN TUR SAU ARG ZAF';
+    for (const pais of g20.split(' ')) {
+      const g = gobiernos.paises[pais]!;
+      for (const cargo of [g.estado, jefeGobierno(g)]) {
+        expect(tieneHomenaje(cargo!.persona), `${pais} ${cargo!.persona}`).toBe(true);
+      }
+    }
+    // El papa, el líder supremo de Irán, Kim Jong-il, Gadafi, Chávez y Raúl Castro.
+    for (const persona of ['Q2494', 'Q57336', 'Q10665', 'Q19878', 'Q8440', 'Q46809']) {
+      expect(tieneHomenaje(persona), persona).toBe(true);
+    }
   });
 
   it('accesible: con título se anuncia y sin él es decorativo', () => {

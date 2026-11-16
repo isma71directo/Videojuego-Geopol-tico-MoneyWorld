@@ -1,4 +1,1240 @@
 {
-  "nota": "Retratos homenaje de los líderes de 2010 de los países y figuras importantes (tarea f8-t4, decisión del jugador): interpretaciones ilustradas propias, nunca fotografías. Cada entrada, por su identificador de Wikidata, da los rasgos del busto que dibuja src/av/retratos.ts; los que falten se toman del retrato genérico.",
-  "lideres": {}
+  "nota": "Retratos homenaje (tarea f8-t4): interpretaciones ilustradas de los líderes de 2010, reconocibles por el pelo, la barba, las gafas, la ropa, el tocado o el gesto. Se dibujan con código (src/av/retratos.ts); nunca son fotografías. Lo que no se indica sale del retrato genérico.",
+  "lideres": {
+    "Q76": {
+      "quien": "Barack Obama (ASM)",
+      "rasgos": {
+        "piel": 5,
+        "pelo": "cortito",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q15029": {
+      "quien": "Hu Jintao (CHN)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#1f1a17",
+        "gafas": "finas",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q16628": {
+      "quien": "Wen Jiabao (CHN)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "atras",
+        "colorPelo": "#3a3633",
+        "gafas": "finas",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#3a3f4a",
+        "colorDetalle": "#9aa0a8"
+      }
+    },
+    "Q37979": {
+      "quien": "Akihito (JPN)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#b5b3b0",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q131077": {
+      "quien": "Yukio Hatoyama (JPN)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "ondulado",
+        "colorPelo": "#8f8f8f",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#6f93c4"
+      }
+    },
+    "Q2542": {
+      "quien": "Horst Köhler (DEU)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "entradas",
+        "colorPelo": "#e6e5e2",
+        "gafas": "finas",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#3a3f4a",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q567": {
+      "quien": "Angela Merkel (DEU)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "bob",
+        "colorPelo": "#b39566",
+        "expresion": "seria",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#c4542f",
+        "colorDetalle": "#1c1c20"
+      }
+    },
+    "Q329": {
+      "quien": "Nicolas Sarkozy (AND)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#3b2a20",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#1f2b3d"
+      }
+    },
+    "Q101410": {
+      "quien": "François Fillon (FRA)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#4a3c33",
+        "cejas": "pobladas",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q9682": {
+      "quien": "Isabel II del Reino Unido (AUS)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "permanente",
+        "colorPelo": "#ecebe8",
+        "collar": true,
+        "tocado": "sombrero",
+        "colorTocado": "#8293c9",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#8293c9",
+        "colorDetalle": "#f3efe4"
+      }
+    },
+    "Q10648": {
+      "quien": "Gordon Brown (GBR)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "ondulado",
+        "colorPelo": "#5a5654",
+        "cejas": "pobladas",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q1220": {
+      "quien": "Giorgio Napolitano (ITA)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "entradas",
+        "colorPelo": "#e6e5e2",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q11860": {
+      "quien": "Silvio Berlusconi (ITA)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "atras",
+        "colorPelo": "#3b2a20",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q19943": {
+      "quien": "Juan Carlos I de España (ESP)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "entradas",
+        "colorPelo": "#c9c7c2",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q41395": {
+      "quien": "José Luis Rodríguez Zapatero (ESP)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#2a2320",
+        "cejas": "arqueadas",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q23530": {
+      "quien": "Dmitri Medvédev (RUS)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#3b2a20",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#6f93c4"
+      }
+    },
+    "Q7747": {
+      "quien": "Vladímir Putin (RUS)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "entradas",
+        "colorPelo": "#9a8a72",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#4a5a7a"
+      }
+    },
+    "Q47854": {
+      "quien": "Pratibha Patil (IND)",
+      "rasgos": {
+        "sexo": "m",
+        "piel": 4,
+        "pelo": "recogido",
+        "colorPelo": "#3a3633",
+        "gafas": "finas",
+        "ropa": "sari",
+        "colorRopa": "#e8d3a8",
+        "colorDetalle": "#b5652f",
+        "tocado": "velo",
+        "colorTocado": "#e8d3a8",
+        "expresion": "sonrisa"
+      }
+    },
+    "Q41914": {
+      "quien": "Manmohan Singh (IND)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "corto",
+        "colorPelo": "#e6e5e2",
+        "barba": "larga",
+        "colorBarba": "#efefef",
+        "gafas": "finas",
+        "ropa": "mao",
+        "colorRopa": "#3e4a5c",
+        "colorDetalle": "#9aa0a8",
+        "tocado": "turbante",
+        "colorTocado": "#6f9fd8"
+      }
+    },
+    "Q37181": {
+      "quien": "Luiz Inácio Lula da Silva (BRA)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "ondulado",
+        "colorPelo": "#8f8f8f",
+        "barba": "corta",
+        "colorBarba": "#a3a3a3",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q206": {
+      "quien": "Stephen Harper (CAN)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#7a6352",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q43135": {
+      "quien": "Kevin Rudd (AUS)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#b5a98e",
+        "gafas": "finas",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q14342": {
+      "quien": "Lee Myung-bak (KOR)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#6f93c4"
+      }
+    },
+    "Q57269": {
+      "quien": "Felipe Calderón (MEX)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "entradas",
+        "colorPelo": "#2e2925",
+        "gafas": "finas",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q57405": {
+      "quien": "Susilo Bambang Yudhoyono (IDN)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "raya",
+        "colorPelo": "#1f1a17",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q42852": {
+      "quien": "Abdullah Gül (TUR)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "raya",
+        "colorPelo": "#5a5654",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q39259": {
+      "quien": "Recep Tayyip Erdoğan (TUR)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "atras",
+        "colorPelo": "#3a3633",
+        "barba": "bigote",
+        "colorBarba": "#3a3633",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#5b3f7a"
+      }
+    },
+    "Q57298": {
+      "quien": "Abdalá bin Abdelaziz (SAU)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "corto",
+        "colorPelo": "#1f1a17",
+        "barba": "perilla",
+        "colorBarba": "#1f1a17",
+        "ropa": "bisht",
+        "colorRopa": "#3a2a1c",
+        "colorDetalle": "#f4f2ec",
+        "tocado": "kufiya",
+        "colorTocado": "#c8454a"
+      }
+    },
+    "Q40649": {
+      "quien": "Cristina Fernández de Kirchner (ARG)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "largo",
+        "colorPelo": "#3b2a20",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#d9d2c5"
+      }
+    },
+    "Q57282": {
+      "quien": "Jacob Zuma (ZAF)",
+      "rasgos": {
+        "piel": 6,
+        "pelo": "calvo",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#2f6a4a"
+      }
+    },
+    "Q57336": {
+      "quien": "Alí Jameneí (IRN)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "corto",
+        "colorPelo": "#e6e5e2",
+        "barba": "larga",
+        "colorBarba": "#ececec",
+        "gafas": "gruesas",
+        "ropa": "clerigo",
+        "colorRopa": "#4a3b2e",
+        "colorDetalle": "#8a8478",
+        "tocado": "turbante",
+        "colorTocado": "#1b1b1b"
+      }
+    },
+    "Q34448": {
+      "quien": "Mahmud Ahmadineyad (IRN)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "corto",
+        "colorPelo": "#2e2925",
+        "barba": "corta",
+        "colorBarba": "#3a3633",
+        "ropa": "chaqueta",
+        "colorRopa": "#b9ad94",
+        "colorDetalle": "#f2f0ea",
+        "expresion": "sonrisa"
+      }
+    },
+    "Q10665": {
+      "quien": "Kim Jong-il (PRK)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "cardado",
+        "colorPelo": "#2a2522",
+        "gafas": "gruesas",
+        "ropa": "mao",
+        "colorRopa": "#7c7764",
+        "colorDetalle": "#9aa0a8"
+      }
+    },
+    "Q310875": {
+      "quien": "Kim Yong-il (PRK)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "atras",
+        "colorPelo": "#2a2522",
+        "ropa": "mao",
+        "colorRopa": "#3a3f4a",
+        "colorDetalle": "#9aa0a8"
+      }
+    },
+    "Q57410": {
+      "quien": "Shimon Peres (ISR)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "atras",
+        "colorPelo": "#e6e5e2",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q43723": {
+      "quien": "Benjamín Netanyahu (ISR)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "atras",
+        "colorPelo": "#9a9894",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q127998": {
+      "quien": "Mahmud Abbas (PSE)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "entradas",
+        "colorPelo": "#e6e5e2",
+        "barba": "bigote",
+        "colorBarba": "#e6e5e2",
+        "ropa": "traje",
+        "colorRopa": "#3a3f4a",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q34105": {
+      "quien": "Hosni Mubarak (EGY)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "atras",
+        "colorPelo": "#1f1a17",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q57373": {
+      "quien": "Asif Ali Zardari (PAK)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "atras",
+        "colorPelo": "#2e2925",
+        "barba": "bigote",
+        "colorBarba": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q43944": {
+      "quien": "Hamid Karzai (AFG)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "calvo",
+        "colorPelo": "#8f8f8f",
+        "barba": "corta",
+        "colorBarba": "#9a9894",
+        "ropa": "chapan",
+        "colorRopa": "#3f6a4a",
+        "colorDetalle": "#7a3f6a",
+        "tocado": "karakul",
+        "colorTocado": "#6a6a66"
+      }
+    },
+    "Q57306": {
+      "quien": "Yalal Talabani (IRQ)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "entradas",
+        "colorPelo": "#b5b3b0",
+        "barba": "bigote",
+        "colorBarba": "#c9c7c2",
+        "gafas": "finas",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#3a3f4a",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q57673": {
+      "quien": "Nuri al-Maliki (IRQ)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "corto",
+        "colorPelo": "#5a5654",
+        "barba": "corta",
+        "colorBarba": "#6a6664",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q44329": {
+      "quien": "Bashar al-Ásad (SYR)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "entradas",
+        "colorPelo": "#4a3c33",
+        "barba": "bigote",
+        "colorBarba": "#3b2a20",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q57360": {
+      "quien": "Ḥamad Ibn-Ḫalīfa Āl-Ṯāni (QAT)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "corto",
+        "colorPelo": "#1f1a17",
+        "barba": "bigote",
+        "colorBarba": "#2e2925",
+        "ropa": "bisht",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#f4f2ec",
+        "tocado": "kufiya",
+        "colorTocado": "#f7f6f2"
+      }
+    },
+    "Q57655": {
+      "quien": "Mohammed bin Rashid Al Maktoum (ARE)",
+      "rasgos": {
+        "piel": 2,
+        "barba": "corta",
+        "colorBarba": "#2e2925",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa"
+      }
+    },
+    "Q57464": {
+      "quien": "Abdalá II de Jordania (JOR)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "cortito",
+        "colorPelo": "#5a5654",
+        "barba": "corta",
+        "colorBarba": "#6a6664",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q57553": {
+      "quien": "Mohamed VI de Marruecos (MAR)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "cortito",
+        "colorPelo": "#2e2925",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#2f6a4a"
+      }
+    },
+    "Q855252": {
+      "quien": "Bhumibol Adulyadej (THA)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "raya",
+        "colorPelo": "#2a2522",
+        "gafas": "gruesas",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#d4b03a"
+      }
+    },
+    "Q174267": {
+      "quien": "Abhisit Vejjajiva (THA)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#1f1a17",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q202553": {
+      "quien": "Than Shwe (MMR)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "corto",
+        "colorPelo": "#2e2925",
+        "expresion": "seria",
+        "ropa": "uniforme",
+        "colorRopa": "#4b5a3a",
+        "colorDetalle": "#c9a64a",
+        "tocado": "gorra-militar",
+        "colorTocado": "#4b5a3a"
+      }
+    },
+    "Q12149": {
+      "quien": "Thein Sein (MMR)",
+      "rasgos": {
+        "piel": 3,
+        "gafas": "gruesas"
+      }
+    },
+    "Q19216": {
+      "quien": "Ma Ying-jeou (TWN)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#1f1a17",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q52183": {
+      "quien": "Sheikh Hasina (BGD)",
+      "rasgos": {
+        "sexo": "m",
+        "piel": 4,
+        "pelo": "recogido",
+        "colorPelo": "#3a3633",
+        "gafas": "finas",
+        "ropa": "sari",
+        "colorRopa": "#e8e2d2",
+        "colorDetalle": "#7a5a3a",
+        "tocado": "velo",
+        "colorTocado": "#e8e2d2",
+        "expresion": "sonrisa"
+      }
+    },
+    "Q123665": {
+      "quien": "Gloria Macapagal Arroyo (PHL)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "corto",
+        "colorPelo": "#1f1a17",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#7a3f6a",
+        "colorDetalle": "#f3efe4"
+      }
+    },
+    "Q57394": {
+      "quien": "Nursultán Nazarbáyev (KAZ)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "atras",
+        "colorPelo": "#c9c7c2",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q43330": {
+      "quien": "Mijeíl Saakashvili (GEO)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "corto",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q29574": {
+      "quien": "Beatriz de los Países Bajos (ABW)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "permanente",
+        "colorPelo": "#d4c39a",
+        "collar": true,
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#3e5f8a",
+        "colorDetalle": "#f3efe4"
+      }
+    },
+    "Q133386": {
+      "quien": "Jan Peter Balkenende (NLD)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#9a7a52",
+        "gafas": "redondas",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q3911": {
+      "quien": "Alberto II de Bélgica (BEL)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "atras",
+        "colorPelo": "#e6e5e2",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q45068": {
+      "quien": "Carlos XVI Gustavo de Suecia (SWE)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#9a9894",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q57287": {
+      "quien": "Harald V de Noruega (NOR)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "calvo",
+        "colorPelo": "#c9c7c2",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q57665": {
+      "quien": "Jens Stoltenberg (NOR)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#6a5040",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q52920": {
+      "quien": "Fredrik Reinfeldt (SWE)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "cortito",
+        "colorPelo": "#b89e72",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#6f93c4"
+      }
+    },
+    "Q2757": {
+      "quien": "Lech Kaczyński (POL)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#d8d6d2",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q946": {
+      "quien": "Donald Tusk (POL)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#8a7a6a",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q1459699": {
+      "quien": "Víktor Yúshchenko (UKR)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "atras",
+        "colorPelo": "#5b4a3a",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#d07a2a"
+      }
+    },
+    "Q48283": {
+      "quien": "Yulia Timoshenko (UKR)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "trenza",
+        "colorPelo": "#d6b97a",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#f2efe8",
+        "colorDetalle": "#cfc6b6"
+      }
+    },
+    "Q2866": {
+      "quien": "Alejandro Lukashenka (BLR)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "entradas",
+        "colorPelo": "#7a6a5a",
+        "barba": "bigote",
+        "colorBarba": "#5b4a3a",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q151917": {
+      "quien": "Giórgos Papandréou (GRC)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#9a9894",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q182367": {
+      "quien": "José Sócrates (PRT)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#2e2925",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q57398": {
+      "quien": "Aníbal Cavaco Silva (PRT)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "atras",
+        "colorPelo": "#c9c7c2",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q115442": {
+      "quien": "Doris Leuthard (CHE)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "melena",
+        "colorPelo": "#4a3424",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#e4c7c7"
+      }
+    },
+    "Q102139": {
+      "quien": "Margrethe II (DNK)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "permanente",
+        "colorPelo": "#c9c7c2",
+        "collar": true,
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#5f8b5a",
+        "colorDetalle": "#f3efe4"
+      }
+    },
+    "Q174662": {
+      "quien": "Mary McAleese (IRL)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "corto",
+        "colorPelo": "#d4b884",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#2c4f8a",
+        "colorDetalle": "#f3efe4"
+      }
+    },
+    "Q2494": {
+      "quien": "Benedicto XVI (VAT)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "corto",
+        "colorPelo": "#f0f0f0",
+        "ropa": "papa",
+        "colorRopa": "#f4f4f2",
+        "colorDetalle": "#c9a64a",
+        "tocado": "solideo",
+        "colorTocado": "#ffffff",
+        "expresion": "sonrisa"
+      }
+    },
+    "Q44383": {
+      "quien": "Tarcisio Bertone (VAT)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "corto",
+        "colorPelo": "#d0cfcb",
+        "ropa": "clerigo",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#b2242c",
+        "tocado": "solideo",
+        "colorTocado": "#b2242c",
+        "expresion": "sonrisa"
+      }
+    },
+    "Q46809": {
+      "quien": "Raúl Castro (CUB)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "corto",
+        "colorPelo": "#c9c7c2",
+        "ropa": "uniforme",
+        "colorRopa": "#4b5a3a",
+        "colorDetalle": "#c9a64a",
+        "tocado": "gorra-militar",
+        "colorTocado": "#4b5a3a"
+      }
+    },
+    "Q8440": {
+      "quien": "Hugo Chávez (VEN)",
+      "rasgos": {
+        "piel": 4,
+        "pelo": "corto",
+        "colorPelo": "#1f1a17",
+        "expresion": "sonrisa",
+        "ropa": "uniforme",
+        "colorRopa": "#4b5a3a",
+        "colorDetalle": "#c9a64a",
+        "tocado": "boina",
+        "colorTocado": "#c0262c"
+      }
+    },
+    "Q187413": {
+      "quien": "Álvaro Uribe Vélez (COL)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#5a5654",
+        "gafas": "finas",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q320": {
+      "quien": "Michelle Bachelet (CHL)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "corto",
+        "colorPelo": "#b08a5a",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#a3242f",
+        "colorDetalle": "#1c1c20"
+      }
+    },
+    "Q42410": {
+      "quien": "Evo Morales (BOL)",
+      "rasgos": {
+        "piel": 4,
+        "pelo": "bob",
+        "colorPelo": "#1f1a17",
+        "expresion": "sonrisa",
+        "ropa": "chaqueta",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#c0392b"
+      }
+    },
+    "Q19581": {
+      "quien": "Rafael Correa (ECU)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "raya",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "camisa",
+        "colorRopa": "#f2f0ea",
+        "colorDetalle": "#f2f0ea"
+      }
+    },
+    "Q57402": {
+      "quien": "Daniel Ortega (NIC)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "raya",
+        "colorPelo": "#5a5654",
+        "ropa": "camisa",
+        "colorRopa": "#f2f0ea",
+        "colorDetalle": "#f2f0ea"
+      }
+    },
+    "Q151879": {
+      "quien": "Fernando Lugo (PRY)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "raya",
+        "colorPelo": "#8f8f8f",
+        "barba": "corta",
+        "colorBarba": "#a3a3a3",
+        "expresion": "sonrisa",
+        "ropa": "chaqueta",
+        "colorRopa": "#3a3f4a",
+        "colorDetalle": "#f2f0ea"
+      }
+    },
+    "Q9099": {
+      "quien": "Tabaré Vázquez (URY)",
+      "rasgos": {
+        "piel": 1,
+        "pelo": "raya",
+        "colorPelo": "#e6e5e2",
+        "gafas": "finas",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q57783": {
+      "quien": "John Key (NZL)",
+      "rasgos": {
+        "piel": 0,
+        "pelo": "raya",
+        "colorPelo": "#8a7a6a",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1c1c20",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q19878": {
+      "quien": "Muamar el Gadafi (LBY)",
+      "rasgos": {
+        "piel": 3,
+        "pelo": "cardado",
+        "colorPelo": "#1f1a17",
+        "gafas": "sol",
+        "expresion": "seria",
+        "ropa": "tunica",
+        "colorRopa": "#7a5a3a",
+        "colorDetalle": "#c9a64a"
+      }
+    },
+    "Q57308": {
+      "quien": "Abdelaziz Buteflika (DZA)",
+      "rasgos": {
+        "piel": 2,
+        "pelo": "entradas",
+        "colorPelo": "#8a7a6a",
+        "barba": "bigote",
+        "colorBarba": "#6a5a4a",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q161184": {
+      "quien": "Meles Zenawi (ETH)",
+      "rasgos": {
+        "piel": 5,
+        "pelo": "calvo",
+        "colorPelo": "#2e2925",
+        "barba": "corta",
+        "colorBarba": "#3a3633",
+        "gafas": "finas",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    },
+    "Q104705": {
+      "quien": "Umaru Yar'Adua (NGA)",
+      "rasgos": {
+        "piel": 6,
+        "pelo": "corto",
+        "colorPelo": "#1f1a17",
+        "gafas": "finas",
+        "ropa": "boubou",
+        "colorRopa": "#f1ece0",
+        "colorDetalle": "#c9a64a",
+        "tocado": "gorro",
+        "colorTocado": "#e3dac4"
+      }
+    },
+    "Q10707": {
+      "quien": "Robert Mugabe (ZWE)",
+      "rasgos": {
+        "piel": 7,
+        "pelo": "cortito",
+        "colorPelo": "#9a9894",
+        "barba": "bigote",
+        "colorBarba": "#3a3633",
+        "gafas": "gruesas",
+        "expresion": "seria",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q57265": {
+      "quien": "Omar Hasan Ahmad al-Bashir (SDN)",
+      "rasgos": {
+        "piel": 5,
+        "pelo": "corto",
+        "colorPelo": "#5a5654",
+        "barba": "bigote",
+        "colorBarba": "#5a5654",
+        "expresion": "sonrisa",
+        "ropa": "tunica",
+        "colorRopa": "#f4f2ec",
+        "colorDetalle": "#e9e4d4",
+        "tocado": "turbante",
+        "colorTocado": "#f7f6f2"
+      }
+    },
+    "Q57274": {
+      "quien": "Yoweri Museveni (UGA)",
+      "rasgos": {
+        "piel": 6,
+        "pelo": "calvo",
+        "colorPelo": "#2e2925",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#d4b03a"
+      }
+    },
+    "Q57291": {
+      "quien": "Mwai Kibaki (KEN)",
+      "rasgos": {
+        "piel": 6,
+        "pelo": "cortito",
+        "colorPelo": "#d8d6d2",
+        "expresion": "sonrisa",
+        "ropa": "traje",
+        "colorRopa": "#1f2b3d",
+        "colorDetalle": "#a3242f"
+      }
+    },
+    "Q43179": {
+      "quien": "Ellen Johnson-Sirleaf (LBR)",
+      "rasgos": {
+        "piel": 6,
+        "pelo": "corto",
+        "colorPelo": "#1f1a17",
+        "gafas": "finas",
+        "tocado": "turbante",
+        "colorTocado": "#c9a64a",
+        "expresion": "sonrisa",
+        "sexo": "m",
+        "ropa": "traje-mujer",
+        "colorRopa": "#c9a64a",
+        "colorDetalle": "#7a3f2a"
+      }
+    },
+    "Q1231345": {
+      "quien": "Paul Kagame (RWA)",
+      "rasgos": {
+        "piel": 6,
+        "pelo": "cortito",
+        "colorPelo": "#1f1a17",
+        "gafas": "finas",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#2c4f8a"
+      }
+    },
+    "Q106963": {
+      "quien": "Abdoulaye Wade (SEN)",
+      "rasgos": {
+        "piel": 7,
+        "pelo": "calvo",
+        "colorPelo": "#c9c7c2",
+        "gafas": "finas",
+        "ropa": "traje",
+        "colorRopa": "#2f2f35",
+        "colorDetalle": "#5a5a64"
+      }
+    }
+  }
 }

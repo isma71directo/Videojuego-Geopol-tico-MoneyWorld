@@ -465,5 +465,53 @@
       "regimen": "parlamentario",
       "motivo": "El presidente lo elige el Parlamento y depende de él"
     }
-  }
+  },
+  "nombres": {
+    "Q57402": {
+      "nombre": "Daniel Ortega",
+      "motivo": "La etiqueta en español de Wikidata lleva un añadido erróneo («(bachi)»)"
+    }
+  },
+  "textosCargo": [
+    {
+      "buscar": "Presidente de la Federación",
+      "cambiar": "Presidente de la Federación de Rusia",
+      "motivo": "La etiqueta en español de Wikidata está cortada"
+    },
+    {
+      "buscar": "President de ",
+      "cambiar": "Presidente de ",
+      "motivo": "Errata en la etiqueta de Wikidata"
+    },
+    {
+      "buscar": "Primer ministro or primera ministra de la Republica de Namibia",
+      "cambiar": "Primer ministro de Namibia",
+      "motivo": "Etiqueta de Wikidata a medio traducir"
+    },
+    {
+      "buscar": "Republica",
+      "cambiar": "República",
+      "motivo": "Falta la tilde en la etiqueta de Wikidata"
+    },
+    {
+      "buscar": "Primer Ministro",
+      "cambiar": "Primer ministro",
+      "motivo": "Mismas mayúsculas en todos los cargos"
+    },
+    {
+      "buscar": "Premier de Corea del Norte",
+      "cambiar": "Primer ministro de Corea del Norte",
+      "motivo": "Nombre del cargo en español"
+    },
+    {
+      "buscar": "Macedonia del Norte",
+      "cambiar": "Macedonia",
+      "motivo": "En 2010 el país se llamaba Macedonia (Macedonia del Norte desde 2019)"
+    },
+    {
+      "buscar": "Esuatini",
+      "cambiar": "Suazilandia",
+      "motivo": "En 2010 el país se llamaba Suazilandia (Esuatini desde 2018)"
+    }
+  ]
 }

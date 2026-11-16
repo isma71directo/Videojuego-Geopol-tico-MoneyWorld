@@ -47,7 +47,17 @@ export type EstiloPelo =
   | 'rizado'
   | 'melena'
   | 'largo'
-  | 'recogido';
+  | 'recogido'
+  /** Muy corto, casi rapado. */
+  | 'cortito'
+  /** Media melena en casco con flequillo recto. */
+  | 'bob'
+  /** Rizos cortos con volumen (permanente). */
+  | 'permanente'
+  /** Recogido atrás con una trenza como corona. */
+  | 'trenza'
+  /** Mucho volumen arriba (cardado). */
+  | 'cardado';
 
 export type Barba = 'ninguna' | 'bigote' | 'perilla' | 'corta' | 'larga';
 
@@ -60,10 +70,30 @@ export type Ropa =
   | 'papa'
   | 'mao'
   | 'boubou'
-  | 'camisa';
+  | 'camisa'
+  /** Chaqueta sin corbata, con la camisa abierta. */
+  | 'chaqueta'
+  /** Túnica blanca con capa (bisht) de borde dorado. */
+  | 'bisht'
+  /** Capa de rayas de Asia central (chapan). */
+  | 'chapan'
+  /** Sari con el extremo (pallu) cruzado sobre el hombro. */
+  | 'sari';
 
 export type Tocado =
-  'ninguno' | 'boina' | 'gorra-militar' | 'kufiya' | 'turbante' | 'solideo' | 'gorro';
+  | 'ninguno'
+  | 'boina'
+  | 'gorra-militar'
+  | 'kufiya'
+  | 'turbante'
+  | 'solideo'
+  | 'gorro'
+  /** Gorro de piel de astracán, con pico. */
+  | 'karakul'
+  /** Sombrero de dama. */
+  | 'sombrero'
+  /** Pañuelo o extremo del sari sobre el pelo. */
+  | 'velo';
 
 export interface Rasgos {
   sexo: 'h' | 'm';
@@ -76,7 +106,7 @@ export interface Rasgos {
   barba: Barba;
   /** Color de la barba (por defecto, el del pelo). */
   colorBarba?: string;
-  gafas: 'ninguna' | 'finas' | 'gruesas';
+  gafas: 'ninguna' | 'finas' | 'gruesas' | 'redondas' | 'sol';
   ropa: Ropa;
   /** Color principal de la ropa (chaqueta, uniforme, túnica…). */
   colorRopa: string;
@@ -84,6 +114,14 @@ export interface Rasgos {
   colorDetalle: string;
   tocado: Tocado;
   colorTocado?: string;
+  /** Gesto de la boca (por defecto, neutro). */
+  expresion?: 'neutra' | 'sonrisa' | 'seria';
+  /** Forma de las cejas (por defecto, normales). */
+  cejas?: 'normales' | 'arqueadas' | 'pobladas';
+  /** Collar de perlas. */
+  collar?: boolean;
+  /** El color del pelo y de la barba es el exacto (no encanece con la edad). */
+  colorFijo?: boolean;
 }
 
 /** Oscurece o aclara un color «#rrggbb» (factor < 1, más oscuro). */
@@ -193,7 +231,58 @@ function cuerpo(r: Rasgos, piel: string): string {
         `<path d="M42 69 L50 79 L45 81 Z M58 69 L50 79 L55 81 Z" fill="${tono(ropa, 0.8)}"/>` +
         `<line x1="50" y1="79" x2="50" y2="100" stroke="${tono(ropa, 0.75)}" stroke-width="0.8"/>`
       );
+    case 'chaqueta':
+      return (
+        cuello +
+        hombros(ropa) +
+        `<path d="M42 69 L50 81 L58 69 Z" fill="${r.colorDetalle}"/>` +
+        `<path d="M42 69 L46 73 L44.5 76 Z M58 69 L54 73 L55.5 76 Z" fill="${tono(r.colorDetalle, 0.85)}"/>` +
+        `<path d="M40 69 L50 86 L44 100 L33 74 Z M60 69 L50 86 L56 100 L67 74 Z" fill="${oscuro}" opacity="0.55"/>`
+      );
+    case 'bisht':
+      return (
+        cuello +
+        hombros(ropa) +
+        `<path d="M40 69 L60 69 L57 100 L43 100 Z" fill="${r.colorDetalle}"/>` +
+        `<path d="M44 69 Q50 74 56 69" fill="none" stroke="${tono(r.colorDetalle, 0.85)}" stroke-width="1"/>` +
+        '<path d="M40 69 L43 100 M60 69 L57 100" fill="none" stroke="#c9a64a" stroke-width="1.6"/>'
+      );
+    case 'chapan': {
+      const rayas: string[] = [];
+      for (let x = 9; x <= 91; x += 4.5) {
+        if (x > 38 && x < 62) continue;
+        const arriba = x < 50 ? 69 + (40 - x) * 0.72 : 69 + (x - 60) * 0.72;
+        rayas.push(`M${x.toFixed(1)} ${arriba.toFixed(1)} L${x.toFixed(1)} 100`);
+      }
+      return (
+        cuello +
+        hombros(ropa) +
+        `<path d="${rayas.join(' ')}" stroke="${r.colorDetalle}" stroke-width="1.5"/>` +
+        '<path d="M42 69 L58 69 L55 100 L45 100 Z" fill="#ece8dc"/>' +
+        `<path d="M40 69 L45 100 M60 69 L55 100" stroke="${tono(ropa, 0.6)}" stroke-width="1.4"/>`
+      );
+    }
+    case 'sari':
+      return (
+        cuello +
+        hombros(ropa) +
+        `<path d="M42 69 Q50 76 58 69 Z" fill="${tono(ropa, 0.85)}"/>` +
+        `<path d="M57 68.5 L71 71.5 L47 100 L32 100 Z" fill="${r.colorDetalle}"/>` +
+        `<path d="M71 71.5 L47 100" stroke="#c9a64a" stroke-width="1.4"/>`
+      );
   }
+}
+
+/** Collar de perlas. */
+function collar(): string {
+  const perlas: string[] = [];
+  for (let i = 0; i <= 8; i++) {
+    const t = i / 8;
+    const x = 41.5 + t * 17;
+    const y = 69.6 + Math.sin(t * Math.PI) * 4.6;
+    perlas.push(`<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="1.15" fill="#f3efe4"/>`);
+  }
+  return perlas.join('');
 }
 
 /** Pelo que queda detrás de la cabeza (melenas largas). */
@@ -204,7 +293,17 @@ function peloDetras(r: Rasgos, color: string): string {
   if (r.pelo === 'melena') {
     return `<path d="M33 40 C31 21 69 21 67 40 L68 58 C62 61 38 61 32 58 Z" fill="${color}"/>`;
   }
+  if (r.pelo === 'bob') {
+    return `<path d="M33 40 C31 21 69 21 67 40 L67.5 52 C62 54 38 54 32.5 52 Z" fill="${color}"/>`;
+  }
   return '';
+}
+
+/** Pañuelo o sari sobre la cabeza: la parte que cae por detrás. */
+function veloDetras(r: Rasgos): string {
+  if (r.tocado !== 'velo') return '';
+  const color = r.colorTocado ?? r.colorDetalle;
+  return `<path d="M32 46 C28.5 15 71.5 15 68 46 L71 72 C62 67 38 67 29 72 Z" fill="${tono(color, 0.9)}"/>`;
 }
 
 function cabeza(piel: string, edad: number): string {
@@ -222,16 +321,56 @@ function cabeza(piel: string, edad: number): string {
   );
 }
 
+const CEJAS = {
+  normales: 'M41 37.6 Q44.2 36.2 47.2 37.6 M52.8 37.6 Q55.8 36.2 59 37.6',
+  // Más altas por dentro, en ángulo.
+  arqueadas: 'M41 38 Q44 37.2 47.4 35.6 M52.6 35.6 Q56 37.2 59 38',
+  pobladas: 'M40.8 37.4 Q44.2 36.4 47.4 37.2 M52.6 37.2 Q55.8 36.4 59.2 37.4',
+} as const;
+const BOCAS = {
+  neutra: 'M45.6 54.6 Q50 56.6 54.4 54.6',
+  sonrisa: 'M44.6 53.8 Q50 58.6 55.4 53.8',
+  // Comisuras hacia abajo.
+  seria: 'M45.6 55.8 Q50 53.9 54.4 55.8',
+} as const;
+
 function cara(r: Rasgos, piel: string, pelo: string): string {
   const linea = tono(piel, 0.62);
-  const grosorCeja = r.edad >= 60 ? 1.3 : 1.1;
+  const cejas = r.cejas ?? 'normales';
+  const grosorCeja = cejas === 'pobladas' ? 2 : r.edad >= 60 ? 1.3 : 1.1;
+  const boca = r.expresion ?? 'neutra';
+  const dientes =
+    boca === 'sonrisa'
+      ? '<path d="M45.6 54.5 Q50 57.6 54.4 54.5 Q50 55.6 45.6 54.5 Z" fill="#f4f1ea"/>'
+      : '';
   return (
-    `<path d="M41 37.6 Q44.2 36.2 47.2 37.6 M52.8 37.6 Q55.8 36.2 59 37.6" fill="none" stroke="${tono(pelo, 0.9)}" stroke-width="${grosorCeja}" stroke-linecap="round"/>` +
+    `<path d="${CEJAS[cejas]}" fill="none" stroke="${tono(pelo, 0.9)}" stroke-width="${grosorCeja}" stroke-linecap="round"/>` +
     '<ellipse cx="44.2" cy="41.6" rx="1.6" ry="1.2" fill="#2a211c"/>' +
     '<ellipse cx="55.8" cy="41.6" rx="1.6" ry="1.2" fill="#2a211c"/>' +
     `<path d="M50 44 Q48.4 49 49.4 50.2 Q50 50.6 51.2 50.2" fill="none" stroke="${linea}" stroke-width="0.9" stroke-linecap="round"/>` +
-    `<path d="M45.6 54.6 Q50 56.6 54.4 54.6" fill="none" stroke="${tono(piel, 0.55)}" stroke-width="1.1" stroke-linecap="round"/>`
+    dientes +
+    `<path d="${BOCAS[boca]}" fill="none" stroke="${tono(piel, 0.55)}" stroke-width="1.1" stroke-linecap="round"/>`
   );
+}
+
+/** Trenza en corona: óvalos inclinados a lo largo de un arco sobre la cabeza. */
+function trenza(color: string): string {
+  // Curva de Bézier (35.6,34) (36,17) (64,17) (64.4,34).
+  const punto = (t: number, a: number, b: number, c: number, d: number): number =>
+    (1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t ** 2 * c + t ** 3 * d;
+  const ovalos: string[] = [];
+  for (let i = 0; i <= 12; i++) {
+    const t = i / 12;
+    const x = punto(t, 35.6, 36, 64, 64.4);
+    const y = punto(t, 34, 17, 17, 34);
+    const dx = punto(t + 0.01, 35.6, 36, 64, 64.4) - x;
+    const dy = punto(t + 0.01, 34, 17, 17, 34) - y;
+    const angulo = (Math.atan2(dy, dx) * 180) / Math.PI + (i % 2 === 0 ? 35 : -35);
+    ovalos.push(
+      `<ellipse cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" rx="2.7" ry="1.7" transform="rotate(${angulo.toFixed(1)} ${x.toFixed(2)} ${y.toFixed(2)})" fill="${color}" stroke="${tono(color, 0.7)}" stroke-width="0.5"/>`,
+    );
+  }
+  return ovalos.join('');
 }
 
 function peloDelante(r: Rasgos, color: string): string {
@@ -264,9 +403,39 @@ function peloDelante(r: Rasgos, color: string): string {
     case 'melena':
     case 'largo':
       return `<path d="M35 43 C33 25 42 21 50 21 C59 21 67 25 65 43 C63 34 60 29 54 28 C50 31 43 32 38 33 C36 36 35.4 39 35 43 Z" fill="${color}"/>`;
+    case 'cortito':
+      return `<path d="M35.6 40 C35 27.5 42 23.6 50 23.6 C58 23.6 65 27.5 64.4 40 C63 33.5 58 30.4 50 30.4 C42 30.4 37 33.5 35.6 40 Z" fill="${color}"/>`;
+    case 'bob':
+      return `<path d="M33.6 51 C31 29 38 20.5 50 20.5 C62 20.5 69 29 66.4 51 L62.8 51 C63.2 43 62.6 38 61.4 34.6 C56 33.2 44 33.2 38.6 34.6 C37.4 38 36.8 43 37.2 51 Z" fill="${color}"/>`;
+    case 'permanente':
+      return (
+        `<path d="M35 42 C33.5 26 41 21.5 50 21.5 C59 21.5 66.5 26 65 42 C63 34 58 30 50 30 C42 30 37 34 35 42 Z" fill="${color}"/>` +
+        [
+          [35, 31],
+          [33.8, 37.5],
+          [34.6, 43.5],
+          [65, 31],
+          [66.2, 37.5],
+          [65.4, 43.5],
+          [39.5, 25],
+          [45, 21.8],
+          [50.5, 20.8],
+          [56, 21.8],
+          [61, 25],
+        ]
+          .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.7" fill="${color}"/>`)
+          .join('')
+      );
+    case 'trenza':
+      return (
+        `<path d="M35.4 40 C34.5 25 42 21.5 50 21.5 C58 21.5 65.5 25 64.6 40 C62 31 57 27.5 50 27.5 C43 27.5 38 31 35.4 40 Z" fill="${color}"/>` +
+        trenza(color)
+      );
+    case 'cardado':
+      return `<path d="M35 41 C32.5 22 37 12.5 50 12.5 C63 12.5 67.5 22 65 41 C63 33 58 29.5 50 29.5 C42 29.5 37 33 35 41 Z" fill="${color}"/>`;
     case 'recogido':
       return (
-        `<circle cx="50" cy="20" r="5.5" fill="${color}"/>` +
+        (r.tocado === 'velo' ? '' : `<circle cx="50" cy="20" r="5.5" fill="${color}"/>`) +
         `<path d="M35.4 42 C34.5 27 42 23 50 23 C58 23 65.5 27 64.6 42 C63 34 58 29 50 29 C42 29 37 34 35.4 42 Z" fill="${color}"/>`
       );
   }
@@ -292,6 +461,12 @@ function barba(r: Rasgos, color: string): string {
 
 function gafas(r: Rasgos): string {
   if (r.gafas === 'ninguna') return '';
+  if (r.gafas === 'redondas') {
+    return '<g fill="none" stroke="#4a4a4a" stroke-width="0.8"><circle cx="44.2" cy="41.6" r="3.6"/><circle cx="55.8" cy="41.6" r="3.6"/><path d="M47.8 41.2 L52.2 41.2"/></g>';
+  }
+  if (r.gafas === 'sol') {
+    return '<g fill="#161616" stroke="#0d0d0d" stroke-width="0.9"><rect x="39.4" y="38.6" width="9.4" height="6.2" rx="2.6"/><rect x="51.2" y="38.6" width="9.4" height="6.2" rx="2.6"/><path d="M48.8 41.2 L51.2 41.2" fill="none"/></g>';
+  }
   const grosor = r.gafas === 'gruesas' ? 1.5 : 0.8;
   const color = r.gafas === 'gruesas' ? '#1d1d1d' : '#5d5d5d';
   return `<g fill="none" stroke="${color}" stroke-width="${grosor}"><rect x="39.6" y="38.8" width="9" height="6" rx="2.4"/><rect x="51.4" y="38.8" width="9" height="6" rx="2.4"/><path d="M48.6 41.4 L51.4 41.4"/></g>`;
@@ -316,12 +491,32 @@ function tocado(r: Rasgos): string {
         `<path d="M33.5 30 C40 25 60 25 66.5 30" fill="none" stroke="${r.colorDetalle}" stroke-width="2.2"/>` +
         '<path d="M34 33 C40 28.5 60 28.5 66 33" fill="none" stroke="#1d1d1d" stroke-width="2"/>'
       );
-    case 'turbante':
-      return `<path d="M33.5 33 C31 17 69 17 66.5 33 C60 29 40 29 33.5 33 Z" fill="${color}"/><path d="M36 27 Q50 22 64 27" fill="none" stroke="${tono(color, 1.5)}" stroke-width="0.8"/>`;
+    case 'turbante': {
+      const vuelta = mezclar(color, '#ffffff', 0.22);
+      return (
+        `<path d="M32.4 35 C28 12.5 72 12.5 67.6 35 C60 30.5 40 30.5 32.4 35 Z" fill="${color}"/>` +
+        `<path d="M34.5 29 Q50 20 65.5 29 M36.5 23.5 Q50 17 63.5 23.5" fill="none" stroke="${vuelta}" stroke-width="0.9"/>` +
+        `<path d="M50 31 L47 18.5 M50 31 L53 18.5" fill="none" stroke="${vuelta}" stroke-width="0.7"/>`
+      );
+    }
     case 'solideo':
       return `<path d="M41 25 C43 20.5 57 20.5 59 25 Q50 23.5 41 25 Z" fill="${color}"/>`;
     case 'gorro':
       return `<path d="M35 31 C35 20 65 20 65 31 Z" fill="${color}"/>`;
+    case 'karakul':
+      return (
+        `<path d="M35 31.5 L36.6 19.5 Q50 13.6 63.4 19.5 L65 31.5 Q50 28.6 35 31.5 Z" fill="${color}"/>` +
+        `<path d="M50 15.2 L50 29.4" stroke="${tono(color, 0.7)}" stroke-width="1.2"/>` +
+        `<path d="M38 24 h2 M43 21 h2 M55 21 h2 M60 24 h2 M39 28 h2 M58 28 h2 M44 26 h2 M54 26 h2" stroke="${tono(color, 1.25)}" stroke-width="1.2" stroke-linecap="round"/>`
+      );
+    case 'sombrero':
+      return (
+        `<path d="M36 25.5 C36 11 64 11 64 25.5 Z" fill="${color}"/>` +
+        `<path d="M36.1 21.8 L63.9 21.8 L64 25.5 L36 25.5 Z" fill="${tono(color, 0.75)}"/>` +
+        `<ellipse cx="50" cy="25.8" rx="20" ry="3.2" fill="${color}"/>`
+      );
+    case 'velo':
+      return `<path d="M33.6 42 C31 16.5 69 16.5 66.4 42 C63 31.5 57 27.4 50 27.4 C43 27.4 37 31.5 33.6 42 Z" fill="${r.colorTocado ?? r.colorDetalle}"/>`;
   }
 }
 
@@ -331,8 +526,10 @@ function tocado(r: Rasgos): string {
  */
 export function svgRetrato(rasgos: Rasgos, fondo: string, titulo?: string): string {
   const piel = PIELES[Math.max(0, Math.min(PIELES.length - 1, rasgos.piel))]!;
-  const pelo = peloConEdad(rasgos.colorPelo, rasgos.edad);
-  const colorBarba = peloConEdad(rasgos.colorBarba ?? rasgos.colorPelo, rasgos.edad);
+  const conEdad = (color: string): string =>
+    rasgos.colorFijo ? color : peloConEdad(color, rasgos.edad);
+  const pelo = conEdad(rasgos.colorPelo);
+  const colorBarba = conEdad(rasgos.colorBarba ?? rasgos.colorPelo);
   const accesible = titulo
     ? `role="img" aria-label="${titulo.replace(/"/g, '&quot;')}"`
     : 'aria-hidden="true"';
@@ -340,12 +537,14 @@ export function svgRetrato(rasgos: Rasgos, fondo: string, titulo?: string): stri
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" ${accesible}>` +
     `<rect width="100" height="100" fill="${fondo}"/>` +
     `<circle cx="50" cy="38" r="34" fill="${tono(fondo, 1.18)}" opacity="0.5"/>` +
+    veloDetras(rasgos) +
     peloDetras(rasgos, pelo) +
     cuerpo(rasgos, piel) +
+    (rasgos.collar ? collar() : '') +
     cabeza(piel, rasgos.edad) +
     cara(rasgos, piel, pelo) +
     barba(rasgos, colorBarba) +
-    (rasgos.tocado === 'kufiya' || rasgos.tocado === 'turbante' ? '' : peloDelante(rasgos, pelo)) +
+    (['kufiya', 'turbante', 'karakul'].includes(rasgos.tocado) ? '' : peloDelante(rasgos, pelo)) +
     gafas(rasgos) +
     tocado(rasgos) +
     '</svg>'
@@ -504,10 +703,11 @@ export function rasgosGenericos(d: DatosGenericos): Rasgos {
 }
 
 /** Rasgos propios de los líderes de 2010 (homenajes, tarea f8-t4), por su id de Wikidata. */
-export const RASGOS_LIDERES: Readonly<Record<string, Partial<Rasgos>>> = lideres.lideres as Record<
-  string,
-  Partial<Rasgos>
->;
+export const RASGOS_LIDERES: Readonly<Record<string, Partial<Rasgos>>> = Object.fromEntries(
+  Object.entries(lideres.lideres as Record<string, { quien: string; rasgos: Partial<Rasgos> }>).map(
+    ([persona, { rasgos }]) => [persona, rasgos],
+  ),
+);
 
 /** ¿Tiene esta persona un retrato homenaje propio? */
 export function tieneHomenaje(persona: string): boolean {
@@ -521,5 +721,7 @@ export function tieneHomenaje(persona: string): boolean {
 export function rasgosDe(datos: DatosGenericos): Rasgos {
   const genericos = rasgosGenericos(datos);
   const propios = RASGOS_LIDERES[datos.persona];
-  return propios ? { ...genericos, ...propios } : genericos;
+  if (!propios) return genericos;
+  // El color de pelo de un homenaje se elige mirando al personaje en 2010: no encanece más.
+  return { ...genericos, ...propios, ...(propios.colorPelo ? { colorFijo: true } : {}) };
 }

@@ -17,6 +17,8 @@ const paises = leer<ConjuntoPaises>('public/data/paises-2010.json').paises;
 const manual = leer<{
   cargos: Record<string, { motivo: string }>;
   regimenes: Record<string, { regimen: string; motivo: string }>;
+  nombres: Record<string, { nombre: string; motivo: string }>;
+  textosCargo: { buscar: string; cambiar: string; motivo: string }[];
 }>('scripts/datos/manual/gobiernos-2010.json');
 
 const nombre = (id: string): string => gobiernos.personas[id]!.nombre;
@@ -91,6 +93,20 @@ describe('gobiernos de 2010 (tarea f8-t1)', () => {
 
   it('cada corrección a mano dice por qué está', () => {
     for (const [id, c] of Object.entries(manual.cargos)) expect(c.motivo, id).not.toBe('');
+    for (const [id, n] of Object.entries(manual.nombres)) {
+      expect(n.motivo, id).not.toBe('');
+      expect(nombre(id)).toBe(n.nombre);
+    }
+    for (const t of manual.textosCargo) expect(t.motivo, t.buscar).not.toBe('');
+    // Con los nombres de país de 2010 y sin erratas de Wikidata.
+    const cargos = Object.values(gobiernos.paises).flatMap((g) =>
+      [g.estado, jefeGobierno(g)].filter((c) => c !== null).map((c) => c.cargo),
+    );
+    expect(
+      cargos.filter((c) => /Esuatini|Macedonia del Norte|Republica|^President /.test(c)),
+    ).toEqual([]);
+    expect(nombre(de('RUS').estado!.persona)).toContain('Medvédev');
+    expect(de('RUS').estado!.cargo).toBe('Presidente de la Federación de Rusia');
     for (const [id, r] of Object.entries(manual.regimenes)) {
       expect(r.motivo, id).not.toBe('');
       expect(REGIMENES, id).toContain(r.regimen);
