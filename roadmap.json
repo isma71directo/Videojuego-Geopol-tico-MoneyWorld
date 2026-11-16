@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.11.0",
-  "actualizado": "2026-11-16T23:33:50Z",
+  "actualizado": "2026-11-16T23:36:11Z",
   "faseActiva": "fase-11",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "El jugador probó y fusionó la v0.11.0. Plan de la Fase 11 (reloj del juego) aprobado: el reloj corre por horas (issue n.º 3), ×1 = una hora cada 0,5 s (un día en 12 s), marca la hora local de la capital del jugador y el mapa tendrá noche y día; la fase pasa a 4 tareas.",
-    "siguientePaso": "f11-t1: motor del reloj por horas con sus pasos diarios, semanales, mensuales y anuales.",
+    "resumen": "f11-t1 hecha: motor del reloj por horas (src/sim/reloj.ts, parámetros en src/sim/config/tiempo.json). La partida guarda la fecha y la hora (empieza el 1 de enero de 2010 a medianoche); al avanzar salen, en orden, los pasos diarios (cada medianoche), semanales (cada lunes), mensuales (cada día 1) y anuales (cada 1 de enero): un año da 365, 52, 12 y 1. Velocidades pausa, ×1 (una hora cada 0,5 s, un día en 12 s), ×2, ×4 y ×8, contando las horas fotograma a fotograma sin saltos si la pantalla se para.",
+    "siguientePaso": "f11-t2: huso horario de cada país el 1 de enero de 2010 (base de datos IANA) para que el reloj marque la hora de la capital del jugador.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -735,15 +735,15 @@
         {
           "id": "f11-t1",
           "titulo": "Motor del reloj por horas (decisión del jugador, issue n.º 3): la partida guarda la hora; al avanzar salen los pasos diarios, semanales (lunes), mensuales (día 1) y anuales (1 de enero); pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en config/tiempo.json",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f11-t2",
           "titulo": "Hora de la capital: huso horario de cada país el 1 de enero de 2010 (base de datos IANA de husos horarios, dominio público); el reloj marca la hora local de la capital del jugador",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {

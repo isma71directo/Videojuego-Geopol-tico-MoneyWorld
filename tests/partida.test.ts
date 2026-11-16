@@ -39,6 +39,7 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
         formato: FORMATO_PARTIDA,
         semilla: 7,
         fecha: FECHA_INICIO,
+        hora: 0,
         jugador: { paisId: id, rol: 'gobierno' },
         opciones: { dificultad: 'normal', eventosHistoricos: true },
         paises: partida.paises,

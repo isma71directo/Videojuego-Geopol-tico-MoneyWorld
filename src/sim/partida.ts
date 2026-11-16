@@ -5,6 +5,7 @@
  * estado (sección 8 del GDD) se irá añadiendo en cada fase, y el guardado llega en la Fase 14
  * (con migraciones si cambia el formato).
  */
+import { avanzarHoras, type Paso } from './reloj';
 import {
   valoresIniciales,
   type DatosParaInicio,
@@ -16,6 +17,8 @@ import {
 export const FORMATO_PARTIDA = 1;
 
 export const FECHA_INICIO = '2010-01-01';
+/** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
+export const HORA_INICIO = 0;
 
 /** Dificultades del GDD (sección 13): sus efectos llegan en la Fase 103. */
 export const DIFICULTADES = ['facil', 'normal', 'realista'] as const;
@@ -33,8 +36,10 @@ export interface OpcionesPartida {
 export interface Partida {
   formato: number;
   semilla: number;
-  /** Fecha de la partida (AAAA-MM-DD). */
+  /** Fecha de la partida (AAAA-MM-DD), en la hora local de la capital del jugador. */
   fecha: string;
+  /** Hora en punto (0 a 23), local de la capital del jugador (el reloj corre por horas). */
+  hora: number;
   jugador: { paisId: string; rol: 'gobierno' };
   opciones: { dificultad: Dificultad; eventosHistoricos: boolean };
   /** Estado de cada país jugable (por ahora, sus valores iniciales provisionales). */
@@ -111,6 +116,7 @@ export function crearPartida(
     formato: FORMATO_PARTIDA,
     semilla: opciones.semilla,
     fecha: FECHA_INICIO,
+    hora: HORA_INICIO,
     jugador: { paisId: opciones.paisId, rol: 'gobierno' },
     opciones: { dificultad: opciones.dificultad, eventosHistoricos: opciones.eventosHistoricos },
     paises: Object.fromEntries(
@@ -120,4 +126,17 @@ export function crearPartida(
       ]),
     ),
   };
+}
+
+/**
+ * Avanza la partida `horas` horas (tarea f11-t1). Devuelve la partida con la fecha y la hora
+ * nuevas y los pasos de la simulación que tocan (diarios, semanales, mensuales y anuales), que
+ * los sistemas de las próximas fases irán atendiendo.
+ */
+export function avanzarPartida(
+  partida: Partida,
+  horas: number,
+): { partida: Partida; pasos: Paso[] } {
+  const { momento, pasos } = avanzarHoras({ fecha: partida.fecha, hora: partida.hora }, horas);
+  return { partida: { ...partida, fecha: momento.fecha, hora: momento.hora }, pasos };
 }
