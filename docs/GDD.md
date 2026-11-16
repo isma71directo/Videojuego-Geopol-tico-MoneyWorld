@@ -148,6 +148,8 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | Natural Earth | Fronteras de países y regiones (admin-1), capitales, ciudades | Mapa |
 | FAO, vía Banco Mundial (servida por Our World in Data) | Superficie terrestre de cada país (la API del Banco Mundial no responde desde el entorno de trabajo; es el mismo indicador). Los territorios sin dato usan la superficie medida en el mapa, marcada como estimada | Densidad de población (Fase 6) |
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
+| DOSE (sectores) | Peso de la agricultura, la industria y los servicios en la economía de cada región en 2010 | Actividad económica principal en la ficha de región (Fase 9); donde no hay dato, se dice |
+| USGS, «Major Mineral Deposits of the World» (Open-File Report 2005-1294, dominio público) y Wikidata (CC0) | Grandes yacimientos minerales con su ubicación (USGS) y campos de petróleo, gas y carbón con coordenadas (Wikidata), asignados a la región en la que están | Recursos de cada región en la ficha de región (Fase 9); no es un inventario completo: solo los yacimientos registrados |
 | Wikidata (CC0) | Jefes de Estado y de Gobierno el 1 de enero de 2010 (cargos con fechas) y forma de gobierno, con correcciones a mano anotadas donde el régimen cambió desde 2010 (`scripts/datos/20-gobiernos.ts`) | Ficha de país (Fase 8) |
 | ParlGov / Wikipedia | Partidos, escaños, gobiernos y sistemas electorales en 2010 | Política (detallado en unos 40 países principales; plantilla genérica en el resto) |
 | Listas Fortune Global 500 (2010) | Grandes empresas reales | Empresas con nombre (fase posterior) |
@@ -810,10 +812,11 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 9 — v0.10.0 · Buscador y ficha de región
 **Objetivo:** encontrar cualquier país o región y consultar sus datos.
-**Tareas**
-1. Buscador de países y regiones con autocompletado.
-2. Ficha de región.
-3. **Audiovisual:** resaltado animado del resultado en el mapa.
+**Tareas** (concretadas con el jugador el 16/11/2026)
+1. Datos de cada región: capital regional, superficie, peso de cada sector (DOSE 2010) con su actividad económica principal y recursos (grandes yacimientos minerales del USGS y campos de petróleo, gas y carbón de Wikidata, asignados por su ubicación), con fuente.
+2. Buscador de países, regiones y ciudades con autocompletado, con y sin tildes: lupa arriba y tecla B, que abren una ventana de búsqueda en el centro (decisión del jugador). Al elegir un resultado, el mapa va hasta él y abre su ficha.
+3. Ficha de región en el panel lateral con pestañas, como la de país (decisión del jugador): Resumen (país, capital, población, PIB, PIB por habitante, superficie, densidad y actividad principal), Economía (sectores y recursos), Ciudades (las principales, con su población) y Fuentes.
+4. **Audiovisual:** resaltado animado del resultado en el mapa (la cámara viaja hasta él y su contorno late unos segundos, con un sonido suave) e iconos de los recursos en la ficha y en la galería.
 
 **Tests:** el buscador encuentra países y regiones escritos con y sin tildes.
 **Prueba en el PC:** buscar «Cataluña» y «Texas» y abrir sus fichas.
@@ -2107,6 +2110,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 16/11/2026 | Barra de 8 apartados con sub-barra, sin «Más», y Gobierno separado de Ministerios: cada ministerio con su ventana (resumen, presupuesto, leyes, acciones e infraestructuras); los iconos de los ministerios se adelantan de la Fase 26 (ajuste f7-a4) | Petición del jugador (referencia: Power & Revolution) | 7, 9, 13 |
 | 16/11/2026 | Fase 8 concretada con el jugador: régimen y cargos de Wikidata a 1 de enero de 2010 (con correcciones anotadas), ficha con pestañas y retratos ilustrados propios: homenajes de los líderes reales de los países importantes y genéricos para el resto; la tarea audiovisual se divide en dos | Plan de la Fase 8 aprobado por el jugador | 7.1, 9, 13 |
 | 16/11/2026 | Retratos más variados: caras distintas en todos (forma, ojos, nariz, boca, orejas, cejas, arrugas y más tonos de piel), genéricos con peinados, barbas, ropa y complementos de cada región (sobre todo de África) y más de 170 homenajes (ajustes f8-a1 a f8-a3 de la v0.9.1) | Petición del jugador al probar la v0.9.0: que ningún retrato parezca ya visto ni se parezca a otro | 7.1, 13 |
+| 16/11/2026 | Fase 9 concretada con el jugador: el buscador encuentra países, regiones y ciudades; se abre con una lupa o la tecla B en una ventana central; la ficha de región, con pestañas como la de país, añade la actividad económica principal (DOSE) y los recursos de cada región (USGS y Wikidata); la fase pasa a 4 tareas | Plan de la Fase 9 aprobado por el jugador | 4, 9, 13 |
 
 ---
 
@@ -2135,6 +2139,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Elegir la capa del mapa | Un atajo por capa / Mayús + número / desplegable | **Decidido por el jugador (12/11/2026):** un desplegable que se abre con un clic o con la tecla C; sin atajo por capa |
 | Color de cada país | Reparto automático / por bandera (A) / por bandera y colores tradicionales (B) | **Decidido por el jugador (16/11/2026):** B, y en la v0.8.2 con una tabla completa de colores representativos (España y Rumanía amarillo, Portugal y Reino Unido rojo, Marruecos rojo y verde…) y colores libres alrededor de cada tono, sin que se note la repetición |
 | Ventanas de las secciones | En la Fase 10 (A) / ya, vacías hasta su fase (B) | **Decidido por el jugador (16/11/2026):** B, en la v0.8.1; en la v0.8.2, barra de 8 apartados con sub-barra y una ventana por ministerio |
+| Buscador | Caja fija arriba / lupa y ventana central | **Decidido por el jugador (16/11/2026):** lupa arriba y tecla B, que abren una ventana de búsqueda en el centro; encuentra países, regiones y ciudades |
+| Ficha de región | Solo datos que ya hay / con el líder regional de 2010 | **Decidido por el jugador (16/11/2026):** ficha con pestañas como la de país, con la actividad económica principal y los recursos de cada región |
 | Retratos de los cargos | Silueta genérica / medallón con emblema / ilustración de los líderes reales | **Decidido por el jugador (16/11/2026):** bustos ilustrados propios, homenajes e interpretaciones de los líderes de 2010 en los países y figuras importantes; en los países menores, genéricos según su región y el estilo de su régimen. Nunca fotografías. En la v0.9.1, más homenajes y retratos que no se parezcan entre sí |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer clic o tecla, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |

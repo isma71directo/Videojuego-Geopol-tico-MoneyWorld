@@ -5,12 +5,9 @@
   "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "v0.9.1 publicada con los ajustes f8-a1 a f8-a3: caras distintas, genéricos con ropa y peinados de cada región (sobre todo de África) y 217 homenajes. PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.9.1: apuntar sus ajustes o presentar el plan de la Fase 9 (buscador y ficha de región).",
-    "pendienteDelJugador": [
-      "Probar la v0.9.1 en el PC: abrir varios países (por ejemplo Nigeria, Ghana, Senegal, Uganda, Filipinas, Indonesia, Nepal, Estonia y Tonga) y la galería de retratos, y decir si algún retrato se parece demasiado a otro o qué homenaje cambiarías",
-      "Fusionar el PR de la v0.9.1"
-    ]
+    "resumen": "PR de la v0.9.1 fusionado; el jugador da por buenos los retratos. Plan de la Fase 9 aprobado: buscador de países, regiones y ciudades (lupa y tecla B, ventana central) y ficha de región con pestañas, con actividad económica (DOSE) y recursos (USGS y Wikidata).",
+    "siguientePaso": "f9-t1: script de datos económicos y de recursos de cada región.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -650,26 +647,33 @@
       "objetivo": "Encontrar cualquier país o región y consultar sus datos",
       "dependeDe": ["fase-8"],
       "hechoCuando": "Cualquier país o región se encuentra en pocos clics",
-      "pruebaJugador": "Buscar «Cataluña» y «Texas» y abrir sus fichas",
-      "estado": "pendiente",
+      "pruebaJugador": "Abrir el buscador con la lupa o la tecla B, buscar «Cataluña», «Texas» y «Lagos» (con y sin tildes) y abrir sus fichas: revisar la actividad económica, los recursos, las ciudades y las fuentes de cada región.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f9-t1",
-          "titulo": "Buscador de países y regiones con autocompletado",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Datos de cada región: capital regional, superficie, peso de cada sector (DOSE 2010) con su actividad económica principal y recursos (grandes yacimientos minerales del USGS y campos de petróleo, gas y carbón de Wikidata, asignados por su ubicación), con fuente",
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
           "enlace": ""
         },
         {
           "id": "f9-t2",
-          "titulo": "Ficha de región",
+          "titulo": "Buscador de países, regiones y ciudades con autocompletado, con y sin tildes: lupa arriba y tecla B, que abren una ventana de búsqueda en el centro (decisión del jugador); al elegir, el mapa va hasta el resultado y abre su ficha",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f9-t3",
-          "titulo": "Audiovisual: resaltado animado del resultado en el mapa",
+          "titulo": "Ficha de región con pestañas como la de país (decisión del jugador): Resumen (país, capital, población, PIB, PIB por habitante, superficie, densidad y actividad principal), Economía (sectores y recursos), Ciudades y Fuentes",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f9-t4",
+          "titulo": "Audiovisual: resaltado animado del resultado en el mapa (la cámara viaja hasta él y su contorno late, con un sonido suave) e iconos de los recursos en la ficha y en la galería",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
