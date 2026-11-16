@@ -1,0 +1,517 @@
+{
+  "nota": "Correcciones a mano del script 20-gobiernos.ts (tarea f8-t1). Wikidata da los cargos con fechas, pero le faltan algunos y su forma de gobierno (P122) es la de hoy, no la de 2010. Cada entrada dice por qué está aquí. Las personas van con su identificador de Wikidata, del que el script toma el nombre.",
+  "cargos": {
+    "ABK": {
+      "estado": {
+        "persona": "Q485032",
+        "cargo": "presidente de Abjasia",
+        "desde": "2005-02-12"
+      },
+      "gobierno": {
+        "persona": "Q313355",
+        "cargo": "primer ministro de Abjasia",
+        "desde": "2005-02-14"
+      },
+      "motivo": "Wikidata no da los cargos con fechas"
+    },
+    "AFG": {
+      "estado": {
+        "persona": "Q43944",
+        "cargo": "presidente de Afganistán",
+        "desde": "2004-12-07"
+      },
+      "gobierno": "estado",
+      "motivo": "Wikidata no da el cargo con fechas; el presidente es también jefe de Gobierno"
+    },
+    "BDI": {
+      "gobierno": "estado",
+      "motivo": "Sistema presidencial: el presidente es también jefe de Gobierno"
+    },
+    "BIH": {
+      "estado": {
+        "persona": "Q297825",
+        "cargo": "presidente de turno de la Presidencia de Bosnia y Herzegovina",
+        "desde": "2009-07-06"
+      },
+      "gobierno": {
+        "persona": "Q311882",
+        "cargo": "presidente del Consejo de Ministros de Bosnia y Herzegovina",
+        "desde": "2007-02-11"
+      },
+      "motivo": "La Presidencia es colegiada (tres miembros); se muestra a quien la presidía el 1 de enero de 2010"
+    },
+    "BRB": {
+      "estado": {
+        "persona": "Q9682",
+        "cargo": "reina de Barbados",
+        "desde": "1966-11-30"
+      },
+      "gobierno": {
+        "persona": "Q310082",
+        "cargo": "primer ministro de Barbados",
+        "desde": "2008-01-16"
+      },
+      "motivo": "Wikidata no da los cargos con fechas"
+    },
+    "CHE": {
+      "estado": {
+        "persona": "Q115442",
+        "cargo": "presidenta de la Confederación Suiza",
+        "desde": "2010-01-01"
+      },
+      "gobierno": "estado",
+      "motivo": "La jefatura del Estado es del Consejo Federal, que preside la presidenta de la Confederación"
+    },
+    "COG": {
+      "gobierno": "estado",
+      "motivo": "Sistema presidencial: el presidente es también jefe de Gobierno"
+    },
+    "GAB": {
+      "gobierno": {
+        "persona": "Q515666",
+        "cargo": "primer ministro de Gabón",
+        "desde": "2009-07-17"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "IRN": {
+      "estado": {
+        "persona": "Q57336",
+        "cargo": "Líder Supremo de Irán",
+        "desde": "1989-06-04"
+      },
+      "gobierno": {
+        "persona": "Q34448",
+        "cargo": "presidente de Irán",
+        "desde": "2005-08-03"
+      },
+      "motivo": "El jefe del Estado es el Líder Supremo; el presidente encabeza el Gobierno"
+    },
+    "KAZ": {
+      "gobierno": {
+        "persona": "Q209639",
+        "cargo": "primer ministro de Kazajistán",
+        "desde": "2007-01-10"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "LBY": {
+      "estado": {
+        "persona": "Q19878",
+        "cargo": "Líder y Guía de la Revolución (jefe de Estado de hecho)",
+        "desde": "1969-09-01"
+      },
+      "gobierno": {
+        "persona": "Q82093",
+        "cargo": "secretario general del Comité Popular General de Libia",
+        "desde": "2006-03-05"
+      },
+      "motivo": "Gadafi no tenía un cargo formal de jefe de Estado, pero lo era de hecho"
+    },
+    "LIE": {
+      "gobierno": {
+        "persona": "Q57778",
+        "cargo": "jefe de Gobierno de Liechtenstein",
+        "desde": "2009-03-25"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "LUX": {
+      "estado": {
+        "persona": "Q16004",
+        "cargo": "gran duque de Luxemburgo",
+        "desde": "2000-10-07"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "MMR": {
+      "gobierno": {
+        "persona": "Q12149",
+        "cargo": "primer ministro de Birmania",
+        "desde": "2007-10-24"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "PMR": {
+      "gobierno": "estado",
+      "motivo": "El presidente dirigía el Gobierno (no hubo primer ministro hasta 2012)"
+    },
+    "PSE": {
+      "estado": {
+        "persona": "Q127998",
+        "cargo": "presidente de la Autoridad Nacional Palestina",
+        "desde": "2005-01-15"
+      },
+      "gobierno": {
+        "persona": "Q57741",
+        "cargo": "primer ministro de la Autoridad Nacional Palestina",
+        "desde": "2007-06-15"
+      },
+      "motivo": "Wikidata no da los cargos con fechas"
+    },
+    "SDN": {
+      "estado": {
+        "persona": "Q57265",
+        "cargo": "presidente de Sudán",
+        "desde": "1989-06-30"
+      },
+      "gobierno": "estado",
+      "motivo": "Wikidata no da el cargo con fechas; el presidente es también jefe de Gobierno"
+    },
+    "SLB": {
+      "gobierno": {
+        "persona": "Q379730",
+        "cargo": "primer ministro de las Islas Salomón",
+        "desde": "2007-12-20"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "SLE": {
+      "gobierno": "estado",
+      "motivo": "Sistema presidencial: el presidente es también jefe de Gobierno"
+    },
+    "SMR": {
+      "estado": {
+        "persona": "Q887796",
+        "cargo": "capitán regente de San Marino (junto con Stefano Palmieri)",
+        "desde": "2009-10-01"
+      },
+      "gobierno": {
+        "persona": "Q58075",
+        "cargo": "secretaria de Estado de Asuntos Exteriores y Políticos",
+        "desde": "2008-12-03"
+      },
+      "motivo": "La jefatura del Estado es doble (dos capitanes regentes); hace de jefa de Gobierno la secretaria de Asuntos Exteriores"
+    },
+    "SYR": {
+      "gobierno": {
+        "persona": "Q336406",
+        "cargo": "primer ministro de Siria",
+        "desde": "2003-09-10"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "TUR": {
+      "gobierno": {
+        "persona": "Q39259",
+        "cargo": "primer ministro de Turquía",
+        "desde": "2003-03-14"
+      },
+      "motivo": "Wikidata usa el cargo de hoy (el presidente encabeza el Gobierno desde 2018); en 2010 lo encabezaba el primer ministro"
+    },
+    "VAT": {
+      "gobierno": {
+        "persona": "Q44383",
+        "cargo": "cardenal secretario de Estado",
+        "desde": "2006-09-15"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    },
+    "VUT": {
+      "gobierno": {
+        "persona": "Q379550",
+        "cargo": "primer ministro de Vanuatu",
+        "desde": "2008-09-22"
+      },
+      "motivo": "Wikidata no da el cargo con fechas"
+    }
+  },
+  "regimenes": {
+    "ABK": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "AFG": {
+      "regimen": "presidencial",
+      "motivo": "República Islámica con sistema presidencial (2004-2021)"
+    },
+    "ARE": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Federación de emiratos"
+    },
+    "ARM": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y primer ministro (hasta la reforma de 2015)"
+    },
+    "AUT": {
+      "regimen": "parlamentario",
+      "motivo": "El presidente elegido apenas ejerce poderes: funciona como parlamentario"
+    },
+    "BFA": {
+      "regimen": "presidencial",
+      "motivo": "Presidencia de Compaoré; las juntas militares llegaron en 2022"
+    },
+    "BHR": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Monarquía con un Gobierno nombrado por el rey"
+    },
+    "BOL": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "BRN": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Sultanato"
+    },
+    "BWA": {
+      "regimen": "parlamentario",
+      "motivo": "El presidente lo elige el Parlamento y depende de él"
+    },
+    "CAF": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "CHE": {
+      "regimen": "parlamentario",
+      "motivo": "Sistema directorial: el Consejo Federal lo elige el Parlamento"
+    },
+    "CHN": {
+      "regimen": "partido-unico",
+      "motivo": "Partido Comunista"
+    },
+    "CIV": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "CMR": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "COD": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y primer ministro (Constitución de 2006)"
+    },
+    "COG": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "CUB": {
+      "regimen": "partido-unico",
+      "motivo": "Partido Comunista"
+    },
+    "DJI": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "EGY": {
+      "regimen": "presidencial",
+      "motivo": "Presidente con un primer ministro nombrado por él"
+    },
+    "ERI": {
+      "regimen": "partido-unico",
+      "motivo": "Frente Popular para la Democracia y la Justicia"
+    },
+    "FJI": {
+      "regimen": "junta",
+      "motivo": "Gobierno militar tras el golpe de 2006"
+    },
+    "FRA": {
+      "regimen": "semipresidencial",
+      "motivo": "Quinta República"
+    },
+    "GIN": {
+      "regimen": "junta",
+      "motivo": "Junta militar (CNDD) tras el golpe de 2008"
+    },
+    "GNB": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y primer ministro"
+    },
+    "GNQ": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "GUY": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "HTI": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y primer ministro"
+    },
+    "IRN": {
+      "regimen": "teocracia",
+      "motivo": "República Islámica: el Líder Supremo está por encima del presidente"
+    },
+    "KGZ": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "KWT": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Emirato: el emir nombra al Gobierno"
+    },
+    "LAO": {
+      "regimen": "partido-unico",
+      "motivo": "Partido Popular Revolucionario"
+    },
+    "LBY": {
+      "regimen": "partido-unico",
+      "motivo": "Yamahiriya: régimen sin partidos dirigido por Gadafi"
+    },
+    "MDG": {
+      "regimen": "junta",
+      "motivo": "Alta Autoridad de Transición tras el golpe de 2009, apoyada por el ejército"
+    },
+    "MLI": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y primer ministro"
+    },
+    "MMR": {
+      "regimen": "junta",
+      "motivo": "Junta militar (Consejo de Estado para la Paz y el Desarrollo) hasta 2011"
+    },
+    "MNG": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y primer ministro"
+    },
+    "MOZ": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "NAM": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "NER": {
+      "regimen": "presidencial",
+      "motivo": "El golpe de Estado fue en febrero de 2010, después del comienzo del juego"
+    },
+    "OMN": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Sultanato"
+    },
+    "PAK": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente con amplios poderes hasta la 18.ª enmienda (abril de 2010)"
+    },
+    "PRK": {
+      "regimen": "partido-unico",
+      "motivo": "Partido del Trabajo"
+    },
+    "PRT": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente elegido y primer ministro"
+    },
+    "PSE": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente de la Autoridad Nacional y primer ministro"
+    },
+    "QAT": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Emirato"
+    },
+    "ROU": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente elegido y primer ministro"
+    },
+    "RUS": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente y presidente del Gobierno"
+    },
+    "SAU": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Monarquía absoluta"
+    },
+    "SOM": {
+      "regimen": "semipresidencial",
+      "motivo": "Gobierno Federal de Transición: presidente y primer ministro"
+    },
+    "SWZ": {
+      "regimen": "monarquia-absoluta",
+      "motivo": "Monarquía absoluta"
+    },
+    "SYR": {
+      "regimen": "partido-unico",
+      "motivo": "Partido Baaz, partido dirigente por la Constitución de 1973"
+    },
+    "TGO": {
+      "regimen": "presidencial",
+      "motivo": "El presidente dirige el Gobierno (el primer ministro, si lo hay, depende de él)"
+    },
+    "TKM": {
+      "regimen": "partido-unico",
+      "motivo": "Partido Democrático, único partido legal en 2010"
+    },
+    "TUN": {
+      "regimen": "presidencial",
+      "motivo": "Presidente con un primer ministro nombrado por él"
+    },
+    "TUR": {
+      "regimen": "parlamentario",
+      "motivo": "Sistema parlamentario hasta 2018"
+    },
+    "TWN": {
+      "regimen": "semipresidencial",
+      "motivo": "Presidente elegido y presidente del Yuan Ejecutivo"
+    },
+    "UKR": {
+      "regimen": "semipresidencial",
+      "motivo": "Constitución de 2004 (antes de volver a la de 1996 en 2010)"
+    },
+    "VAT": {
+      "regimen": "teocracia",
+      "motivo": "El papa es el jefe del Estado"
+    },
+    "VNM": {
+      "regimen": "partido-unico",
+      "motivo": "Partido Comunista"
+    },
+    "XKX": {
+      "regimen": "parlamentario",
+      "motivo": "Presidente elegido por la Asamblea"
+    },
+    "ZAF": {
+      "regimen": "parlamentario",
+      "motivo": "El presidente lo elige el Parlamento y depende de él"
+    }
+  },
+  "nombres": {
+    "Q57402": {
+      "nombre": "Daniel Ortega",
+      "motivo": "La etiqueta en español de Wikidata lleva un añadido erróneo («(bachi)»)"
+    }
+  },
+  "textosCargo": [
+    {
+      "buscar": "Presidente de la Federación",
+      "cambiar": "Presidente de la Federación de Rusia",
+      "motivo": "La etiqueta en español de Wikidata está cortada"
+    },
+    {
+      "buscar": "President de ",
+      "cambiar": "Presidente de ",
+      "motivo": "Errata en la etiqueta de Wikidata"
+    },
+    {
+      "buscar": "Primer ministro or primera ministra de la Republica de Namibia",
+      "cambiar": "Primer ministro de Namibia",
+      "motivo": "Etiqueta de Wikidata a medio traducir"
+    },
+    {
+      "buscar": "Republica",
+      "cambiar": "República",
+      "motivo": "Falta la tilde en la etiqueta de Wikidata"
+    },
+    {
+      "buscar": "Primer Ministro",
+      "cambiar": "Primer ministro",
+      "motivo": "Mismas mayúsculas en todos los cargos"
+    },
+    {
+      "buscar": "Premier de Corea del Norte",
+      "cambiar": "Primer ministro de Corea del Norte",
+      "motivo": "Nombre del cargo en español"
+    },
+    {
+      "buscar": "Macedonia del Norte",
+      "cambiar": "Macedonia",
+      "motivo": "En 2010 el país se llamaba Macedonia (Macedonia del Norte desde 2019)"
+    },
+    {
+      "buscar": "Esuatini",
+      "cambiar": "Suazilandia",
+      "motivo": "En 2010 el país se llamaba Suazilandia (Esuatini desde 2018)"
+    }
+  ]
+}

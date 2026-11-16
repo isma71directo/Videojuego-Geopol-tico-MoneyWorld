@@ -1,16 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.8.2",
-  "actualizado": "2026-11-16T10:54:01Z",
-  "faseActiva": "fase-7",
+  "versionActual": "0.9.0",
+  "actualizado": "2026-11-16T12:50:56Z",
+  "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Versión 0.8.2 publicada en su rama con los ajustes de la Fase 7 que pidió el jugador: colores representativos sin repetición visible (f7-a3) y barra de 8 apartados con sub-barra y una ventana por ministerio (f7-a4).",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 7 como hecha y presentar el plan de la Fase 8 (ficha de país).",
+    "resumen": "Fase 8 cerrada como v0.9.0: ficha de país con pestañas, régimen y cargos de 2010 y retratos ilustrados (97 homenajes y genéricos para el resto). PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.9.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 9 (buscador y ficha de región).",
     "pendienteDelJugador": [
-      "Fusionar el PR de la v0.8.2",
-      "Prueba en el PC de la v0.8.2: mirar los colores con el mundo entero y en Europa y revisar la sección «Color de cada país» de la galería (decir qué colores cambiar); abrir cada apartado de la barra de abajo (también con G, I, P, E, U, J, V y N), elegir en su sub-barra y recorrer las ventanas, sobre todo las de los ministerios",
-      "Prueba en el PC de la v0.8.0: componentes en la galería y clic derecho en el mapa"
+      "Probar la v0.9.0 en el PC: hacer clic en España, Japón y Somalilandia y revisar sus fichas (régimen, jefe de Estado y de Gobierno con su retrato, datos y fuentes en cada pestaña); mirar los retratos de la galería y decir qué homenajes cambiarías",
+      "Fusionar el PR de la Fase 8"
     ]
   },
   "etapas": [
@@ -503,7 +502,7 @@
       "dependeDe": ["fase-6"],
       "hechoCuando": "Los componentes funcionan con ratón y teclado y se adaptan a pantallas grandes",
       "pruebaJugador": "Abrir el muestrario de la galería y probar cada componente con el ratón y el teclado; en el mapa, hacer clic derecho en un país y usar su menú; abrir cada apartado de la barra de abajo, elegir en su sub-barra (también con sus teclas) y recorrer las ventanas; revisar el color de cada país.",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f7-t1",
@@ -581,29 +580,36 @@
       "objetivo": "Consultar los datos de cualquier país",
       "dependeDe": ["fase-7"],
       "hechoCuando": "Todos los países tienen una ficha completa",
-      "pruebaJugador": "Hacer clic en España, Japón y Somalilandia y revisar sus fichas",
-      "estado": "pendiente",
+      "pruebaJugador": "Hacer clic en España, Japón y Somalilandia y revisar sus fichas: régimen, jefe de Estado y de Gobierno con su retrato, datos y fuentes en cada pestaña.",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f8-t1",
-          "titulo": "Datos de 2010 de régimen político y jefes de Estado y de Gobierno (script con fuente)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Datos de 2010 de régimen político y jefes de Estado y de Gobierno (Wikidata a 1 de enero de 2010, con el régimen corregido a mano y con fuente donde cambió desde 2010)",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/44ef44f"
         },
         {
           "id": "f8-t2",
-          "titulo": "Ficha de país (panel lateral): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Ficha de país en panel lateral con pestañas (Resumen, Economía, Sociedad y Fuentes): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/740fa6c"
         },
         {
           "id": "f8-t3",
-          "titulo": "Audiovisual: iconos de los regímenes y retratos genéricos ilustrados para los cargos (sin fotografías de personas reales)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Audiovisual: iconos de los 8 regímenes y generador de retratos ilustrados (busto) dibujados con código; retratos genéricos de los países menores según su región y el estilo de su régimen",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ce3ed59"
+        },
+        {
+          "id": "f8-t4",
+          "titulo": "Audiovisual: retratos homenaje (interpretaciones ilustradas, sin fotografías) de los líderes de 2010 de los países y figuras importantes",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/580c29b"
         }
       ]
     },
@@ -4418,6 +4424,17 @@
         "Barra grande abajo con 8 apartados sin «Más» (Gobierno, Ministerios, Política, Economía, Mundo, Ejército, Investigación e Informes), cada uno con su sub-barra",
         "Gobierno separado de Ministerios: los 19 ministerios con su ventana (resumen, presupuesto, leyes, acciones e infraestructuras), vacía hasta su fase",
         "23 iconos nuevos para los ministerios y las ventanas"
+      ]
+    },
+    {
+      "version": "0.9.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Ficha de país en el panel de la derecha con cuatro pestañas: Resumen, Economía, Sociedad y Fuentes (la última elegida se recuerda al cambiar de país)",
+        "Régimen político de 2010 con su icono y jefes de Estado y de Gobierno a 1 de enero de 2010, de Wikidata con correcciones a mano anotadas",
+        "Cada dato explica qué es al pasar el ratón, los estimados van marcados y la pestaña Fuentes dice de dónde sale cada uno",
+        "Retratos ilustrados (bustos dibujados con código, nunca fotografías) de todos los cargos: 97 homenajes a los líderes de 2010 de los países y figuras importantes y retratos genéricos según la región y el régimen para el resto",
+        "Galería: los iconos de los 8 regímenes y todos los retratos"
       ]
     }
   ]

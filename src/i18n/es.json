@@ -95,7 +95,80 @@
           "alto": "Alta"
         },
         "datos2010": "Datos de 2010",
-        "nivelRenta": "Nivel de renta"
+        "nivelRenta": "Nivel de renta",
+        "cargando": "Cargando el gobierno…",
+        "regimen": "Régimen",
+        "regimenes": {
+          "parlamentario": "República parlamentaria",
+          "presidencial": "República presidencial",
+          "semipresidencial": "República semipresidencial",
+          "monarquia-parlamentaria": "Monarquía parlamentaria",
+          "monarquia-absoluta": "Monarquía absoluta",
+          "partido-unico": "Partido único",
+          "junta": "Junta militar",
+          "teocracia": "Teocracia"
+        },
+        "cargos": {
+          "estado": "Jefe de Estado",
+          "gobierno": "Jefe de Gobierno",
+          "ambos": "Jefe de Estado y de Gobierno",
+          "desde": "{cargo} · desde {anio}",
+          "comoTerritorio": "Como territorio de {soberano}",
+          "sinEstado": "Sin Estado propio: territorio en disputa.",
+          "retrato": "Retrato ilustrado de {nombre}"
+        },
+        "pestanas": {
+          "etiqueta": "Ficha de {pais}",
+          "resumen": "Resumen",
+          "economia": "Economía",
+          "sociedad": "Sociedad",
+          "fuentes": "Fuentes"
+        },
+        "sectores": {
+          "titulo": "PIB por sectores",
+          "agricultura": "Agricultura",
+          "industria": "Industria",
+          "servicios": "Servicios"
+        },
+        "mix": {
+          "titulo": "Electricidad por fuente",
+          "carbon": "Carbón",
+          "gas": "Gas",
+          "petroleo": "Petróleo",
+          "nuclear": "Nuclear",
+          "hidraulica": "Hidráulica",
+          "eolica": "Eólica",
+          "solar": "Solar",
+          "otras": "Biomasa y otras"
+        },
+        "unidades": {
+          "densidad": "{valor} hab./km²",
+          "toneladas": "{valor} t"
+        },
+        "fuentes": {
+          "sinDato": "Sin dato",
+          "ausente": "el país no figura entre los productores (0)",
+          "gobierno": "Jefes de Estado y de Gobierno",
+          "cargosWikidata": "Wikidata, cargos a 1 de enero de 2010",
+          "cargosManual": "Wikidata, cargos a 1 de enero de 2010, con una corrección a mano anotada en el script de datos",
+          "regimenManual": "Corrección a mano: {motivo}",
+          "regimenWikidata": "Wikidata (forma de gobierno: {forma})",
+          "regimenRegla": "Deducido de los cargos: {regla}",
+          "estimacion": "Estimación, no es un dato real ({metodo})"
+        },
+        "superficie": "Superficie",
+        "densidad": "Densidad",
+        "saldoFiscalPib": "Saldo fiscal",
+        "cuentaCorrientePib": "Cuenta corriente",
+        "comercioPib": "Comercio exterior",
+        "alfabetizacion": "Alfabetización",
+        "accesoElectricidad": "Acceso a la electricidad",
+        "usuariosInternet": "Usuarios de internet",
+        "gastoSanidadPib": "Gasto en sanidad",
+        "gastoEducacionPib": "Gasto en educación",
+        "gastoDefensaPib": "Gasto militar",
+        "efectivosMilitares": "Efectivos militares",
+        "co2PerCapita": "CO₂ por habitante"
       },
       "silenciar": "Silenciar el sonido (M)",
       "activarSonido": "Activar el sonido (M)",
@@ -857,7 +930,15 @@
       "base": "Bases",
       "guerra": "Guerras",
       "informe": "Informes",
-      "historial": "Historial"
+      "historial": "Historial",
+      "regimen-parlamentario": "República parlamentaria",
+      "regimen-presidencial": "República presidencial",
+      "regimen-semipresidencial": "República semipresidencial",
+      "regimen-monarquia-parlamentaria": "Monarquía parlamentaria",
+      "regimen-monarquia-absoluta": "Monarquía absoluta",
+      "regimen-partido-unico": "Partido único",
+      "regimen-junta": "Junta militar",
+      "regimen-teocracia": "Teocracia"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -985,6 +1066,10 @@
         "iva": "IVA de ejemplo: {valor} %.",
         "accion": "Has elegido «{accion}»."
       }
+    },
+    "retratos": {
+      "titulo": "Retratos de los {n} jefes de Estado y de Gobierno de 2010",
+      "nota": "Ilustraciones dibujadas con código, nunca fotografías. Primero, los retratos homenaje de los líderes de los países y figuras importantes; después, los genéricos, según la región del país y el estilo de su régimen, siempre con la misma cara base y sin rasgos exagerados (cambian el tono de piel, el pelo, la ropa y los complementos). Si quieres cambiar alguno, dime cuál."
     }
   }
 }

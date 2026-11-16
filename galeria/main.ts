@@ -13,6 +13,11 @@ import { capaPorId, COLOR_SIN_RESERVAS } from '../src/map/capas';
 import { etiquetaCapa, opcionesCapas, POLITICA } from '../src/ui/selector-capas';
 import { preferenciasDeColor } from '../src/map/colores';
 import tablaColores from '../src/map/config/colores-pais.json';
+import { rasgosDe, svgRetrato, tieneHomenaje, tono } from '../src/av/retratos';
+import { edadEn2010, jefeGobierno, type ConjuntoGobiernos } from '../src/datos/gobiernos';
+
+/** Color de cada país en el mapa político (fondo de los retratos). */
+let coloresPais: Record<string, string> = {};
 import type { ConjuntoPaises, PaisDatos } from '../src/datos/paises';
 import { vistaPreviaMapa, type TopologiaMapa } from '../src/map/vista-previa';
 import { t } from '../src/i18n';
@@ -167,6 +172,57 @@ function coloresPaises(colores: Record<string, string>, conjunto: ConjuntoPaises
   );
 }
 
+/**
+ * Retratos ilustrados de los jefes de Estado y de Gobierno de 2010 (tareas f8-t3 y f8-t4): los
+ * homenajes primero y después todos los demás, para revisarlos.
+ */
+function retratos(gobiernos: ConjuntoGobiernos, conjunto: ConjuntoPaises): HTMLElement {
+  const tarjetas: { orden: string; homenaje: boolean; elemento: HTMLElement }[] = [];
+  const vistos = new Set<string>();
+  for (const [id, gobierno] of Object.entries(gobiernos.paises)) {
+    const pais = conjunto.paises[id];
+    if (!pais || pais.tipo === 'dependiente') continue;
+    for (const cargo of [gobierno.estado, jefeGobierno(gobierno)]) {
+      if (!cargo || vistos.has(cargo.persona)) continue;
+      vistos.add(cargo.persona);
+      const persona = gobiernos.personas[cargo.persona];
+      const rasgos = rasgosDe({
+        pais: id,
+        region: pais.region,
+        regimen: gobierno.regimen,
+        sexo: persona?.sexo ?? null,
+        edad: edadEn2010(persona),
+        persona: cargo.persona,
+      });
+      const imagen = el('span', { class: 'galeria__retrato', 'aria-hidden': 'true' });
+      imagen.innerHTML = svgRetrato(rasgos, tono(coloresPais[id] ?? '#3a4a66', 0.7));
+      tarjetas.push({
+        orden: `${pais.nombre} ${cargo === gobierno.estado ? 1 : 2}`,
+        homenaje: tieneHomenaje(cargo.persona),
+        elemento: el(
+          'li',
+          {},
+          imagen,
+          el(
+            'span',
+            { class: 'galeria__color-nombre' },
+            el('strong', {}, persona?.nombre ?? cargo.persona),
+            el('small', {}, `${pais.nombre} · ${cargo.cargo}`),
+          ),
+        ),
+      });
+    }
+  }
+  tarjetas.sort(
+    (a, b) => Number(b.homenaje) - Number(a.homenaje) || a.orden.localeCompare(b.orden, 'es'),
+  );
+  return seccion(
+    t('galeria.retratos.titulo', { n: tarjetas.length }),
+    t('galeria.retratos.nota'),
+    el('ul', { class: 'galeria__retratos' }, ...tarjetas.map((x) => x.elemento)),
+  );
+}
+
 /** Rampas de color de las capas del mapa (tarea f6-t4). */
 function capas(): HTMLElement {
   return seccion(
@@ -286,20 +342,23 @@ async function iniciar(): Promise<void> {
     el('p', { class: 'galeria__nota' }, t('galeria.cargando')),
   );
   try {
-    const [conjunto, topo, coloresPais] = await Promise.all([
+    const [conjunto, topo, coloresDelMapa, gobiernos] = await Promise.all([
       descargar<ConjuntoPaises>('data/paises-2010.json'),
       descargar<TopologiaMapa>('data/mapa-2010-mundo.json'),
       descargar<{ colores: Record<string, string> }>('data/colores-pais.json'),
+      descargar<ConjuntoGobiernos>('data/gobiernos-2010.json'),
     ]);
+    coloresPais = coloresDelMapa.colores;
     reemplazar(
       raiz,
       cabecera(),
       mapa(topo, conjunto),
-      coloresPaises(coloresPais.colores, conjunto),
+      coloresPaises(coloresDelMapa.colores, conjunto),
       referencias(),
       capas(),
       iconos(),
       sonidos(),
+      retratos(gobiernos, conjunto),
       ...muestrario(conjunto, seccion),
       ...banderas(conjunto),
     );

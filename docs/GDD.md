@@ -148,6 +148,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | Natural Earth | Fronteras de países y regiones (admin-1), capitales, ciudades | Mapa |
 | FAO, vía Banco Mundial (servida por Our World in Data) | Superficie terrestre de cada país (la API del Banco Mundial no responde desde el entorno de trabajo; es el mismo indicador). Los territorios sin dato usan la superficie medida en el mapa, marcada como estimada | Densidad de población (Fase 6) |
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
+| Wikidata (CC0) | Jefes de Estado y de Gobierno el 1 de enero de 2010 (cargos con fechas) y forma de gobierno, con correcciones a mano anotadas donde el régimen cambió desde 2010 (`scripts/datos/20-gobiernos.ts`) | Ficha de país (Fase 8) |
 | ParlGov / Wikipedia | Partidos, escaños, gobiernos y sistemas electorales en 2010 | Política (detallado en unos 40 países principales; plantilla genérica en el resto) |
 | Listas Fortune Global 500 (2010) | Grandes empresas reales | Empresas con nombre (fase posterior) |
 
@@ -559,7 +560,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 - Claude Code lo crea **con código**: SVG, Canvas y CSS para los gráficos y las animaciones, síntesis con Web Audio para el sonido y WebGL para el 3D. No hace falta ningún programa externo.
 - **Material real de licencia libre** cuando exista (por ejemplo, banderas): se descarga con un script reproducible y se anota la fuente y la licencia en `/docs/creditos.md`.
 - **Lo que no se puede crear con código** (fotografías, vídeo grabado, música grabada, voces): se sustituye por una alternativa generada (ilustración, música sintetizada) o lo aporta el jugador en `/fuentes/av/`. Nunca se usa material sin una licencia clara.
-- **Personas, partidos y empresas reales:** no se usan fotografías ni logotipos registrados; se representan con retratos genéricos y emblemas propios (color y siglas).
+- **Personas, partidos y empresas reales:** no se usan fotografías ni logotipos registrados; se representan con ilustraciones y emblemas propios (color y siglas). **Decisión del jugador (16/11/2026):** los líderes de 2010 de los países y figuras importantes llevan un retrato propio (busto, del torso hacia arriba) dibujado con código como homenaje e interpretación del personaje, reconocible por sus rasgos y su vestimenta; el resto, un retrato genérico según la región del país y el estilo de su régimen, siempre respetuoso y sin rasgos exagerados.
 
 **Reglas del 3D**
 - **Donde sea posible y necesario:** el 3D se usa cuando muestra algo que el 2D no muestra igual de bien. No hay 3D solo decorativo: ni globo 3D ni salas ambientadas.
@@ -798,9 +799,10 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 #### Fase 8 — v0.9.0 · Ficha de país
 **Objetivo:** consultar los datos de cualquier país.
 **Tareas**
-1. Datos de 2010 de régimen político y jefes de Estado y de Gobierno (script con fuente).
-2. Ficha de país (panel lateral): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados.
-3. **Audiovisual:** iconos de los regímenes y retratos genéricos ilustrados para los cargos (sin fotografías de personas reales).
+1. Datos de 2010 de régimen político y jefes de Estado y de Gobierno (script con fuente: Wikidata, con los cargos a 1 de enero de 2010; el régimen se corrige a mano, con fuente anotada, donde cambió desde 2010; decisión del jugador).
+2. Ficha de país (panel lateral con pestañas: Resumen, Economía, Sociedad y Fuentes; decisión del jugador): bandera, régimen, cargos, población, PIB e indicadores, con fuente y aviso de estimados, hecha con los componentes de la Fase 7.
+3. **Audiovisual:** iconos de los 8 regímenes y generador de retratos ilustrados (busto, del torso hacia arriba) dibujados con código; retratos genéricos de los cargos de los países menores según su región y el estilo de su régimen.
+4. **Audiovisual:** retratos homenaje de los líderes de 2010 de los países y figuras importantes: interpretaciones ilustradas propias, nunca fotografías (decisión del jugador).
 
 **Tests:** la ficha muestra datos de todos los países sin errores.
 **Prueba en el PC:** hacer clic en España, Japón y Somalilandia y revisar sus fichas.
@@ -2103,6 +2105,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 16/11/2026 | Barra de secciones y ventanas de todas las secciones adelantadas de la Fase 10 a la v0.8.1, vacías hasta su fase; historial de leyes en la pantalla «Leyes» (Fase 67) (ajuste f7-a2) | Petición del jugador (opción B): esperaba la base de las ventanas en la Fase 7 | 7, 9, 13 |
 | 16/11/2026 | Colores de país rehechos: tabla completa de colores representativos (el que se asocia a cada país, no solo el principal de su bandera: Rumanía amarillo, Portugal rojo…), revisable por el jugador, y colores libres alrededor de ese tono en lugar de una paleta cerrada, para que vecinos y países cercanos lleven siempre colores claramente distintos (ajuste f7-a3) | Petición del jugador: los colores de la v0.8.1 no eran los representativos y volvía a notarse la repetición | 7, 13 |
 | 16/11/2026 | Barra de 8 apartados con sub-barra, sin «Más», y Gobierno separado de Ministerios: cada ministerio con su ventana (resumen, presupuesto, leyes, acciones e infraestructuras); los iconos de los ministerios se adelantan de la Fase 26 (ajuste f7-a4) | Petición del jugador (referencia: Power & Revolution) | 7, 9, 13 |
+| 16/11/2026 | Fase 8 concretada con el jugador: régimen y cargos de Wikidata a 1 de enero de 2010 (con correcciones anotadas), ficha con pestañas y retratos ilustrados propios: homenajes de los líderes reales de los países importantes y genéricos para el resto; la tarea audiovisual se divide en dos | Plan de la Fase 8 aprobado por el jugador | 7.1, 9, 13 |
 
 ---
 
@@ -2131,6 +2134,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Elegir la capa del mapa | Un atajo por capa / Mayús + número / desplegable | **Decidido por el jugador (12/11/2026):** un desplegable que se abre con un clic o con la tecla C; sin atajo por capa |
 | Color de cada país | Reparto automático / por bandera (A) / por bandera y colores tradicionales (B) | **Decidido por el jugador (16/11/2026):** B, y en la v0.8.2 con una tabla completa de colores representativos (España y Rumanía amarillo, Portugal y Reino Unido rojo, Marruecos rojo y verde…) y colores libres alrededor de cada tono, sin que se note la repetición |
 | Ventanas de las secciones | En la Fase 10 (A) / ya, vacías hasta su fase (B) | **Decidido por el jugador (16/11/2026):** B, en la v0.8.1; en la v0.8.2, barra de 8 apartados con sub-barra y una ventana por ministerio |
+| Retratos de los cargos | Silueta genérica / medallón con emblema / ilustración de los líderes reales | **Decidido por el jugador (16/11/2026):** bustos ilustrados propios, homenajes e interpretaciones de los líderes de 2010 en los países y figuras importantes; en los países menores, genéricos según su región y el estilo de su régimen. Nunca fotografías |
 | Sonido al abrir el juego | Activado / desactivado por defecto | Activado tras el primer clic o tecla, con botón de silencio visible |
 | Música, voces y fotografías | Solo material generado con código / también archivos aportados por el jugador | Generado con código; el jugador puede aportar archivos en `/fuentes/av/` |
 | Territorios especiales jugables | Todos / solo los que tienen datos / ninguno | **Decidido por el jugador (12/11/2026):** jugables también los territorios con independencia de hecho (Abjasia, Osetia del Sur, Transnistria, Somalilandia y Chipre del Norte), con sus datos estimados marcados; se hace en la Fase 2. El Sáhara Occidental no es independiente de hecho y queda como territorio en disputa no jugable, salvo que el jugador diga otra cosa |

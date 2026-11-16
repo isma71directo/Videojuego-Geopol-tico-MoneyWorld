@@ -17,6 +17,14 @@ import pib from './iconos/pib.svg?raw';
 import poblacion from './iconos/poblacion.svg?raw';
 import politica from './iconos/politica.svg?raw';
 import silencio from './iconos/silencio.svg?raw';
+import regimenParlamentario from './iconos/regimen-parlamentario.svg?raw';
+import regimenPresidencial from './iconos/regimen-presidencial.svg?raw';
+import regimenSemipresidencial from './iconos/regimen-semipresidencial.svg?raw';
+import regimenMonarquiaParlamentaria from './iconos/regimen-monarquia-parlamentaria.svg?raw';
+import regimenMonarquiaAbsoluta from './iconos/regimen-monarquia-absoluta.svg?raw';
+import regimenPartidoUnico from './iconos/regimen-partido-unico.svg?raw';
+import regimenJunta from './iconos/regimen-junta.svg?raw';
+import regimenTeocracia from './iconos/regimen-teocracia.svg?raw';
 import hacienda from './iconos/hacienda.svg?raw';
 import interior from './iconos/interior.svg?raw';
 import justicia from './iconos/justicia.svg?raw';
@@ -119,6 +127,15 @@ const ICONOS = {
   guerra,
   informe,
   historial,
+  // Regímenes políticos (tarea f8-t3).
+  'regimen-parlamentario': regimenParlamentario,
+  'regimen-presidencial': regimenPresidencial,
+  'regimen-semipresidencial': regimenSemipresidencial,
+  'regimen-monarquia-parlamentaria': regimenMonarquiaParlamentaria,
+  'regimen-monarquia-absoluta': regimenMonarquiaAbsoluta,
+  'regimen-partido-unico': regimenPartidoUnico,
+  'regimen-junta': regimenJunta,
+  'regimen-teocracia': regimenTeocracia,
 };
 
 export type NombreIcono = keyof typeof ICONOS;

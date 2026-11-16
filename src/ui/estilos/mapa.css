@@ -136,7 +136,8 @@
   position: absolute;
   top: calc(56px + env(safe-area-inset-top));
   right: calc(10px + env(safe-area-inset-right));
-  width: 300px;
+  /* Más ancho desde la ficha con pestañas (tarea f8-t2). */
+  width: 340px;
   /* Termina encima de la barra de secciones (ajuste f7-a4). */
   max-height: calc(100% - 142px);
   overflow-y: auto;
@@ -242,6 +243,108 @@
   margin: 10px 0 0;
   color: var(--texto-suave);
   font-size: 12px;
+}
+
+/* Ficha de país con pestañas (tarea f8-t2). */
+.panel-pais .pestanas {
+  margin-top: 10px;
+}
+
+/* Solo la pestaña visible: la regla no debe anular el atributo «hidden» de las demás. */
+.panel-pais .pestanas__contenido:not([hidden]) {
+  display: grid;
+  gap: 12px;
+  padding-top: 12px;
+}
+
+.panel-pais .panel-pais__datos {
+  margin-top: 0;
+}
+
+.panel-pais__fila dt[tabindex] {
+  cursor: help;
+}
+
+.panel-pais__fila dt[tabindex]:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+
+.ficha-cargos {
+  display: grid;
+  gap: 8px;
+}
+
+.ficha-cargo {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: rgb(255 255 255 / 3%);
+}
+
+.ficha-cargo__retrato {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--superficie-2);
+  color: var(--acento);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.ficha-cargo__retrato svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ficha-cargo__texto {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ficha-cargo__rol {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ficha-cargo__nombre {
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.ficha-cargo__cargo,
+.ficha-cargo__nota {
+  color: var(--texto-suave);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.ficha-fuentes {
+  display: grid;
+  gap: 10px;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.ficha-fuentes li {
+  display: grid;
+  gap: 2px;
+}
+
+.ficha-fuentes span {
+  color: var(--texto-suave);
 }
 
 /* Panel de la ciudad (ajuste f4-a4). */
@@ -494,4 +597,26 @@
   .leyenda--cambio {
     animation: none;
   }
+}
+
+/* Las cuatro pestañas de la ficha se reparten el ancho del panel (tarea f8-t2). */
+.panel-pais .pestanas__pestana {
+  flex: 1 1 0;
+  justify-content: center;
+  padding: 8px 4px;
+  font-size: 13px;
+}
+
+/* Régimen con su icono (tarea f8-t3). */
+.ficha-regimen {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.ficha-regimen .icono {
+  width: 18px;
+  height: 18px;
+  color: var(--acento);
 }

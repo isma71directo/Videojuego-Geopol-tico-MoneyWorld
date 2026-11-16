@@ -1,4 +1,5 @@
 /** Pantalla del mapa del mundo a pantalla completa (Fases 3 y 4). */
+import type { ConjuntoGobiernos } from '../datos/gobiernos';
 import type { ConjuntoPaises } from '../datos/paises';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
@@ -167,6 +168,9 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   lienzo.addEventListener('keydown', alternarMedidor);
 
   let conjunto: ConjuntoPaises | null = null;
+  // Régimen y cargos de 2010 (tarea f8-t1) y la última pestaña de ficha que miró el jugador.
+  let gobiernos: ConjuntoGobiernos | null = null;
+  let pestanaFicha = 'resumen';
   let recuadroDe: unknown = null;
   /**
    * Capa de datos activa; null es la capa política. Se recuerda la última elegida; «?capa=paro»
@@ -289,7 +293,14 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
           ? contenidoPanelRegion(objetivo.region, conjunto, datosDe(objetivo.region), quitar, () =>
               mapa.seleccionar(objetivo.region.pais),
             )
-          : contenidoPanel(pais!, conjunto!, quitar)),
+          : contenidoPanel(pais!, conjunto!, quitar, {
+              gobiernos,
+              colorPais: mapa.colorDePais(pais!.id),
+              pestana: pestanaFicha,
+              alCambiarPestana: (id) => {
+                pestanaFicha = id;
+              },
+            })),
     );
     return true;
   };
@@ -332,6 +343,20 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.
+    });
+  fetch('./data/gobiernos-2010.json')
+    .then((respuesta) =>
+      respuesta.ok
+        ? (respuesta.json() as Promise<ConjuntoGobiernos>)
+        : Promise.reject(new Error(String(respuesta.status))),
+    )
+    .then((datos) => {
+      gobiernos = datos;
+      // Si ya había un país abierto, su ficha se completa con el gobierno.
+      if (seleccion?.tipo === 'pais') pintarPanel(seleccion);
+    })
+    .catch(() => {
+      // Sin este archivo la ficha sale sin cargos.
     });
   mapa
     .iniciar()
