@@ -399,7 +399,6 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       x: caja.left + x,
       y: caja.top + y,
     });
-    reproducir('boton');
   };
   lienzo.addEventListener('contextmenu', (evento) => {
     evento.preventDefault();

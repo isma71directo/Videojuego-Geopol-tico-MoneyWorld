@@ -380,7 +380,11 @@
       "abrirPanel": "Abrir un panel",
       "boton": "Pulsar un botón",
       "escuchar": "Escuchar: {efecto}",
-      "capa": "Cambiar la capa del mapa"
+      "capa": "Cambiar la capa del mapa",
+      "abrirVentana": "Abrir una ventana",
+      "cerrar": "Cerrar una ventana o un panel",
+      "pestana": "Cambiar de pestaña",
+      "menu": "Abrir el menú contextual"
     },
     "paleta": {
       "titulo": "Paleta del mapa político",
@@ -393,7 +397,7 @@
     "componentes": {
       "ventanas": {
         "titulo": "Componentes · Ventanas, paneles y pestañas",
-        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin.",
+        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin. Al abrir, cerrar o cambiar de pestaña hay una animación corta y un sonido (nunca al pasar el ratón); con «reducir movimiento» activado en el sistema, sin animación.",
         "abrir": "Ventana de {pais}",
         "panelIzquierda": "Panel a la izquierda",
         "panelDerecha": "Panel a la derecha",

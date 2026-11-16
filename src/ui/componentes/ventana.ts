@@ -6,11 +6,14 @@
  * - La que se toca o recibe el foco pasa delante de las demás.
  * - Teclado: Alt + flechas la mueven (con Mayúsculas, más deprisa) y Escape la cierra.
  * - Nunca se salen de la pantalla, tampoco al cambiar su tamaño.
+ * - Aparecen y se van con una animación corta y suenan al abrirse y al cerrarse (tarea f7-t4).
  */
 import { icono as crearIcono, type NombreIcono } from '../../av/iconos';
 import { t } from '../../i18n';
 import { el, type Hijo } from '../dom';
+import { alReves, animar, DURACIONES, FOTOGRAMAS, retirar } from './animacion';
 import { limitarVentana, pasoConTecla, posicionEnCascada } from './geometria';
+import { sonar } from './sonidos';
 import '../estilos/componentes.css';
 
 const PREFIJO_POSICION = 'geopolitica-2010.ventanas.';
@@ -32,7 +35,8 @@ export interface Ventana {
   /** Zona del contenido (para cambiarlo sin cerrar la ventana). */
   readonly cuerpo: HTMLElement;
   readonly abierta: boolean;
-  cerrar(): void;
+  /** Cierra la ventana; con `alInstante`, sin animación ni sonido (al salir de una pantalla). */
+  cerrar(alInstante?: boolean): void;
   alFrente(): void;
   mover(x: number, y: number): void;
   /** Posición actual (esquina superior izquierda), en píxeles. */
@@ -105,6 +109,7 @@ export function abrirVentana(
     el('h2', { class: 'ventana__titulo', id: idTitulo }, opciones.titulo),
     cerrarBoton,
   );
+  const titulo = cabecera.querySelector('h2')!;
   const cuerpo = el('div', { class: 'ventana__cuerpo' }, ...opciones.contenido);
   const elemento = el(
     'section',
@@ -142,13 +147,17 @@ export function abrirVentana(
     get abierta() {
       return abierta;
     },
-    cerrar() {
+    cerrar(alInstante = false) {
       if (!abierta) return;
       abierta = false;
       abiertas.delete(opciones.id);
       ordenDe.delete(opciones.id);
       window.removeEventListener('resize', alCambiarPantalla);
-      elemento.remove();
+      // Mientras se va, que no choque con otra ventana igual que se abra enseguida.
+      titulo.removeAttribute('id');
+      elemento.removeAttribute('data-ventana');
+      retirar(elemento, alReves(FOTOGRAMAS.ventana), DURACIONES.cerrarVentana, alInstante);
+      if (!alInstante) sonar('cerrar');
       opciones.alCerrar?.();
     },
     alFrente() {
@@ -217,10 +226,12 @@ export function abrirVentana(
   const inicial = leerPosicion(opciones.id) ?? posicionEnCascada(creadas++, pantalla(), ancho);
   colocar(inicial.x, inicial.y, false);
   elemento.focus({ preventScroll: true });
+  void animar(elemento, FOTOGRAMAS.ventana, DURACIONES.abrirVentana);
+  sonar('abrirVentana');
   return ventana;
 }
 
-/** Cierra todas las ventanas abiertas (al salir de una pantalla). */
+/** Cierra todas las ventanas abiertas al instante (al salir de una pantalla). */
 export function cerrarVentanas(): void {
-  for (const ventana of [...abiertas.values()]) ventana.cerrar();
+  for (const ventana of [...abiertas.values()]) ventana.cerrar(true);
 }

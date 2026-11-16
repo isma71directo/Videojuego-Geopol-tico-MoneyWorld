@@ -8,7 +8,8 @@ import { el, reemplazar } from './ui/dom';
 import { crearPantallaInicio } from './ui/inicio';
 import { abrirPantallaMapa, type PantallaMapa } from './ui/pantalla-mapa';
 import { botonReportar } from './ui/reportar';
-import { activarSonidoAlInteractuar } from './ui/sonido';
+import { sonidosDeComponentes } from './ui/componentes/sonidos';
+import { activarSonidoAlInteractuar, reproducir } from './ui/sonido';
 
 /** Cada cuánto comprueba el juego si se ha publicado una versión nueva. */
 const MINUTOS_REFRESCO = 5;
@@ -75,6 +76,8 @@ const canal = abrirCanal((mensaje) => mostrarAvisoVersion(mensaje.version));
 
 // El sonido se pone en marcha con el primer clic o la primera tecla (GDD 7.1).
 activarSonidoAlInteractuar();
+// Ventanas, paneles, pestañas y menús suenan con los ajustes de sonido del jugador.
+sonidosDeComponentes(reproducir);
 
 vigilarRoadmap({
   url: './roadmap.json',

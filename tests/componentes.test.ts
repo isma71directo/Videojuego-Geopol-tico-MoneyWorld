@@ -23,6 +23,10 @@ import {
   posicionInformacion,
 } from '../src/ui/componentes/escalas';
 import { crearTabla } from '../src/ui/componentes/tabla';
+import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
+import { DURACIONES, FOTOGRAMAS, alReves } from '../src/ui/componentes/animacion';
+import { EFECTOS, type Efecto } from '../src/av/sonido';
+import textos from '../src/i18n/es.json';
 import { crearDeslizador } from '../src/ui/componentes/deslizador';
 import { conInformacion, ESPERA_INFORMACION_MS } from '../src/ui/componentes/info';
 import { abrirMenuContextual, menuAbierto, SEPARADOR } from '../src/ui/componentes/menu';
@@ -150,7 +154,7 @@ describe('ventanas flotantes (tarea f7-t1)', () => {
     expect(otra.posicion()).toEqual({ x: 400, y: 300 });
   });
 
-  it('con el teclado: Alt + flechas la mueven y Escape la cierra sin llegar al mapa', () => {
+  it('con el teclado: Alt + flechas la mueven y Escape la cierra sin llegar al mapa', async () => {
     const alCerrar = vi.fn();
     const ventana = abrirVentana({ id: 'teclado', titulo: 'T', contenido: [], alCerrar });
     ventana.mover(300, 200);
@@ -168,7 +172,10 @@ describe('ventanas flotantes (tarea f7-t1)', () => {
     expect(ventana.abierta).toBe(false);
     expect(alCerrar).toHaveBeenCalledOnce();
     expect(enDocumento).not.toHaveBeenCalled();
-    expect(ventana.elemento.isConnected).toBe(false);
+    // Se va con una animación corta: ya no cuenta ni recibe clics, y luego desaparece.
+    expect(ventanasAbiertas()).not.toContain(ventana);
+    expect(ventana.elemento.inert).toBe(true);
+    await vi.waitFor(() => expect(ventana.elemento.isConnected).toBe(false));
   });
 
   it('se cierra con su botón', () => {
@@ -603,5 +610,114 @@ describe('gráficos básicos (tarea f7-t2)', () => {
     expect(mini.querySelector('path')!.getAttribute('d')!.split('L')).toHaveLength(4);
     expect(mini.querySelectorAll('circle')).toHaveLength(1);
     expect(mini.getAttribute('aria-label')).toBe('Tendencia');
+  });
+});
+
+describe('animaciones y sonidos de navegación (tarea f7-t4)', () => {
+  let sonidos: Efecto[] = [];
+  beforeEach(() => {
+    sonidos = [];
+    sonidosDeComponentes((efecto) => sonidos.push(efecto));
+  });
+  afterEach(() => {
+    sonidosDeComponentes(null);
+    cerrarVentanas();
+    panelEn('izquierda')?.cerrar(true);
+    panelEn('derecha')?.cerrar(true);
+    menuAbierto()?.cerrar(false, true);
+    vi.unstubAllGlobals();
+  });
+
+  it('duraciones cortas y cierres que son la apertura al revés', () => {
+    for (const [nombre, ms] of Object.entries(DURACIONES)) {
+      expect(ms, nombre).toBeGreaterThan(0);
+      expect(ms, nombre).toBeLessThanOrEqual(250);
+    }
+    expect(DURACIONES.cerrarVentana).toBeLessThan(DURACIONES.abrirVentana);
+    expect(DURACIONES.cerrarPanel).toBeLessThan(DURACIONES.abrirPanel);
+    expect(alReves(FOTOGRAMAS.ventana)).toEqual([...FOTOGRAMAS.ventana].reverse());
+    // Los paneles entran desde su propio lado.
+    expect(FOTOGRAMAS.panel('izquierda')[0]!.translate).toBe('-28px 0');
+    expect(FOTOGRAMAS.panel('derecha')[0]!.translate).toBe('28px 0');
+  });
+
+  it('cada efecto nuevo tiene nombre en la galería', () => {
+    const nombres = textos.galeria.sonidos as Record<string, string>;
+    for (const efecto of Object.keys(EFECTOS)) expect(nombres[efecto], efecto).toBeTruthy();
+  });
+
+  it('las ventanas suenan al abrirse y al cerrarse, pero no al salir de una pantalla', () => {
+    const ventana = abrirVentana({ id: 'sonora', titulo: 'S', contenido: [] });
+    // Traer delante una que ya está abierta no suena.
+    abrirVentana({ id: 'sonora', titulo: 'S', contenido: [] });
+    (ventana.elemento.querySelector('.ventana__cerrar') as HTMLButtonElement).click();
+    expect(sonidos).toEqual(['abrirVentana', 'cerrar']);
+    const otra = abrirVentana({ id: 'otra', titulo: 'O', contenido: [] });
+    sonidos = [];
+    cerrarVentanas();
+    expect(sonidos).toEqual([]);
+    expect(otra.elemento.isConnected).toBe(false);
+  });
+
+  it('reabrir enseguida una ventana que se está yendo no repite su identificador', () => {
+    const primera = abrirVentana({ id: 'repetida', titulo: 'R', contenido: [] });
+    primera.cerrar();
+    const segunda = abrirVentana({ id: 'repetida', titulo: 'R', contenido: [] });
+    expect(segunda).not.toBe(primera);
+    expect(document.querySelectorAll('#ventana-titulo-repetida')).toHaveLength(1);
+    expect(document.querySelectorAll('[data-ventana="repetida"]')).toHaveLength(1);
+  });
+
+  it('un panel nuevo sustituye al del mismo lado sin sonar a cierre', () => {
+    const primero = abrirPanel({ titulo: 'A', lado: 'izquierda', contenido: [] });
+    abrirPanel({ titulo: 'B', lado: 'izquierda', contenido: [] });
+    expect(primero.elemento.isConnected).toBe(false);
+    expect(sonidos).toEqual(['abrirPanel', 'abrirPanel']);
+    panelEn('izquierda')!.cerrar();
+    expect(sonidos.at(-1)).toBe('cerrar');
+  });
+
+  it('las pestañas suenan solo cuando las cambia el jugador y la raya sigue a la activa', () => {
+    const grupo = crearPestanas(
+      [
+        { id: 'a', titulo: 'A', contenido: () => ['a'] },
+        { id: 'b', titulo: 'B', contenido: () => ['b'] },
+      ],
+      { etiqueta: 'Prueba' },
+    );
+    document.body.appendChild(grupo.elemento);
+    const raya = grupo.elemento.querySelector('.pestanas__raya')!;
+    expect(raya.getAttribute('aria-hidden')).toBe('true');
+    const [, segunda] = grupo.elemento.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+    segunda!.click();
+    expect(sonidos).toEqual(['pestana']);
+    grupo.seleccionar('a');
+    expect(sonidos).toEqual(['pestana']);
+    // Volver a pulsar la activa no suena.
+    grupo.elemento.querySelector<HTMLButtonElement>('[role="tab"]')!.click();
+    expect(sonidos).toEqual(['pestana']);
+    grupo.elemento.remove();
+  });
+
+  it('el menú suena al abrirse y otro menú lo sustituye en el acto', () => {
+    const opciones = [{ etiqueta: 'Uno', accion: () => undefined }];
+    const primero = abrirMenuContextual({ etiqueta: 'M', opciones, x: 10, y: 10 });
+    abrirMenuContextual({ etiqueta: 'M', opciones, x: 20, y: 20 });
+    expect(primero.elemento.isConnected).toBe(false);
+    expect(sonidos).toEqual(['menu', 'menu']);
+    expect(document.querySelectorAll('.menu:not(.retirandose)')).toHaveLength(1);
+  });
+
+  it('con «reducir movimiento», lo que se cierra desaparece al instante', () => {
+    vi.stubGlobal('matchMedia', (consulta: string) => ({
+      matches: consulta.includes('reduce'),
+      media: consulta,
+    }));
+    const ventana = abrirVentana({ id: 'quieta', titulo: 'Q', contenido: [] });
+    ventana.cerrar();
+    expect(ventana.elemento.isConnected).toBe(false);
+    const panel = abrirPanel({ titulo: 'P', lado: 'derecha', contenido: [] });
+    panel.cerrar();
+    expect(panel.elemento.isConnected).toBe(false);
   });
 });

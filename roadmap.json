@@ -5,8 +5,8 @@
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-t3 hecha: la galería tiene un muestrario de los componentes (ventanas de España y Japón con pestañas, paneles a cada lado, tabla de los 20 países más poblados, deslizador de ejemplo, menú contextual, información de indicadores y gráficos de barras, líneas, barra de partes y minigráfico; los datos inventados van marcados). Las pestañas se compactan en los paneles estrechos.",
-    "siguientePaso": "f7-t4: animaciones de ventanas, hojas y pestañas y sonidos de navegación; después, cerrar la Fase 7 (v0.8.0).",
+    "resumen": "f7-t4 hecha: ventanas, paneles y menús aparecen y se van con una animación corta (sin animación con «reducir movimiento»); al cambiar de pestaña la raya se desliza y el contenido entra desde el lado; sonidos nuevos al abrir y cerrar ventanas y paneles, al cambiar de pestaña y al abrir el menú (nunca al pasar el ratón).",
+    "siguientePaso": "Cerrar la Fase 7 (v0.8.0) y abrir su PR.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.7.1: colores del mapa político con el mundo entero a la vista"
     ]
@@ -522,13 +522,13 @@
           "titulo": "Muestrario de los componentes en la galería audiovisual",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b006f77"
         },
         {
           "id": "f7-t4",
           "titulo": "Audiovisual: animaciones de ventanas, hojas y pestañas y sonidos de navegación",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-16",
           "enlace": ""
         }
       ]

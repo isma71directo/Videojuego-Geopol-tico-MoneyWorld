@@ -2,10 +2,13 @@
  * Paneles laterales (tarea f7-t1): una columna pegada a la izquierda o a la derecha de la
  * pantalla, con título, botón de cerrar y contenido que se desplaza. En cada lado hay como
  * mucho un panel: abrir otro en el mismo lado sustituye al anterior. Escape lo cierra.
+ * Entra deslizándose desde su lado y suena al abrirse y al cerrarse (tarea f7-t4).
  */
 import { icono as crearIcono, type NombreIcono } from '../../av/iconos';
 import { t } from '../../i18n';
 import { el, type Hijo } from '../dom';
+import { alReves, animar, DURACIONES, FOTOGRAMAS, retirar } from './animacion';
+import { sonar } from './sonidos';
 import '../estilos/componentes.css';
 
 export type Lado = 'izquierda' | 'derecha';
@@ -25,7 +28,8 @@ export interface Panel {
   readonly cuerpo: HTMLElement;
   readonly lado: Lado;
   readonly abierto: boolean;
-  cerrar(): void;
+  /** Cierra el panel; con `alInstante`, sin animación ni sonido. */
+  cerrar(alInstante?: boolean): void;
 }
 
 const porLado = new Map<Lado, Panel>();
@@ -40,7 +44,9 @@ export function abrirPanel(
   opciones: OpcionesPanel,
   contenedor: HTMLElement = document.body,
 ): Panel {
-  porLado.get(opciones.lado)?.cerrar();
+  // El nuevo sustituye al anterior sin que este se vaya animado (sería un cierre y una
+  // apertura seguidos).
+  porLado.get(opciones.lado)?.cerrar(true);
   contador += 1;
   const idTitulo = `panel-titulo-${contador}`;
   const cerrarBoton = el(
@@ -79,11 +85,13 @@ export function abrirPanel(
     get abierto() {
       return abierto;
     },
-    cerrar() {
+    cerrar(alInstante = false) {
       if (!abierto) return;
       abierto = false;
       if (porLado.get(opciones.lado) === panel) porLado.delete(opciones.lado);
-      elemento.remove();
+      const fotogramas = alReves(FOTOGRAMAS.panel(opciones.lado));
+      retirar(elemento, fotogramas, DURACIONES.cerrarPanel, alInstante);
+      if (!alInstante) sonar('cerrar');
       opciones.alCerrar?.();
     },
   };
@@ -97,5 +105,7 @@ export function abrirPanel(
   porLado.set(opciones.lado, panel);
   contenedor.appendChild(elemento);
   elemento.focus({ preventScroll: true });
+  void animar(elemento, FOTOGRAMAS.panel(opciones.lado), DURACIONES.abrirPanel);
+  sonar('abrirPanel');
   return panel;
 }

@@ -5,10 +5,13 @@
  *
  * Teclado: flechas arriba y abajo, Inicio y Fin para moverse; Intro o espacio para elegir;
  * Escape o Tab para cerrar (el foco vuelve a donde estaba). Un clic fuera también lo cierra.
+ * Se despliega con una animación corta y suena al abrirse (tarea f7-t4).
  */
 import { icono as crearIcono, type NombreIcono } from '../../av/iconos';
 import { el } from '../dom';
+import { alReves, animar, DURACIONES, FOTOGRAMAS, retirar } from './animacion';
 import { indiceConTecla, limitarVentana } from './geometria';
+import { sonar } from './sonidos';
 import '../estilos/componentes.css';
 
 export interface OpcionMenu {
@@ -36,7 +39,8 @@ export interface OpcionesMenu {
 export interface MenuContextual {
   readonly elemento: HTMLElement;
   readonly abierto: boolean;
-  cerrar(devolverFoco?: boolean): void;
+  /** Cierra el menú; con `alInstante`, sin animación (cuando lo sustituye otro). */
+  cerrar(devolverFoco?: boolean, alInstante?: boolean): void;
 }
 
 let actual: MenuContextual | null = null;
@@ -46,7 +50,7 @@ export function menuAbierto(): MenuContextual | null {
 }
 
 export function abrirMenuContextual(opciones: OpcionesMenu): MenuContextual {
-  actual?.cerrar(false);
+  actual?.cerrar(false, true);
   const anterior = document.activeElement as HTMLElement | null;
   const elementos: HTMLButtonElement[] = [];
   const hijos = opciones.opciones.map((opcion) => {
@@ -88,12 +92,12 @@ export function abrirMenuContextual(opciones: OpcionesMenu): MenuContextual {
     get abierto() {
       return abierto;
     },
-    cerrar(devolverFoco = true) {
+    cerrar(devolverFoco = true, alInstante = false) {
       if (!abierto) return;
       abierto = false;
       document.removeEventListener('pointerdown', fuera, true);
       window.removeEventListener('blur', alPerderVentana);
-      elemento.remove();
+      retirar(elemento, alReves(FOTOGRAMAS.menu), DURACIONES.cerrarMenu, alInstante);
       if (actual === menu) actual = null;
       if (devolverFoco) anterior?.focus?.({ preventScroll: true });
       opciones.alCerrar?.();
@@ -141,5 +145,7 @@ export function abrirMenuContextual(opciones: OpcionesMenu): MenuContextual {
   window.addEventListener('blur', alPerderVentana);
   (elementos.find((b) => b.getAttribute('aria-disabled') !== 'true') ?? elemento).focus();
   actual = menu;
+  void animar(elemento, FOTOGRAMAS.menu, DURACIONES.abrirMenu);
+  sonar('menu');
   return menu;
 }

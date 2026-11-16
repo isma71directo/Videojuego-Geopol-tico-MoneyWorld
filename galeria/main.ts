@@ -16,6 +16,7 @@ import type { ConjuntoPaises, PaisDatos } from '../src/datos/paises';
 import { vistaPreviaMapa, type TopologiaMapa } from '../src/map/vista-previa';
 import { t } from '../src/i18n';
 import { el, reemplazar, type Hijo } from '../src/ui/dom';
+import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { muestrario } from './muestrario';
 
 /** Ruta desde /galeria/ hasta la raíz del juego. */
@@ -64,6 +65,11 @@ function iconos(): HTMLElement {
 }
 
 const sonido = new MotorSonido({ silenciado: false, volumenEfectos: 0.8, volumenMusica: 0.5 });
+// Los componentes del muestrario suenan al usarlos (siempre son acciones del jugador).
+sonidosDeComponentes((efecto) => {
+  sonido.activar();
+  sonido.reproducir(efecto);
+});
 
 function sonidos(): HTMLElement {
   return seccion(

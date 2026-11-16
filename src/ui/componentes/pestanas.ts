@@ -3,10 +3,16 @@
  * flechas izquierda y derecha cambian de pestaña (dando la vuelta) e Inicio y Fin van a la
  * primera y a la última. Solo la pestaña activa está en el orden de tabulación, y el contenido
  * de cada una se crea la primera vez que se abre.
+ *
+ * Al cambiar de pestaña (tarea f7-t4), la raya de la activa se desliza a la nueva, el
+ * contenido entra desde el lado hacia el que se va y suena un clic suave. Los cambios hechos
+ * desde el código no suenan.
  */
 import { icono as crearIcono, type NombreIcono } from '../../av/iconos';
 import { anadir, el, type Hijo } from '../dom';
+import { animar, DURACIONES, FOTOGRAMAS } from './animacion';
 import { indiceConTecla } from './geometria';
+import { sonar } from './sonidos';
 import '../estilos/componentes.css';
 
 export interface Pestana {
@@ -65,9 +71,33 @@ export function crearPestanas(
   );
   const elemento = el('div', { class: 'pestanas' }, lista, ...paneles);
 
+  // Raya bajo la pestaña activa: se desliza de una a otra. Hasta que se puede medir (la lista
+  // aún no está en la página), la activa se marca con su propio borde.
+  const raya = el('span', { class: 'pestanas__raya', 'aria-hidden': 'true' });
+  lista.appendChild(raya);
+  const colocarRaya = (deslizar: boolean): void => {
+    const boton = botones[activa];
+    if (!boton?.offsetWidth) return;
+    const primera = !lista.classList.contains('pestanas__lista--raya');
+    if (primera || !deslizar) raya.style.transition = 'none';
+    raya.style.width = `${boton.offsetWidth}px`;
+    raya.style.transform = `translateX(${boton.offsetLeft}px)`;
+    lista.classList.add('pestanas__lista--raya');
+    if (primera || !deslizar) {
+      void raya.offsetWidth; // aplica la posición antes de devolver la transición
+      raya.style.removeProperty('transition');
+    }
+  };
+  // Las pestañas cambian de ancho al entrar en la página, al cargar la letra o al compactarse.
+  if (typeof ResizeObserver === 'function') {
+    const observador = new ResizeObserver(() => colocarRaya(false));
+    for (const boton of botones) observador.observe(boton);
+  }
+
   let activa = -1;
-  const seleccionarIndice = (i: number, conFoco: boolean): void => {
+  const seleccionarIndice = (i: number, conFoco: boolean, porJugador = false): void => {
     if (i < 0 || i >= pestanas.length) return;
+    const anterior = activa;
     if (!creadas.has(i)) {
       anadir(paneles[i]!, ...pestanas[i]!.contenido());
       creadas.add(i);
@@ -80,16 +110,21 @@ export function crearPestanas(
     });
     activa = i;
     if (conFoco) botones[i]!.focus();
-    if (cambia) opciones.alCambiar?.(pestanas[i]!.id);
+    colocarRaya(true);
+    if (cambia) {
+      void animar(paneles[i]!, FOTOGRAMAS.pestana(i > anterior ? 1 : -1), DURACIONES.pestana);
+      if (porJugador) sonar('pestana');
+      opciones.alCambiar?.(pestanas[i]!.id);
+    }
   };
 
   botones.forEach((boton, i) => {
-    boton.addEventListener('click', () => seleccionarIndice(i, false));
+    boton.addEventListener('click', () => seleccionarIndice(i, false, true));
     boton.addEventListener('keydown', (evento) => {
       const destino = indiceConTecla(i, evento.key, pestanas.length);
       if (destino === null) return;
       evento.preventDefault();
-      seleccionarIndice(destino, true);
+      seleccionarIndice(destino, true, true);
     });
   });
 

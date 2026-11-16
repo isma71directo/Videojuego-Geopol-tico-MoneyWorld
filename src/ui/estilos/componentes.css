@@ -136,10 +136,31 @@
 }
 
 .pestanas__lista {
+  position: relative;
   display: flex;
   gap: 2px;
   overflow-x: auto;
   border-bottom: 1px solid var(--borde);
+}
+
+/* Raya de la pestaña activa (tarea f7-t4): se desliza de una pestaña a otra. */
+.pestanas__raya {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--acento);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pestanas__lista--raya .pestanas__raya {
+  opacity: 1;
 }
 
 .pestanas__pestana {
@@ -174,6 +195,11 @@
 
 .pestanas__pestana:focus-visible {
   outline-offset: -3px;
+}
+
+/* Con la raya colocada, la pestaña activa ya no necesita su propio borde. */
+.pestanas__lista--raya .pestanas__pestana[aria-selected='true'] {
+  border-bottom-color: transparent;
 }
 
 /* Va detrás de las reglas anteriores para poder sustituirlas. */
@@ -381,6 +407,17 @@
   display: none;
 }
 
+/* Aparece con un fundido corto cada vez que se muestra (tarea f7-t4). */
+.info:not([hidden]) {
+  animation: info-aparece 120ms ease-out;
+}
+
+@keyframes info-aparece {
+  from {
+    opacity: 0;
+  }
+}
+
 /* ── Menú contextual ──────────────────────────────────────────────────────────── */
 .menu {
   position: fixed;
@@ -390,6 +427,7 @@
   display: flex;
   flex-direction: column;
   min-width: 220px;
+  transform-origin: top left;
   padding: 5px;
   border: 1px solid var(--borde);
   border-radius: var(--radio-pequeno);
