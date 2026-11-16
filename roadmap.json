@@ -1,16 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.7.0",
-  "actualizado": "2026-11-12T17:09:51Z",
-  "faseActiva": "fase-6",
+  "actualizado": "2026-11-16T07:02:44Z",
+  "faseActiva": "fase-7",
   "ultimaSesion": {
-    "fecha": "2026-11-12",
-    "resumen": "Fase 6 completa en su rama y versión 0.7.0: capas del mapa con leyenda en un desplegable (tecla C), densidad con la superficie real de la FAO, capas por región, terreno de Natural Earth II con el mar profundo y efecto de volumen sin 3D.",
-    "siguientePaso": "Cuando el jugador confirme la prueba en el PC, marcar la Fase 6 como hecha y presentar el plan de la Fase 7 (componentes de interfaz).",
-    "pendienteDelJugador": [
-      "Fusionar el PR de la Fase 6 (v0.7.0)",
-      "Prueba en el PC: abrir el desplegable de capas con un clic y con la tecla C, cambiar de capa y leer la leyenda; acercarse a España con la capa de riqueza y ver sus comunidades coloreadas; ver el terreno (bosques, desiertos, hielo) bajo los países, el mar más oscuro en las zonas profundas y la sombra al seleccionar un país; probar el deslizador «Intensidad del terreno» y la casilla «Brillo animado del agua» en Ajustes"
-    ]
+    "fecha": "2026-11-16",
+    "resumen": "Fase 6 cerrada: el jugador ha probado la v0.7.0 y la da por buena. Pide de nuevo más colores en el mapa político, porque con el mundo entero a la vista se nota la paleta corta (ajuste f6-a1, v0.7.1).",
+    "siguientePaso": "Hacer el ajuste f6-a1 (paleta mucho más amplia y reparto por parecido de color, no solo por color idéntico) y publicar la v0.7.1; después, presentar el plan de la Fase 7 (componentes de interfaz).",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -450,7 +447,7 @@
       "dependeDe": ["fase-5"],
       "hechoCuando": "Las capas funcionan con su leyenda",
       "pruebaJugador": "Cambiar de capa con el desplegable (clic y tecla C) y leer la leyenda; acercarse con la capa de riqueza y ver las regiones; ver el relieve con los colores del terreno, el mar más oscuro en las zonas profundas y el efecto de volumen al seleccionar un país.",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f6-t1",
@@ -479,6 +476,17 @@
           "estado": "hecha",
           "fecha": "2026-11-12",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/0ee5f0a"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f6-a1",
+          "titulo": "Más colores en el mapa político: muchos más tonos para los países y que no se note la repetición al ver el mundo entero (además de no repetir entre vecinos ni en el entorno)",
+          "version": "0.7.1",
+          "origen": "Mensaje del jugador tras probar la v0.7.0",
+          "estado": "en-curso",
+          "fecha": "2026-11-16",
+          "enlace": ""
         }
       ]
     },
