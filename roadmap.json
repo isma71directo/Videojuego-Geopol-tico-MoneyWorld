@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.10.0",
-  "actualizado": "2026-11-16T22:54:41Z",
+  "actualizado": "2026-11-16T22:59:59Z",
   "faseActiva": "fase-10",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f10-t3 hecha: la partida tiene barra superior a todo el ancho con «Menú», el país del jugador (bandera y nombre; un clic lleva el mapa hasta él), la fecha (1 de enero de 2010), la tesorería y la popularidad con un medidor de color, cada dato con su explicación al pasar el ratón; las herramientas del mapa (sonido, capas y buscador) pasan a la derecha. El país del jugador lleva siempre un contorno azul claro en el mapa. Salir pide confirmación (ventana nueva reutilizable, también en la galería), tanto con «Menú» como con el botón «atrás» del navegador, y recargar la página con una partida en marcha avisa, porque aún no se guarda (Fase 14).",
-    "siguientePaso": "f10-t4: animación de la elección de país y transición al comienzo de la partida (con sonido); después, cerrar la Fase 10 como v0.11.0 y abrir su PR.",
+    "resumen": "f10-t4 hecha: al elegir un país, su resumen entra con una animación corta y la bandera «salta». Al pulsar «Empezar», una transición cubre la pantalla con la bandera del país (con un brillo que la recorre), «Al frente del Gobierno», su nombre y la fecha, y suena una fanfarria corta nueva; debajo se abre la partida y el mapa vuela al país; se salta con un clic o una tecla y, con «reducir movimiento», no se muestra. La transición y la ventana de confirmación están también en la galería.",
+    "siguientePaso": "Cerrar la Fase 10 como v0.11.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -710,12 +710,12 @@
           "titulo": "Pantalla principal de partida: barra superior con la fecha (1 de enero de 2010), tesorería y popularidad, país del jugador destacado y salida al menú con confirmación",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8af36c5"
         },
         {
           "id": "f10-t4",
           "titulo": "Audiovisual: animación de la elección de país y transición al comienzo de la partida",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         }

@@ -1057,6 +1057,11 @@
         "texto": "La partida aún no se puede guardar (llega en la Fase 14): si sales, se pierde y tendrás que empezar otra.",
         "aceptar": "Salir al menú",
         "cancelar": "Seguir jugando"
+      },
+      "transicion": {
+        "etiqueta": "Empieza la partida con {pais}",
+        "rol": "Al frente del Gobierno",
+        "saltar": "Pulsa cualquier tecla para seguir"
       }
     }
   },
@@ -1234,7 +1239,8 @@
       "cerrar": "Cerrar una ventana o un panel",
       "pestana": "Cambiar de pestaña",
       "menu": "Abrir el menú contextual",
-      "resaltar": "Llegar a un resultado del buscador"
+      "resaltar": "Llegar a un resultado del buscador",
+      "comenzar": "Empezar una partida"
     },
     "paleta": {
       "titulo": "Colores de referencia",
@@ -1252,12 +1258,13 @@
     "componentes": {
       "ventanas": {
         "titulo": "Componentes · Ventanas, paneles y pestañas",
-        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin. Al abrir, cerrar o cambiar de pestaña hay una animación corta y un sonido (nunca al pasar el ratón); con «reducir movimiento» activado en el sistema, sin animación.",
+        "nota": "Las ventanas se mueven arrastrando el título (o con Alt + flechas), recuerdan su sitio y pasan delante al tocarlas; Escape las cierra. Puede haber varias abiertas. Las pestañas se recorren con las flechas, Inicio y Fin. Al abrir, cerrar o cambiar de pestaña hay una animación corta y un sonido (nunca al pasar el ratón); con «reducir movimiento» activado en el sistema, sin animación. El último botón enseña la transición al empezar una partida (bandera, país y fecha, con su fanfarria); se salta con un clic o una tecla.",
         "abrir": "Ventana de {pais}",
         "panelIzquierda": "Panel a la izquierda",
         "panelDerecha": "Panel a la derecha",
         "panelTitulo": "Panel lateral",
-        "panelTexto": "Los paneles van pegados a un lado; abrir otro en el mismo lado sustituye al anterior. Escape o la cruz lo cierran."
+        "panelTexto": "Los paneles van pegados a un lado; abrir otro en el mismo lado sustituye al anterior. Escape o la cruz lo cierran.",
+        "transicion": "Empezar una partida con {pais}"
       },
       "pestanas": {
         "etiqueta": "Datos de {pais}",

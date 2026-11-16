@@ -32,6 +32,8 @@ import {
 } from '../sim/partida';
 import { popularidadInicial, tesoreriaInicial } from '../sim/valores-iniciales';
 import { normalizarBusqueda } from './busqueda';
+import { animar, DURACIONES, FOTOGRAMAS } from './componentes/animacion';
+import { transicionAPartida } from './transicion-partida';
 import { el, reemplazar } from './dom';
 import { crearMapaDelJuego } from './mapa-del-juego';
 import { reproducir } from './sonido';
@@ -109,6 +111,7 @@ export function abrirPantallaNuevaPartida(
   let dificultad: Dificultad = OPCIONES_POR_DEFECTO.dificultad;
   let eventos = OPCIONES_POR_DEFECTO.eventosHistoricos;
   let semilla: number | null = semillaAlAzar();
+  let empezada = false;
 
   // ── Panel izquierdo: la lista ─────────────────────────────────────────────────────────────
   const volver = el(
@@ -237,14 +240,21 @@ export function abrirPantallaNuevaPartida(
     type: 'button',
   });
   empezar.addEventListener('click', () => {
-    if (!conjunto || !elegido || semilla === null) return;
+    if (!conjunto || !elegido || semilla === null || empezada) return;
     const partida = crearPartida(
       { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla },
       conjunto.paises,
       gobiernos?.paises ?? {},
     );
-    reproducir('abrirVentana');
-    opciones.alEmpezar(partida);
+    // Una sola partida aunque se pulse dos veces.
+    empezada = true;
+    empezar.disabled = true;
+    // Transición con la bandera y la fecha (tarea f10-t4); la partida se abre debajo.
+    transicionAPartida({
+      pais: { id: elegido, nombre: conjunto.paises[elegido]!.nombre },
+      fecha: partida.fecha,
+      alCubrir: () => opciones.alEmpezar(partida),
+    });
   });
   const panelEleccion = el(
     'aside',
@@ -324,7 +334,7 @@ export function abrirPantallaNuevaPartida(
     empezar.textContent = pais
       ? t('juego.nuevaPartida.empezar', { pais: pais.nombre })
       : t('juego.nuevaPartida.empezarSin');
-    empezar.disabled = !pais || semilla === null;
+    empezar.disabled = !pais || semilla === null || empezada;
   }
 
   function retratoLider(pais: PaisDatos): HTMLElement | null {
@@ -536,7 +546,23 @@ export function abrirPantallaNuevaPartida(
       if (volar) mapa.irA({ tipo: 'pais', id });
       else mapa.seleccionar(id);
     }
-    if (cambia) reproducir('seleccionar');
+    if (cambia) {
+      reproducir('seleccionar');
+      // El país elegido entra con una animación corta y su bandera «salta» (tarea f10-t4).
+      void animar(resumen, FOTOGRAMAS.pestana(1), DURACIONES.pestana);
+      const bandera = resumen.querySelector('.nueva-partida__bandera');
+      if (bandera) {
+        void animar(
+          bandera,
+          [
+            { opacity: 0, scale: '0.5', rotate: '-6deg' },
+            { opacity: 1, scale: '1.12', rotate: '2deg', offset: 0.6 },
+            { opacity: 1, scale: '1', rotate: '0deg' },
+          ],
+          320,
+        );
+      }
+    }
   }
 
   // Desde el mapa: un país, o el país de la región o la ciudad que se toque.

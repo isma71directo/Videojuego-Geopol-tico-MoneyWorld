@@ -28,7 +28,8 @@ export type Efecto =
   | 'cerrar'
   | 'pestana'
   | 'menu'
-  | 'resaltar';
+  | 'resaltar'
+  | 'comenzar';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -139,6 +140,14 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'sine', inicio: 0, duracion: 0.1, frecuencia: 784, volumen: 0.12 },
     { forma: 'sine', inicio: 0.07, duracion: 0.11, frecuencia: 1046.5, volumen: 0.11 },
     { forma: 'triangle', inicio: 0.14, duracion: 0.15, frecuencia: 1568, volumen: 0.08 },
+  ],
+  // Fanfarria corta al empezar una partida (tarea f10-t4): sol, do, mi y un acorde de sol.
+  comenzar: [
+    { forma: 'triangle', inicio: 0, duracion: 0.1, frecuencia: 392, volumen: 0.14 },
+    { forma: 'triangle', inicio: 0.06, duracion: 0.1, frecuencia: 523.25, volumen: 0.14 },
+    { forma: 'triangle', inicio: 0.12, duracion: 0.1, frecuencia: 659.3, volumen: 0.13 },
+    { forma: 'sine', inicio: 0.17, duracion: 0.12, frecuencia: 784, volumen: 0.13 },
+    { forma: 'sine', inicio: 0.17, duracion: 0.12, frecuencia: 392, volumen: 0.07 },
   ],
 };
 

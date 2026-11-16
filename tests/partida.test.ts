@@ -20,6 +20,7 @@ import {
   filtrarPaises,
   ordenarPaises,
 } from '../src/ui/nueva-partida';
+import { TIEMPOS_TRANSICION } from '../src/ui/transicion-partida';
 
 const leer = <T>(ruta: string): T => JSON.parse(readFileSync(resolve(ruta), 'utf8')) as T;
 const paises = leer<ConjuntoPaises>('public/data/paises-2010.json');
@@ -163,7 +164,20 @@ describe('pantalla «Nueva partida» (tarea f10-t1)', () => {
     const semilla = document.querySelector<HTMLInputElement>('.nueva-partida__semilla')!;
     semilla.value = '2010';
     semilla.dispatchEvent(new Event('input'));
+    // Al empezar, la transición (tarea f10-t4) cubre la pantalla y la partida se abre debajo.
+    vi.useFakeTimers();
     boton().click();
+    expect(boton().disabled).toBe(true);
+    const transicion = document.querySelector<HTMLElement>('.transicion')!;
+    expect(transicion.textContent).toContain('España');
+    expect(transicion.textContent).toContain('1 de enero de 2010');
+    expect(alEmpezar).not.toHaveBeenCalled();
+    boton().click();
+    vi.advanceTimersByTime(TIEMPOS_TRANSICION.cubrir);
+    expect(alEmpezar).toHaveBeenCalledOnce();
+    vi.advanceTimersByTime(TIEMPOS_TRANSICION.mantener + TIEMPOS_TRANSICION.descubrir + 200);
+    vi.useRealTimers();
+    expect(document.querySelector('.transicion:not(.retirandose)')).toBeNull();
     expect(alEmpezar).toHaveBeenCalledWith(
       expect.objectContaining({
         semilla: 2010,

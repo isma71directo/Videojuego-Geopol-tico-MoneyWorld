@@ -17,6 +17,7 @@ import {
 import { conInformacion } from '../src/ui/componentes/info';
 import { abrirMenuContextual, SEPARADOR } from '../src/ui/componentes/menu';
 import { pedirConfirmacion } from '../src/ui/componentes/confirmacion';
+import { transicionAPartida } from '../src/ui/transicion-partida';
 import { abrirPanel } from '../src/ui/componentes/panel';
 import { crearPestanas } from '../src/ui/componentes/pestanas';
 import { crearTabla } from '../src/ui/componentes/tabla';
@@ -156,6 +157,14 @@ function ventanasYPaneles(conjunto: ConjuntoPaises, seccion: Seccion): HTMLEleme
           lado: 'derecha',
           icono: 'politica',
           contenido: [pestanasDePais(espana, conjunto)],
+        }),
+      ),
+      // Transición al empezar una partida (tarea f10-t4).
+      boton(tx('ventanas.transicion', { pais: japon.nombre }), () =>
+        transicionAPartida({
+          pais: { id: japon.id, nombre: japon.nombre },
+          fecha: '2010-01-01',
+          alCubrir: () => undefined,
         }),
       ),
     ),
