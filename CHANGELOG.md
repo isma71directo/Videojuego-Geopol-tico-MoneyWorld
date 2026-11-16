@@ -7,6 +7,44 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.10.0 - 2026-11-16
+
+Fase 9: buscador y ficha de región.
+
+### Añadido
+
+- **Buscador** (decisión del jugador: lupa y ventana en el centro):
+  - Se abre con la lupa de arriba o con la tecla B.
+  - Encuentra los 223 países (también por su nombre en inglés o su código), unas 2.700 regiones y
+    unas 4.200 ciudades, con y sin tildes, por cualquier palabra, con varias palabras o con una
+    errata.
+  - Resalta lo que coincide y dice de qué país es cada resultado y cuántos habitantes tiene.
+  - Se maneja con las flechas, Intro y Esc, o con el ratón.
+  - Al elegir, la cámara viaja hasta el resultado (alejándose a mitad de camino si está lejos) y
+    abre su ficha.
+- **Ficha de región** con pestañas, como la de país:
+  - **Resumen:** país, capital (o ciudad principal si no es segura), población, PIB, PIB por
+    habitante, superficie, densidad, actividad principal y el sector en el que destaca frente a su
+    país (Texas, la industria).
+  - **Economía:** reparto del valor añadido por sectores y recursos agrupados por tipo, con el
+    número de yacimientos y algunos ejemplos.
+  - **Ciudades:** las principales con su población y sus capitales; un clic lleva el mapa a ellas.
+  - **Fuentes:** de dónde sale cada dato.
+- **Datos de cada región** (`scripts/datos/21-regiones-economia.ts`):
+  - Peso de la agricultura, la industria y los servicios en 2010 (DOSE, 954 regiones); donde no
+    hay, la ficha muestra el del país y lo dice.
+  - Recursos de 994 regiones: 3.139 grandes yacimientos minerales del USGS («Major Mineral
+    Deposits of the World», dominio público) y 5.588 campos de petróleo, 293 de gas y 1.826 minas
+    de carbón de Wikidata activos en 2010. Se descartan los que la fuente sitúa en otro país.
+  - Superficie (Wikidata), capital solo cuando es segura (Natural Earth o Wikidata) y ciudades
+    principales.
+- Índice ligero de las regiones para el buscador (`scripts/datos/22-buscador.ts`).
+- **Audiovisual:**
+  - Al llegar a un resultado, su contorno late tres veces y suena un tintineo.
+  - Iconos de los recursos (uranio, lingote, gema, pico, batería y cristales).
+  - Iconos de la lupa y de las ciudades.
+  - Galería: sección «Recursos de las regiones» y el sonido nuevo.
+
 ## 0.9.1 - 2026-11-16
 
 Ajustes de la Fase 8 pedidos por el jugador al probar la v0.9.0: que ningún retrato parezca ya

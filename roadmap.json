@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.9.1",
-  "actualizado": "2026-11-16T13:37:08Z",
-  "faseActiva": "fase-9",
+  "versionActual": "0.10.0",
+  "actualizado": "2026-11-16T19:12:02Z",
+  "faseActiva": "fase-10",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f9-t4 hecha: al llegar desde el buscador, el contorno del resultado late tres veces (cada vez más suave) y suena un tintineo de tres notas en lugar del sonido de seleccionar; nada se mueve si se pide reducir el movimiento. Iconos nuevos de los recursos (uranio, lingote, gema, pico, batería y cristales; petróleo, gas y carbón ya estaban) sobre el color de su tipo en la ficha de región, y sección «Recursos de las regiones» y sonido nuevo en la galería.",
-    "siguientePaso": "Cerrar la Fase 9 como v0.10.0 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 9 cerrada como v0.10.0: buscador de países, regiones y ciudades (lupa y tecla B), ficha de región con pestañas, actividad económica y recursos de cada región, y resaltado animado del resultado. PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.10.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 10 (nueva partida).",
+    "pendienteDelJugador": [
+      "Probar la v0.10.0 en el PC: abrir el buscador con la lupa o la tecla B, buscar «Cataluña», «Texas», «Lagos» y «Antofagasta» (con y sin tildes) y revisar en sus fichas la actividad económica, los recursos, las ciudades y las fuentes",
+      "Fusionar el PR de la Fase 9"
+    ]
   },
   "etapas": [
     {
@@ -648,7 +651,7 @@
       "dependeDe": ["fase-8"],
       "hechoCuando": "Cualquier país o región se encuentra en pocos clics",
       "pruebaJugador": "Abrir el buscador con la lupa o la tecla B, buscar «Cataluña», «Texas» y «Lagos» (con y sin tildes) y abrir sus fichas: revisar la actividad económica, los recursos, las ciudades y las fuentes de cada región.",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f9-t1",
@@ -676,7 +679,7 @@
           "titulo": "Audiovisual: resaltado animado del resultado en el mapa (la cámara viaja hasta él y su contorno late, con un sonido suave) e iconos de los recursos en la ficha y en la galería",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/a4936d6"
         }
       ]
     },
@@ -4479,6 +4482,16 @@
         "Trajes, corbatas, barbas y gafas mucho más variados, con pañuelo e insignia con el color del país",
         "217 retratos homenaje (120 nuevos), todos con su cara propia",
         "Ningún retrato se parece demasiado a otro: dos personas se diferencian al menos en 5 de 22 rasgos"
+      ]
+    },
+    {
+      "version": "0.10.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Buscador: lupa arriba y tecla B abren una ventana en el centro que encuentra países (también en inglés), regiones y ciudades, con y sin tildes, por cualquier palabra o con una errata; el mapa viaja hasta el resultado y abre su ficha",
+        "Ficha de región con pestañas: Resumen (capital, población, PIB, superficie, densidad, actividad principal y en qué destaca frente a su país), Economía (sectores y recursos), Ciudades y Fuentes",
+        "Datos nuevos de cada región: peso de la agricultura, la industria y los servicios en 2010 (DOSE), recursos (grandes yacimientos del USGS y campos de petróleo y gas y minas de carbón de Wikidata), superficie, capital y ciudades principales",
+        "Al llegar a un resultado, el contorno late tres veces y suena un tintineo; iconos de los recursos en la ficha y en la galería"
       ]
     }
   ]
