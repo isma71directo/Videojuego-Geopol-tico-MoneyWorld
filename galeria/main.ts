@@ -218,7 +218,7 @@ function retratos(gobiernos: ConjuntoGobiernos, conjunto: ConjuntoPaises): HTMLE
   );
   return seccion(
     t('galeria.retratos.titulo', { n: tarjetas.length }),
-    t('galeria.retratos.nota'),
+    t('galeria.retratos.nota', { homenajes: tarjetas.filter((x) => x.homenaje).length }),
     el('ul', { class: 'galeria__retratos' }, ...tarjetas.map((x) => x.elemento)),
   );
 }

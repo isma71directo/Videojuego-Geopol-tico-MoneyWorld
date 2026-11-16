@@ -139,7 +139,8 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
     const lideres = leer<{ lideres: Record<string, { quien: string; rasgos: object }> }>(
       'src/av/config/retratos-lideres.json',
     ).lideres;
-    expect(Object.keys(lideres).length).toBeGreaterThanOrEqual(80);
+    // Más de 170 desde el ajuste f8-a3.
+    expect(Object.keys(lideres).length).toBeGreaterThan(170);
     const conCargo = new Set(
       Object.values(gobiernos.paises).flatMap((g) =>
         [g.estado, jefeGobierno(g)].filter((c) => c !== null).map((c) => c.persona),
@@ -151,8 +152,40 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
       const sexo = (rasgos as { sexo?: string }).sexo;
       if (sexo) expect(sexo, persona).toBe(gobiernos.personas[persona]!.sexo);
       const gafas = (rasgos as { gafas?: string }).gafas;
-      if (gafas) expect(['ninguna', 'finas', 'gruesas', 'redondas', 'sol']).toContain(gafas);
+      if (gafas) {
+        expect([
+          'ninguna',
+          'finas',
+          'gruesas',
+          'redondas',
+          'sol',
+          'pasta',
+          'doradas',
+          'al-aire',
+          'monoculo',
+        ]).toContain(gafas);
+      }
     }
+  });
+
+  it('un homenaje no hereda barba, gafas ni tocado al azar', () => {
+    for (const datos of todosLosCargos()) {
+      const propios = RASGOS_LIDERES[datos.persona];
+      if (!propios) continue;
+      const rasgos = rasgosDe(datos);
+      expect(rasgos.barba, datos.persona).toBe(propios.barba ?? 'ninguna');
+      expect(rasgos.gafas, datos.persona).toBe(propios.gafas ?? 'ninguna');
+      expect(rasgos.tocado, datos.persona).toBe(propios.tocado ?? 'ninguno');
+      expect(Boolean(rasgos.sienes), datos.persona).toBe(Boolean(propios.sienes));
+    }
+    // Zapatero, sin barba ni gafas; Wade, sin gorro.
+    expect(rasgosDe({ ...base, persona: 'Q41395' })).toMatchObject({
+      barba: 'ninguna',
+      gafas: 'ninguna',
+    });
+    expect(rasgosDe({ ...base, pais: 'SEN', region: 'SSF', persona: 'Q106963' }).tocado).toBe(
+      'ninguno',
+    );
   });
 
   it('los jefes de Estado y de Gobierno del G20 y las grandes figuras tienen homenaje', () => {

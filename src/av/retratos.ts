@@ -122,7 +122,9 @@ export type Ropa =
   /** Camisa de flores del Pacífico. */
   | 'camisa-flores'
   /** Camisa larga (kameez) con chaleco. */
-  | 'kameez';
+  | 'kameez'
+  /** Ropa clara con un chal cruzado sobre el hombro. */
+  | 'chal';
 
 export type Tocado =
   | 'ninguno'
@@ -162,7 +164,9 @@ export type Gafas =
   /** Montura dorada fina. */
   | 'doradas'
   /** Sin montura. */
-  | 'al-aire';
+  | 'al-aire'
+  /** Monóculo con cadena. */
+  | 'monoculo';
 
 export type FormaCara = 'ovalada' | 'redonda' | 'cuadrada' | 'afilada' | 'larga';
 export type Ojos = 'normales' | 'almendrados' | 'rasgados' | 'grandes' | 'caidos';
@@ -232,7 +236,7 @@ export interface Rasgos {
   /** Color de la camisa bajo el traje (por defecto, blanca). */
   colorCamisa?: string;
   /** Dibujo de la corbata (por defecto, lisa). */
-  corbata?: 'lisa' | 'rayas' | 'lunares';
+  corbata?: 'lisa' | 'rayas' | 'lunares' | 'pajarita';
   /** Pañuelo en el bolsillo de la chaqueta. */
   panuelo?: boolean;
   /** Insignia en la solapa con el color del país. */
@@ -307,6 +311,9 @@ function motivos(dibujo: (x: number, y: number, i: number) => string, paso = 7):
 
 function corbata(r: Rasgos): string {
   const color = r.colorDetalle;
+  if (r.corbata === 'pajarita') {
+    return `<path d="M45.4 70.6 L50 72.4 L45.4 74.4 Z M54.6 70.6 L50 72.4 L54.6 74.4 Z" fill="${color}"/><circle cx="50" cy="72.4" r="1" fill="${tono(color, 0.8)}"/>`;
+  }
   const base = `<path d="M48.4 71 L51.6 71 L53 86 L50 90 L47 86 Z" fill="${color}"/>`;
   if (r.corbata === 'rayas') {
     return (
@@ -541,6 +548,7 @@ function cuerpo(r: Rasgos, piel: string, fondo: string): string {
       );
     }
     case 'sari':
+    case 'chal':
       return (
         cuello +
         hombros(ropa) +
@@ -1013,6 +1021,9 @@ function gafas(r: Rasgos): string {
   }
   if (r.gafas === 'sol') {
     return '<g fill="#161616" stroke="#0d0d0d" stroke-width="0.9"><rect x="39.4" y="38.6" width="9.4" height="6.2" rx="2.6"/><rect x="51.2" y="38.6" width="9.4" height="6.2" rx="2.6"/><path d="M48.8 41.2 L51.2 41.2" fill="none"/></g>';
+  }
+  if (r.gafas === 'monoculo') {
+    return '<circle cx="55.8" cy="41.6" r="3.2" fill="#ffffff" fill-opacity="0.12" stroke="#c9a64a" stroke-width="0.6"/><path d="M58.9 42.6 Q62.4 52 60 63" fill="none" stroke="#c9a64a" stroke-width="0.35"/>';
   }
   if (r.gafas === 'al-aire') {
     return '<g fill="#ffffff" fill-opacity="0.12" stroke="#9a9a9a" stroke-width="0.35"><rect x="39.6" y="39" width="9" height="5.6" rx="2.2"/><rect x="51.4" y="39" width="9" height="5.6" rx="2.2"/></g><path d="M48.6 41.4 L51.4 41.4" stroke="#8a8a8a" stroke-width="0.6"/>';
@@ -1844,6 +1855,25 @@ export function rasgosDe(datos: DatosGenericos): Rasgos {
   const genericos = rasgosGenericos(datos);
   const propios = RASGOS_LIDERES[datos.persona];
   if (!propios) return genericos;
+  // Un homenaje solo lleva barba, gafas, tocado, canas en las sienes y joyas si se le ponen a
+  // propósito. De lo genérico toma lo que no dice: la cara, si no la tiene, y los detalles del
+  // traje (camisa, dibujo de la corbata, pañuelo, insignia), que no cambian al personaje.
+  const sinComplementos: Partial<Rasgos> = {
+    barba: 'ninguna',
+    gafas: 'ninguna',
+    tocado: 'ninguno',
+    sienes: false,
+    pendientes: false,
+    collar: false,
+    lunar: false,
+  };
+  const base: Rasgos = { ...genericos };
+  delete base.colorTocado;
   // El color de pelo de un homenaje se elige mirando al personaje en 2010: no encanece más.
-  return { ...genericos, ...propios, ...(propios.colorPelo ? { colorFijo: true } : {}) };
+  return {
+    ...base,
+    ...sinComplementos,
+    ...propios,
+    ...(propios.colorPelo ? { colorFijo: true } : {}),
+  };
 }

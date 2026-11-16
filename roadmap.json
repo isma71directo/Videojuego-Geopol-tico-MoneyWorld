@@ -5,8 +5,8 @@
   "faseActiva": "fase-9",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f8-a2 hecha: los genéricos se peinan y visten según su zona. África: pelo afro corto y alto, rapado, trenzas, canas en las sienes, agbada con fila (Nigeria, Benín), kente (Ghana), dashiki y gele (golfo de Guinea), boubou con kufi (Sahel), kanzu (África oriental) y chaqueta abacost (África central). Además: guayabera, barong, batik con songkok, camisa de flores del Pacífico, kameez, topi nepalí, sari, hiyab, kufiya en el Golfo y turbante en Omán. Trajes de 11 colores con camisa de color, corbata lisa, de rayas o de lunares, pañuelo e insignia con el color del país; barbas (bigote grueso o fino, chivo, cerrada, de tres días) y gafas (pasta, doradas, sin montura). Dos personas cualesquiera se diferencian en al menos 5 de 22 rasgos.",
-    "siguientePaso": "f8-a3: homenajes revisados con los rasgos nuevos y muchos más (más de 170); después, publicar la v0.9.1.",
+    "resumen": "f8-a3 hecha: 217 homenajes (120 nuevos) con su cara propia (forma, ojos, nariz, boca, orejas, cejas, gesto y color de ojos) y detalles como la pajarita de Ilves, el monóculo de Jorge Tupou V, el chal de Rajapaksa, el turbante de Qabús, el kente de Atta Mills o la agbada de Boni Yayi. Un homenaje ya no hereda barba, gafas ni tocado al azar. Dos personas cualesquiera se diferencian al menos en 5 de 22 rasgos.",
+    "siguientePaso": "Publicar la v0.9.1 y abrir el PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -626,14 +626,14 @@
           "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d8f0ceb"
         },
         {
           "id": "f8-a3",
           "titulo": "Homenajes revisados con los rasgos nuevos (cara, nariz, ojos, boca) y muchos más homenajes: de los países más poblados y de cada región, hasta superar los 170",
           "version": "0.9.1",
           "origen": "Mensaje del jugador al probar la v0.9.0: más homenajes, mejorar los actuales y genéricos con más detalles diferenciales (sobre todo en personas de etnia africana), para que ningún retrato parezca ya visto ni se parezca a otro",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         }
