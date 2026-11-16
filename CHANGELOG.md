@@ -7,6 +7,46 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.9.1 - 2026-11-16
+
+Ajustes de la Fase 8 pedidos por el jugador al probar la v0.9.0: que ningún retrato parezca ya
+visto ni se parezca a otro.
+
+### Cambiado
+
+- **Cada retrato tiene su cara** (ajuste f8-a1):
+  - Forma de la cara (ovalada, redonda, cuadrada, afilada, larga) y proporciones.
+  - Ojos con blanco, iris de color y 5 formas.
+  - Nariz (6 tipos), labios con color (finos, medios, gruesos), orejas (4) y cejas (6).
+  - Gesto (neutro, leve sonrisa, sonrisa, serio).
+  - Arrugas según la edad, lunar y piel con tonos intermedios y matices.
+  - Los genéricos los reparten según la región, sin exagerar rasgos.
+- **Genéricos que se peinan y visten según su zona** (ajuste f8-a2):
+  - África:
+    - pelo afro corto y alto, rapado, trenzas y canas en las sienes;
+    - agbada con gorro fila (Nigeria, Benín) y kente (Ghana);
+    - dashiki y gele (golfo de Guinea), boubou con kufi (Sahel);
+    - kanzu (África oriental) y chaqueta abacost (África central).
+  - Resto del mundo:
+    - guayabera (Caribe y Centroamérica), barong (Filipinas), batik con songkok (Indonesia, Malasia);
+    - camisa de flores (Pacífico), kameez (Pakistán, Afganistán), topi (Nepal);
+    - sari, hiyab, kufiya en el Golfo y turbante en Omán.
+  - Trajes de 11 colores con camisa de color, corbata lisa, de rayas o de lunares, pañuelo e
+    insignia con el color del país.
+  - Barbas (bigote grueso y fino, chivo, cerrada, de tres días), tupé, flequillo lateral, gafas
+    de pasta, doradas y sin montura, y pendientes.
+- **217 homenajes** (ajuste f8-a3):
+  - Los 97 anteriores, con su cara propia.
+  - 120 nuevos de todas las regiones, con detalles como la pajarita de Ilves, el monóculo de
+    Jorge Tupou V, el chal de Rajapaksa, el turbante de Qabús, el kente de Atta Mills o la agbada
+    de Boni Yayi.
+- Un test exige que dos personas cualesquiera se diferencien al menos en 5 de 22 rasgos.
+
+### Corregido
+
+- Un homenaje ya no puede heredar al azar la barba, las gafas ni el tocado del retrato genérico:
+  solo los lleva si se le ponen a propósito.
+
 ## 0.9.0 - 2026-11-16
 
 Fase 8: ficha de país.
