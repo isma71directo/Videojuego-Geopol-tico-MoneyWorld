@@ -21,6 +21,8 @@ import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
+import { crearBuscador } from './buscador';
+import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
@@ -74,7 +76,89 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     },
     () => reproducir('boton'),
   );
-  const barra = el('div', { class: 'mapa__barra' }, volver, botonSonido, selector.elemento);
+  // Buscador (tarea f9-t2): lupa y tecla B, en una ventana en el centro (decisión del jugador).
+  /** Punto y caja (en grados) de cada región, para ir hasta ella antes de cargar sus fronteras. */
+  const lugaresRegion = new Map<
+    string,
+    { etiqueta: [number, number]; caja: [number, number, number, number] }
+  >();
+  const buscador = crearBuscador({
+    entradas: async () => {
+      const respuesta = await fetch('./data/buscador-2010.json');
+      if (!respuesta.ok) throw new Error(String(respuesta.status));
+      const indice = (await respuesta.json()) as {
+        regiones: [
+          string,
+          string,
+          string,
+          number | null,
+          [number, number],
+          [number, number, number, number],
+        ][];
+      };
+      const enIngles = new Intl.DisplayNames(['en'], { type: 'region' });
+      const paises: EntradaBusqueda[] = Object.values(conjunto?.paises ?? {}).map((pais) => {
+        let ingles: string | undefined;
+        try {
+          ingles = pais.iso2 ? enIngles.of(pais.iso2) : undefined;
+        } catch {
+          ingles = undefined;
+        }
+        return {
+          tipo: 'pais',
+          id: pais.id,
+          nombre: pais.nombre,
+          pais: pais.id,
+          alias: [pais.id, ...(ingles ? [ingles] : [])],
+          peso: pais.datos.poblacion ?? 0,
+        };
+      });
+      const regiones: EntradaBusqueda[] = indice.regiones
+        // Las de los países de una sola región se llaman como el país: ya están.
+        .filter(([, nombre, pais]) => conjunto?.paises[pais]?.nombre !== nombre)
+        .map(([id, nombre, pais, poblacion, etiqueta, caja]) => {
+          lugaresRegion.set(id, { etiqueta, caja });
+          return { tipo: 'region', id, nombre, pais, peso: poblacion ?? 0 };
+        });
+      const ciudades: EntradaBusqueda[] = mapa.listaCiudades.map((ciudad) => ({
+        tipo: 'ciudad',
+        id: `${ciudad.pais}|${ciudad.nombre}`,
+        nombre: ciudad.nombre,
+        pais: ciudad.pais,
+        peso: ciudad.poblacion ?? 0,
+      }));
+      return [...paises, ...regiones, ...ciudades];
+    },
+    nombrePais: (id) => conjunto?.paises[id]?.nombre ?? id,
+    regionDelMundo: (id) => conjunto?.paises[id]?.regionNombre ?? '',
+    esCapital: (entrada) =>
+      mapa.listaCiudades.some(
+        (c) => c.capital && c.pais === entrada.pais && c.nombre === entrada.nombre,
+      ),
+    alElegir: (entrada) => {
+      reproducir('boton');
+      if (entrada.tipo === 'pais') mapa.irA({ tipo: 'pais', id: entrada.id });
+      else if (entrada.tipo === 'ciudad') {
+        mapa.irA({ tipo: 'ciudad', nombre: entrada.nombre, pais: entrada.pais });
+      } else {
+        const lugar = lugaresRegion.get(entrada.id);
+        if (lugar) mapa.irA({ tipo: 'region', id: entrada.id, ...lugar });
+      }
+      lienzo.focus({ preventScroll: true });
+    },
+  });
+  const alTeclearBuscador = (evento: KeyboardEvent): void => {
+    buscador.alTeclear(evento);
+  };
+  document.addEventListener('keydown', alTeclearBuscador);
+  const barra = el(
+    'div',
+    { class: 'mapa__barra' },
+    volver,
+    botonSonido,
+    selector.elemento,
+    buscador.boton,
+  );
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -464,6 +548,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     lienzo.removeEventListener('keydown', alternarMedidor);
     document.removeEventListener('keydown', alPulsarEscape);
     document.removeEventListener('keydown', alTeclearSecciones);
+    document.removeEventListener('keydown', alTeclearBuscador);
+    buscador.cerrar(false);
     secciones.destruir();
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();

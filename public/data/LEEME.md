@@ -12,3 +12,4 @@ no se editan a mano. Los primeros datos llegan en la Fase 1.
 | `regiones-2010.json` | Regiones de cada país como eran en 2010 (TopoJSON, objeto «regiones») | `scripts/datos/14-regiones.ts` |
 | `regiones-2010-datos.json` | Población y PIB de 2010 de cada región, con su origen (DOSE, Wikidata o estimado) | `scripts/datos/15-regiones-datos.ts` |
 | `regiones-2010-economia.json` | De cada región: superficie, capital (solo si es segura), ciudades principales, peso de cada sector en 2010 (DOSE) y recursos (yacimientos del USGS y de Wikidata), con su origen | `scripts/datos/21-regiones-economia.ts` |
+| `buscador-2010.json` | Índice ligero de las regiones para el buscador: nombre, país, población, punto de la etiqueta y caja en grados | `scripts/datos/22-buscador.ts` |

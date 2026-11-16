@@ -13,6 +13,8 @@ import {
 import {
   camaraInicial,
   desplazar,
+  encuadrar,
+  interpolarCamara,
   zoomEn,
   copiasVisibles,
   limitar,
@@ -31,6 +33,7 @@ import {
   ciudadEnPunto,
   ciudadVisible,
   colocarCiudades,
+  zoomDeAparicion,
   SEPARACION_NOMBRE,
   type CandidatoCiudad,
   type Ciudad,
@@ -56,6 +59,21 @@ export const ZOOM_DETALLE = 2.5;
 
 /** Las regiones se descargan la primera vez que el zoom (relativo al mundo) llega a este valor. */
 export const ZOOM_CARGA_REGIONES = 1.5;
+
+/** Adónde ir desde el buscador (tarea f9-t2). Las regiones llevan su punto y su caja en grados. */
+export type DestinoMapa =
+  | { tipo: 'pais'; id: string }
+  | {
+      tipo: 'region';
+      id: string;
+      etiqueta: readonly [number, number];
+      caja: readonly [number, number, number, number];
+    }
+  | { tipo: 'ciudad'; nombre: string; pais: string };
+
+/** Duración de un viaje de la cámara, según lo lejos que esté (ms). */
+const VIAJE_MINIMO_MS = 650;
+const VIAJE_MAXIMO_MS = 1300;
 
 /** Una región, tal como se la pasa el mapa a la interfaz. */
 export interface RegionSenalada {
@@ -167,6 +185,8 @@ export class MapaMundo {
   /** Regiones de 2010 (Fase 5): se descargan al acercarse. */
   private regiones: CapaRegionesPreparada | null = null;
   private cargandoRegiones = false;
+  /** Región que se seleccionará en cuanto se descarguen las regiones (buscador). */
+  private regionPendiente: string | null = null;
   private readonly caminosRegion = new Map<string, Path2D>();
   private readonly fronterasRegion = new Map<string, Path2D>();
   /** Países que muestran sus regiones en el último fotograma, con su opacidad (0 a 1). */
@@ -437,6 +457,96 @@ export class MapaMundo {
     this.vista = camaraInicial(this.camara.ancho, this.camara.alto);
   }
 
+  /** Ciudades del mapa (para el buscador). */
+  get listaCiudades(): readonly Ciudad[] {
+    return this.ciudades.map(({ ciudad }) => ciudad);
+  }
+
+  /**
+   * Viaje de la cámara hasta otra vista: se aleja si el destino está lejos y vuelve a
+   * acercarse (al instante si se pide reducir el movimiento). Al llegar, `alLlegar`.
+   */
+  volarA(destino: Camara, alLlegar?: () => void): void {
+    this.detenerAnimacion();
+    const inicio = this.camara;
+    const fin = limitar({ ...destino, ancho: inicio.ancho, alto: inicio.alto });
+    if (this.sinMovimiento) {
+      this.vista = fin;
+      alLlegar?.();
+      return;
+    }
+    // Más largo cuanto más cambia la vista (en pantallas de distancia y en saltos de zoom).
+    const pantallas =
+      Math.hypot(fin.cx - inicio.cx, fin.cy - inicio.cy) * Math.min(inicio.k, fin.k);
+    const saltos = Math.abs(Math.log2(fin.k / inicio.k));
+    const duracion = Math.min(
+      VIAJE_MAXIMO_MS,
+      VIAJE_MINIMO_MS + 90 * Math.log2(1 + pantallas / inicio.ancho) + 60 * saltos,
+    );
+    const t0 = performance.now();
+    const paso = (ahora: number): void => {
+      const t = Math.min(1, (ahora - t0) / duracion);
+      // Suave al salir y al llegar.
+      const suave = t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+      this.vista = interpolarCamara(inicio, fin, suave);
+      if (t < 1) this.animacion = requestAnimationFrame(paso);
+      else {
+        this.animacion = null;
+        alLlegar?.();
+      }
+    };
+    this.animacion = requestAnimationFrame(paso);
+  }
+
+  /** Va hasta un país, una región o una ciudad y lo selecciona (buscador, tarea f9-t2). */
+  irA(destino: DestinoMapa): void {
+    const camara = this.camara;
+    if (destino.tipo === 'pais') {
+      const figura = this.mundo?.figuras.paises.find((f) => f.id === destino.id);
+      if (!figura) {
+        this.seleccionar(destino.id);
+        return;
+      }
+      let caja = figura.caja;
+      // Los que cruzan el antimeridiano (Rusia, Fiyi…): una caja centrada en su etiqueta.
+      if (caja[2] - caja[0] > ANCHO_MUNDO * 0.5 && figura.etiqueta) {
+        const [ex] = figura.etiqueta;
+        caja = [ex - ANCHO_MUNDO * 0.2, caja[1], ex + ANCHO_MUNDO * 0.2, caja[3]];
+      }
+      this.volarA(encuadrar(camara, caja, 0.16), () => this.seleccionar(destino.id));
+      return;
+    }
+    if (destino.tipo === 'region') {
+      const [lon0, lat0, lon1, lat1] = destino.caja;
+      const centro = this.proyeccion([destino.etiqueta[0], destino.etiqueta[1]]);
+      const a = this.proyeccion([lon0, lat1]);
+      const b = this.proyeccion([lon1, lat0]);
+      if (!centro || !a || !b) return;
+      // Si la caja cruza el antimeridiano, una caja pequeña alrededor de la etiqueta.
+      const caja: [number, number, number, number] =
+        lon0 <= lon1 ? [a[0], a[1], b[0], b[1]] : [centro[0] - 20, a[1], centro[0] + 20, b[1]];
+      this.volarA(encuadrar(camara, caja, 0.2), () => {
+        if (this.regiones) this.seleccionarRegion(destino.id);
+        else {
+          // Se seleccionará cuando lleguen (la carga se pide al dibujar).
+          this.regionPendiente = destino.id;
+          this.pedirDibujo();
+        }
+      });
+      return;
+    }
+    const encontrada = this.ciudades.find(
+      ({ ciudad }) => ciudad.nombre === destino.nombre && ciudad.pais === destino.pais,
+    );
+    if (!encontrada) return;
+    // Lo bastante cerca para que se vea su nombre (y nunca más lejos de lo que ya estaba).
+    const zoomWebDestino = Math.max(zoomDeAparicion(encontrada.ciudad) + 0.6, 5.2);
+    const k = Math.max(camara.k, (256 * 2 ** zoomWebDestino) / ANCHO_MUNDO);
+    this.volarA({ ...camara, cx: encontrada.x, cy: encontrada.y, k }, () =>
+      this.seleccionarCiudad(encontrada.ciudad),
+    );
+  }
+
   /** Clic sin arrastre: selecciona la ciudad, la región o el país (o nada si es mar). */
   alTocar = (x: number, y: number): void => {
     const ciudad = this.ciudadEn(x, y);
@@ -633,7 +743,9 @@ export class MapaMundo {
   /** Descarga las regiones la primera vez que el zoom pasa de ZOOM_CARGA_REGIONES. */
   private capaRegiones(): CapaRegionesPreparada | null {
     if (this.regiones || !this.urls.regiones) return this.regiones;
-    if (!this.cargandoRegiones && zoomRelativo(this.camara) >= ZOOM_CARGA_REGIONES) {
+    const hacenFalta =
+      zoomRelativo(this.camara) >= ZOOM_CARGA_REGIONES || this.regionPendiente !== null;
+    if (!this.cargandoRegiones && hacenFalta) {
       this.cargandoRegiones = true;
       fetch(this.urls.regiones)
         .then((r) =>
@@ -643,6 +755,9 @@ export class MapaMundo {
           this.regiones = prepararRegiones(topo);
           this.inicioRegiones = performance.now();
           this.pedirDibujo();
+          const pendiente = this.regionPendiente;
+          this.regionPendiente = null;
+          if (pendiente) this.seleccionarRegion(pendiente);
         })
         .catch(() => {
           // Sin conexión, el mapa sigue sin regiones; se reintenta en el próximo zoom.

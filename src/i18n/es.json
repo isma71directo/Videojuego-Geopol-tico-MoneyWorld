@@ -806,6 +806,28 @@
           "acciones": "competencias, financiación regional y diálogo"
         }
       }
+    },
+    "buscador": {
+      "abrir": "Buscar",
+      "atajo": "Buscar un país, una región o una ciudad (tecla B)",
+      "titulo": "Buscar en el mapa",
+      "marcador": "Busca un país, una región o una ciudad…",
+      "cargando": "Cargando las regiones…",
+      "vacio": "No hay nada que se llame «{texto}».",
+      "ayuda": "↑ ↓ para elegir · Intro para ir · Esc para cerrar",
+      "resultados": "{n} resultados",
+      "tipos": {
+        "pais": "País",
+        "region": "Región",
+        "ciudad": "Ciudad"
+      },
+      "contexto": {
+        "pais": "País · {region}",
+        "region": "Región de {pais}",
+        "ciudad": "Ciudad de {pais}",
+        "capital": "Capital de {pais}"
+      },
+      "habitantes": "{n} hab."
     }
   },
   "hojaDeRuta": {
@@ -938,7 +960,9 @@
       "regimen-monarquia-absoluta": "Monarquía absoluta",
       "regimen-partido-unico": "Partido único",
       "regimen-junta": "Junta militar",
-      "regimen-teocracia": "Teocracia"
+      "regimen-teocracia": "Teocracia",
+      "buscar": "Buscar",
+      "ciudad": "Ciudad"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",

@@ -33,9 +33,29 @@
 }
 
 .mapa__volver,
-.mapa__sonido {
+.mapa__sonido,
+.mapa__buscar {
   background: rgb(18 27 45 / 85%);
   backdrop-filter: blur(6px);
+}
+
+/* Botón del buscador (tarea f9-t2): lupa, «Buscar» y la tecla B. */
+.mapa__buscar {
+  gap: 8px;
+}
+
+.mapa__buscar .icono {
+  width: 18px;
+  height: 18px;
+}
+
+.mapa__tecla {
+  padding: 1px 6px;
+  border: 1px solid var(--borde);
+  border-radius: 5px;
+  background: rgb(255 255 255 / 6%);
+  color: var(--texto-suave);
+  font: 600 11px/1.4 var(--fuente);
 }
 
 /* Botón de silencio (tarea f4-t4): cuadrado, con el icono del altavoz. */
@@ -619,4 +639,169 @@
   width: 18px;
   height: 18px;
   color: var(--acento);
+}
+
+/* Buscador (tarea f9-t2): ventana en el centro, por encima del mapa y de los paneles. */
+.buscador {
+  position: fixed;
+  inset: 0;
+  z-index: var(--capa-menu);
+  display: flex;
+  justify-content: center;
+  padding: 14vh 16px 16px;
+}
+
+.buscador__fondo {
+  position: absolute;
+  inset: 0;
+  background: rgb(4 8 16 / 55%);
+  backdrop-filter: blur(2px);
+}
+
+.buscador__caja {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(600px, 100%);
+  max-height: 70vh;
+  align-self: flex-start;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie-flotante);
+  box-shadow: var(--sombra-flotante);
+}
+
+.buscador__fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.buscador__lupa {
+  display: grid;
+  color: var(--acento);
+}
+
+.buscador__lupa .icono {
+  width: 22px;
+  height: 22px;
+}
+
+.buscador__campo {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--texto);
+  font: 500 18px/1.4 var(--fuente);
+}
+
+.buscador__campo::placeholder {
+  color: var(--texto-suave);
+}
+
+.buscador__campo::-webkit-search-cancel-button {
+  display: none;
+}
+
+.buscador__lista {
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.buscador__opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radio-pequeno);
+  cursor: pointer;
+}
+
+.buscador__opcion[aria-selected='true'] {
+  background: rgb(90 176 255 / 16%);
+  box-shadow: inset 3px 0 0 var(--acento);
+}
+
+.buscador__bandera {
+  width: 24px;
+  height: 18px;
+  flex: none;
+  border-radius: 3px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
+}
+
+.buscador__icono {
+  display: grid;
+  width: 24px;
+  flex: none;
+  place-items: center;
+  color: var(--texto-suave);
+}
+
+.buscador__icono .icono {
+  width: 20px;
+  height: 20px;
+}
+
+.buscador__texto {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.buscador__nombre {
+  overflow: hidden;
+  color: var(--texto);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.buscador__nombre mark {
+  border-radius: 3px;
+  background: rgb(90 176 255 / 25%);
+  color: inherit;
+}
+
+.buscador__contexto {
+  overflow: hidden;
+  color: var(--texto-suave);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.buscador__tipo {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--superficie-2);
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.buscador__aviso:empty {
+  display: none;
+}
+
+.buscador__aviso {
+  margin: 0;
+  padding: 14px 16px;
+  color: var(--texto-suave);
+}
+
+.buscador__ayuda {
+  margin: 0;
+  padding: 8px 14px;
+  border-top: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-size: 12px;
 }
