@@ -28,8 +28,8 @@ import {
 } from '../src/datos/gobiernos';
 import type { ConjuntoPaises } from '../src/datos/paises';
 
-/** Rasgos (de 16) en los que se diferencian, como mínimo, dos personas cualesquiera. */
-const MINIMO_RASGOS_DISTINTOS = 3;
+/** Rasgos (de 22) en los que se diferencian, como mínimo, dos personas cualesquiera. */
+const MINIMO_RASGOS_DISTINTOS = 5;
 
 const leer = <T>(ruta: string): T => JSON.parse(readFileSync(resolve(ruta), 'utf8')) as T;
 const gobiernos = leer<ConjuntoGobiernos>('public/data/gobiernos-2010.json');
@@ -107,7 +107,7 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
     });
     expect(
       rasgosGenericos({ ...base, pais: 'KWT', region: 'MEA', regimen: 'monarquia-absoluta' }),
-    ).toMatchObject({ ropa: 'tunica', tocado: 'kufiya' });
+    ).toMatchObject({ ropa: expect.stringMatching(/^(tunica|bisht)$/), tocado: 'kufiya' });
     // Tonos de piel según la zona: los de África subsahariana, entre los más oscuros.
     for (let i = 0; i < 40; i++) {
       const africa = rasgosGenericos({ ...base, pais: 'KEN', region: 'SSF', persona: `Q${i}` });
@@ -223,6 +223,12 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
       r.colorDetalle,
       r.tocado,
       Math.round(r.piel),
+      r.colorCamisa ?? '',
+      r.corbata ?? 'lisa',
+      Boolean(r.sienes),
+      Boolean(r.insignia),
+      Boolean(r.panuelo),
+      Boolean(r.pendientes),
     ];
     const firmas = todosLosCargos().map((d) => [d.persona, firma(rasgosDe(d))] as const);
     let minimo = Infinity;
@@ -237,6 +243,40 @@ describe('retratos ilustrados (tarea f8-t3)', () => {
       }
     }
     expect(minimo, par).toBeGreaterThanOrEqual(MINIMO_RASGOS_DISTINTOS);
+  });
+
+  it('ajuste f8-a2: los genéricos visten y se peinan según su zona', () => {
+    const genericos = todosLosCargos()
+      .filter((d) => !tieneHomenaje(d.persona))
+      .map((d) => [d, rasgosGenericos(d)] as const);
+    const africa = genericos.filter(([d]) => d.region === 'SSF').map(([, r]) => r);
+    // En África, peinados y ropa variados, no solo traje y pelo rizado.
+    expect(new Set(africa.map((r) => r.pelo)).size).toBeGreaterThanOrEqual(5);
+    expect(new Set(africa.map((r) => r.ropa)).size).toBeGreaterThanOrEqual(5);
+    expect(new Set(africa.map((r) => r.tocado)).size).toBeGreaterThanOrEqual(2);
+    expect(new Set(africa.map((r) => r.barba)).size).toBeGreaterThanOrEqual(4);
+    // Prendas de cada zona.
+    const ropa = (pais: string, sexo: 'h' | 'm', persona: string): Rasgos =>
+      rasgosGenericos({ ...base, pais, region: 'SSF', sexo, persona });
+    const prendas = (pais: string, sexo: 'h' | 'm' = 'h'): Set<string> =>
+      new Set(Array.from({ length: 60 }, (_, i) => ropa(pais, sexo, `Q${i}`).ropa));
+    expect(prendas('NGA')).toContain('agbada');
+    expect(prendas('GHA')).toContain('kente');
+    expect(prendas('SEN')).toContain('boubou');
+    expect(prendas('UGA')).toContain('kanzu');
+    expect(prendas('PHL')).toContain('barong');
+    expect(prendas('IDN')).toContain('batik');
+    expect(prendas('CUB')).toContain('guayabera');
+    expect(prendas('PAK')).toContain('kameez');
+    expect(prendas('FJI')).toContain('camisa-flores');
+    expect(prendas('IND', 'm')).toContain('sari');
+    const tocados = new Set(Array.from({ length: 60 }, (_, i) => ropa('NGA', 'm', `Q${i}`).tocado));
+    expect(tocados).toContain('gele');
+    // Los trajes también cambian: camisa, corbata con dibujo, pañuelo e insignia.
+    const trajes = genericos.map(([, r]) => r).filter((r) => r.ropa === 'traje');
+    expect(new Set(trajes.map((r) => r.colorRopa)).size).toBeGreaterThanOrEqual(8);
+    expect(new Set(trajes.map((r) => r.corbata))).toEqual(new Set(['lisa', 'rayas', 'lunares']));
+    expect(trajes.some((r) => r.panuelo) && trajes.some((r) => r.insignia)).toBe(true);
   });
 
   it('accesible: con título se anuncia y sin él es decorativo', () => {
