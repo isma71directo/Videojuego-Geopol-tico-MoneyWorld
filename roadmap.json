@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.8.0",
-  "actualizado": "2026-11-16T10:10:20Z",
+  "actualizado": "2026-11-16T10:18:24Z",
   "faseActiva": "fase-7",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "f7-a1 hecha: cada país lleva, dentro de la paleta, el color de su bandera o el de la lista de colores tradicionales (España amarillo, Reino Unido rojo, Marruecos rojo, Italia verde azulado, Países Bajos naranja…); 178 de 223 países llevan su color o uno muy cercano, ningún color se repite a menos de 1.500 km y ninguno más de 10 veces. La galería tiene una sección con el color de cada país para revisarlo.",
-    "siguientePaso": "f7-a2: barra de secciones en el mapa y ventanas de todas las secciones.",
+    "resumen": "f7-a2 hecha: barra de secciones abajo en el mapa (Gobierno · Economía · Política · Mundo · Ejército · Más, con las teclas G, E, P, U, J y S) que abre las 17 ventanas de las secciones con sus pestañas; cada pestaña dice qué tendrá y en qué fase se llena, y el Consejo de Ministros enseña los 20 ministerios. 17 iconos nuevos. Las ventanas se abren enteras a la vista.",
+    "siguientePaso": "Publicar la v0.8.1 (ajustes f7-a1 y f7-a2) y abrir su PR.",
     "pendienteDelJugador": [
       "Prueba en el PC de la v0.8.0 (componentes en la galería y clic derecho en el mapa)"
     ]
@@ -540,14 +540,14 @@
           "origen": "Mensaje del jugador al probar la v0.8.0 (sobre los colores de la v0.7.1; la versión de la Fase 6 ya se había superado)",
           "estado": "hecha",
           "fecha": "2026-11-16",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/eb501f9"
         },
         {
           "id": "f7-a2",
           "titulo": "Barra de secciones en el mapa (Gobierno · Economía · Política · Mundo · Ejército · Más, con atajo de teclado) que abre las ventanas de todas las secciones del juego (Consejo de Ministros con los 20 ministerios, Presupuesto, Impuestos, Parlamento y leyes con historial de leyes, Economía, Energía, Infraestructuras, Partidos, Sociedad, Población, Regiones, Comercio, Diplomacia, Ejército, Investigación, Informes y Comparador), con sus pestañas e iconos y el aviso de en qué fase se llena cada parte (opción B del jugador: adelantado de la Fase 10)",
           "version": "0.8.1",
           "origen": "Mensaje del jugador al probar la v0.8.0: esperaba la base de las ventanas de las secciones",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": ""
         }

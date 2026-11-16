@@ -18,6 +18,8 @@ import { contenidoPanel, contenidoRecuadro } from './ficha-pais';
 import { contenidoLeyenda } from './leyenda';
 import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
+import { cerrarVentanas } from './componentes/ventana';
+import { crearBarraSecciones } from './secciones';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
@@ -106,6 +108,12 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     'aria-hidden': 'true',
     hidden: !leerAjuste('brilloAgua'),
   });
+  // Barra de secciones (ajuste f7-a2): Gobierno · Economía · Política · Mundo · Ejército · Más.
+  const secciones = crearBarraSecciones();
+  const alTeclearSecciones = (evento: KeyboardEvent): void => {
+    secciones.alTeclear(evento);
+  };
+  document.addEventListener('keydown', alTeclearSecciones);
   const elemento = el(
     'section',
     { class: 'mapa' },
@@ -115,6 +123,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     estado,
     medidor,
     leyenda,
+    secciones.elemento,
     recuadro,
     panel,
   );
@@ -428,6 +437,9 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     menuAbierto()?.cerrar(false);
     lienzo.removeEventListener('keydown', alternarMedidor);
     document.removeEventListener('keydown', alPulsarEscape);
+    document.removeEventListener('keydown', alTeclearSecciones);
+    // Las ventanas de las secciones no siguen abiertas fuera del mapa.
+    cerrarVentanas();
     desconectar();
     mapa.destruir();
     elemento.remove();

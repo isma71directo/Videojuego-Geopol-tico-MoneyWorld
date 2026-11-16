@@ -1,0 +1,140 @@
+/* Barra de secciones del mapa y ventanas de cada sección (ajuste f7-a2). */
+.secciones {
+  position: absolute;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  left: 50%;
+  translate: -50% 0;
+  padding: 5px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: rgb(14 22 38 / 90%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+.secciones__lista {
+  display: flex;
+  gap: 2px;
+}
+
+.secciones__grupo {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  padding: 8px 11px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 120ms ease-out;
+}
+
+.secciones__grupo .icono {
+  width: 18px;
+  height: 18px;
+  color: var(--acento);
+}
+
+.secciones__grupo u {
+  text-decoration-color: var(--acento);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.secciones__grupo:hover {
+  background: var(--superficie-2);
+}
+
+.secciones__grupo[aria-expanded='true'] {
+  background: var(--superficie-2);
+  box-shadow: inset 0 0 0 1px var(--acento);
+}
+
+.secciones__grupo:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
+
+/* Contenido de una pestaña vacía. */
+.seccion {
+  display: grid;
+  gap: 10px;
+}
+
+.seccion__fase {
+  justify-self: start;
+  padding: 4px 10px;
+  border: 1px solid rgb(242 184 75 / 45%);
+  border-radius: 999px;
+  background: rgb(242 184 75 / 10%);
+  color: var(--en-curso);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.seccion__texto {
+  line-height: 1.45;
+}
+
+.seccion__nota,
+.seccion__vacia {
+  color: var(--texto-suave);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+/* Hueco con rayas suaves: dónde irá el contenido. */
+.seccion__hueco {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px dashed var(--borde);
+  border-radius: var(--radio-pequeno);
+}
+
+.seccion__hueco span {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--superficie-2);
+}
+
+.seccion__hueco span:nth-child(2) {
+  width: 82%;
+}
+
+.seccion__hueco span:nth-child(3) {
+  width: 64%;
+}
+
+.seccion__ministerios {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  max-height: 240px;
+  margin-top: 8px;
+  overflow: auto;
+}
+
+.seccion__ministerios li {
+  display: grid;
+  gap: 2px;
+  padding: 7px 9px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: rgb(255 255 255 / 3%);
+}
+
+.seccion__ministerios strong {
+  font-size: 13px;
+}
+
+.seccion__ministerios span {
+  color: var(--texto-suave);
+  font-size: 12px;
+  line-height: 1.35;
+}
