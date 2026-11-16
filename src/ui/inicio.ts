@@ -196,14 +196,14 @@ export function crearPantallaInicio(): PantallaInicio {
       'nav',
       { class: 'inicio__menu', 'aria-label': t('juego.inicio.menu') },
       el(
-        'button',
-        { class: 'boton boton--menu', type: 'button', disabled: true },
+        'a',
+        { class: 'boton boton--principal boton--menu', href: '#nueva-partida' },
         el('span', {}, t('juego.inicio.nuevaPartida')),
         el('small', {}, t('juego.inicio.nuevaPartidaAviso')),
       ),
       el(
         'a',
-        { class: 'boton boton--principal boton--menu', href: '#mapa' },
+        { class: 'boton boton--menu', href: '#mapa' },
         el('span', {}, t('juego.inicio.mapa')),
         el('small', {}, t('juego.inicio.mapaAviso')),
       ),

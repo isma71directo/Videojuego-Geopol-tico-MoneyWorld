@@ -83,7 +83,7 @@ describe('colores de país (ajustes f6-a1, f7-a1 y f7-a3)', () => {
   it('el mapa lee los colores calculados y solo los calcula si falta el archivo', () => {
     const codigo = readFileSync(new URL('../src/map/mapa.ts', import.meta.url), 'utf8');
     expect(codigo.match(/coloresDelMapa\(/g)).toHaveLength(1);
-    const pantalla = readFileSync(new URL('../src/ui/pantalla-mapa.ts', import.meta.url), 'utf8');
+    const pantalla = readFileSync(new URL('../src/ui/mapa-del-juego.ts', import.meta.url), 'utf8');
     expect(pantalla).toContain("colores: './data/colores-pais.json'");
   });
 

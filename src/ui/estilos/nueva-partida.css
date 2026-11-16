@@ -1,0 +1,363 @@
+/* Pantalla «Nueva partida» (tarea f10-t1): el mapa a pantalla completa y dos paneles. */
+.nueva-partida {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--fondo);
+}
+
+.nueva-partida__mapa {
+  position: absolute;
+  inset: 0;
+}
+
+.nueva-partida__panel {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  z-index: var(--capa-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie-flotante);
+  box-shadow: var(--sombra-flotante);
+}
+
+.nueva-partida__panel--lista {
+  left: 12px;
+  width: 320px;
+}
+
+.nueva-partida__panel--eleccion {
+  right: 12px;
+  width: 340px;
+}
+
+/* Lo de arriba se desplaza; el botón de empezar queda siempre a la vista. */
+.nueva-partida__desplazable {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  margin: 0 -14px;
+  padding: 0 14px;
+  overflow-y: auto;
+}
+
+.nueva-partida__segmentos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+}
+
+.nueva-partida__segmento {
+  position: relative;
+  cursor: pointer;
+}
+
+.nueva-partida__segmento + .nueva-partida__segmento {
+  border-left: 1px solid var(--borde);
+}
+
+.nueva-partida__segmento input {
+  position: absolute;
+  opacity: 0;
+}
+
+.nueva-partida__segmento span {
+  display: block;
+  padding: 8px 4px;
+  color: var(--texto-suave);
+  font-weight: 600;
+  text-align: center;
+}
+
+.nueva-partida__segmento input:checked + span {
+  background: rgb(90 176 255 / 18%);
+  color: var(--texto);
+}
+
+.nueva-partida__segmento input:focus-visible + span {
+  outline: 2px solid var(--acento);
+  outline-offset: -2px;
+}
+
+.nueva-partida__cabecera {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nueva-partida__titulo {
+  margin: 0;
+  font-size: 20px;
+}
+
+.nueva-partida__fecha {
+  margin: 0;
+  color: var(--acento);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.nueva-partida__paso {
+  margin: 4px 0 0;
+  color: var(--texto-suave);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.nueva-partida__ayuda,
+.nueva-partida__nota {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.nueva-partida__controles {
+  display: grid;
+  gap: 8px;
+}
+
+.nueva-partida__filtro,
+.nueva-partida__orden,
+.nueva-partida__semilla {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+}
+
+.nueva-partida__etiqueta {
+  display: grid;
+  gap: 4px;
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.nueva-partida__paises {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  list-style: none;
+}
+
+.nueva-partida__paises:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.nueva-partida__pais-opcion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nueva-partida__pais-opcion:hover {
+  background: rgb(255 255 255 / 5%);
+}
+
+.nueva-partida__pais-opcion[aria-selected='true'] {
+  background: rgb(90 176 255 / 16%);
+  box-shadow: inset 3px 0 0 var(--acento);
+}
+
+.nueva-partida__pais-opcion img {
+  width: 24px;
+  height: 18px;
+  flex: none;
+  border-radius: 2px;
+  object-fit: cover;
+}
+
+.nueva-partida__pais-nombre {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nueva-partida__pais-dato {
+  max-width: 45%;
+  overflow: hidden;
+  color: var(--texto-suave);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nueva-partida__vacia {
+  padding: 10px;
+  color: var(--texto-suave);
+}
+
+.nueva-partida__pais {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nueva-partida__bandera {
+  width: 54px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 15%);
+}
+
+.nueva-partida__pais span {
+  display: grid;
+}
+
+.nueva-partida__nombre {
+  font-size: 20px;
+}
+
+.nueva-partida__pais small,
+.nueva-partida__lider small {
+  color: var(--texto-suave);
+}
+
+.nueva-partida__lider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+}
+
+.nueva-partida__lider > span {
+  display: grid;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.nueva-partida__retrato {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.nueva-partida__retrato svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nueva-partida__resumen .panel-pais__datos {
+  margin-top: 8px;
+}
+
+.nueva-partida__aviso:empty {
+  display: none;
+}
+
+.nueva-partida__aviso {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--radio-pequeno);
+  background: rgb(255 138 128 / 12%);
+  color: var(--peligro);
+  font-size: 13px;
+}
+
+.nueva-partida__opciones {
+  display: grid;
+  gap: 10px;
+}
+
+.nueva-partida__grupo {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.nueva-partida__grupo legend,
+.nueva-partida__legenda {
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nueva-partida__opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--radio-pequeno);
+  cursor: pointer;
+}
+
+.nueva-partida__opcion:hover {
+  background: rgb(255 255 255 / 4%);
+}
+
+.nueva-partida__opcion input {
+  margin-top: 3px;
+  accent-color: var(--acento);
+}
+
+.nueva-partida__opcion span {
+  display: grid;
+}
+
+.nueva-partida__opcion small {
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+.nueva-partida__fila-semilla {
+  display: flex;
+  gap: 8px;
+}
+
+.nueva-partida__dado {
+  width: 40px;
+  flex: none;
+  justify-content: center;
+  padding: 0;
+  font-size: 18px;
+}
+
+.nueva-partida__error {
+  margin: 0;
+  color: var(--peligro);
+  font-size: 12px;
+}
+
+.nueva-partida__empezar {
+  flex: none;
+  min-height: 48px;
+  font-size: 16px;
+}
+
+.nueva-partida__empezar:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

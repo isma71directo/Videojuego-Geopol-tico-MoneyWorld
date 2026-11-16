@@ -4,8 +4,8 @@ import type { ConjuntoPaises } from '../datos/paises';
 import type { ConjuntoEconomiaRegiones } from '../datos/regiones-economia';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
-import { MapaMundo, type Objetivo, type RegionSenalada } from '../map/mapa';
-import { ESTILO_MAPA } from '../map/estilo';
+import type { MapaMundo, Objetivo, RegionSenalada } from '../map/mapa';
+import type { Partida } from '../sim/partida';
 import { conectarGestos } from '../map/gestos';
 import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el, reemplazar } from './dom';
@@ -23,6 +23,7 @@ import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
 import { crearBuscador } from './buscador';
+import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
@@ -35,10 +36,21 @@ function medidorActivo(): boolean {
 export interface PantallaMapa {
   elemento: HTMLElement;
   mapa: MapaMundo;
+  /** Partida que se juega en esta pantalla (null en el mapa libre). */
+  partida: Partida | null;
   cerrar(): void;
 }
 
-export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
+export interface OpcionesPantallaMapa {
+  /** Partida empezada (tarea f10-t1): el mapa abre en el país del jugador. */
+  partida?: Partida | null;
+}
+
+export function abrirPantallaMapa(
+  alCerrar: () => void,
+  opciones: OpcionesPantallaMapa = {},
+): PantallaMapa {
+  const partida = opciones.partida ?? null;
   const volver = el(
     'button',
     { class: 'boton mapa__volver', type: 'button', 'aria-label': t('juego.mapa.volver') },
@@ -224,22 +236,7 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
   );
   document.body.appendChild(elemento);
 
-  const mapa = new MapaMundo(
-    lienzo,
-    {
-      mundo: './data/mapa-2010-mundo.json',
-      detalle: './data/mapa-2010-detalle.json',
-      relieve: './av/relieve/',
-      terreno: './av/terreno/',
-      agua: './data/mapa-agua.json',
-      ciudades: './data/ciudades-2010.json',
-      regiones: './data/regiones-2010.json',
-      colores: './data/colores-pais.json',
-    },
-    ESTILO_MAPA,
-  );
-  // Cuánto se ve el terreno bajo los países (Ajustes, tarea f6-t3).
-  mapa.terrenoVisible = leerAjuste('intensidadTerreno');
+  const mapa = crearMapaDelJuego(lienzo);
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
@@ -496,6 +493,8 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
       estado.remove();
       // Con los países del mapa ya cargados, la leyenda sabe si alguno se queda sin dato.
       pintarCapa();
+      // En una partida, el mapa va al país del jugador y abre su ficha.
+      if (partida) mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
     })
     .catch(() => {
       estado.textContent = t('juego.mapa.error');
@@ -609,5 +608,5 @@ export function abrirPantallaMapa(alCerrar: () => void): PantallaMapa {
     reproducir('boton');
     alCerrar();
   });
-  return { elemento, mapa, cerrar };
+  return { elemento, mapa, partida, cerrar };
 }
