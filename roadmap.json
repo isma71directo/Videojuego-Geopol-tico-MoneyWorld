@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.2",
-  "actualizado": "2026-11-17T05:55:29Z",
+  "versionActual": "0.12.3",
+  "actualizado": "2026-11-17T05:56:13Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f11-a3 hecho: velocidad ×16 (un día en 3 s, un año en unos 18 min) con su botón en la barra y la tecla 5; cabe a 1280 px con el nombre de país más largo.",
-    "siguientePaso": "Publicar la v0.12.3 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "v0.12.3 publicada con el ajuste f11-a3 (velocidad ×16). Con ella el jugador da por terminada la Fase 11. PR abierto.",
+    "siguientePaso": "Cuando el jugador fusione la v0.12.3: presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
+    "pendienteDelJugador": [
+      "Probar la v0.12.3 en el PC: en una partida, pulsar ×16 (o la tecla 5) y ver pasar los días",
+      "Fusionar el PR de la v0.12.3"
+    ]
   },
   "etapas": [
     {
@@ -787,7 +790,7 @@
           "origen": "Petición del jugador tras probar la v0.12.2",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/66583f1"
         }
       ]
     },
@@ -4567,6 +4570,13 @@
       "fecha": "2026-11-17",
       "cambios": [
         "Reloj cuatro veces más lento (decisión del jugador): ×1 = una hora cada 2 s (un día en 48 s); ×4, un día en 12 s; ×8, un día en 6 s y un año en unos 36 min"
+      ]
+    },
+    {
+      "version": "0.12.3",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Velocidad ×16 (un día en 3 s, un año en unos 18 min), con su botón en la barra superior y la tecla 5"
       ]
     }
   ]

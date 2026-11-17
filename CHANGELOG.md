@@ -7,6 +7,15 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.12.3 - 2026-11-17
+
+Último ajuste de la Fase 11, pedido por el jugador al probar la v0.12.2.
+
+### Añadido
+
+- **Velocidad ×16** (ajuste f11-a3): un día en 3 s y un año en unos 18 min, con su botón en la
+  barra superior y la tecla 5.
+
 ## 0.12.2 - 2026-11-17
 
 Ajuste de la Fase 11 pedido por el jugador al probar la v0.12.1: un año tiene que ser mucho
