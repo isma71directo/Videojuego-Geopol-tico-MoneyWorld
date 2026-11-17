@@ -189,7 +189,7 @@ export interface OpcionesSonido {
   silenciado: boolean;
   /** Volumen de los efectos, de 0 a 1. */
   volumenEfectos: number;
-  /** Volumen de la música, de 0 a 1 (la música llegará en fases posteriores). */
+  /** Volumen de la música, de 0 a 1 (tarea f12-t3). */
   volumenMusica: number;
 }
 
@@ -232,6 +232,21 @@ export class MotorSonido {
   set volumenEfectos(valor: number) {
     this.opciones.volumenEfectos = limitar(valor);
     this.aplicarVolumenes();
+  }
+
+  get volumenMusica(): number {
+    return this.opciones.volumenMusica;
+  }
+
+  set volumenMusica(valor: number) {
+    this.opciones.volumenMusica = limitar(valor);
+    this.aplicarVolumenes();
+  }
+
+  /** Contexto y salida de la música (tarea f12-t3), o null si el sonido aún no está activo. */
+  salidaMusica(): { contexto: AudioContext; salida: GainNode } | null {
+    if (!this.contexto || !this.musica) return null;
+    return { contexto: this.contexto as AudioContext, salida: this.musica };
   }
 
   /**

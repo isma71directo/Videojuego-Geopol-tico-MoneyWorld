@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.12.4",
-  "actualizado": "2026-11-17T06:59:41Z",
+  "actualizado": "2026-11-17T07:08:57Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f12-t2 hecha: azar de la partida (src/sim/azar.ts, xoshiro128**): cada partida nueva se siembra con una semilla de verdad al azar (crypto del navegador) y el motor lo da a los sistemas, que llegarán con las próximas fases; números al azar, enteros, probabilidades, elegir, barajar y la campana normal, comprobados con tests de reparto. Con la semilla fija de un test da siempre lo mismo; dos partidas nuevas, no.",
-    "siguientePaso": "f12-t3: motor de música con piezas fijas compuestas con código y las piezas tranquilas.",
+    "resumen": "f12-t3 hecha: música ambiental compuesta con código (src/av/musica). Doce piezas tranquilas fijas de 2 a 3,5 min (media hora sin repetir), cada una con su tonalidad, modo, tempo, compás y acordes; un arreglista determinista las convierte en notas (colchón de acordes, bajo, arpegios, melodía y campanas) y unos instrumentos sintetizados con reverberación las tocan. Suenan desde el primer clic en el menú y siguen en la partida, en orden al azar sin repetir hasta que suenan todas; en pausa baja un poco; volumen propio en Ajustes. Niveles comprobados al reproducirlas sin conexión (sin saturar ni silencios).",
+    "siguientePaso": "f12-t4: piezas tensas, cambio de ambiente con fundido y muestrario de la música en la galería; después, cerrar la Fase 12 como v0.13.0.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -832,20 +832,20 @@
           "titulo": "Azar de la partida (decisión del jugador): generador propio sembrado al azar en cada partida y de nuevo al cargar; el conjunto de decisiones de todos los países hace prácticamente imposible repetir una partida; semilla interna solo para tests y fallos",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3fd2e77"
         },
         {
           "id": "f12-t3",
           "titulo": "Audiovisual: motor de música con piezas fijas compuestas con código y las piezas tranquilas, en el menú y en la partida, con su volumen; en pausa baja un poco",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f12-t4",
           "titulo": "Audiovisual: piezas tensas (crisis, guerras y elecciones) y cambio de ambiente con fundido; reparto sin repetir hasta que suenan todas; muestrario de la música en la galería",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         }
       ]

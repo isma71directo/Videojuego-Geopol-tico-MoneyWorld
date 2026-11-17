@@ -48,7 +48,7 @@ const texto = `# Créditos
 > Generado por \`npm run datos:construir\`. No se edita a mano.
 
 Procedencia y licencia de todo el material de terceros que usa el juego. Lo que no figura aquí
-(iconos, retratos ilustrados de los líderes, sonidos sintetizados, interfaz, código) está hecho
+(iconos, retratos ilustrados de los líderes, sonidos y música sintetizados, interfaz, código) está hecho
 para el proyecto. Los retratos se dibujan con código: son interpretaciones, nunca fotografías.
 
 ## Datos

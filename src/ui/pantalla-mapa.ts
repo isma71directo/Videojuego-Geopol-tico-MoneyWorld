@@ -31,7 +31,7 @@ import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
-import { reproducir, silenciar, sonido } from './sonido';
+import { atenuarMusica, reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
 
 /**
@@ -249,6 +249,8 @@ export function abrirPantallaMapa(
           motor?.enviar({ tipo: 'velocidad', velocidad });
           reproducir(velocidad === 0 ? 'pausa' : antes === 0 ? 'seguir' : 'velocidad');
           barraPartida?.marcarPausa(velocidad === 0);
+          // En pausa la música baja un poco (tarea f12-t3).
+          atenuarMusica(velocidad === 0);
         },
       })
     : null;
@@ -353,7 +355,10 @@ export function abrirPantallaMapa(
   const mapa = crearMapaDelJuego(lienzo);
   if (partida) mapa.paisJugador = partida.jugador.paisId;
   moverNoche(fraccionActual());
-  if (tiempo) barraPartida?.marcarPausa(tiempo.velocidad === 0);
+  if (tiempo) {
+    barraPartida?.marcarPausa(tiempo.velocidad === 0);
+    atenuarMusica(tiempo.velocidad === 0);
+  }
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
@@ -719,6 +724,7 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alTeclearBuscador);
     document.removeEventListener('keydown', alTeclearTiempo);
     tiempo?.destruir();
+    atenuarMusica(false);
     if (animacion !== null) cancelAnimationFrame(animacion);
     motor?.enviar({ tipo: 'terminar' });
     motor?.cerrar();
