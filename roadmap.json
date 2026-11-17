@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.15.0",
-  "actualizado": "2026-11-17T11:18:17Z",
+  "actualizado": "2026-11-17T11:21:23Z",
   "faseActiva": "fase-15",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f14-a1 hecha: la ventana «Guardar partida» tiene un campo «Nombre del guardado (opcional)», de hasta 60 caracteres, que empieza con el nombre de la ranura de esta partida; el nombre se ve en las ranuras («Ranura 2 · Antes de las elecciones»), en «Cargar partida» y en «Continuar». Ctrl+S conserva el nombre de la ranura si es de la misma partida; dejarlo vacío lo quita. Al escribirlo, las teclas no actúan sobre el mapa.",
-    "siguientePaso": "f14-a2: pedir el almacenamiento persistente al guardar por primera vez; después, publicar la v0.15.1 y presentar el plan de la Fase 15.",
+    "resumen": "f14-a2 hecha: el juego ya no pide al navegador el almacenamiento persistente al abrirse (Firefox lo preguntaba con un aviso nada más entrar), sino la primera vez que el jugador guarda a mano, y una sola vez por visita. f14-a1 hecha: nombre opcional en los guardados manuales.",
+    "siguientePaso": "Publicar la v0.15.1 (ajustes f14-a1 y f14-a2) con su PR y presentar el plan de la Fase 15.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -939,14 +939,14 @@
           "origen": "Mensaje del jugador tras probar la v0.15.0",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/57d7cde"
         },
         {
           "id": "f14-a2",
           "titulo": "Pedir al navegador que no borre las partidas la primera vez que se guarda, y no al abrir el juego (Firefox lo pregunta con un aviso)",
           "version": "0.15.1",
           "origen": "Duda del jugador tras probar la v0.15.0 (¿se mantiene el guardado del navegador con el tiempo?)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }
