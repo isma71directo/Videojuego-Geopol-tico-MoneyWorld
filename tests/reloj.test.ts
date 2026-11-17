@@ -82,29 +82,31 @@ describe('calendario del reloj (tarea f11-t1)', () => {
   });
 });
 
-describe('velocidades (decisión del jugador: ×1 = una hora cada 0,5 s)', () => {
-  it('pausa, ×1, ×2, ×4 y ×8; a ×1 un día dura 12 s y a ×8, 1,5 s', () => {
+describe('velocidades (ajuste f11-a2, decisión del jugador: ×1 = una hora cada 2 s)', () => {
+  it('pausa, ×1, ×2, ×4 y ×8; a ×1 un día dura 48 s y a ×8 un año, unos 36 min', () => {
     expect(VELOCIDADES).toEqual([0, 1, 2, 4, 8]);
-    expect(msPorHora(1)).toBe(500);
-    expect(msPorHora(1) * 24).toBe(12_000);
-    expect(msPorHora(8) * 24).toBe(1_500);
+    expect(msPorHora(1)).toBe(2000);
+    expect(msPorHora(1) * 24).toBe(48_000);
+    expect(msPorHora(4) * 24 * 7).toBe(84_000);
+    expect((msPorHora(8) * 24 * 365) / 60_000).toBeCloseTo(36.5, 1);
     expect(msPorHora(0)).toBe(Infinity);
     expect(EMPIEZA_EN_PAUSA).toBe(true);
   });
 
   it('cuenta las horas fotograma a fotograma, guardando lo que sobra', () => {
-    // Un segundo a ×1 en fotogramas de 1/60 s: 2 horas.
+    // Cuatro segundos a ×1 en fotogramas de 20 ms: 2 horas.
     let resto = 0;
     let horas = 0;
-    for (let i = 0; i < 60; i++) {
-      const r = horasQueTocan(1, 1000 / 60, resto);
+    for (let i = 0; i < 200; i++) {
+      const r = horasQueTocan(1, 20, resto);
       horas += r.horas;
       resto = r.restoMs;
     }
     expect(horas).toBe(2);
     expect(resto).toBeCloseTo(0, 6);
-    // A ×8, 125 ms son 2 horas.
-    expect(horasQueTocan(8, 125)).toEqual({ horas: 2, restoMs: 0 });
+    // A ×8, 250 ms son una hora (y un fotograma no cuenta más de eso).
+    expect(horasQueTocan(8, 250)).toEqual({ horas: 1, restoMs: 0 });
+    expect(horasQueTocan(8, 100, 200)).toEqual({ horas: 1, restoMs: 50 });
   });
 
   it('en pausa no avanza, y un fotograma muy largo no hace saltar el tiempo', () => {

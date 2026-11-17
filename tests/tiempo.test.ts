@@ -60,23 +60,23 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     expect(tiempo.elemento.textContent).toContain('En pausa');
   });
 
-  it('a ×1 pasa una hora cada 0,5 s; a ×8, un día en 1,5 s', () => {
+  it('a ×1 pasa una hora cada 2 s; a ×8, un día en 6 s (ajuste f11-a2)', () => {
     const { tiempo, reloj, horas, alCambiarVelocidad } = crear();
     tiempo.alternarPausa();
     expect(tiempo.velocidad).toBe(1);
     expect(alCambiarVelocidad).toHaveBeenLastCalledWith(1, 0);
-    reloj.correr(3000);
-    expect(horas()).toBe(6);
+    reloj.correr(6000);
+    expect(horas()).toBe(3);
     tiempo.ponerVelocidad(8);
-    reloj.correr(1500);
-    expect(horas()).toBe(6 + 24);
+    reloj.correr(6000);
+    expect(horas()).toBe(3 + 24);
     expect(tiempo.elemento.textContent).toContain('Velocidad ×8');
   });
 
   it('la pausa para el tiempo y al seguir vuelve a la última velocidad, sin contar lo parado', () => {
     const { tiempo, reloj, horas } = crear();
     tiempo.ponerVelocidad(4);
-    reloj.correr(250);
+    reloj.correr(1000);
     expect(horas()).toBe(2);
     tiempo.alternarPausa();
     expect(reloj.pendientes).toBe(0);
@@ -84,7 +84,7 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     expect(horas()).toBe(2);
     tiempo.alternarPausa();
     expect(tiempo.velocidad).toBe(4);
-    reloj.correr(125);
+    reloj.correr(500);
     expect(horas()).toBe(3);
   });
 

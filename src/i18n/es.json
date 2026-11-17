@@ -1050,7 +1050,7 @@
       "menuAyuda": "Salir al menú principal",
       "pais": "Tu país: {pais}. Pulsa para ir a él en el mapa.",
       "fecha": "Fecha",
-      "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 0,5 s a ×1.",
+      "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 2 s a ×1.",
       "tesoreria": "Tesorería",
       "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 21.",
       "popularidad": "Popularidad",

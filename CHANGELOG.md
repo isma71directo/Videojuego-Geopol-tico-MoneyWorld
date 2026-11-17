@@ -7,6 +7,20 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.12.2 - 2026-11-17
+
+Ajuste de la Fase 11 pedido por el jugador al probar la v0.12.1: un año tiene que ser mucho
+tiempo, porque guerras, manifestaciones o campañas durarán días o semanas.
+
+### Cambiado
+
+- **Reloj cuatro veces más lento** (ajuste f11-a2):
+  - ×1: una hora cada 2 s (un día en 48 s, una semana en unos 5,6 min).
+  - ×2: un día en 24 s.
+  - ×4: un día en 12 s y una semana en 84 s.
+  - ×8: un día en 6 s y un año en unos 36 min (una legislatura, unas 2,4 h).
+- El minutero del reloj se mueve hasta ×4.
+
 ## 0.12.1 - 2026-11-17
 
 Ajuste de la Fase 11 pedido por el jugador al probar la v0.12.0.
