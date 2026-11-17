@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T20:33:03Z",
+  "actualizado": "2026-11-17T20:42:15Z",
   "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 17 en curso (plan aprobado: cada ministerio por dentro; Banco Mundial + FMI; responde a la economía; déficit → deuda). f17-t1 en curso: script reanudable 26-bm-presupuesto.ts (composición de ingresos y gastos, inversión pública, sanidad pública y población de 65 años o más), con descarga por curl con tiempo límite. El servidor del Banco Mundial falla a ratos (errores 502 y sin respuesta): 7 de 14 indicadores descargados en una caché fuera del repositorio (../cache-datos/bm-presupuesto) y reintentos en marcha. El cableado de los datos, el motor del presupuesto, sus tests y los iconos están en un git stash local a la espera de los datos.",
-    "siguientePaso": "Terminar la descarga (npm run datos:presupuesto; se puede repetir, guarda lo descargado), recuperar el stash, construir paises-2010.json y cerrar f17-t1; después, f17-t2 (motor del presupuesto, ya escrito) y f17-t3.",
+    "resumen": "Fase 17 en curso. f17-t1 hecha: 14 indicadores del Banco Mundial (composición de ingresos y gastos públicos de 2010, inversión pública, sanidad pública y población de 65 años o más) en paises-2010.json, de 92 a 217 países según el indicador; el resto, estimado con la mediana de su región y nivel de renta. El servidor del API del Banco Mundial fallaba con las consultas de todos los países: el script es reanudable y, si el API no responde, usa la descarga en CSV de cada indicador.",
+    "siguientePaso": "f17-t2: el presupuesto en el motor (ya escrito): ingresos por tipo, ministerios con sus partidas, pensiones, desempleo e intereses; cuadre con el FMI; formato de partida 6 con migración; tests.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1059,9 +1059,9 @@
         {
           "id": "f17-t1",
           "titulo": "Datos de 2010 (Banco Mundial): ingresos por tipo, gasto por tipo y función (sanidad, educación, defensa, intereses) y deuda real; lo que falte, estimado y marcado",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/49652dc"
         },
         {
           "id": "f17-t2",
