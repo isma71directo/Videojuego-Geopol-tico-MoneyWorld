@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.16.1",
-  "actualizado": "2026-11-17T18:36:08Z",
+  "actualizado": "2026-11-17T18:44:11Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.16.1 (todo funciona). Plan de la Fase 16 (inflación y paro) aprobado: paro con la ley de Okun e histéresis; inflación persistente sin ancla hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad aún no cambia); alertas económicas del país del jugador con aviso y sonido. La fase pasa a 4 tareas.",
-    "siguientePaso": "f16-t1: paro con la ley de Okun, paro estructural de 2010 e histéresis; los ocupados producen y el paro baja la confianza y el consumo; tests de «si se hace mal, empeora».",
+    "resumen": "Fase 16 en curso. f16-t1 hecha: paro de cada país desde el de 2010 con la ley de Okun sobre la brecha de producción (sensibilidad estimada por nivel de renta y rigidez), adaptación lenta del mercado de trabajo e histéresis (el estructural sube y no baja solo; esos parados dejan de producir); el paro resta consumo y confianza. Grecia: 12,7 % → 24 % en cuatro años → 19 %; España 19,9 % → 25 %. Formato de partida 5 con migración. Aún no se ve en pantalla (llega en f16-t3).",
+    "siguientePaso": "f16-t2: inflación persistente (expectativas y brecha de producción, sin ancla hasta el banco central) y PIB nominal; la inflación alta baja la inversión y la deflación frena el consumo; tests.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1018,15 +1018,15 @@
         {
           "id": "f16-t1",
           "titulo": "Paro: ley de Okun, paro estructural e histéresis; los ocupados producen y el paro baja la confianza y el consumo",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f16-t2",
           "titulo": "Inflación persistente (expectativas y brecha de producción) y PIB nominal; la inflación alta baja la inversión y la deflación, el consumo",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

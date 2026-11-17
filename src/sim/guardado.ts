@@ -164,6 +164,9 @@ export const MIGRACIONES: Record<number, (partida: Datos) => Datos> = {
   // 3 → 4 (ajuste f15-a1): los desequilibrios de 2010 en la economía. Como la economía, se
   // completan al cargar con los datos de los países (completarEconomia).
   3: (partida) => ({ ...partida, formato: 4 }),
+  // 4 → 5 (Fase 16): el paro y la inflación en la economía. También se completan al cargar con
+  // los datos de los países (completarEconomia).
+  4: (partida) => ({ ...partida, formato: 5 }),
 };
 
 /** Lleva una partida de cualquier formato anterior al actual. */

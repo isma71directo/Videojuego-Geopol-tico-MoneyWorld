@@ -54,8 +54,8 @@ describe('la economía de 2010 (tarea f15-t2)', () => {
     }
     expect(e.demandaBase.consumo * 100).toBeCloseTo(espana.consumoHogaresPib!, 5);
     expect(e.demandaBase.inversion * 100).toBeCloseTo(espana.inversionPib!, 5);
-    // Al empezar, la producción potencial de cada sector es lo que produce de verdad.
-    expect(e.pibPotencial).toBe(e.pib);
+    // Al empezar, lo que podría producir es el PIB sin la brecha de la confianza de 2010 (f16-t1).
+    expect(e.pibPotencial * (1 + e.brechaDemanda)).toBeCloseTo(e.pib, -3);
   });
 
   it('todos los países jugables tienen su economía, con valores válidos', () => {

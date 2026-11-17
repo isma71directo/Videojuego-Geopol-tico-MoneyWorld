@@ -107,5 +107,26 @@
     "facil": 0.5,
     "normal": 0.75,
     "realista": 1
+  },
+  "$comentarioParo": "Paro (tarea f16-t1; decisiones del jugador: ley de Okun e histéresis). El paro tiende al estructural menos «sensibilidad» × la brecha de producción (PIB frente a su potencial) que el mercado de trabajo aún no ha asumido, acercándose «ajusteMensual» cada mes. El mercado de trabajo asume la brecha poco a poco (salarios más bajos con los que se vuelve a contratar): la mitad cada «mesesAsumir» meses. La sensibilidad (estimada) depende del nivel de renta (los mercados informales de los países pobres absorben más) y crece «porPuntoRigido» por cada punto de paro de 2010 por encima de «paroRigido» (mercados rígidos o con mucho empleo temporal), hasta «sensibilidadMaxima». El estructural es el paro de 2010 y, mientras el paro esté por encima, sube «histeresisMensual» de la diferencia cada mes (histéresis; no baja solo): esos parados dejan de contar como trabajo para producir. El paro no baja de «minimo» ni de «minimoRelativo» × el estructural, ni pasa de «maximo». Consecuencias: cada punto de paro por encima del estructural resta «consumoPorPunto» puntos al consumo (los parados gastan menos) y «confianzaPorPuntoCiclico» a la confianza de los consumidores, y cada punto que ha subido en un año, «confianzaPorPuntoSubida».",
+  "paro": {
+    "ajusteMensual": 0.25,
+    "mesesAsumir": 84,
+    "sensibilidad": {
+      "bajo": 0.1,
+      "medio-bajo": 0.2,
+      "medio-alto": 0.3,
+      "alto": 0.45
+    },
+    "paroRigido": 10,
+    "porPuntoRigido": 0.05,
+    "sensibilidadMaxima": 1,
+    "histeresisMensual": 0.008,
+    "minimo": 0.01,
+    "minimoRelativo": 0.5,
+    "maximo": 0.5,
+    "consumoPorPunto": 0.5,
+    "confianzaPorPuntoCiclico": 1,
+    "confianzaPorPuntoSubida": 2
   }
 }

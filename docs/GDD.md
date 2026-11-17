@@ -228,6 +228,14 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Consecuencias ya:** el paro alto, y sobre todo que suba, baja la confianza de los consumidores y el consumo; una inflación alta (más del 10 %) da incertidumbre y baja la inversión y la confianza de las empresas, y la deflación frena el consumo. La popularidad no cambia todavía (llega con la opinión pública).
 - **Alertas económicas** solo para el país del jugador, con aviso visual y un sonido propio de cada tipo (recesión, paro que se dispara, inflación alta y deflación); las graves (recesión, inflación de más del 20 %) pausan la partida si la pausa automática está activada.
 
+**Modelo del paro (tarea f16-t1; parámetros en `src/sim/config/economia.json`, «paro»):**
+- Brecha de producción: cuánto se aparta el PIB de lo que podría producir. El potencial de 2010 es el PIB sin la brecha de la confianza de ese año. Si un país crecía en 2010 por encima de su potencial (rebote tras 2009 o auge), ese impulso se toma como capacidad nueva; si crecía por debajo, estaba en recesión y abre una brecha.
+- Ley de Okun: cada mes, el paro se acerca (un 25 %) al estructural menos la sensibilidad × la brecha que el mercado de trabajo aún no ha asumido. La sensibilidad, estimada, es de 0,45 en los países de renta alta, 0,3 en los de renta media-alta, 0,2 en los de media-baja y 0,1 en los de baja (más economía informal), y crece un 5 % por cada punto de paro de 2010 por encima del 10 % (mercados rígidos o con mucho empleo temporal), hasta 1.
+- El mercado de trabajo asume la brecha poco a poco (la mitad cada 84 meses): con salarios más bajos se vuelve a contratar aunque el PIB no se recupere.
+- Histéresis: mientras el paro esté por encima del estructural, este sube un 0,8 % de la diferencia cada mes y no baja solo. Esos parados dejan de contar como trabajo para producir.
+- Consecuencias: cada punto de paro por encima del estructural resta medio punto al consumo y un punto a la confianza de los consumidores; cada punto que sube en un año, dos puntos más de confianza.
+- Sin intervención, Grecia pasa del 12,7 % de paro al 24 % en cuatro años y baja hacia el 19 % (real: 27,5 % en 2013 y 17 % en 2019); España, del 19,9 % al 25 %; Portugal, del 10,8 % al 15 % y vuelve al 11 %. Alemania, China o México apenas cambian. Estados Unidos sube al 10,6 % (real: bajó al 5 % con la ayuda de la Reserva Federal; llegará con el banco central, Fase 20).
+
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
 ### 6.2 Presupuesto y deuda
