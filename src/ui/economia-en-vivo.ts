@@ -1,8 +1,9 @@
 /**
  * La economía en vivo (tarea f15-t3, decisión del jugador: en la pestaña Economía de la ficha de
  * cada país y, para el del jugador, en la ventana Economía › Economía). El PIB real y su
- * crecimiento, la confianza de consumidores y empresas, el consumo, la inversión y el ahorro, la
- * producción de los siete sectores y el gráfico del PIB desde el 1 de enero de 2010.
+ * crecimiento, el PIB nominal, el paro y la inflación (tarea f16-t3), la confianza de
+ * consumidores y empresas, el consumo, la inversión y el ahorro, la producción de los siete
+ * sectores y los gráficos del PIB y del paro y la inflación desde el 1 de enero de 2010.
  *
  * Los bloques a la vista se ponen al día solos cada mes (refrescarEconomiaEnVivo), sin rehacer
  * la ficha ni perder por dónde se está leyendo.
@@ -15,7 +16,9 @@ import {
   ahorroNacional,
   crecimientoInteranual,
   crecimientoPotencial,
+  pibNominal,
   SECTORES,
+  subidaDelParo,
   type EconomiaPais,
   type Sector,
 } from '../sim/economia';
@@ -122,6 +125,25 @@ function fila(
   return el('div', { class: 'panel-pais__fila' }, termino, el('dd', { class: clase }, valor));
 }
 
+/** Por encima de esta inflación, el dato sale en rojo (resta inversión: tarea f16-t2). */
+const LIMITE_INFLACION = 0.1;
+
+/** El paro, con lo que ha cambiado en 12 meses: «21,8 % (+1,9)»; en rojo si sube. */
+function filaParo(economia: EconomiaPais): HTMLElement {
+  const subida = subidaDelParo(economia);
+  const valor =
+    subida === null
+      ? porcentaje(economia.paro * 100)
+      : `${porcentaje(economia.paro * 100)} (${puntosConSigno(subida * 100)})`;
+  return fila(
+    'paro',
+    t('juego.economia.paro'),
+    valor,
+    t('juego.economia.paroAyuda'),
+    subida !== null && subida > 0.001 ? 'economia__baja' : undefined,
+  );
+}
+
 /** Índice de confianza con su comparación con lo normal: «104 (+4)». */
 const textoConfianza = (valor: number): string =>
   `${Math.round(valor)} (${puntosConSigno(valor - 100)})*`;
@@ -143,6 +165,12 @@ function contenido(
     { class: 'panel-pais__datos economia__datos' },
     fila('pib', t('juego.economia.pib'), dolares(economia.pib), t('juego.economia.pibAyuda')),
     fila(
+      'lingote',
+      t('juego.economia.pibNominal'),
+      dolares(pibNominal(economia)),
+      t('juego.economia.pibNominalAyuda'),
+    ),
+    fila(
       'crecimiento',
       crecimiento?.desdeInicio
         ? t('juego.economia.crecimientoDesde')
@@ -156,6 +184,16 @@ function contenido(
       t('juego.economia.potencial'),
       porcentaje(crecimientoPotencial(economia) * 100),
       t('juego.economia.potencialAyuda'),
+    ),
+    filaParo(economia),
+    fila(
+      'inflacion',
+      t('juego.economia.inflacion'),
+      porcentaje(economia.inflacion * 100),
+      t('juego.economia.inflacionAyuda'),
+      economia.inflacion > LIMITE_INFLACION || economia.inflacion < 0
+        ? 'economia__baja'
+        : undefined,
     ),
     fila(
       'confianza',
@@ -235,6 +273,28 @@ function contenido(
       t('juego.economia.milesDeMillones', { valor: Math.round(v).toLocaleString('es-ES') }),
     nombreX: t('juego.economia.mes'),
   });
+  // Paro e inflación en el mismo gráfico: los dos en % (un solo eje, con el cero).
+  const precios = graficoLineas({
+    titulo: t('juego.economia.graficoPreciosTitulo'),
+    series: [
+      {
+        nombre: t('juego.economia.paro'),
+        puntos: economia.serieParo.map((paro, mes) => [mes, paro * 100] as const),
+      },
+      {
+        nombre: t('juego.economia.inflacion'),
+        puntos: economia.serieInflacion.map((inflacion, mes) => [mes, inflacion * 100] as const),
+      },
+    ],
+    ancho: opciones.anchoGrafico ?? 520,
+    alto: opciones.anchoGrafico && opciones.anchoGrafico < 400 ? 200 : 180,
+    animado: primera,
+    latido: !primera,
+    formatoX: etiquetaMarca(economia.meses),
+    marcasX: marcasMeses(economia.meses),
+    formatoY: (v) => porcentaje(v),
+    nombreX: t('juego.economia.mes'),
+  });
   return [
     el(
       'p',
@@ -246,6 +306,7 @@ function contenido(
     datos,
     sectores,
     grafico,
+    precios,
     el('p', { class: 'panel-pais__pie economia__nota' }, t('juego.economia.nota')),
   ];
 }

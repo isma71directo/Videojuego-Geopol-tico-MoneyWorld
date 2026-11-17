@@ -173,7 +173,7 @@ describe('iconos y gráfico animado (tarea f15-t4)', () => {
     }
     // (China no tiene desequilibrios en 2010: no sale la fila del ajuste forzoso.)
     const bloque = bloqueEconomia(() => ({ economia: economiaDe('CHN'), fecha: '2010-01-01' }));
-    expect(bloque.elemento.querySelectorAll('.economia__termino .icono')).toHaveLength(8);
+    expect(bloque.elemento.querySelectorAll('.economia__termino .icono')).toHaveLength(11);
     expect(bloque.elemento.querySelectorAll('.grafico__leyenda--partes .icono')).toHaveLength(7);
   });
 
@@ -187,6 +187,29 @@ describe('iconos y gráfico animado (tarea f15-t4)', () => {
     meses(e, 120);
     refrescarEconomiaEnVivo();
     expect(texto()).not.toContain('Ajuste forzoso');
+  });
+
+  it('enseña el paro, la inflación y el PIB nominal, con su gráfico (tarea f16-t3)', () => {
+    const e = economiaDe('GRC');
+    const bloque = bloqueEconomia(() => ({ economia: e, fecha: '2010-01-01' }));
+    document.body.appendChild(bloque.elemento);
+    const texto = () => bloque.elemento.textContent!;
+    expect(texto()).toContain('PIB nominal');
+    expect(texto()).toContain('Paro');
+    expect(texto()).toContain('12,7 %');
+    expect(texto()).toContain('Inflación');
+    expect(texto()).toContain('4,7 %');
+    expect(texto()).toContain('Paro e inflación desde enero de 2010');
+    // Dos gráficos de líneas: el PIB y el paro con la inflación (dos líneas).
+    expect(bloque.elemento.querySelectorAll('.grafico__linea')).toHaveLength(3);
+    // Al cabo de un año, el paro de Grecia ha subido: sale en rojo, con lo que ha cambiado.
+    meses(e, 12);
+    refrescarEconomiaEnVivo();
+    const fila = [...bloque.elemento.querySelectorAll('.panel-pais__fila')].find((f) =>
+      f.querySelector('dt')!.textContent!.includes('Paro'),
+    )!;
+    expect(fila.querySelector('dd')!.textContent).toMatch(/\(\+\d/);
+    expect(fila.querySelector('dd')!.classList.contains('economia__baja')).toBe(true);
   });
 
   it('el gráfico se dibuja la primera vez y después solo late el último punto', () => {

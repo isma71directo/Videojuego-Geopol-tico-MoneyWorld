@@ -242,6 +242,8 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Consecuencias: cada punto de inflación por encima del 10 % resta un 1 % a la inversión (hasta la mitad) y un punto a la confianza de las empresas; cada punto de deflación resta un 1 % al consumo. La demanda de 2010 ya trae el daño de la inflación de ese año: solo cuentan los cambios.
 - Sin intervención: Venezuela sigue en torno al 26-28 %, la India en el 12 %, Japón en deflación (−1 %) y Alemania en el 1,1 %; Grecia baja del 4,7 % a casi el 0 % en cinco años y a −0,8 % en diez (real: −1,4 % en 2014) y España, del 1,8 % al −1 %. Gastar de más recalienta: baja el paro, pero sube la inflación.
 
+**En pantalla (tarea f16-t3):** la pestaña Economía de la ficha de cada país y Economía › Economía muestran el PIB nominal, el paro (con lo que ha cambiado en 12 meses; en rojo si sube) y la inflación (en rojo por encima del 10 % o en deflación), y un segundo gráfico con el paro y la inflación desde enero de 2010. **Test de credibilidad:** en 5 años sin intervención, los 20 mayores países crecen entre −10 % y +15 % al año, con inflación entre −5 % y +30 %. Fuera de ese rango solo quedan Macao y Zimbabue, y solo el primer año, porque arrancan con su crecimiento real de 2010 (25 % y 19,7 %).
+
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
 ### 6.2 Presupuesto y deuda
