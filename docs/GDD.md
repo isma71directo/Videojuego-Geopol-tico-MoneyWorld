@@ -331,6 +331,20 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 
 
+**Decisiones del jugador (17/11/2026, plan de la Fase 18: deuda, prima de riesgo y rating):**
+- **Rating y prima de 2010:** con una fórmula pública que tiene en cuenta la deuda, el déficit, la renta por habitante, la inflación, el crecimiento y la estabilidad política. Se calibra con los tipos reales del bono a 10 años de 2010 de la OCDE (40 países: Grecia 9,1 %, Letonia 10,3 %, Irlanda 5,7 %, Portugal 5,4 %, España 4,25 %, Alemania 2,7 %, Japón 1,1 %…). Esos 40 empiezan con su tipo real; los demás, estimados y marcados.
+- **La prima encarece la deuda poco a poco:** cada país tiene una vida media de su deuda (unos 6-7 años). Cada mes vence una parte y se renueva al tipo de ahora, igual que la deuda nueva por el déficit.
+- **Crisis de deuda (mercados cerrados): el país elige** entre dos opciones:
+  - rescate del FMI: préstamo barato a cambio de un programa de ajuste de 3 años (recortes y subidas de impuestos, con recesión);
+  - impago: se borra cerca de la mitad de la deuda, pero los mercados cierran 3-5 años (solo se gasta lo que se recauda), con rating D, recesión y caída de la confianza.
+
+  Los países de la IA eligen según su situación.
+- **Consecuencias de una prima alta:**
+  - el crédito se encarece para bancos, empresas y familias: se invierte menos y cae la confianza de las empresas (sustituye al cierre del crédito del ajuste forzoso f15-a1);
+  - contagio: cuando un país entra en crisis, sube la prima de los que se le parecen (misma región o moneda y deuda alta).
+  - La huida de capitales queda para la moneda (Fase 21).
+- **Sustituye al ajuste forzoso provisional** de la v0.16.1: los recortes ya no son automáticos. Llegan con el rescate del FMI, y el jugador los decidirá con la Pantalla de Presupuesto (Fase 23).
+
 ### 6.3 Impuestos
 
 | Impuesto | Parámetros |
@@ -1040,10 +1054,11 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 18 — v0.19.0 · Deuda, prima de riesgo y rating
 **Objetivo:** el déficit se convierte en deuda y los mercados reaccionan.
-**Tareas**
-1. Déficit, emisión de bonos, intereses, prima de riesgo y rating.
-2. Impago y petición de ayuda al FMI.
-3. **Audiovisual:** distintivo animado del rating.
+**Tareas** (concretadas con el jugador el 17/11/2026: fórmula calibrada con los tipos reales de la OCDE; la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago; crédito más caro y contagio; la fase pasa a 4 tareas)
+1. Datos de 2010: tipos reales a 10 años de la OCDE (40 países) y fórmula de rating y prima calibrada con ellos (los demás países, estimados y marcados).
+2. El mercado de deuda en el motor: rating (AAA → D) revisado cada trimestre, prima de riesgo sobre un tipo base provisional, renovación de la deuda con su vida media, crédito más caro y contagio; sustituye al ajuste forzoso provisional (f15-a1).
+3. Crisis de deuda: mercados cerrados, rescate del FMI (programa de ajuste) o impago (quita y mercados cerrados), para el jugador y para la IA.
+4. **Audiovisual:** distintivo animado del rating, gráfico de la prima y alertas de rating y de crisis con su sonido.
 
 **Notas:** hasta el banco central (Fase 20), el tipo de interés de base de cada país es provisional. Sustituye al desequilibrio provisional del ajuste f15-a1 (la deuda, el déficit y el déficit exterior de 2010 pasan a ser los de verdad, que cambian con el presupuesto).
 
@@ -2254,6 +2269,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Nada mejora solo y nada es gratis: sin decisiones, cada país sigue sus datos (con desequilibrios, cae en crisis si no se corrigen); cada palanca tiene su coste; dureza según la dificultad. Ajuste f15-a1 (v0.16.1): productividad que solo converge con base, desequilibrios de 2010 que fuerzan un ajuste. Presupuesto y deuda adelantados a las Fases 17 y 18 (la pantalla de Economía, el banco central, la moneda y los bancos pasan a las 19 a 22). Regla 20: tests de «si se hace mal, empeora» | Consulta del jugador tras la v0.16.0 («la economía no siempre va a crecer») | 1, 6.1, 9, 11, 13 |
 | 17/11/2026 | Fase 16 concretada con el jugador: paro con la ley de Okun e histéresis; inflación persistente (sin ancla hasta el banco central); el paro baja el consumo y la inflación alta, la inversión (la popularidad aún no cambia); alertas económicas del país del jugador con aviso y sonido; la fase pasa a 4 tareas | Plan de la Fase 16 aprobado por el jugador | 6.1, 9, 13 |
 | 17/11/2026 | Fase 17 concretada con el jugador: presupuesto con cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto; la fase pasa a 4 tareas | Plan de la Fase 17 aprobado por el jugador | 6.2, 9, 13 |
+| 17/11/2026 | Fase 18 concretada con el jugador: rating y prima con fórmula calibrada con los tipos reales de 2010 de la OCDE; la prima encarece la deuda poco a poco (vida media); en una crisis de deuda se elige entre el rescate del FMI y el impago; una prima alta encarece el crédito y se contagia; sustituye al ajuste forzoso provisional; la fase pasa a 4 tareas | Plan de la Fase 18 aprobado por el jugador | 6.2, 9, 13 |
 
 ---
 
@@ -2283,6 +2299,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Economía sin intervención y dureza | Según sus datos / casi quieta; corregir ya / en la Fase 16; adelantar presupuesto y deuda / mantener el orden; dureza según la dificultad / siempre realista / manejable | **Decidido por el jugador (17/11/2026):** sin intervención, cada país sigue sus datos (nada mejora solo; con desequilibrios cae en crisis); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda pasan a las Fases 17 y 18; la dureza depende de la dificultad («realista», como la realidad) |
 | Inflación y paro | Paro: Okun con histéresis / Okun simple; inflación: persistente / converge al 2 % / la de 2010 más la brecha; efectos: consumo, inversión, popularidad; alertas: mi país con aviso y sonido / también los grandes / solo en Informes | **Decidido por el jugador (17/11/2026):** Okun con histéresis; inflación persistente hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad, todavía no); alertas del país del jugador con aviso y sonido (las graves pausan) |
 | Presupuesto | Detalle: ministerios y partidas / grandes bloques / cada ministerio por dentro; datos: Banco Mundial + FMI / COFOG; evolución: responde a la economía / fijo en % del PIB; tesorería: déficit → deuda / tesorería sin deuda | **Decidido por el jugador (17/11/2026):** cada ministerio por dentro; Banco Mundial + FMI (lo demás, estimado y marcado); responde a la economía (estabilizadores automáticos); el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto |
+| Deuda, prima y rating | Datos: fórmula + tipos reales / solo fórmula / ratings a mano; intereses: poco a poco / al momento; crisis: elegir FMI o impago / siempre FMI / siempre impago; efectos: crédito más caro, contagio, huida de capitales | **Decidido por el jugador (17/11/2026):** fórmula calibrada con los tipos reales de 2010 de la OCDE (40 países); la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago (la IA, según su situación); crédito más caro y contagio |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
