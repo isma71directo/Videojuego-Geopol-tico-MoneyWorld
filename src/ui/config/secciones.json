@@ -67,7 +67,7 @@
       "id": "informes",
       "tecla": "n",
       "icono": "noticias",
-      "elementos": ["noticias", "informe", "historial", "comparador"]
+      "elementos": ["noticias", "informe", "efectos", "historial", "comparador"]
     }
   ],
   "secciones": {
@@ -237,6 +237,12 @@
         "comparador": 98,
         "clasificaciones": 98
       }
+    },
+    "efectos": {
+      "icono": "efectos",
+      "pestanas": {
+        "curso": 13
+      }
     }
   },
   "ministerios": {
@@ -349,6 +355,7 @@
     "infraestructuras": 35
   },
   "fases": {
+    "13": "Efectos y pausa automática",
     "17": "Pantalla de Economía",
     "18": "Banco central y tipos de interés",
     "22": "Deuda, prima de riesgo y rating",

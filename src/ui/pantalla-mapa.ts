@@ -21,7 +21,8 @@ import { contenidoLeyenda } from './leyenda';
 import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
-import { crearBarraSecciones } from './secciones';
+import { crearBarraSecciones, ponerContenido, refrescarElemento } from './secciones';
+import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
 import { msPorHora } from '../sim/reloj';
@@ -232,6 +233,10 @@ export function abrirPantallaMapa(
   };
   if (motor && partida) {
     motor.alRecibir = (mensaje) => {
+      // Un día nuevo o efectos distintos cambian lo que dice «Efectos en curso» (tarea f13-t2).
+      const cambian =
+        partida.fecha !== mensaje.fecha ||
+        JSON.stringify(partida.efectos) !== JSON.stringify(mensaje.efectos);
       partida.fecha = mensaje.fecha;
       partida.hora = mensaje.hora;
       partida.efectos = mensaje.efectos;
@@ -239,6 +244,7 @@ export function abrirPantallaMapa(
       recibidoEn = performance.now();
       velocidadMotor = mensaje.velocidad;
       barraPartida?.actualizar(partida);
+      if (cambian) refrescarElemento('efectos');
       if (animacion === null) animar();
     };
     motor.enviar({ tipo: 'empezar', partida, cargaPruebaMs: cargaDePrueba() });
@@ -333,6 +339,8 @@ export function abrirPantallaMapa(
   });
   // Barra de secciones (ajuste f7-a2): Gobierno · Economía · Política · Mundo · Ejército · Más.
   const secciones = crearBarraSecciones();
+  // Informes › Efectos en curso (tarea f13-t2), con los de la partida (o un aviso sin ella).
+  ponerContenido('efectos', () => contenidoEfectosEnCurso(partida));
   const alTeclearSecciones = (evento: KeyboardEvent): void => {
     secciones.alTeclear(evento);
   };
@@ -732,6 +740,7 @@ export function abrirPantallaMapa(
     buscador.cerrar(false);
     barraPartida?.destruir();
     secciones.destruir();
+    ponerContenido('efectos', null);
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

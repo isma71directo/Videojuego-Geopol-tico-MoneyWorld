@@ -944,6 +944,15 @@
           "indicadores": "Tensión territorial y nivel de autonomía",
           "acciones": "competencias, financiación regional y diálogo"
         }
+      },
+      "efectos": {
+        "titulo": "Efectos en curso",
+        "pestanas": {
+          "curso": {
+            "titulo": "Efectos en curso",
+            "texto": "Lo que está cambiando los datos de tu país (leyes, tecnologías, eventos…), desde cuándo y hasta cuándo."
+          }
+        }
       }
     },
     "buscador": {
@@ -1072,6 +1081,31 @@
         "enPausa": "En pausa",
         "aVelocidad": "Velocidad ×{n}"
       }
+    },
+    "efectos": {
+      "intro": "Lo que está cambiando los datos de tu país (leyes, tecnologías, eventos…), desde cuándo y hasta cuándo. Al terminar, cada efecto desaparece solo.",
+      "ninguno": "No hay ningún efecto en curso. Llegarán con las leyes, la tecnología, los eventos y los edificios.",
+      "sinPartida": "Los efectos en curso se ven durante una partida.",
+      "enCurso": "En curso",
+      "empieza": "Empieza el {fecha}",
+      "desdeHasta": "Del {desde} al {hasta}",
+      "desdePermanente": "Desde el {desde}, sin fecha de fin",
+      "hasta": "hasta el {fecha}",
+      "permanente": "sin fecha de fin",
+      "enDato": "Efectos en curso",
+      "prueba": "prueba",
+      "origenes": {
+        "ley": "Ley",
+        "tecnologia": "Tecnología",
+        "evento": "Evento",
+        "edificio": "Edificio",
+        "prueba": "Prueba"
+      },
+      "campos": {
+        "popularidad": "Popularidad",
+        "tesoreria": "Tesorería"
+      },
+      "puntos": "{valor} puntos"
     }
   },
   "hojaDeRuta": {
@@ -1217,7 +1251,8 @@
       "popularidad": "Popularidad",
       "salir": "Salir",
       "pausa": "Pausa",
-      "seguir": "Seguir"
+      "seguir": "Seguir",
+      "efectos": "Efectos en curso"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",

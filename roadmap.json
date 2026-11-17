@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.13.0",
-  "actualizado": "2026-11-17T07:30:18Z",
+  "actualizado": "2026-11-17T07:34:16Z",
   "faseActiva": "fase-13",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f13-t1 hecha: motor de efectos (src/sim/efectos.ts). Un efecto cambia un dato de un país (sumar, multiplicar o fijar) desde una fecha, con su retraso, hasta otra, con su duración en días o meses (el último día del mes cuando no existe); el valor que ve el jugador es el de base con los efectos vigentes aplicados (primero fijar, luego multiplicar y luego sumar, dentro de sus límites). La partida guarda sus efectos y el motor los añade (orden «efecto») y los quita al terminar; la barra superior ya enseña los valores con efectos.",
-    "siguientePaso": "f13-t2: enseñar los efectos en curso en la explicación de cada dato y en la ventana «Efectos en curso» de Informes.",
+    "resumen": "f13-t2 hecha: los efectos en curso se ven en la explicación de la tesorería y de la popularidad (qué los cambia y hasta cuándo) y en la ventana nueva Informes › Efectos en curso (con su icono), con lo que cambia cada uno, su origen, sus fechas y si ya actúa o cuándo empieza; se repinta sola al cambiar el día o los efectos. La barra de secciones admite ya contenido de verdad en lugar del hueco «llega en la fase N».",
+    "siguientePaso": "f13-t3: pausa automática ante sucesos importantes con su opción en Ajustes y el modo de prueba «?prueba».",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -866,20 +866,20 @@
           "titulo": "Motor de efectos (sección 8): modificadores con variable, operación (sumar, multiplicar o fijar), valor, retraso y duración, que se aplican y caducan solos en el motor",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/32ac6d0"
         },
         {
           "id": "f13-t2",
           "titulo": "Ver los efectos en curso: en la explicación de cada dato (qué lo cambia y hasta cuándo) y en la ventana «Efectos en curso» de Informes (decisión del jugador)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f13-t3",
           "titulo": "Pausa automática ante sucesos importantes, con su opción en Ajustes; el motor se para en el momento exacto; modo de prueba «?prueba» con un efecto y un suceso de prueba",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
