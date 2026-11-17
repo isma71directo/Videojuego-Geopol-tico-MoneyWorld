@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.3",
-  "actualizado": "2026-11-17T06:40:35Z",
+  "versionActual": "0.12.4",
+  "actualizado": "2026-11-17T06:42:26Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Ajustes de la v0.12.4: velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4) con las teclas 1 a 6 (f11-a4), y «Nueva partida» sin semilla: cada partida tiene su propio azar (f11-a5). Decisión del jugador para la Fase 12: el azar es distinto en cada partida (la IA no repite decisiones ni las del jugador tienen siempre la misma consecuencia) y, al cargar en un punto anterior, repetir lo mismo puede dar el mismo resultado o no; GDD y plan de la Fase 12 al día.",
-    "siguientePaso": "Publicar la v0.12.4 y abrir su PR; cuando el jugador la fusione, presentar el plan de la Fase 12.",
-    "pendienteDelJugador": []
+    "resumen": "v0.12.4 publicada: velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (f11-a4) y «Nueva partida» sin semilla (f11-a5). Decisión del jugador sobre el azar anotada en el GDD y en el plan de la Fase 12. PR abierto.",
+    "siguientePaso": "Cuando el jugador fusione la v0.12.4: presentar el plan de la Fase 12 (motor en un Web Worker, azar distinto en cada partida y primera música ambiental) y preguntarle por el estilo de la música.",
+    "pendienteDelJugador": [
+      "Probar la v0.12.4 en el PC: «Nueva partida» ya no tiene semilla; en la partida, las velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (teclas 1 a 6)",
+      "Fusionar el PR de la v0.12.4"
+    ]
   },
   "etapas": [
     {
@@ -796,7 +799,7 @@
           "origen": "Petición del jugador tras probar la v0.12.3",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b9d4f2d"
         },
         {
           "id": "f11-a5",
@@ -805,7 +808,7 @@
           "origen": "Decisión del jugador al comentar el plan de la Fase 12",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b9d4f2d"
         }
       ]
     },
@@ -4592,6 +4595,14 @@
       "fecha": "2026-11-17",
       "cambios": [
         "Velocidad ×16 (un día en 3 s, un año en unos 18 min), con su botón en la barra superior y la tecla 5"
+      ]
+    },
+    {
+      "version": "0.12.4",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4), con las teclas 1 a 6; a ×64, un día en 0,75 s",
+        "«Nueva partida» sin semilla: cada partida tiene su propio azar, que no se elige"
       ]
     }
   ]
