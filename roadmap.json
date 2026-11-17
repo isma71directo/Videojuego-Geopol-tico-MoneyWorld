@@ -1,13 +1,20 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.16.1",
-  "actualizado": "2026-11-17T19:12:25Z",
-  "faseActiva": "fase-16",
+  "versionActual": "0.17.0",
+  "actualizado": "2026-11-17T19:13:27Z",
+  "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 16: tareas t1 a t4 hechas. f16-t4: alertas económicas del país del jugador (recesión, paro que se dispara, inflación alta o desbocada y deflación) como sucesos del motor; las graves paran con el aviso del centro y las demás salen en una tarjeta arriba a la derecha; un sonido propio de cada una, iconos nuevos de recesión y deflación y sección en la galería. Probado en la partida: Grecia entra en recesión el 1 de septiembre de 2010 y la partida se para.",
-    "siguientePaso": "Cerrar la Fase 16 como v0.17.0 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 16 cerrada como v0.17.0: paro con la ley de Okun, adaptación del mercado de trabajo e histéresis (los parados dejan de producir y gastan menos); inflación persistente sin ancla hasta el banco central, con PIB nominal (la alta resta inversión y la deflación, consumo); paro, inflación y PIB nominal en la ficha y en Economía › Economía con su gráfico; test de credibilidad del GDD en verde; alertas económicas del país del jugador con aviso, iconos y sonido propio. PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.17.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 17 (presupuesto: ingresos y gastos).",
+    "pendienteDelJugador": [
+      "Probar la v0.17.0 en el PC: jugar un año con España (o Grecia) a ×64 y revisar en la ficha (pestaña Economía) el paro, que sube, y la inflación, que baja, con su gráfico",
+      "Esperar las alertas: con Grecia, la recesión para la partida en septiembre de 2010 (aviso del centro con su sonido); después, la tarjeta de «El paro se dispara» arriba a la derecha",
+      "Comparar con Alemania o China, donde el paro y la inflación apenas cambian y no hay alertas",
+      "En la galería: «Alertas económicas» (ver y oír cada una), los sonidos nuevos y la «Economía de un país» con «Avanzar un año»",
+      "Cargar una partida guardada con la v0.16.1 y comprobar que tiene paro e inflación",
+      "Fusionar el PR de la Fase 16"
+    ]
   },
   "etapas": [
     {
@@ -1013,7 +1020,7 @@
       "dependeDe": ["fase-15"],
       "hechoCuando": "Pasa el test de credibilidad",
       "pruebaJugador": "Jugar un año y revisar el paro y la inflación de España",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f16-t1",
@@ -1041,7 +1048,7 @@
           "titulo": "Audiovisual: alertas económicas del país del jugador con aviso, iconos y un sonido propio de cada una",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c683ab1"
         }
       ]
     },
@@ -4724,6 +4731,16 @@
         "Los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan un ajuste si nadie actúa: recortes del gasto, crédito cerrado y menos confianza hasta cerrar el déficit; Grecia cae cuatro años seguidos y Portugal, España, Islandia o Letonia también encogen (provisional hasta la deuda de la Fase 18)",
         "Dureza según la dificultad: en «realista» el ajuste pesa por completo; en «normal», un 75 %, y en «fácil», la mitad",
         "Fila «Ajuste forzoso» en la economía de la ficha y de Economía › Economía; las partidas de la v0.16.0 reciben los desequilibrios al cargarse"
+      ]
+    },
+    {
+      "version": "0.17.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Paro de cada país desde el de 2010: sube cuando la economía produce por debajo de lo que podría (ley de Okun, más en los mercados rígidos), y si se queda alto parte se vuelve estructural y ya no baja solo; los parados gastan menos y hunden la confianza (decisiones del jugador)",
+        "Inflación persistente desde la de 2010: baja con mucho paro y sube cuando falta, sin ancla hasta el banco central; por encima del 10 % resta inversión y la deflación frena el consumo; PIB nominal",
+        "Paro, inflación y PIB nominal en la ficha de cada país y en Economía › Economía, con un gráfico del paro y la inflación; test de credibilidad del GDD (5 años sin intervención en los 20 mayores países)",
+        "Alertas económicas de tu país (recesión, paro que se dispara, inflación alta o desbocada y deflación) con su icono y un sonido propio; las graves paran la partida si la pausa automática está activada; sección en la galería"
       ]
     }
   ]
