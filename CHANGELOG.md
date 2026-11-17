@@ -7,6 +7,42 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.16.0 - 2026-11-17
+
+Fase 15: economía, producción y demanda.
+
+### Añadido
+
+- **Datos de 2010 por sector y demanda** (ONU, _National Accounts – Analysis of Main
+  Aggregates_; script `scripts/datos/25-onu-cuentas.ts`): el peso en la economía de siete
+  sectores (agricultura y pesca; minería y energía; industria; construcción; comercio y turismo;
+  transporte; otros servicios) y el reparto de la demanda (consumo de los hogares, consumo
+  público, inversión, exportaciones e importaciones). 206 países con datos reales; 17
+  territorios, entre ellos Taiwán, estimados y marcados.
+- **Economía de cada país, mes a mes y sin azar** (decisiones del jugador):
+  - Cada sector produce con su productividad, su capital y su trabajo; la inversión se suma al
+    capital, que se desgasta; el trabajo crece con la población; la productividad crece más en
+    los países con menos renta (convergencia).
+  - Cada país arranca con su crecimiento real de 2010 y se acerca poco a poco a su crecimiento
+    potencial (China: 9,7 %, 7,7 %, 6,6 %…; Grecia cae en 2010–2012 y se recupera).
+  - Sin azar: cambiará con las decisiones (inversión, gasto, impuestos, servicios…) cuando
+    lleguen el presupuesto y los impuestos.
+- **Confianza de consumidores y empresas** (índice, 100 = normal; estimada al empezar): sube o
+  baja según el crecimiento frente al potencial y mueve el consumo, la inversión y el PIB.
+  **Ahorro nacional.**
+- **La economía en vivo** en la pestaña Economía de la ficha de cada país y en Economía ›
+  Economía: PIB real, crecimiento, potencial, confianzas, consumo, inversión, ahorro, producción
+  por sectores y gráfico del PIB desde 2010, al día cada mes.
+- **Iconos nuevos** (consumo, inversión, ahorro, confianza, empresas, construcción, servicios y
+  crecimiento potencial) y **gráfico animado**: se dibuja al aparecer y su último punto late con
+  cada mes. Sección «Economía de un país» en la galería.
+
+### Cambiado
+
+- Formato de la partida 3, con la economía de cada país; las partidas guardadas antes la reciben
+  al cargarse, con los datos de 2010.
+- Los gráficos de líneas pueden ajustar el eje a los valores y elegir sus marcas.
+
 ## 0.15.1 - 2026-11-17
 
 Ajustes de la Fase 14 tras probar la v0.15.0.
