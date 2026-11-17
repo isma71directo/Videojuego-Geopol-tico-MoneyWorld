@@ -12,6 +12,8 @@ export type Archivo =
   | 'fiscal'
   | 'onu'
   | 'presupuesto'
+  | 'ocde'
+  | 'gobernanza'
   | 'energia'
   | 'emisiones'
   | 'recursos'
@@ -24,6 +26,8 @@ export const SIGLA: Record<Archivo, string> = {
   fiscal: 'FMI',
   onu: 'ONU',
   presupuesto: 'BM',
+  ocde: 'OCDE',
+  gobernanza: 'BM',
   energia: 'OWID',
   emisiones: 'OWID',
   recursos: 'OWID',
@@ -429,6 +433,30 @@ export const CAMPOS: Campo[] = [
     agregacion: 'media-pib',
     respaldo: 'mediana',
     limites: [0, 30],
+  },
+  // Fase 18: riesgo país (27-riesgo-pais.ts).
+  {
+    clave: 'tipoBono10',
+    nombre: 'Tipo de interés del bono público a 10 años',
+    unidad: '% anual',
+    grupo: 'estado',
+    fuentes: [{ archivo: 'ocde', indicador: 'tipoBono10' }],
+    agregacion: 'media-pib',
+    // Solo los 40 países de la OCDE: los demás lo calcula el juego (fórmula de la prima).
+    respaldo: 'ninguno',
+    limites: [-5, 60],
+    habitual: [0, 15],
+  },
+  {
+    clave: 'estabilidadPolitica',
+    nombre: 'Estabilidad política y ausencia de violencia (WGI)',
+    // Escala actual del Banco Mundial (0 = media mundial; Alemania 2010, 16,7; Yemen, −50,9).
+    unidad: 'índice WGI (0 = media mundial)',
+    grupo: 'estado',
+    fuentes: [{ archivo: 'gobernanza', indicador: 'estabilidadPolitica' }],
+    agregacion: 'media-poblacion',
+    respaldo: 'mediana',
+    limites: [-100, 100],
   },
   {
     clave: 'poblacionMayor65',

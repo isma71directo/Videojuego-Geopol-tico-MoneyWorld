@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.18.0",
-  "actualizado": "2026-11-17T22:10:33Z",
+  "actualizado": "2026-11-17T22:21:38Z",
   "faseActiva": "fase-18",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.18.0. Plan de la Fase 18 (deuda, prima y rating) aprobado: fórmula de rating y prima calibrada con los tipos reales de 2010 de la OCDE (40 países); la prima encarece la deuda poco a poco (vida media); en una crisis de deuda se elige entre el rescate del FMI y el impago; una prima alta encarece el crédito y se contagia; sustituye al ajuste forzoso provisional. La fase pasa a 4 tareas.",
-    "siguientePaso": "f18-t1: script de los tipos a 10 años de 2010 de la OCDE (SDMX, 40 países) y fórmula de rating y prima calibrada con ellos.",
+    "resumen": "Fase 18 en curso. f18-t1 hecha: tipos reales a 10 años de 2010 de la OCDE (40 países) y estabilidad política del Banco Mundial (WGI, 204 países) en paises-2010.json; fórmula de la prima (renta, estabilidad, inflación, crecimiento, deuda, déficit, déficit exterior y carga de intereses; más castigo sin moneda propia) calibrada con los 40 tipos reales (error medio 0,8 puntos) y rating de AAA a D. Grecia BB+, España A+, Alemania AAA en 2010.",
+    "siguientePaso": "f18-t2: el mercado de deuda en el motor (rating trimestral, prima, renovación de la deuda con su vida media, crédito más caro y contagio), que sustituye al ajuste forzoso provisional; tests de «si se hace mal, empeora».",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1100,15 +1100,15 @@
         {
           "id": "f18-t1",
           "titulo": "Datos de 2010: tipos reales a 10 años de la OCDE (40 países) y fórmula de rating y prima calibrada con ellos (los demás, estimados y marcados)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f18-t2",
           "titulo": "El mercado de deuda en el motor: rating (AAA → D) trimestral, prima sobre un tipo base provisional, renovación de la deuda con su vida media, crédito más caro y contagio; sustituye al ajuste forzoso provisional",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

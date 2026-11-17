@@ -151,6 +151,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | FMI, Fiscal Monitor (vía DataMapper) | Ingresos y gasto de las administraciones públicas de 2010 (% del PIB) | Tesorería inicial provisional (Fase 10) y, más adelante, presupuesto |
 | Banco Mundial (API WDI y, si su servidor no responde, la descarga en CSV de cada indicador), a partir de las estadísticas de finanzas públicas del FMI | De qué se nutren los ingresos (renta, IVA y consumos, cotizaciones, aranceles, otros) y en qué se va el gasto (sueldos, compras, intereses, transferencias, inversión pública) de 2010, gasto sanitario público y población de 65 años o más (`scripts/datos/26-bm-presupuesto.ts`) | Presupuesto (Fase 17): las partes se reparten sobre los totales del FMI; lo que falta se estima con la mediana de la región y el nivel de renta |
+| OCDE (Financial market, SDMX) y Banco Mundial (Worldwide Governance Indicators) | Tipo de interés del bono público a 10 años de 2010 (40 países) y estabilidad política y ausencia de violencia (`scripts/datos/27-riesgo-pais.ts`) | Deuda, prima de riesgo y rating (Fase 18): calibran la fórmula de la prima; esos 40 países empiezan con su tipo real |
 | DOSE (sectores) | Peso de la agricultura, la industria y los servicios en la economía de cada región en 2010 | Actividad económica principal en la ficha de región (Fase 9); donde no hay dato, se dice |
 | USGS, «Major Mineral Deposits of the World» (Open-File Report 2005-1294, dominio público) y Wikidata (CC0) | Grandes yacimientos minerales con su ubicación (USGS) y campos de petróleo, gas y carbón con coordenadas (Wikidata), asignados a la región en la que están | Recursos de cada región en la ficha de región (Fase 9); no es un inventario completo: solo los yacimientos registrados |
 | Wikidata (CC0) | Jefes de Estado y de Gobierno el 1 de enero de 2010 (cargos con fechas) y forma de gobierno, con correcciones a mano anotadas donde el régimen cambió desde 2010 (`scripts/datos/20-gobiernos.ts`) | Ficha de país (Fase 8) |
@@ -328,9 +329,6 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Iconos nuevos: renta, IVA, personal, mantenimiento, programas y pensiones.
 - La tesorería de la barra superior ya se mueve con el presupuesto.
 
-
-
-
 **Decisiones del jugador (17/11/2026, plan de la Fase 18: deuda, prima de riesgo y rating):**
 - **Rating y prima de 2010:** con una fórmula pública que tiene en cuenta la deuda, el déficit, la renta por habitante, la inflación, el crecimiento y la estabilidad política. Se calibra con los tipos reales del bono a 10 años de 2010 de la OCDE (40 países: Grecia 9,1 %, Letonia 10,3 %, Irlanda 5,7 %, Portugal 5,4 %, España 4,25 %, Alemania 2,7 %, Japón 1,1 %…). Esos 40 empiezan con su tipo real; los demás, estimados y marcados.
 - **La prima encarece la deuda poco a poco:** cada país tiene una vida media de su deuda (unos 6-7 años). Cada mes vence una parte y se renueva al tipo de ahora, igual que la deuda nueva por el déficit.
@@ -344,6 +342,20 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - contagio: cuando un país entra en crisis, sube la prima de los que se le parecen (misma región o moneda y deuda alta).
   - La huida de capitales queda para la moneda (Fase 21).
 - **Sustituye al ajuste forzoso provisional** de la v0.16.1: los recortes ya no son automáticos. Llegan con el rescate del FMI, y el jugador los decidirá con la Pantalla de Presupuesto (Fase 23).
+
+**La fórmula (tarea f18-t1; parámetros en `src/sim/config/deuda.json`):**
+- **Tipo de mercado** = tipo base (2,5 %, provisional hasta el banco central de la Fase 20) + la mitad de lo que la inflación esperada pase del 2 % + la prima de riesgo.
+- **Prima de riesgo** = e elevado al riesgo. El riesgo:
+  - baja con la renta por habitante (por debajo de 12 000 $ pesa mucho menos), la estabilidad política (WGI del Banco Mundial) y el crecimiento;
+  - sube con la inflación, la deuda por encima del 60 % del PIB, el déficit, el déficit exterior y lo que se lleven los intereses de los ingresos por encima del 15 %;
+  - sin moneda propia (los 16 del euro de 2010 y las monedas atadas a él; provisional hasta la Fase 21), la deuda, el déficit y el déficit exterior pesan mucho más.
+- **Calibración:** por mínimos cuadrados con los 40 tipos reales de la OCDE de 2010, con la deuda, el déficit y el déficit exterior obligados a sumar riesgo. Error medio: 0,8 puntos (Grecia 9,2 % frente al 9,1 % real; España 4,1 % frente al 4,25 %; EE. UU. 3,3 % frente al 3,2 %).
+- **Rating:** según la prima, de AAA (hasta 0,8 puntos) a CC (hasta 22). Por encima, C (los mercados no prestan); D, el impago.
+- **En 2010:**
+  - los 40 países de la OCDE, con su tipo real: Alemania AAA, EE. UU. AA+, España A+, Portugal BBB+, Irlanda BBB, Grecia BB+;
+  - los demás, con la fórmula: China BBB+, India BB−, Rusia BBB, Sudáfrica BBB+, Pakistán B.
+  - **Límite:** no hay una fuente abierta del historial de impagos, así que Argentina (A−) o Zimbabue (BBB) salen mejor de lo que estaban.
+
 
 ### 6.3 Impuestos
 
