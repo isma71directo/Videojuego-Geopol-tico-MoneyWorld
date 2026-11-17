@@ -1,0 +1,57 @@
+/* El presupuesto en vivo (tarea f17-t4): en la ficha y en Gobierno › Presupuesto. */
+.presupuesto__ministerios {
+  display: grid;
+  gap: 2px;
+}
+
+.presupuesto__ministerio {
+  border-bottom: 1px solid var(--borde);
+}
+
+.presupuesto__resumen {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 2px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.presupuesto__resumen::-webkit-details-marker {
+  display: none;
+}
+
+.presupuesto__resumen::after {
+  content: '›';
+  color: var(--texto-suave);
+  transition: rotate 0.15s ease;
+}
+
+.presupuesto__ministerio[open] > .presupuesto__resumen::after {
+  rotate: 90deg;
+}
+
+.presupuesto__resumen:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.presupuesto__resumen .icono {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--acento);
+}
+
+.presupuesto__nombre {
+  flex: 1;
+}
+
+.presupuesto__valor {
+  font-variant-numeric: tabular-nums;
+}
+
+.presupuesto__partidas {
+  margin: 0 0 8px 26px;
+}

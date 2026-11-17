@@ -80,6 +80,12 @@ import servicios from './iconos/servicios.svg?raw';
 import potencial from './iconos/potencial.svg?raw';
 import recesion from './iconos/recesion.svg?raw';
 import deflacion from './iconos/deflacion.svg?raw';
+import renta from './iconos/renta.svg?raw';
+import iva from './iconos/iva.svg?raw';
+import personal from './iconos/personal.svg?raw';
+import mantenimiento from './iconos/mantenimiento.svg?raw';
+import programas from './iconos/programas.svg?raw';
+import pensiones from './iconos/pensiones.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -195,6 +201,13 @@ const ICONOS = {
   // Alertas económicas (tarea f16-t4).
   recesion,
   deflacion,
+  // Presupuesto (tarea f17-t4).
+  renta,
+  iva,
+  personal,
+  mantenimiento,
+  programas,
+  pensiones,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

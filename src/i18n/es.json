@@ -1063,7 +1063,7 @@
       "fecha": "Fecha",
       "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 2 s a ×1.",
       "tesoreria": "Tesorería",
-      "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 17.",
+      "tesoreriaAyuda": "Dinero en caja del Estado. Cada mes entra lo que se recauda y sale lo que se gasta; si baja de un mes de gastos, el Estado emite deuda (Fase 17). Empezó con los ingresos de un mes.",
       "popularidad": "Popularidad",
       "popularidadAyuda": "Popularidad del gobierno. Estimación provisional con la economía, los años del líder en el cargo y el régimen. La opinión pública llega en la Fase 56.",
       "salir": {
@@ -1170,6 +1170,59 @@
         "danado": "Este guardado está dañado y no se puede cargar.",
         "otro": "No se ha podido leer la partida guardada."
       }
+    },
+    "presupuesto": {
+      "titulo": "Presupuesto del Estado",
+      "delPib": "{valor} del PIB",
+      "ingresos": "Ingresos",
+      "ingresosAyuda": "Lo que recauda el Estado al año ({dinero}): impuestos, cotizaciones y otros ingresos. Sigue a la economía: en una recesión se recauda menos.",
+      "gastos": "Gastos",
+      "gastosAyuda": "Lo que gasta el Estado al año ({dinero}): ministerios, pensiones, desempleo e intereses de la deuda.",
+      "deficit": "Déficit",
+      "superavit": "Superávit",
+      "saldoAyuda": "Ingresos menos gastos. Si es negativo (déficit), el Estado emite deuda para cubrirlo; si es positivo, paga deuda y ahorra.",
+      "deuda": "Deuda pública",
+      "deudaAyuda": "Lo que debe el Estado ({dinero}), al {tipo} de interés medio (el de 2010; los mercados lo pondrán en la Fase 18). Crece con cada déficit.",
+      "intereses": "Intereses de la deuda",
+      "interesesAyuda": "Lo que cuesta cada año la deuda: más deuda, más intereses, y más déficit (bola de nieve).",
+      "tesoreria": "Tesorería",
+      "tesoreriaAyuda": "Dinero en caja. Si baja de un mes de gastos, el Estado emite deuda; si pasa de tres, paga deuda.",
+      "ingresosTitulo": "De dónde salen los ingresos",
+      "gastosTitulo": "En qué se gasta",
+      "tipos": {
+        "rentaPersonas": "Renta de las personas",
+        "rentaSociedades": "Sociedades",
+        "consumo": "IVA y consumos",
+        "cotizaciones": "Cotizaciones",
+        "aranceles": "Aranceles",
+        "otrosImpuestos": "Otros impuestos",
+        "otrosIngresos": "Recursos, empresas públicas y ayudas"
+      },
+      "grupos": {
+        "pensiones": "Pensiones",
+        "desempleo": "Desempleo",
+        "intereses": "Intereses",
+        "sanidad": "Sanidad",
+        "educacion": "Educación",
+        "defensa": "Defensa",
+        "resto": "Otros ministerios"
+      },
+      "partidas": {
+        "personal": "Personal",
+        "personalAyuda": "Sueldos de los empleados públicos del ministerio.",
+        "inversion": "Inversión",
+        "inversionAyuda": "Obras, edificios, equipos e infraestructuras.",
+        "mantenimiento": "Mantenimiento",
+        "mantenimientoAyuda": "Compras de bienes y servicios para funcionar.",
+        "programas": "Programas",
+        "programasAyuda": "Transferencias, subvenciones y ayudas que reparte el ministerio."
+      },
+      "graficoTitulo": "Ingresos y gastos desde enero de 2010 (% del PIB)",
+      "graficoDeudaTitulo": "Deuda pública desde enero de 2010 (% del PIB)",
+      "ministeriosTitulo": "Gasto de cada ministerio",
+      "nota": "Totales del FMI y partes del Banco Mundial (2010). * Estimado: el reparto entre ministerios (salvo sanidad, educación y defensa) y las partidas internas.",
+      "ventanaNota": "Solo para ver: el presupuesto se podrá cambiar en la Fase 23, y la deuda tendrá prima de riesgo y rating en la 18.",
+      "sinDatos": "No hay datos para su presupuesto."
     },
     "alertas": {
       "etiqueta": "Alerta económica",
@@ -1414,7 +1467,13 @@
       "servicios": "Servicios",
       "potencial": "Crecimiento potencial",
       "recesion": "Recesión",
-      "deflacion": "Deflación"
+      "deflacion": "Deflación",
+      "renta": "Impuesto sobre la renta",
+      "iva": "IVA y consumos",
+      "personal": "Personal",
+      "mantenimiento": "Mantenimiento",
+      "programas": "Programas y transferencias",
+      "pensiones": "Pensiones"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1462,7 +1521,7 @@
     },
     "economia": {
       "titulo": "Economía de un país",
-      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos (también el paro y la inflación), producción de los siete sectores y los gráficos del PIB y del paro y la inflación, que se dibujan al aparecer y laten con cada dato nuevo. Pulsa «Avanzar un año» para ver cómo evoluciona.",
+      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos (también el paro y la inflación), producción de los siete sectores y los gráficos del PIB y del paro y la inflación, que se dibujan al aparecer y laten con cada dato nuevo. Debajo, su presupuesto, como en Gobierno › Presupuesto: ingresos, gastos, déficit, deuda, de dónde sale el dinero y en qué se gasta, y cada ministerio por dentro. Pulsa «Avanzar un año» para ver cómo evolucionan.",
       "avanzar": "Avanzar un año",
       "reiniciar": "Volver a 2010"
     },

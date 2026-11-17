@@ -319,6 +319,16 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Noruega y Arabia Saudí pagan su deuda y ahorran.
   - Nada se arregla solo: los déficits que no se corrigen acumulan deuda e intereses.
 
+**En pantalla (tarea f17-t4):**
+- En la pestaña Economía de la ficha de cada país, debajo de la economía, va el bloque «Presupuesto del Estado»:
+  - ingresos, gastos, déficit o superávit, deuda, intereses y tesorería (en % del PIB y en dinero al pasar el ratón);
+  - de dónde salen los ingresos y en qué se gasta, en barras con iconos;
+  - y el gráfico de ingresos y gastos desde 2010.
+- En Gobierno › Presupuesto (el país del jugador, solo para ver hasta la Fase 23), lo mismo más el gráfico de la deuda y los 20 ministerios, cada uno desplegable con sus cuatro partidas; un asterisco marca lo estimado.
+- Iconos nuevos: renta, IVA, personal, mantenimiento, programas y pensiones.
+- La tesorería de la barra superior ya se mueve con el presupuesto.
+
+
 
 
 ### 6.3 Impuestos

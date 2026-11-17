@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T20:48:22Z",
+  "actualizado": "2026-11-17T20:55:27Z",
   "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 17 en curso. f17-t1 (datos del Banco Mundial) y f17-t2 (presupuesto de 2010 en el motor) hechas. f17-t3 hecha: el presupuesto avanza cada mes (sistemaPresupuesto, entre la economía y las alertas): recaudación por tipo efectivo × base, ministerios con el PIB potencial nominal y los recortes del ajuste forzoso, pensiones con precios y envejecimiento, desempleo con el paro, intereses con la deuda; el saldo pasa por la tesorería y el déficit se cubre con deuda. Grecia: deuda del 148 % al 287 % en 5 años; Japón 179 % → 245 %; Noruega paga su deuda.",
-    "siguientePaso": "f17-t4: el presupuesto en la ficha (pestaña Economía) y en Gobierno › Presupuesto, con gráfico de ingresos y gastos, iconos de las partidas (ya dibujados: personal, mantenimiento, programas, pensiones, renta, IVA) y la tesorería y la deuda; después, cerrar la Fase 17 como v0.18.0.",
+    "resumen": "Fase 17: tareas t1 a t4 hechas. f17-t4: el presupuesto en la ficha de cada país (pestaña Economía) y en Gobierno › Presupuesto (con la deuda y los 20 ministerios por dentro), con barras de ingresos y gastos con iconos, gráficos que se dibujan y laten, seis iconos nuevos y la tesorería de la barra superior en movimiento; también en la galería («Economía de un país»). Probado a 1280 × 720, 1920 × 1080 y en el móvil (galería).",
+    "siguientePaso": "Cerrar la Fase 17 como v0.18.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1075,12 +1075,12 @@
           "titulo": "Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora»",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3e3cf1d"
         },
         {
           "id": "f17-t4",
           "titulo": "Audiovisual: gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

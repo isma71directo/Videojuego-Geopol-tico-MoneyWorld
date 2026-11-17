@@ -87,7 +87,7 @@ describe('barra superior de la partida (tarea f10-t3)', () => {
     expect(barra.elemento.textContent).toContain('1,5 billones $');
   });
 
-  it('cada dato se explica al recibir el foco y dice que es una estimación', () => {
+  it('cada dato se explica al recibir el foco (la tesorería, con el presupuesto: Fase 17)', () => {
     const barra = crearBarraPartida({ partida: partidaCon('FRA'), alIrAlPais: () => undefined });
     document.body.appendChild(barra.elemento);
     const tesoreria = barra.elemento.querySelector<HTMLElement>('.partida-barra__dato--tesoreria')!;
@@ -95,7 +95,7 @@ describe('barra superior de la partida (tarea f10-t3)', () => {
     tesoreria.dispatchEvent(new FocusEvent('focus'));
     tesoreria.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
     const info = document.querySelector<HTMLElement>('.info:not([hidden])');
-    expect(info?.textContent).toContain('Estimación provisional');
+    expect(info?.textContent).toContain('emite deuda');
     barra.destruir();
   });
 

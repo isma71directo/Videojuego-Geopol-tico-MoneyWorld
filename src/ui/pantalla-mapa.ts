@@ -24,6 +24,7 @@ import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones, ponerContenido, refrescarElemento } from './secciones';
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
+import { contenidoVentanaPresupuesto, refrescarPresupuestoEnVivo } from './presupuesto-en-vivo';
 import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from './aviso-suceso';
 import {
   cerrarAlertasEconomicas,
@@ -424,6 +425,7 @@ export function abrirPantallaMapa(
           // Su fecha es la del mes nuevo (el estado con la hora llega justo después).
           partida.fecha = mensaje.partida.fecha;
           refrescarEconomiaEnVivo();
+          refrescarPresupuestoEnVivo();
           void guardarAutomatico(mensaje.partida);
         } else if (mensaje.peticion !== undefined) {
           esperando.get(mensaje.peticion)?.(mensaje.partida);
@@ -576,6 +578,17 @@ export function abrirPantallaMapa(
   const secciones = crearBarraSecciones();
   // Informes › Efectos en curso (tarea f13-t2), con los de la partida (o un aviso sin ella).
   ponerContenido('efectos', () => contenidoEfectosEnCurso(partida));
+  /** El presupuesto de un país en la partida, con su economía y su tesorería (tarea f17-t4). */
+  const fuentePresupuesto = (id: string) => {
+    if (!partida) return null;
+    const estado = partida.paises[id];
+    return {
+      presupuesto: estado?.presupuesto ?? null,
+      economia: estado?.economia ?? null,
+      tesoreria: estado?.tesoreria ?? 0,
+      fecha: partida.fecha,
+    };
+  };
   // Economía › Economía (tarea f15-t3): la del país del jugador, en vivo.
   if (partida) {
     ponerContenido('economia', () =>
@@ -584,6 +597,13 @@ export function abrirPantallaMapa(
           economia: partida.paises[partida.jugador.paisId]?.economia ?? null,
           fecha: partida.fecha,
         }),
+        nombreDe(partida.jugador.paisId),
+      ),
+    );
+    // Gobierno › Presupuesto (tarea f17-t4): el del país del jugador, en vivo y solo para ver.
+    ponerContenido('presupuesto', () =>
+      contenidoVentanaPresupuesto(
+        () => fuentePresupuesto(partida.jugador.paisId),
         nombreDe(partida.jugador.paisId),
       ),
     );
@@ -826,6 +846,7 @@ export function abrirPantallaMapa(
                       economia: partida.paises[pais!.id]?.economia ?? null,
                       fecha: partida.fecha,
                     }),
+                    presupuestoEnVivo: () => fuentePresupuesto(pais!.id),
                   }
                 : {}),
             })),
@@ -1016,6 +1037,7 @@ export function abrirPantallaMapa(
     secciones.destruir();
     ponerContenido('efectos', null);
     ponerContenido('economia', null);
+    ponerContenido('presupuesto', null);
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();
