@@ -1,18 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.14.0",
-  "actualizado": "2026-11-17T07:50:10Z",
+  "actualizado": "2026-11-17T08:52:23Z",
   "faseActiva": "fase-14",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 13 cerrada como v0.14.0: motor de efectos (cambios en los datos con retraso y duración, que caducan solos), efectos en curso en la explicación de cada dato y en Informes › Efectos en curso, pausa automática ante sucesos importantes con su aviso en el centro y su campanada, opción en Ajustes y modo de prueba «?prueba». PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.14.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 14 (guardar y cargar partidas).",
-    "pendienteDelJugador": [
-      "Probar la v0.14.0 en el PC con «?prueba» al final de la dirección: empezar una partida, ver el efecto de prueba (+3 de popularidad) en la explicación de la popularidad y en Informes › Efectos en curso, dejar correr el tiempo y comprobar que el 3 de enero a las 08:00 la partida se para sola con su aviso y su campanada; «Seguir» (o Intro) continúa y «Quedarse en pausa» (o Escape) la deja parada",
-      "Desactivar «Pausar ante sucesos importantes» en Ajustes y comprobar que con «?prueba» la partida ya no se para",
-      "En la galería: «Aviso de la pausa automática» y la campanada en «Sonidos de la interfaz»",
-      "Fusionar el PR de la Fase 13"
-    ]
+    "resumen": "El jugador fusionó la v0.14.0. Plan de la Fase 14 aprobado: cinco ranuras manuales; guardado automático al empezar cada mes (se conservan los tres últimos) más uno por año; menú de la partida con Guardar, Cargar, Ajustes y Salir (pregunta si guardar antes), y Ctrl+S; «Continuar» y «Cargar partida» en el inicio. Recordatorio del jugador anotado en el GDD: la pausa automática vale para cualquier suceso importante, no solo guerras o crisis (la ayuda de Ajustes se amplía en f14-t2). La fase pasa a 4 tareas.",
+    "siguientePaso": "f14-t1: almacén de partidas en IndexedDB con ranuras, guardados automáticos y migraciones.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -904,26 +899,33 @@
       "objetivo": "La partida no se pierde nunca",
       "dependeDe": ["fase-13"],
       "hechoCuando": "Las partidas se recuperan siempre",
-      "pruebaJugador": "Avanzar un año a ×8, guardar, cerrar el navegador, volver y cargar",
-      "estado": "pendiente",
+      "pruebaJugador": "Avanzar un año a ×8, guardar desde el menú de la partida (o con Ctrl+S), cerrar el navegador, volver y cargar (también con «Continuar»); ver los guardados automáticos de los últimos meses y el del año; exportar la partida a un archivo .json e importarla.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f14-t1",
-          "titulo": "Guardado en IndexedDB: manual, automático mensual y varias ranuras",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Almacén de partidas en IndexedDB: cinco ranuras manuales y guardados automáticos (los tres últimos meses y uno por año, decisión del jugador), con número de formato y migraciones; al cargar, el azar se vuelve a sembrar y la partida empieza en pausa",
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f14-t2",
-          "titulo": "Exportar e importar la partida como archivo .json, con número de versión y migraciones",
+          "titulo": "Menú de la partida (decisión del jugador): Guardar (con ranura y aviso antes de sobrescribir), Cargar, Ajustes y Salir (pregunta si guardar antes); Ctrl+S guarda en la última ranura; guardado automático al empezar cada mes; la ayuda de la pausa automática dice que vale para cualquier suceso importante",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f14-t3",
-          "titulo": "Audiovisual: indicador de guardado y pantalla de cargar partida con la bandera y la fecha de cada ranura",
+          "titulo": "Exportar e importar la partida como archivo .json, con número de versión y migraciones",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f14-t4",
+          "titulo": "Audiovisual: indicador de guardado, pantalla de cargar partida con la bandera, el país, la fecha y la hora de cada ranura, y «Continuar» y «Cargar partida» en el inicio (decisión del jugador)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
