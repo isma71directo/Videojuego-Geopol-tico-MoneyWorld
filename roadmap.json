@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.1",
-  "actualizado": "2026-11-17T00:30:39Z",
+  "versionActual": "0.12.2",
+  "actualizado": "2026-11-17T00:31:26Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f11-a2 hecho: reloj cuatro veces más lento. ×1 = una hora cada 2 s (un día en 48 s, una semana en unos 5,6 min); ×2, un día en 24 s; ×4, un día en 12 s y una semana en 84 s; ×8, un día en 6 s y un año en unos 36 min. El minutero se mueve hasta ×4.",
-    "siguientePaso": "Publicar la v0.12.2 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "v0.12.2 publicada con el ajuste f11-a2: reloj más lento, una hora cada 2 s a ×1. PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.12.2: presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
+    "pendienteDelJugador": [
+      "Probar la v0.12.2 en el PC: dejar correr el tiempo a ×1, ×2, ×4 y ×8 y comprobar si el ritmo es el adecuado (a ×1, un día en 48 s; a ×8, un año en unos 36 min)",
+      "Fusionar el PR de la v0.12.2"
+    ]
   },
   "etapas": [
     {
@@ -778,7 +781,7 @@
           "origen": "Mensaje del jugador tras probar la v0.12.1",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2fb8877"
         }
       ]
     },
@@ -4551,6 +4554,13 @@
       "fecha": "2026-11-17",
       "cambios": [
         "Noche en el mapa de las 20:00 a las 7:00 en la capital del jugador todo el año (antes seguía al Sol real y en enero anochecía hacia las 18:00); el resto del mundo se oscurece según su longitud"
+      ]
+    },
+    {
+      "version": "0.12.2",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Reloj cuatro veces más lento (decisión del jugador): ×1 = una hora cada 2 s (un día en 48 s); ×4, un día en 12 s; ×8, un día en 6 s y un año en unos 36 min"
       ]
     }
   ]
