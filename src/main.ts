@@ -48,8 +48,10 @@ function mostrarAvisoVersion(version: string): void {
 // vuelve a la pantalla anterior.
 let pantallaMapa: PantallaMapa | null = null;
 let pantallaNueva: PantallaNuevaPartida | null = null;
-/** Partida en curso (hasta la Fase 14 no se guarda: al recargar la página se pierde). */
+/** Partida en curso; se guarda desde su menú (Fase 14). */
 let partida: Partida | null = null;
+/** Ranura de la que se cargó la partida en curso (Ctrl+S guarda en ella; tarea f14-t2). */
+let ranuraDeLaPartida: number | null = null;
 /** Si la pantalla se abrió desde el juego, «Volver» equivale al botón «atrás» del navegador. */
 let abiertaDesdeElJuego = false;
 
@@ -63,10 +65,18 @@ function volverAlInicio(): void {
   }
 }
 
-/** Sale de la partida (ya confirmado): se pierde, porque aún no se guarda (Fase 14). */
+/** Sale de la partida (ya confirmado, y guardada si el jugador ha querido). */
 function terminarPartida(): void {
   partida = null;
+  ranuraDeLaPartida = null;
   volverAlInicio();
+}
+
+/** Cambia a una partida cargada desde el menú de la partida (tarea f14-t2). */
+function cambiarDePartida(cargada: Partida, ranura: number | null): void {
+  partida = cargada;
+  ranuraDeLaPartida = ranura;
+  mostrarSegunDireccion();
 }
 
 function mostrarSegunDireccion(): void {
@@ -90,12 +100,18 @@ function mostrarSegunDireccion(): void {
     pantallaMapa = null;
   }
   if (hash === '#mapa') pantallaMapa ??= abrirPantallaMapa(volverAlInicio);
-  else if (hash === '#partida') pantallaMapa ??= abrirPantallaMapa(terminarPartida, { partida });
-  else if (hash === '#nueva-partida') {
+  else if (hash === '#partida') {
+    pantallaMapa ??= abrirPantallaMapa(terminarPartida, {
+      partida,
+      ranura: ranuraDeLaPartida,
+      alCargar: cambiarDePartida,
+    });
+  } else if (hash === '#nueva-partida') {
     pantallaNueva ??= abrirPantallaNuevaPartida({
       alVolver: volverAlInicio,
       alEmpezar: (nueva) => {
         partida = nueva;
+        ranuraDeLaPartida = null;
         // La partida sustituye a la elección en el historial: «atrás» vuelve al inicio.
         location.replace('#partida');
       },

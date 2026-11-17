@@ -1,8 +1,9 @@
 /**
  * Ventana de confirmación (tarea f10-t3): pregunta antes de algo que no se puede deshacer, como
- * salir de una partida que aún no se puede guardar.
+ * sobrescribir una ranura o salir de una partida sin guardar. Con «pedirEleccion» (tarea f14-t2)
+ * admite más de dos respuestas.
  *
- * - Bloquea lo de detrás: el foco se queda en sus dos botones (Tab y Mayús + Tab).
+ * - Bloquea lo de detrás: el foco se queda en sus botones (Tab y Mayús + Tab).
  * - Empieza en «cancelar», la respuesta segura; Escape o un clic fuera también cancelan.
  * - Aparece y se va con la animación de las ventanas y suena al abrirse y al cerrarse.
  */
@@ -22,7 +23,25 @@ export interface OpcionesConfirmacion {
   peligro?: boolean;
 }
 
-let abierta: { responder(respuesta: boolean): void } | null = null;
+/** Una de las respuestas de una elección (tarea f14-t2). */
+export interface Respuesta<T extends string> {
+  id: T;
+  texto: string;
+  /** Aspecto del botón: el principal (azul), el de peligro (rojo) o uno normal. */
+  estilo?: 'principal' | 'peligro' | 'normal';
+}
+
+export interface OpcionesEleccion<T extends string> {
+  titulo: string;
+  texto: string;
+  /**
+   * Respuestas, de izquierda a derecha. La primera es la segura: el foco empieza en ella, y Escape
+   * o un clic fuera devuelven null (como elegir no hacer nada).
+   */
+  respuestas: readonly Respuesta<T>[];
+}
+
+let abierta: { responder(respuesta: string | null): void } | null = null;
 let contador = 0;
 
 /** ¿Hay una confirmación esperando respuesta? */
@@ -34,30 +53,60 @@ export function confirmacionAbierta(): boolean {
  * Abre la ventana y espera la respuesta: true si se confirma, false si se cancela. Si ya había
  * otra abierta, esa se cancela.
  */
-export function pedirConfirmacion(opciones: OpcionesConfirmacion): Promise<boolean> {
-  abierta?.responder(false);
+export async function pedirConfirmacion(opciones: OpcionesConfirmacion): Promise<boolean> {
+  const respuesta = await pedirEleccion({
+    titulo: opciones.titulo,
+    texto: opciones.texto,
+    respuestas: [
+      { id: 'cancelar', texto: opciones.cancelar, estilo: 'normal' },
+      {
+        id: 'aceptar',
+        texto: opciones.aceptar,
+        estilo: opciones.peligro ? 'peligro' : 'principal',
+      },
+    ],
+  });
+  return respuesta === 'aceptar';
+}
+
+/**
+ * Pregunta con varias respuestas (tarea f14-t2, p. ej. «¿Guardar antes de salir?»): devuelve el
+ * id de la elegida, o null si se cierra sin elegir. Si ya había otra abierta, esa se cancela.
+ */
+export function pedirEleccion<T extends string>(opciones: OpcionesEleccion<T>): Promise<T | null> {
+  abierta?.responder(null);
   const id = `confirmacion-${++contador}`;
   const foco = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-  const cancelar = el(
-    'button',
-    { class: 'boton confirmacion__cancelar', type: 'button' },
-    opciones.cancelar,
-  );
-  const aceptar = el(
-    'button',
-    {
-      class: `boton confirmacion__aceptar ${opciones.peligro ? 'boton--peligro' : 'boton--principal'}`,
-      type: 'button',
-    },
-    opciones.aceptar,
+  const botones = opciones.respuestas.map((respuesta, indice) =>
+    el(
+      'button',
+      {
+        class: [
+          'boton',
+          indice === 0 ? 'confirmacion__cancelar' : 'confirmacion__aceptar',
+          respuesta.estilo === 'peligro'
+            ? 'boton--peligro'
+            : respuesta.estilo === 'principal'
+              ? 'boton--principal'
+              : '',
+        ]
+          .filter(Boolean)
+          .join(' '),
+        type: 'button',
+        'data-respuesta': respuesta.id,
+      },
+      respuesta.texto,
+    ),
   );
   const fondo = el('div', { class: 'confirmacion__fondo' });
   const caja = el(
     'div',
-    { class: 'confirmacion__caja' },
+    {
+      class: `confirmacion__caja${botones.length > 2 ? ' confirmacion__caja--ancha' : ''}`,
+    },
     el('h2', { id: `${id}-titulo`, class: 'confirmacion__titulo' }, opciones.titulo),
     el('p', { id: `${id}-texto`, class: 'confirmacion__texto' }, opciones.texto),
-    el('div', { class: 'confirmacion__botones' }, cancelar, aceptar),
+    el('div', { class: 'confirmacion__botones' }, ...botones),
   );
   const ventana = el(
     'div',
@@ -72,37 +121,41 @@ export function pedirConfirmacion(opciones: OpcionesConfirmacion): Promise<boole
     caja,
   );
 
-  return new Promise<boolean>((resolver) => {
+  return new Promise<T | null>((resolver) => {
     const alTeclear = (evento: KeyboardEvent): void => {
       if (evento.key === 'Escape') {
         evento.preventDefault();
         evento.stopPropagation();
-        responder(false);
+        responder(null);
         return;
       }
       if (evento.key === 'Tab') {
-        // El foco no sale de la ventana: de un botón al otro.
+        // El foco no sale de la ventana: de un botón al siguiente (o al anterior con Mayús).
         evento.preventDefault();
-        (document.activeElement === cancelar ? aceptar : cancelar).focus();
+        const actual = botones.indexOf(document.activeElement as HTMLButtonElement);
+        const paso = evento.shiftKey ? -1 : 1;
+        botones[(actual + paso + botones.length) % botones.length]!.focus();
         return;
       }
       // Las teclas del mapa (C, B, M…) no actúan detrás de la ventana.
       if (!ventana.contains(evento.target as Node)) evento.stopPropagation();
     };
-    const responder = (respuesta: boolean): void => {
+    const responder = (respuesta: string | null): void => {
       if (abierta !== estado) return;
       abierta = null;
       document.removeEventListener('keydown', alTeclear, true);
       retirar(ventana, [{ opacity: 1 }, { opacity: 0 }], DURACIONES.cerrarVentana);
-      sonar(respuesta ? 'boton' : 'cerrar');
-      if (!respuesta && foco?.isConnected) foco.focus({ preventScroll: true });
-      resolver(respuesta);
+      const segura = respuesta === null || respuesta === opciones.respuestas[0]?.id;
+      sonar(segura ? 'cerrar' : 'boton');
+      if (segura && foco?.isConnected) foco.focus({ preventScroll: true });
+      resolver(respuesta as T | null);
     };
     const estado = { responder };
     abierta = estado;
-    cancelar.addEventListener('click', () => responder(false));
-    aceptar.addEventListener('click', () => responder(true));
-    fondo.addEventListener('click', () => responder(false));
+    botones.forEach((boton, indice) =>
+      boton.addEventListener('click', () => responder(opciones.respuestas[indice]!.id)),
+    );
+    fondo.addEventListener('click', () => responder(null));
     // Lo que se teclea en la ventana no llega a los atajos del mapa.
     ventana.addEventListener('keydown', (evento) => evento.stopPropagation());
     // En la fase de captura, para que Escape no llegue al mapa (que quitaría la selección).
@@ -111,6 +164,6 @@ export function pedirConfirmacion(opciones: OpcionesConfirmacion): Promise<boole
     void animar(caja, FOTOGRAMAS.ventana, DURACIONES.abrirVentana);
     void animar(fondo, [{ opacity: 0 }, { opacity: 1 }], DURACIONES.abrirVentana);
     sonar('abrirVentana');
-    cancelar.focus();
+    botones[0]?.focus();
   });
 }

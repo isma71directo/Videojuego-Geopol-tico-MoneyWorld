@@ -32,7 +32,7 @@
       "medidorFps": "Mostrar el medidor de rendimiento",
       "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
       "pausaSucesos": "Pausar ante sucesos importantes",
-      "pausaSucesosAyuda": "La partida se para sola ante una guerra, una moción de censura, un referéndum o una crisis, y te avisa de lo que ha pasado.",
+      "pausaSucesosAyuda": "La partida se para sola ante cualquier suceso importante (elecciones, guerras, golpes de Estado, catástrofes, tratados, crisis…) y te avisa de lo que ha pasado.",
       "silenciar": "Silenciar el sonido",
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
       "volumenEfectos": "Volumen de los efectos",
@@ -1055,7 +1055,7 @@
     "partida": {
       "barra": "Estado de la partida",
       "menu": "Menú",
-      "menuAyuda": "Salir al menú principal",
+      "menuAyuda": "Menú de la partida: guardar, cargar, ajustes y salir",
       "pais": "Tu país: {pais}. Pulsa para ir a él en el mapa.",
       "fecha": "Fecha",
       "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 2 s a ×1.",
@@ -1065,7 +1065,7 @@
       "popularidadAyuda": "Popularidad del gobierno. Estimación provisional con la economía, los años del líder en el cargo y el régimen. La opinión pública llega en la Fase 56.",
       "salir": {
         "titulo": "¿Salir al menú?",
-        "texto": "La partida aún no se puede guardar (llega en la Fase 14): si sales, se pierde y tendrás que empezar otra.",
+        "texto": "No hay nada sin guardar: lo que tengas guardado podrás cargarlo después.",
         "aceptar": "Salir al menú",
         "cancelar": "Seguir jugando"
       },
@@ -1108,6 +1108,57 @@
         "tesoreria": "Tesorería"
       },
       "puntos": "{valor} puntos"
+    },
+    "guardado": {
+      "menu": {
+        "titulo": "Partida",
+        "guardar": "Guardar",
+        "guardarEn": "Guardar en…",
+        "cargar": "Cargar…",
+        "ajustes": "Ajustes",
+        "salir": "Salir al menú"
+      },
+      "guardarTitulo": "Guardar partida",
+      "guardarNota": "Elige una ranura. Después, Ctrl+S guarda al momento en la última que hayas usado.",
+      "cargarTitulo": "Cargar partida",
+      "cargarNota": "Las cinco ranuras, los guardados automáticos de los tres últimos meses y el del 1 de enero de cada año.",
+      "ranura": "Ranura {n}",
+      "vacia": "Vacía",
+      "automatico": "Automático",
+      "anual": "Inicio de {ano}",
+      "partida": "{pais} · {fecha}, {hora}",
+      "guardadaEl": "Guardada el {momento}",
+      "ninguno": "Todavía no hay partidas guardadas.",
+      "entendido": "Entendido",
+      "soloMemoria": "Este navegador no deja guardar datos: las partidas solo durarán mientras no cierres la página.",
+      "sobrescribir": {
+        "titulo": "¿Sobrescribir la ranura {n}?",
+        "texto": "Ahora tiene {partida}. Se sustituirá por la partida actual.",
+        "aceptar": "Sobrescribir",
+        "cancelar": "Cancelar"
+      },
+      "cargarAviso": {
+        "titulo": "¿Cargar esta partida?",
+        "texto": "{partida}. Lo que no hayas guardado de la partida actual se perderá.",
+        "aceptar": "Cargar",
+        "cancelar": "Cancelar"
+      },
+      "salir": {
+        "titulo": "¿Guardar antes de salir?",
+        "texto": "Lo jugado desde la última vez que guardaste se perderá si sales sin guardar.",
+        "guardar": "Guardar y salir",
+        "sinGuardar": "Salir sin guardar",
+        "cancelar": "Seguir jugando"
+      },
+      "hecho": "Guardada en la ranura {n}",
+      "hechoAutomatico": "Guardado automático",
+      "error": "No se ha podido guardar la partida. Comprueba que el navegador deja guardar datos y que queda espacio.",
+      "errorCargar": {
+        "noEsPartida": "Esto no es una partida de este juego.",
+        "formatoFuturo": "Esta partida es de una versión más nueva del juego: actualiza la página para cargarla.",
+        "danado": "Este guardado está dañado y no se puede cargar.",
+        "otro": "No se ha podido leer la partida guardada."
+      }
     },
     "sucesos": {
       "aviso": "Pausa automática",
@@ -1266,7 +1317,10 @@
       "salir": "Salir",
       "pausa": "Pausa",
       "seguir": "Seguir",
-      "efectos": "Efectos en curso"
+      "efectos": "Efectos en curso",
+      "guardar": "Guardar la partida",
+      "cargar": "Cargar una partida",
+      "ajustes": "Ajustes"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",

@@ -4,7 +4,7 @@ import { VERSION, etiquetaVersion } from '../compartido/version';
 import { t } from '../i18n';
 import { guardarAjuste, leerAjuste } from './ajustes';
 import { el } from './dom';
-import { abrirHoja } from './hoja';
+import { abrirHoja, type Hoja } from './hoja';
 import {
   cambiarVolumenEfectos,
   cambiarVolumenMusica,
@@ -204,8 +204,9 @@ function casillaPausaSucesos(): HTMLElement {
   );
 }
 
-function abrirAjustes(): void {
-  abrirHoja(
+/** Abre Ajustes (en el inicio y, desde la tarea f14-t2, en el menú de la partida). */
+export function abrirAjustes(): Hoja {
+  return abrirHoja(
     t('juego.ajustes.titulo'),
     casillaMedidorFps(),
     casillaPausaSucesos(),

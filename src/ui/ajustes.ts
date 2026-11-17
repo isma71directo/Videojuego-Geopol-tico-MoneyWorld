@@ -50,12 +50,26 @@ export function leerAjuste<K extends keyof Ajustes>(clave: K): Ajustes[K] {
   }
 }
 
+/** Quien quiere enterarse de un ajuste que cambia (la partida, al abrir Ajustes en ella). */
+export type EscuchaAjustes = <K extends keyof Ajustes>(clave: K, valor: Ajustes[K]) => void;
+const escuchas = new Set<EscuchaAjustes>();
+
+/**
+ * Avisa de cada ajuste que cambia (tarea f14-t2: Ajustes se abre también en la partida y lo que
+ * se cambia se nota al momento). Devuelve la función para dejar de escuchar.
+ */
+export function alCambiarAjuste(escucha: EscuchaAjustes): () => void {
+  escuchas.add(escucha);
+  return () => escuchas.delete(escucha);
+}
+
 export function guardarAjuste<K extends keyof Ajustes>(clave: K, valor: Ajustes[K]): void {
   try {
     localStorage.setItem(PREFIJO + clave, JSON.stringify(valor));
   } catch {
     // Sin almacenamiento disponible, el ajuste dura solo esta visita.
   }
+  for (const escucha of escuchas) escucha(clave, valor);
 }
 
 /**
