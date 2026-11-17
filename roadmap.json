@@ -1,16 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.12.1",
-  "actualizado": "2026-11-17T00:13:01Z",
+  "actualizado": "2026-11-17T00:30:39Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "v0.12.1 publicada con el ajuste f11-a1: noche de las 20:00 a las 7:00 en la capital del jugador todo el año. PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.12.1: presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
-    "pendienteDelJugador": [
-      "Probar la v0.12.1 en el PC: en una partida, dejar correr el tiempo y comprobar que en tu país anochece hacia las 20:00 y amanece hacia las 7:00",
-      "Fusionar el PR de la v0.12.1"
-    ]
+    "resumen": "f11-a2 hecho: reloj cuatro veces más lento. ×1 = una hora cada 2 s (un día en 48 s, una semana en unos 5,6 min); ×2, un día en 24 s; ×4, un día en 12 s y una semana en 84 s; ×8, un día en 6 s y un año en unos 36 min. El minutero se mueve hasta ×4.",
+    "siguientePaso": "Publicar la v0.12.2 y abrir su PR.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -773,6 +770,15 @@
           "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/172640e"
+        },
+        {
+          "id": "f11-a2",
+          "titulo": "Reloj más lento (decisión del jugador): ×1 = una hora cada 2 s (un día en 48 s), ×2 un día en 24 s, ×4 un día en 12 s y ×8 un día en 6 s (un año en unos 36 min); un año tiene que ser mucho tiempo, porque guerras, manifestaciones o campañas durarán días o semanas",
+          "version": "0.12.2",
+          "origen": "Mensaje del jugador tras probar la v0.12.1",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": ""
         }
       ]
     },

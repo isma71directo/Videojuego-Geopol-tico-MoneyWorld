@@ -7,7 +7,7 @@
  *   medianoche. Internamente, un calendario sin husos (fecha y hora «de pared»).
  * - Ritmos de la simulación (GDD, sección 5): al empezar cada día se da un paso diario; si es
  *   lunes, también uno semanal; si es día 1, uno mensual, y si es 1 de enero, uno anual.
- * - Velocidades: pausa, ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 (config/tiempo.json).
+ * - Velocidades: pausa, ×1 (una hora cada 2 s, ajuste f11-a2), ×2, ×4 y ×8 (config/tiempo.json).
  */
 import config from './config/tiempo.json';
 
