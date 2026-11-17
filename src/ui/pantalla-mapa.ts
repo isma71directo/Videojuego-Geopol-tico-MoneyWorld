@@ -614,6 +614,7 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
       economia: estado?.economia ?? null,
       tesoreria: estado?.tesoreria ?? 0,
       fecha: partida.fecha,
+      mercado: estado?.mercado ?? null,
     };
   };
   // Economía › Economía (tarea f15-t3): la del país del jugador, en vivo.

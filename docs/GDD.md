@@ -385,6 +385,17 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Sin intervención (2010–2018):** Grecia deja de pagar en agosto de 2011, con una caída del PIB del 26 % y un paro del 27 % en 2013 (real: −23 % y 27,5 %), y vuelve a los mercados en 2015. Con el contagio, Irlanda deja de pagar en 2012 y Portugal en 2013, y España pide el rescate en 2014. Lo real fue más suave, porque esos países recortaron por su cuenta (los recortes de la IA llegan en fases posteriores).
 - **Límite:** Irlanda empieza con el déficit de 2010 (32 % del PIB), que incluye el rescate de sus bancos, de una sola vez. El modelo lo trata como un gasto que se repite, así que su crisis es peor de lo que fue.
 
+**En pantalla (tarea f18-t4):**
+- En la ficha de cada país (pestaña Economía) y en Gobierno › Presupuesto:
+  - el rating de la deuda con un distintivo del color de su escalón: verde de AAA a AA−, verde azulado la A, amarillo la BBB, naranja de BB a B (especulativo), rojo de CCC a C y rojo oscuro la D (impago). Cuando cambia, salta con una flecha hacia arriba o hacia abajo;
+  - la prima de riesgo, con el tipo del bono a 10 años;
+  - si la hay, la crisis de deuda: rescate del FMI o impago, con los meses que quedan.
+- En Gobierno › Presupuesto, además, el gráfico de la prima desde 2010 con la línea discontinua del cierre de los mercados (15 puntos).
+- Alertas del país del jugador, cada una con su icono y su sonido:
+  - «Bajan el rating» y «Suben el rating»: con la nota nueva y la prima; no paran la partida;
+  - «Crisis de deuda»: para la partida y abre la ventana de la decisión.
+- Iconos nuevos: rating y prima. En la galería, la escala de notas y un distintivo de ejemplo que sube y baja con su sonido.
+
 
 
 ### 6.3 Impuestos

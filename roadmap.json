@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.18.0",
-  "actualizado": "2026-11-17T23:34:53Z",
+  "actualizado": "2026-11-17T23:44:39Z",
   "faseActiva": "fase-18",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 18 en curso: f18-t1, f18-t2 y f18-t3 hechas. f18-t3: crisis de deuda. Con la prima por encima de 15 puntos, los mercados se cierran. El jugador elige en una ventana (la partida se para) entre el rescate del FMI (presta al 3,5 % durante 3 años a cambio de un ajuste proporcional al déficit, con recortes de los ministerios y subidas de impuestos) y el impago (quita del 50 %, rating D, 4 años sin mercados ni intereses, recortes de ministerios y pensiones hasta cerrar el déficit; al volver, la prima lleva un recargo). La IA deja de pagar si su deuda es impagable y, si no, pide el rescate; al acabar un rescate con los mercados aún cerrados, se vuelve a elegir. Un impago contagia y un rescate hace de cortafuegos. Desaparece el ajuste forzoso f15-a1 (y su fila en la ficha). Alerta nueva «Crisis de deuda» con su sonido. Sin intervención: Grecia deja de pagar en 2011 (PIB −26 % y paro del 27 % en 2013), Irlanda en 2012, Portugal en 2013 y España pide el rescate en 2014.",
-    "siguientePaso": "f18-t4: distintivo animado del rating, gráfico de la prima y alertas de rating con su sonido; después, cerrar la Fase 18 como v0.19.0 con su PR.",
+    "resumen": "Fase 18 terminada (f18-t1 a f18-t4); falta cerrarla como v0.19.0. f18-t4: el rating con un distintivo animado del color de su escalón, la prima y la crisis de deuda en la ficha y en Gobierno › Presupuesto, el gráfico de la prima con la línea del cierre de los mercados, y alertas «Bajan el rating» y «Suben el rating» con su sonido; iconos de rating y prima; sección del rating en la galería. f18-t3: crisis de deuda con rescate del FMI o impago, para el jugador (ventana de decisión) y la IA.",
+    "siguientePaso": "Cerrar la Fase 18 como v0.19.0 (versión, CHANGELOG, historial) y abrir su PR; después, plan de la Fase 19 (Pantalla de Economía).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1116,13 +1116,13 @@
           "titulo": "Crisis de deuda: mercados cerrados, rescate del FMI (programa de ajuste) o impago (quita y mercados cerrados), para el jugador y para la IA",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/60c038b"
         },
         {
           "id": "f18-t4",
           "titulo": "Audiovisual: distintivo animado del rating, gráfico de la prima y alertas de rating y de crisis con su sonido",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-17",
           "enlace": ""
         }
       ]

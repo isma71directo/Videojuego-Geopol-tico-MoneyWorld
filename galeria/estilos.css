@@ -504,3 +504,9 @@
   max-width: 560px;
   margin-top: 8px;
 }
+
+/* Distintivo del rating de ejemplo (tarea f18-t4): con aire para que se vea saltar. */
+.galeria__rating {
+  padding: 12px 0;
+  font-size: 16px;
+}

@@ -139,6 +139,9 @@ const m = config.mercado;
 const c = config.contagio;
 const k = config.crisis;
 
+/** Prima (puntos) por encima de la cual los mercados dejan de prestar. */
+export const UMBRAL_CIERRE = m.umbralCierre;
+
 /** Las salidas de una crisis de deuda (tarea f18-t3). */
 export type SalidaCrisis = 'fmi' | 'impago';
 export const SALIDAS_CRISIS: readonly SalidaCrisis[] = ['fmi', 'impago'];
@@ -370,6 +373,7 @@ export const sistemaMercado: Sistema = (pasos, partida) => {
       (total, desde) => total + presionDeContagio(desde, { id, region: mercado.region }),
       0,
     );
+    const ratingAntes = mercado.rating;
     avanzarMercado(id, mercado, economia, presupuesto, contagio, dureza);
     const esJugador = id === partida.jugador.paisId;
     const decision = esJugador ? partida.decisiones?.[CLAVE_CRISIS] : undefined;
@@ -393,6 +397,26 @@ export const sistemaMercado: Sistema = (pasos, partida) => {
         origen: 'economia',
         alerta: { tipo: 'crisisDeuda', valor: mercado.prima },
         decision: { clave: CLAVE_CRISIS, opciones: [...SALIDAS_CRISIS] },
+      });
+    } else if (esJugador && mercado.rating !== ratingAntes && mercado.rating !== 'D') {
+      // Las agencias le suben o le bajan la nota (tarea f18-t4; el impago ya lo avisa la crisis).
+      const { fecha, hora } = momentoDe(horaAbsoluta(partida) + 1);
+      const baja =
+        RATINGS.indexOf(mercado.rating as (typeof RATINGS)[number]) >
+        RATINGS.indexOf(ratingAntes as (typeof RATINGS)[number]);
+      partida.agenda = programar(partida.agenda, {
+        id: `r${partida.fecha}-${id}`,
+        titulo: '',
+        texto: '',
+        fecha,
+        hora,
+        importante: false,
+        origen: 'economia',
+        alerta: {
+          tipo: baja ? 'ratingBaja' : 'ratingSube',
+          valor: mercado.prima,
+          rating: mercado.rating,
+        },
       });
     }
   }

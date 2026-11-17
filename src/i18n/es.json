@@ -1182,7 +1182,7 @@
       "superavit": "Superávit",
       "saldoAyuda": "Ingresos menos gastos. Si es negativo (déficit), el Estado emite deuda para cubrirlo; si es positivo, paga deuda y ahorra.",
       "deuda": "Deuda pública",
-      "deudaAyuda": "Lo que debe el Estado ({dinero}), al {tipo} de interés medio (el de 2010; los mercados lo pondrán en la Fase 18). Crece con cada déficit.",
+      "deudaAyuda": "Lo que debe el Estado ({dinero}), al {tipo} de interés medio (la deuda que vence y la nueva se pagan al tipo de mercado de cada mes). Crece con cada déficit.",
       "intereses": "Intereses de la deuda",
       "interesesAyuda": "Lo que cuesta cada año la deuda: más deuda, más intereses, y más déficit (bola de nieve).",
       "tesoreria": "Tesorería",
@@ -1222,7 +1222,22 @@
       "ministeriosTitulo": "Gasto de cada ministerio",
       "nota": "Totales del FMI y partes del Banco Mundial (2010). * Estimado: el reparto entre ministerios (salvo sanidad, educación y defensa) y las partidas internas.",
       "ventanaNota": "Solo para ver: el presupuesto se podrá cambiar en la Fase 23, y la deuda tendrá prima de riesgo y rating en la 18.",
-      "sinDatos": "No hay datos para su presupuesto."
+      "sinDatos": "No hay datos para su presupuesto.",
+      "rating": "Rating de la deuda",
+      "ratingAyuda": "La nota que dan las agencias a la deuda del país según su prima de riesgo, de AAA (la mejor) a C (los mercados no prestan); D es el impago. Se revisa cada trimestre y se mueve como mucho dos escalones.",
+      "prima": "Prima de riesgo",
+      "primaValor": "{puntos} puntos (bono a 10 años al {tipo})",
+      "primaAyuda": "Lo que paga el país por encima del tipo de base para que le presten. Sube con la deuda, el déficit, la inflación y la inestabilidad, y baja con la renta y el crecimiento. Con ella se encarecen la deuda y el crédito. Por encima de {umbral} puntos, los mercados dejan de prestar (crisis de deuda).",
+      "crisis": "Crisis de deuda",
+      "crisisEstado": {
+        "fmi": "Rescate del FMI: quedan {meses} meses",
+        "impago": "Impago: quedan {meses} meses",
+        "decidiendo": "Por decidir: los mercados están cerrados"
+      },
+      "crisisAyuda": "Los mercados no prestan al país. Con el rescate del FMI, la deuda se paga al 3,5 % a cambio de un ajuste (recortes y subidas de impuestos). En un impago no se pagan intereses, pero solo se puede gastar lo que se recauda.",
+      "graficoPrimaTitulo": "Prima de riesgo desde enero de 2010 (puntos)",
+      "cierreMercados": "Cierre de los mercados",
+      "primaCorta": "Prima"
     },
     "alertas": {
       "etiqueta": "Alerta económica",
@@ -1250,6 +1265,14 @@
       "crisisDeuda": {
         "titulo": "Crisis de deuda",
         "texto": "La prima de riesgo ha llegado a {valor} puntos y los mercados ya no prestan al país: no puede renovar la deuda que vence ni cubrir su déficit."
+      },
+      "ratingBaja": {
+        "titulo": "Bajan el rating",
+        "texto": "Las agencias rebajan la nota de la deuda a {rating} (prima de riesgo de {valor} puntos). La deuda nueva y la que vence se pagarán más caras, y el crédito se encarece para empresas y familias."
+      },
+      "ratingSube": {
+        "titulo": "Suben el rating",
+        "texto": "Las agencias suben la nota de la deuda a {rating} (prima de riesgo de {valor} puntos). La deuda nueva y el crédito salen más baratos."
       }
     },
     "sucesos": {
@@ -1312,6 +1335,17 @@
         "pregunta": "Hay que elegir una salida:\n• Rescate del FMI: presta al 3,5 % durante tres años a cambio de un ajuste (recortes de los ministerios y subidas de impuestos, con recesión) hasta dejar el déficit en el 3 % del PIB.\n• Impago: se borra la mitad de la deuda y no se pagan intereses durante cuatro años, pero el rating cae a D, nadie presta (hay que recortar ministerios y pensiones hasta gastar solo lo que se recauda), la confianza se hunde y luego la prima tarda años en bajar.\n\nSi cierras sin elegir, se te volverá a preguntar el mes que viene.",
         "fmi": "Pedir el rescate del FMI",
         "impago": "Declarar el impago"
+      }
+    },
+    "rating": {
+      "etiqueta": "Rating {nota}: {nivel}",
+      "niveles": {
+        "excelente": "calidad máxima",
+        "alto": "calidad alta",
+        "medio": "grado de inversión",
+        "especulativo": "especulativo (bono basura)",
+        "riesgo": "riesgo de impago",
+        "impago": "en impago"
       }
     }
   },
@@ -1481,7 +1515,9 @@
       "personal": "Personal",
       "mantenimiento": "Mantenimiento",
       "programas": "Programas y transferencias",
-      "pensiones": "Pensiones"
+      "pensiones": "Pensiones",
+      "rating": "Rating de la deuda",
+      "prima": "Prima de riesgo"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1526,7 +1562,9 @@
       "alertaInflacion": "Alerta: inflación alta",
       "alertaInflacionGrave": "Alerta: inflación desbocada",
       "alertaDeflacion": "Alerta: deflación",
-      "alertaCrisisDeuda": "Alerta: crisis de deuda"
+      "alertaCrisisDeuda": "Alerta: crisis de deuda",
+      "alertaRatingBaja": "Alerta: bajan el rating",
+      "alertaRatingSube": "Alerta: suben el rating"
     },
     "economia": {
       "titulo": "Economía de un país",
@@ -1554,7 +1592,7 @@
     },
     "alertas": {
       "titulo": "Alertas económicas",
-      "nota": "Las alertas del país del jugador, cada una con su icono y su sonido. Salen en una tarjeta arriba a la derecha que se va sola; las graves (crisis de deuda, recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. Pulsa para ver y oír cada una con un dato de ejemplo."
+      "nota": "Las alertas del país del jugador, cada una con su icono y su sonido. Salen en una tarjeta arriba a la derecha que se va sola; las graves (crisis de deuda, recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. También avisan cuando las agencias suben o bajan el rating de la deuda. Pulsa para ver y oír cada una con un dato de ejemplo."
     },
     "musica": {
       "titulo": "Música ambiental",
@@ -1682,6 +1720,13 @@
     "recursos": {
       "titulo": "Recursos de las regiones",
       "nota": "Iconos de la ficha de región: uno propio para la energía y uno por tipo para el resto, sobre el color de su tipo."
+    },
+    "rating": {
+      "titulo": "Rating de la deuda",
+      "nota": "La nota de la deuda de cada país, con el color de su escalón: de AAA (verde) a C (rojo) y D, el impago. Cuando cambia, el distintivo salta con su flecha. Se ve en la ficha de cada país (pestaña Economía) y en Gobierno › Presupuesto. Pulsa para bajar o subir la nota de ejemplo.",
+      "escala": "Todas las notas",
+      "bajar": "Bajar la nota",
+      "subir": "Subir la nota"
     }
   }
 }
