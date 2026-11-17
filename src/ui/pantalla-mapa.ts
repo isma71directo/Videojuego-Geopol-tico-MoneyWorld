@@ -234,6 +234,7 @@ export function abrirPantallaMapa(
     motor.alRecibir = (mensaje) => {
       partida.fecha = mensaje.fecha;
       partida.hora = mensaje.hora;
+      partida.efectos = mensaje.efectos;
       ultimaFraccion = mensaje.fraccion;
       recibidoEn = performance.now();
       velocidadMotor = mensaje.velocidad;

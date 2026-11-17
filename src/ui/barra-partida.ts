@@ -9,6 +9,7 @@ import { icono, type NombreIcono } from '../av/iconos';
 import { formatearFechaLarga } from '../compartido/fechas';
 import { dolares, enteros } from '../compartido/formato';
 import { t } from '../i18n';
+import { datoEfectivo, type CampoEstado } from '../sim/efectos';
 import type { Partida } from '../sim/partida';
 import { etiquetaHuso, textoHora } from '../sim/reloj';
 import { pedirConfirmacion } from './componentes/confirmacion';
@@ -180,12 +181,16 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
       horaActual = estado.hora;
       reloj.poner(horaActual, 0, true);
     }
-    const propio = estado.paises[estado.jugador.paisId];
-    tesoreria.textContent = propio ? dolares(propio.tesoreria) : '—';
-    if (propio) {
-      popularidad.textContent = `${enteros(propio.popularidad)} %`;
-      relleno.style.width = `${Math.max(0, Math.min(100, propio.popularidad))}%`;
-      medidor.dataset.nivel = nivelPopularidad(propio.popularidad);
+    const base = estado.paises[estado.jugador.paisId];
+    // Con los efectos en curso aplicados (tarea f13-t1).
+    const dato = (campo: CampoEstado): number =>
+      datoEfectivo(base!, estado.efectos ?? [], estado.jugador.paisId, campo, estado.fecha);
+    tesoreria.textContent = base ? dolares(dato('tesoreria')) : '—';
+    if (base) {
+      const valor = Math.round(dato('popularidad'));
+      popularidad.textContent = `${enteros(valor)} %`;
+      relleno.style.width = `${Math.max(0, Math.min(100, valor))}%`;
+      medidor.dataset.nivel = nivelPopularidad(valor);
     } else {
       popularidad.textContent = '—';
       relleno.style.width = '0%';

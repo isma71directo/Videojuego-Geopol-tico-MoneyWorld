@@ -5,6 +5,7 @@
  * estado (sección 8 del GDD) se irá añadiendo en cada fase, y el guardado llega en la Fase 14
  * (con migraciones si cambia el formato).
  */
+import type { Efecto } from './efectos';
 import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
   valoresIniciales,
@@ -49,6 +50,8 @@ export interface Partida {
   opciones: { dificultad: Dificultad; eventosHistoricos: boolean };
   /** Estado de cada país jugable (por ahora, sus valores iniciales provisionales). */
   paises: Record<string, EstadoPais>;
+  /** Efectos en curso o por empezar (tarea f13-t1): cambian los datos de los países. */
+  efectos: Efecto[];
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */
@@ -106,6 +109,7 @@ export function crearPartida(
     huso: husoDe(opciones.paisId, husos),
     jugador: { paisId: opciones.paisId, rol: 'gobierno' },
     opciones: { dificultad: opciones.dificultad, eventosHistoricos: opciones.eventosHistoricos },
+    efectos: [],
     paises: Object.fromEntries(
       paisesJugables(paises).map((id) => [
         id,

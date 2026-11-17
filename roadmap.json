@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.13.0",
-  "actualizado": "2026-11-17T07:27:18Z",
+  "actualizado": "2026-11-17T07:30:18Z",
   "faseActiva": "fase-13",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.13.0. Plan de la Fase 13 aprobado: motor de efectos; pausa automática ante sucesos importantes (una opción en Ajustes) con aviso en una ventana central y sonido; efectos visibles en la explicación de cada dato y en «Efectos en curso» (Informes); la luna de miel no caduca todavía (espera a la opinión pública); modo de prueba «?prueba» para probarlo en el PC. La fase pasa a 4 tareas.",
-    "siguientePaso": "f13-t1: motor de efectos en src/sim.",
+    "resumen": "f13-t1 hecha: motor de efectos (src/sim/efectos.ts). Un efecto cambia un dato de un país (sumar, multiplicar o fijar) desde una fecha, con su retraso, hasta otra, con su duración en días o meses (el último día del mes cuando no existe); el valor que ve el jugador es el de base con los efectos vigentes aplicados (primero fijar, luego multiplicar y luego sumar, dentro de sus límites). La partida guarda sus efectos y el motor los añade (orden «efecto») y los quita al terminar; la barra superior ya enseña los valores con efectos.",
+    "siguientePaso": "f13-t2: enseñar los efectos en curso en la explicación de cada dato y en la ventana «Efectos en curso» de Informes.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -864,15 +864,15 @@
         {
           "id": "f13-t1",
           "titulo": "Motor de efectos (sección 8): modificadores con variable, operación (sumar, multiplicar o fijar), valor, retraso y duración, que se aplican y caducan solos en el motor",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f13-t2",
           "titulo": "Ver los efectos en curso: en la explicación de cada dato (qué lo cambia y hasta cuándo) y en la ventana «Efectos en curso» de Informes (decisión del jugador)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

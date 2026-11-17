@@ -24,7 +24,7 @@ describe('motor (tarea f12-t1)', () => {
   it('empieza en pausa y en pausa no avanza', () => {
     const motor = crearMotor();
     expect(motor.atender({ tipo: 'empezar', partida: nuevaPartida() })).toEqual<MensajeMotor[]>([
-      { tipo: 'estado', fecha: '2010-01-01', hora: 0, fraccion: 0, velocidad: 0 },
+      { tipo: 'estado', fecha: '2010-01-01', hora: 0, fraccion: 0, velocidad: 0, efectos: [] },
     ]);
     expect(motor.avanzar(10_000)).toEqual([]);
     expect(motor.partida!.hora).toBe(0);

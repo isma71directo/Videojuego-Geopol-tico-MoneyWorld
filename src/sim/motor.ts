@@ -10,6 +10,7 @@
  *   en lugar de dar saltos) y da los pasos de la simulación a los sistemas.
  */
 import { crearAzar, type Azar } from './azar';
+import { crearEfecto, revisarEfectos, type DefinicionEfecto, type Efecto } from './efectos';
 import { avanzarPartida, type Partida } from './partida';
 import { horasQueTocan, msPorHora, VELOCIDADES, type Paso, type Velocidad } from './reloj';
 
@@ -25,6 +26,8 @@ export type OrdenMotor =
       cargaPruebaMs?: number;
     }
   | { tipo: 'velocidad'; velocidad: Velocidad }
+  /** Añade un efecto (tarea f13-t1): lo usarán leyes, tecnologías, eventos y edificios. */
+  | { tipo: 'efecto'; definicion: DefinicionEfecto }
   | { tipo: 'terminar' };
 
 /** Lo que el motor cuenta a la pantalla. */
@@ -35,6 +38,8 @@ export type MensajeMotor = {
   /** Parte de la hora en curso que ya ha pasado (0 a 1), para mover el reloj sin saltos. */
   fraccion: number;
   velocidad: Velocidad;
+  /** Efectos en curso o por empezar (tarea f13-t1). */
+  efectos: Efecto[];
 };
 
 /**
@@ -72,9 +77,21 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
    */
   let azar: Azar | null = null;
 
+  /** Para dar a cada efecto un identificador propio. */
+  let contadorEfectos = 0;
+
   const estado = (): MensajeMotor[] =>
     partida
-      ? [{ tipo: 'estado', fecha: partida.fecha, hora: partida.hora, fraccion, velocidad }]
+      ? [
+          {
+            tipo: 'estado',
+            fecha: partida.fecha,
+            hora: partida.hora,
+            fraccion,
+            velocidad,
+            efectos: partida.efectos,
+          },
+        ]
       : [];
 
   /** Cálculo inútil que ocupa el hilo (solo con la carga de prueba). */
@@ -106,6 +123,12 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
         velocidad = orden.velocidad;
         return estado();
       }
+      if (orden.tipo === 'efecto') {
+        if (!partida) return [];
+        const efecto = crearEfecto(orden.definicion, partida.fecha, `e${++contadorEfectos}`);
+        partida = { ...partida, efectos: [...partida.efectos, efecto] };
+        return estado();
+      }
       partida = null;
       azar = null;
       velocidad = 0;
@@ -119,6 +142,12 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
       if (horas === 0) return [];
       const { partida: nueva, pasos } = avanzarPartida(partida, horas);
       partida = nueva;
+      // Cada día, los efectos que han terminado se quitan (tarea f13-t1).
+      for (const paso of pasos) {
+        if (paso.ritmo !== 'diario') continue;
+        const { quedan } = revisarEfectos(partida.efectos, paso.fecha);
+        if (quedan.length !== partida.efectos.length) partida = { ...partida, efectos: quedan };
+      }
       for (const sistema of opciones.sistemas ?? []) sistema(pasos, partida, azar!);
       if (cargaPruebaMs > 0) {
         for (const paso of pasos) if (paso.ritmo === 'diario') ocupar(cargaPruebaMs);
