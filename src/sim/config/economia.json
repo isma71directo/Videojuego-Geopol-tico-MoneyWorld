@@ -54,6 +54,17 @@
   "$comentarioArranque": "El crecimiento real de 2010 (entre «minimo» y «maximo») se aparta del potencial y esa diferencia se apaga poco a poco: queda la mitad a los «mesesMitad» meses.",
   "crecimientoInicial": { "minimo": -0.15, "maximo": 0.2 },
   "mesesMitad": 18,
+  "$comentarioConfianza": "Confianza de consumidores y empresas (tarea f15-t3): índice con 100 = normal. Su objetivo sube «puntosPorPunto» por cada punto que el país crece por encima de su potencial (y baja si crece por debajo), entre «minimo» y «maximo»; cada mes recorre «ajusteMensual» del camino. Más confianza sube el consumo y la inversión («efectoConsumo» y «efectoInversion» por cada 100 puntos sobre 100), y eso mueve el PIB con el «multiplicador».",
+  "confianza": {
+    "puntosPorPuntoConsumidores": 2,
+    "puntosPorPuntoEmpresas": 3,
+    "minimo": 60,
+    "maximo": 140,
+    "ajusteMensual": 0.15,
+    "efectoConsumo": 0.05,
+    "efectoInversion": 0.3,
+    "multiplicador": 0.8
+  },
   "$comentarioInversion": "La inversión que se usa para acumular capital, entre estos límites (en tanto por uno del PIB).",
   "inversion": { "minimo": 0.05, "maximo": 0.6 }
 }

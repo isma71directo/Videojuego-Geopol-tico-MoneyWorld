@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.15.1",
-  "actualizado": "2026-11-17T12:47:21Z",
+  "actualizado": "2026-11-17T13:00:39Z",
   "faseActiva": "fase-15",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f15-t2 hecha: cada país tiene su economía en la partida (formato 3): siete sectores que producen productividad × capital^0,35 × trabajo^0,65, calibrados con los datos de 2010, y el reparto de la demanda. Cada mes, sin azar, la inversión acumula capital, el trabajo crece con la población, la productividad converge hacia la de los países más avanzados y el PIB crece como el potencial más el impulso real de 2010, que se apaga a la mitad cada 18 meses (China: 9,9 %, 8,1 %, 7 %…; EE. UU., ~2 %). El motor la avanza en el worker; las partidas de antes reciben al cargarse su economía de 2010. Una partida guardada ocupa unos 290 KB. f15-t1 hecha: datos de la ONU.",
-    "siguientePaso": "f15-t3: ahorro y confianza de consumidores y empresas, con su efecto en el consumo y la inversión; valores en vivo en la ficha de cada país y en Economía › Economía.",
+    "resumen": "f15-t3 hecha: confianza de consumidores y empresas (índice, 100 = normal, estimada al empezar con el crecimiento de 2010), que se acerca cada mes a la que corresponde al crecimiento frente al potencial y mueve el consumo, la inversión y el PIB; ahorro nacional. En la partida, la pestaña Economía de la ficha de cada país y la ventana Economía › Economía enseñan en vivo el PIB real, el crecimiento, el potencial, las confianzas, el consumo, la inversión, el ahorro, la producción de los siete sectores y el gráfico del PIB desde 2010, y se ponen al día cada mes. China: 9,7 %, 7,7 %, 6,6 %…; Grecia: −4,4 %, −1,9 %, −0,6 %, con la confianza hundida que se recupera.",
+    "siguientePaso": "f15-t4: iconos de los indicadores macroeconómicos y de los sectores que falten y gráfico animado del PIB; después, cerrar la Fase 15 como v0.16.0.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -975,20 +975,20 @@
           "titulo": "Estado económico de cada país en la partida (formato 3 con migración) y modelo mensual de producción por sector y demanda, sin azar (decisión del jugador), que arranca con el crecimiento real de 2010 y converge al potencial",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7aa25f7"
         },
         {
           "id": "f15-t3",
           "titulo": "Ahorro y confianza de consumidores y empresas, con su efecto en el consumo y la inversión; valores en vivo en la ficha de cada país y en Economía › Economía (decisión del jugador)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f15-t4",
           "titulo": "Audiovisual: iconos de los indicadores macroeconómicos y de los sectores que falten, y gráfico animado de la evolución del PIB desde 2010",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         }
       ]

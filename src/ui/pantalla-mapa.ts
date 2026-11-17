@@ -23,6 +23,7 @@ import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones, ponerContenido, refrescarElemento } from './secciones';
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
+import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
 import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from './aviso-suceso';
 import type { Suceso } from '../sim/sucesos';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
@@ -410,9 +411,15 @@ export function abrirPantallaMapa(
         return;
       }
       if (mensaje.tipo === 'partida') {
-        // Al empezar cada mes, el guardado automático; o la partida pedida para guardarla.
-        if (mensaje.motivo === 'mes') void guardarAutomatico(mensaje.partida);
-        else if (mensaje.peticion !== undefined) {
+        // Al empezar cada mes, el guardado automático y la economía nueva de cada país (tarea
+        // f15-t3); o la partida pedida para guardarla.
+        if (mensaje.motivo === 'mes') {
+          partida.paises = mensaje.partida.paises;
+          // Su fecha es la del mes nuevo (el estado con la hora llega justo después).
+          partida.fecha = mensaje.partida.fecha;
+          refrescarEconomiaEnVivo();
+          void guardarAutomatico(mensaje.partida);
+        } else if (mensaje.peticion !== undefined) {
           esperando.get(mensaje.peticion)?.(mensaje.partida);
           esperando.delete(mensaje.peticion);
         }
@@ -553,6 +560,18 @@ export function abrirPantallaMapa(
   const secciones = crearBarraSecciones();
   // Informes › Efectos en curso (tarea f13-t2), con los de la partida (o un aviso sin ella).
   ponerContenido('efectos', () => contenidoEfectosEnCurso(partida));
+  // Economía › Economía (tarea f15-t3): la del país del jugador, en vivo.
+  if (partida) {
+    ponerContenido('economia', () =>
+      contenidoVentanaEconomia(
+        () => ({
+          economia: partida.paises[partida.jugador.paisId]?.economia ?? null,
+          fecha: partida.fecha,
+        }),
+        nombreDe(partida.jugador.paisId),
+      ),
+    );
+  }
   const alTeclearSecciones = (evento: KeyboardEvent): void => {
     secciones.alTeclear(evento);
   };
@@ -785,6 +804,14 @@ export function abrirPantallaMapa(
               alCambiarPestana: (id) => {
                 pestanaFicha = id;
               },
+              ...(partida
+                ? {
+                    economiaEnVivo: () => ({
+                      economia: partida.paises[pais!.id]?.economia ?? null,
+                      fecha: partida.fecha,
+                    }),
+                  }
+                : {}),
             })),
     );
     return true;
@@ -971,6 +998,7 @@ export function abrirPantallaMapa(
     barraPartida?.destruir();
     secciones.destruir();
     ponerContenido('efectos', null);
+    ponerContenido('economia', null);
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

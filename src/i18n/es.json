@@ -1182,6 +1182,42 @@
         "texto": "Así te avisará el juego de un suceso importante, como una declaración de guerra o una moción de censura: la partida se para sola justo en ese momento. Es solo una prueba («?prueba» en la dirección).",
         "efecto": "Efecto de prueba"
       }
+    },
+    "economia": {
+      "enLaPartida": "En la partida",
+      "datos2010": "Datos de 2010",
+      "pib": "PIB real",
+      "pibAyuda": "Lo que produce el país al ritmo de un año, en dólares de 2010 (sin inflación, que llega en la Fase 16).",
+      "crecimiento": "Crecimiento (12 meses)",
+      "crecimientoDesde": "Crecimiento desde 2010 (anual)",
+      "crecimientoAyuda": "Cuánto ha crecido el PIB real en los últimos 12 meses (o, si aún no ha pasado un año, desde enero de 2010, al ritmo de un año). Empieza con el crecimiento real de 2010 y se acerca poco a poco al potencial.",
+      "potencial": "Crecimiento potencial",
+      "potencialAyuda": "Lo que crecería el país con su inversión, su población y su productividad, sin el empuje (o el freno) de 2010 ni el de la confianza.",
+      "confianzaConsumidores": "Confianza de los consumidores",
+      "confianzaEmpresas": "Confianza de las empresas",
+      "confianzaAyuda": "Índice: 100 es lo normal. Sube cuando el país crece por encima de su potencial y baja cuando crece por debajo; con más confianza se consume y se invierte más. Estimada al empezar a partir del crecimiento de 2010 (no hay datos de todos los países).",
+      "consumo": "Consumo de los hogares",
+      "consumoAyuda": "Lo que gastan los hogares, en % del PIB (dato de 2010 de la ONU, que mueve la confianza).",
+      "inversion": "Inversión",
+      "inversionAyuda": "Lo que se invierte en máquinas, edificios e infraestructuras, en % del PIB: se suma al capital y hace crecer la producción.",
+      "ahorro": "Ahorro nacional",
+      "ahorroAyuda": "Lo que no consumen los hogares ni el Estado, en % del PIB.",
+      "sectoresTitulo": "Producción por sectores",
+      "sectores": {
+        "agricultura": "Agricultura y pesca",
+        "mineriaEnergia": "Minería y energía",
+        "manufactura": "Industria",
+        "construccion": "Construcción",
+        "comercio": "Comercio y turismo",
+        "transporte": "Transporte",
+        "otrosServicios": "Otros servicios"
+      },
+      "graficoTitulo": "PIB real desde enero de 2010 (miles de millones de dólares de 2010)",
+      "mes": "Mes",
+      "milesDeMillones": "{valor} mil M$",
+      "nota": "Dólares de 2010 (la inflación llega en la Fase 16). * Confianza estimada.",
+      "sinDatos": "Sin datos para su economía.",
+      "ventanaNota": "La pantalla completa de Economía llega en la Fase 17, y el banco central, en la 18."
     }
   },
   "hojaDeRuta": {

@@ -13,6 +13,11 @@
  * desgasta), sale la producción potencial de cada sector y el PIB crece como el potencial más lo
  * que quede del impulso de 2010. Los valores van en dólares de 2010 (PIB real); la inflación, el
  * PIB nominal y el paro llegan en la Fase 16.
+ *
+ * Confianza y ahorro (tarea f15-t3): la confianza de consumidores y de empresas (índice, 100 =
+ * normal) sube cuando el país crece por encima de su potencial y baja cuando crece por debajo,
+ * poco a poco. Con más confianza se consume e invierte algo más: sube la demanda (y con ella el
+ * PIB) y se acumula más capital. El ahorro nacional es lo que no se consume.
  */
 import config from './config/economia.json';
 import type { Sistema } from './motor';
@@ -65,6 +70,13 @@ export interface DemandaEconomia {
 export interface EconomiaPais {
   /** PIB real al ritmo de un año, en dólares de 2010. */
   pib: number;
+  /** Confianza de los consumidores y de las empresas (índice, 100 = normal; tarea f15-t3). */
+  confianzaConsumidores: number;
+  confianzaEmpresas: number;
+  /** El reparto de la demanda de 2010, del que se aparta con la confianza (y las decisiones). */
+  demandaBase: DemandaEconomia;
+  /** Cuánto se aparta el PIB del camino de su producción por la demanda (tanto por uno). */
+  brechaDemanda: number;
   /** PIB potencial: lo que producirían su capital, su trabajo y su productividad. */
   pibPotencial: number;
   sectores: Record<Sector, SectorEconomia>;
@@ -160,6 +172,7 @@ export function economiaInicial(
   datos: DatosEconomia,
   nivelRenta: string | null | undefined,
 ): EconomiaPais | null {
+  // (La confianza y la demanda con ella se calculan al final, con el potencial ya conocido.)
   const pib = dato(datos, 'pib');
   if (pib === null || pib <= 0) return null;
   const nivel = nivelDe(nivelRenta);
@@ -212,6 +225,10 @@ export function economiaInicial(
 
   const economia: EconomiaPais = {
     pib,
+    confianzaConsumidores: 100,
+    confianzaEmpresas: 100,
+    demandaBase: { ...demanda },
+    brechaDemanda: 0,
     pibPotencial: pib,
     sectores,
     demanda,
@@ -227,7 +244,51 @@ export function economiaInicial(
     config.crecimientoInicial.maximo,
   ]);
   economia.impulsoInicial = crecimiento2010 - crecimientoPotencial(economia);
+  // La confianza de partida (estimada: no hay datos de todos los países), la que corresponde a
+  // lo que creció en 2010 frente a su potencial; y con ella, el consumo y la inversión.
+  economia.confianzaConsumidores = objetivoConfianza(economia.impulsoInicial, 'consumidores');
+  economia.confianzaEmpresas = objetivoConfianza(economia.impulsoInicial, 'empresas');
+  economia.demanda = demandaConConfianza(economia);
+  // El PIB de 2010 ya es el de esa demanda: la brecha empieza ahí (sin salto el primer mes).
+  economia.brechaDemanda = brechaDe(economia);
   return economia;
+}
+
+/** Cuánto aparta la demanda (consumo e inversión frente a los de base) al PIB de su camino. */
+function brechaDe(economia: Pick<EconomiaPais, 'demanda' | 'demandaBase'>): number {
+  const { demanda, demandaBase: base } = economia;
+  return (
+    config.confianza.multiplicador *
+    (demanda.consumo - base.consumo + (demanda.inversion - base.inversion))
+  );
+}
+
+const confianza = config.confianza;
+
+/** La confianza a la que tiende un país que crece `diferencia` por encima de su potencial. */
+export function objetivoConfianza(diferencia: number, quien: 'consumidores' | 'empresas'): number {
+  const puntos =
+    quien === 'consumidores'
+      ? confianza.puntosPorPuntoConsumidores
+      : confianza.puntosPorPuntoEmpresas;
+  return recortar(100 + puntos * diferencia * 100, [confianza.minimo, confianza.maximo]);
+}
+
+/** El reparto de la demanda con la confianza de ahora: más confianza, más consumo e inversión. */
+export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
+  const base = economia.demandaBase;
+  return {
+    ...base,
+    consumo:
+      base.consumo * (1 + (confianza.efectoConsumo * (economia.confianzaConsumidores - 100)) / 100),
+    inversion:
+      base.inversion * (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
+  };
+}
+
+/** Ahorro nacional en tanto por uno del PIB: lo que no consumen los hogares ni el Estado. */
+export function ahorroNacional(economia: Pick<EconomiaPais, 'demanda'>): number {
+  return 1 - economia.demanda.consumo - economia.demanda.consumoPublico;
 }
 
 /** Lo que queda del impulso de 2010 al cabo de unos meses (se apaga a la mitad cada «mesesMitad»). */
@@ -258,10 +319,29 @@ export function avanzarMes(economia: EconomiaPais): void {
   const potencial = SECTORES.map((s) => produccion(sectores[s]));
   const potencialAhora = potencial.reduce((a, b) => a + b, 0);
   if (potencialAntes <= 0 || potencialAhora <= 0) return;
-  // El PIB crece como el potencial más lo que queda del impulso de 2010.
+  // El PIB crece como el potencial más lo que queda del impulso de 2010…
   const impulso = mensual(impulsoEnMes(economia, economia.meses));
+  const pibAntes = economia.pib;
   economia.pib *= (potencialAhora / potencialAntes) * (1 + impulso);
   economia.pibPotencial = potencialAhora;
+  // … y la confianza se mueve hacia la que corresponde a ese crecimiento frente al potencial.
+  const crecimientoMes = Math.pow(economia.pib / pibAntes, 12) - 1;
+  const diferencia = crecimientoMes - crecimientoPotencial(economia);
+  const acercar = (actual: number, objetivo: number): number =>
+    actual + (objetivo - actual) * confianza.ajusteMensual;
+  economia.confianzaConsumidores = acercar(
+    economia.confianzaConsumidores,
+    objetivoConfianza(diferencia, 'consumidores'),
+  );
+  economia.confianzaEmpresas = acercar(
+    economia.confianzaEmpresas,
+    objetivoConfianza(diferencia, 'empresas'),
+  );
+  // Con la confianza cambian el consumo y la inversión; la demanda mueve el PIB.
+  economia.demanda = demandaConConfianza(economia);
+  const brecha = brechaDe(economia);
+  economia.pib *= (1 + brecha) / (1 + economia.brechaDemanda);
+  economia.brechaDemanda = brecha;
   // Cada sector produce su parte del PIB según su producción potencial.
   SECTORES.forEach((s, i) => {
     sectores[s].valor = (economia.pib * potencial[i]!) / potencialAhora;

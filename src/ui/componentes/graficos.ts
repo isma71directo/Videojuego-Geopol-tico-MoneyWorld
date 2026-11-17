@@ -125,6 +125,11 @@ export interface OpcionesLineas {
   formatoY?: (y: number) => string;
   /** Nombre de la columna de x en la vista de tabla (por defecto, «Año»). */
   nombreX?: string;
+  /**
+   * El eje vertical empieza en 0 (por defecto). Sin él, se ajusta a los valores, para ver
+   * cambios pequeños (p. ej. el PIB mes a mes, tarea f15-t3).
+   */
+  desdeCero?: boolean;
 }
 
 export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
@@ -135,7 +140,13 @@ export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
   const formatoY = opciones.formatoY ?? formatoPorDefecto;
   const xs = [...new Set(series.flatMap((s) => s.puntos.map(([x]) => x)))].sort((a, b) => a - b);
   const ys = series.flatMap((s) => s.puntos.map(([, y]) => y));
-  const marcasY = marcasBonitas(Math.min(0, ...ys), Math.max(...ys), 5);
+  const [minimoY, maximoY] = [Math.min(...ys), Math.max(...ys)];
+  // Ajustado a los valores, con un poco de aire (y algo de alto si todos son iguales).
+  const aire = Math.max((maximoY - minimoY) * 0.15, Math.abs(maximoY) * 0.01, 1e-9);
+  const marcasY =
+    opciones.desdeCero === false
+      ? marcasBonitas(minimoY - aire, maximoY + aire, 5)
+      : marcasBonitas(Math.min(0, ...ys), maximoY, 5);
   const etiquetaEje = formatoEje(marcasY);
   const directas = series.length <= 4;
   const margen = { izq: 46, der: directas ? 92 : 14, arr: 10, aba: 26 };

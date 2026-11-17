@@ -50,8 +50,8 @@ describe('la economía de 2010 (tarea f15-t2)', () => {
     for (const s of SECTORES) {
       expect((e.sectores[s].valor / e.pib) * 100).toBeCloseTo(espana[CAMPO_SECTOR[s]]!, 1);
     }
-    expect(e.demanda.consumo * 100).toBeCloseTo(espana.consumoHogaresPib!, 5);
-    expect(e.demanda.inversion * 100).toBeCloseTo(espana.inversionPib!, 5);
+    expect(e.demandaBase.consumo * 100).toBeCloseTo(espana.consumoHogaresPib!, 5);
+    expect(e.demandaBase.inversion * 100).toBeCloseTo(espana.inversionPib!, 5);
     // Al empezar, la producción potencial de cada sector es lo que produce de verdad.
     expect(e.pibPotencial).toBe(e.pib);
   });
