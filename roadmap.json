@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.0",
-  "actualizado": "2026-11-17T00:12:18Z",
+  "versionActual": "0.12.1",
+  "actualizado": "2026-11-17T00:13:01Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f11-a1 hecho: la noche del mapa ya no sigue al Sol real. Un «Sol del juego» sin estaciones hace que en la capital del jugador anochezca a las 20:00 y amanezca a las 7:00 todo el año (con un crepúsculo de unos 20 minutos); el resto del mundo se oscurece según su longitud. La esfera del reloj usa el mismo horario. El reloj no tendrá horario de verano ni diferencias horarias entre países (decisión del jugador).",
-    "siguientePaso": "Publicar la v0.12.1 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "v0.12.1 publicada con el ajuste f11-a1: noche de las 20:00 a las 7:00 en la capital del jugador todo el año. PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.12.1: presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
+    "pendienteDelJugador": [
+      "Probar la v0.12.1 en el PC: en una partida, dejar correr el tiempo y comprobar que en tu país anochece hacia las 20:00 y amanece hacia las 7:00",
+      "Fusionar el PR de la v0.12.1"
+    ]
   },
   "etapas": [
     {
@@ -769,7 +772,7 @@
           "origen": "Mensaje del jugador tras probar la v0.12.0",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/172640e"
         }
       ]
     },
@@ -4535,6 +4538,13 @@
         "Pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en la barra superior, con el ratón, la barra espaciadora y las teclas 1 a 4",
         "El reloj marca la hora local de la capital del jugador, con su huso horario de 2010 (base de datos IANA)",
         "Reloj de manecillas, noche y día sobre el mapa con la posición real del Sol (se puede quitar en Ajustes) y sonidos de pausa, seguir y cambio de velocidad"
+      ]
+    },
+    {
+      "version": "0.12.1",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Noche en el mapa de las 20:00 a las 7:00 en la capital del jugador todo el año (antes seguía al Sol real y en enero anochecía hacia las 18:00); el resto del mundo se oscurece según su longitud"
       ]
     }
   ]
