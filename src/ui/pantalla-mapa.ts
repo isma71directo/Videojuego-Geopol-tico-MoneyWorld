@@ -302,13 +302,16 @@ export function abrirPantallaMapa(
       indicador.error(t('juego.guardado.error'));
     }
   }
-  /** Guarda en una ranura; dice si se ha podido. */
-  const guardarEnRanura = async (ranura: number): Promise<boolean> => {
+  /**
+   * Guarda en una ranura, con el nombre escrito (`undefined`, como con Ctrl+S: conserva el que
+   * tenía la ranura de esta partida). Dice si se ha podido.
+   */
+  const guardarEnRanura = async (ranura: number, nombre?: string): Promise<boolean> => {
     if (!almacen || !motor) return false;
     indicador.guardando();
     try {
       const copia = await pedirPartida();
-      await guardarPartida(almacen, copia, { tipo: 'manual', ranura }, VERSION);
+      await guardarPartida(almacen, copia, { tipo: 'manual', ranura, nombre }, VERSION);
       ranuraActual = ranura;
       guardadaHasta = horaAbsoluta(copia);
       indicador.hecho(t('juego.guardado.hecho', { n: ranura }), true);
@@ -338,8 +341,10 @@ export function abrirPantallaMapa(
       void abrirGuardar({
         almacen,
         nombreDe,
-        alElegir: (ranura) => {
-          void guardarEnRanura(ranura).then((hecho) => {
+        partidaId: partida?.id,
+        ranuraActual,
+        alElegir: (ranura, nombre) => {
+          void guardarEnRanura(ranura, nombre).then((hecho) => {
             seguir();
             resolver(hecho);
           });

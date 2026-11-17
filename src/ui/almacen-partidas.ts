@@ -170,6 +170,16 @@ export async function guardarPartida(
   version: string,
   ahora: Date = new Date(),
 ): Promise<ResumenGuardado> {
+  if (destino.tipo === 'manual' && destino.nombre === undefined) {
+    // Sin nombre nuevo (Ctrl+S): la ranura conserva el suyo si es de esta misma partida.
+    const { ranura } = destino;
+    const anterior = (await almacen.listar()).find(
+      (r) => r.tipo === 'manual' && r.ranura === ranura,
+    );
+    if (anterior?.nombre && anterior.partidaId === partida.id) {
+      destino = { ...destino, nombre: anterior.nombre };
+    }
+  }
   const { resumen, archivo } = empaquetar(partida, destino, version, ahora);
   await almacen.escribir(resumen, archivo);
   if (destino.tipo === 'automatico') {

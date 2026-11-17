@@ -156,7 +156,7 @@ describe('ventanas Guardar y Cargar (tarea f14-t2)', () => {
     expect(ventana.cuerpo.querySelector('.guardados__aviso')).not.toBeNull();
     filas[1]!.click();
     await esperar();
-    expect(alElegir).toHaveBeenCalledWith(2);
+    expect(alElegir).toHaveBeenCalledWith(2, '');
     expect(ventana.abierta).toBe(false);
   });
 
@@ -185,7 +185,7 @@ describe('ventanas Guardar y Cargar (tarea f14-t2)', () => {
       .querySelector<HTMLButtonElement>('.confirmacion:not(.retirandose) .confirmacion__aceptar')!
       .click();
     await esperar();
-    expect(alElegir).toHaveBeenCalledWith(1);
+    expect(alElegir).toHaveBeenCalledWith(1, '');
     // Al elegir, la ventana se cierra sin contar como «cerrar sin guardar».
     expect(alCerrar).not.toHaveBeenCalled();
   });

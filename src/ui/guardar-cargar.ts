@@ -12,6 +12,7 @@ import { t } from '../i18n';
 import { semillaNueva } from '../sim/azar';
 import {
   ErrorGuardado,
+  LONGITUD_NOMBRE,
   ordenarResumenes,
   paraSeguir,
   RANURAS_MANUALES,
@@ -50,9 +51,14 @@ export function textoPartida(
 
 /** «Ranura 2», «Automático» o «Inicio de 2012». */
 export function etiquetaGuardado(
-  resumen: Pick<ResumenGuardado, 'tipo' | 'ranura' | 'fecha'>,
+  resumen: Pick<ResumenGuardado, 'tipo' | 'ranura' | 'fecha' | 'nombre'>,
 ): string {
-  if (resumen.tipo === 'manual') return t('juego.guardado.ranura', { n: resumen.ranura ?? 0 });
+  if (resumen.tipo === 'manual') {
+    // Con el nombre que le ha puesto el jugador, si lo tiene (ajuste f14-a1).
+    return resumen.nombre
+      ? t('juego.guardado.ranuraConNombre', { n: resumen.ranura ?? 0, nombre: resumen.nombre })
+      : t('juego.guardado.ranura', { n: resumen.ranura ?? 0 });
+  }
   if (resumen.tipo === 'automatico') return t('juego.guardado.automatico');
   return t('juego.guardado.anual', { ano: resumen.fecha.slice(0, 4) });
 }
@@ -129,12 +135,29 @@ const avisoSoloMemoria = (almacen: AlmacenPartidas): HTMLElement | null =>
  * está ocupada), se cierra y llama a `alElegir` con su número.
  */
 export async function abrirGuardar(
-  opciones: OpcionesGuardados & { alElegir: (ranura: number) => void; alCerrar?: () => void },
+  opciones: OpcionesGuardados & {
+    /** La ranura elegida y el nombre escrito (vacío: sin nombre). */
+    alElegir: (ranura: number, nombre: string) => void;
+    alCerrar?: () => void;
+    /** La partida que se guarda y su ranura: el nombre empieza con el que ya tiene (f14-a1). */
+    partidaId?: string;
+    ranuraActual?: number | null;
+  },
 ): Promise<Ventana> {
   const resumenes = await opciones.almacen.listar();
   const deRanura = new Map(
     resumenes.filter((r) => r.tipo === 'manual').map((r) => [r.ranura ?? 0, r] as const),
   );
+  // Nombre del guardado (ajuste f14-a1, petición del jugador): opcional.
+  const actual = opciones.ranuraActual != null ? deRanura.get(opciones.ranuraActual) : undefined;
+  const campo = el('input', {
+    class: 'guardados__campo',
+    type: 'text',
+    maxlength: LONGITUD_NOMBRE,
+    value: actual && actual.partidaId === opciones.partidaId ? (actual.nombre ?? '') : '',
+    placeholder: t('juego.guardado.nombreEjemplo'),
+    autocomplete: 'off',
+  });
   let elegida = false;
   const ventana = abrirVentana({
     id: 'guardar-partida',
@@ -154,7 +177,7 @@ export async function abrirGuardar(
       {},
       filaGuardado(ocupada, {
         ...opciones,
-        etiqueta: t('juego.guardado.ranura', { n: ranura }),
+        etiqueta: ocupada ? etiquetaGuardado(ocupada) : t('juego.guardado.ranura', { n: ranura }),
         alElegir: () => {
           void (async () => {
             if (ocupada) {
@@ -171,7 +194,7 @@ export async function abrirGuardar(
             }
             elegida = true;
             ventana.cerrar();
-            opciones.alElegir(ranura);
+            opciones.alElegir(ranura, campo.value);
           })();
         },
       }),
@@ -180,9 +203,13 @@ export async function abrirGuardar(
   ventana.cuerpo.replaceChildren(
     el('p', { class: 'guardados__nota' }, t('juego.guardado.guardarNota')),
     avisoSoloMemoria(opciones.almacen) ?? '',
+    el('label', { class: 'guardados__nombre' }, el('span', {}, t('juego.guardado.nombre')), campo),
     el('ol', { class: 'guardados' }, ...filas),
   );
   entrarEscalonadas(ventana.cuerpo);
+  // Se puede escribir el nombre nada más abrir (y elegir la ranura con el ratón o con Tab).
+  campo.focus({ preventScroll: true });
+  campo.select();
   return ventana;
 }
 

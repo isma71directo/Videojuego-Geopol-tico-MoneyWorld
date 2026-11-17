@@ -116,3 +116,33 @@
   width: 18px;
   height: 18px;
 }
+
+/* Nombre del guardado (ajuste f14-a1). */
+.guardados__nombre {
+  display: grid;
+  gap: 4px;
+  margin-top: 10px;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.guardados__campo {
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+  font-size: 14px;
+}
+
+.guardados__campo::placeholder {
+  color: var(--pendiente);
+}
+
+.guardados__campo:focus-visible {
+  border-color: var(--acento);
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+}
