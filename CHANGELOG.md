@@ -7,6 +7,45 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.15.0 - 2026-11-17
+
+Fase 14: guardar y cargar partidas.
+
+### Añadido
+
+- **Guardar en el navegador** (IndexedDB; decisiones del jugador):
+  - Cinco ranuras manuales, compartidas por todas las partidas. Guardar en una ocupada pregunta
+    antes de sobrescribirla.
+  - Guardado automático al empezar cada mes (el día 1 a las 00:00 en punto), del que se conservan
+    los tres más recientes, y además el del 1 de enero de cada año, que no se borra solo.
+  - Se pide al navegador que no borre los datos por falta de espacio. Si el navegador no deja
+    guardar (algunas ventanas privadas), se avisa: las partidas duran mientras la página esté
+    abierta.
+- **Menú de la partida** (botón «Menú»): Guardar (Ctrl+S, en la ranura de la partida), Guardar
+  en…, Cargar…, Ajustes, Exportar a un archivo y Salir al menú. El tiempo se para mientras sus
+  ventanas están abiertas.
+  - Salir con algo jugado sin guardar pregunta «¿Guardar antes de salir?»: Seguir jugando, Salir
+    sin guardar o Guardar y salir.
+  - Ajustes se abre también en la partida y lo que se cambia se nota al momento. La ayuda de la
+    pausa automática dice ya que vale para cualquier suceso importante (recordatorio del jugador).
+- **Ventanas Guardar y Cargar partida** con la bandera, el país, la fecha y la hora de cada
+  guardado y cuándo se guardó.
+- **Exportar e importar** la partida como archivo .json, con el juego, el formato y la versión.
+  Al importar se comprueba y se migra; lo que no es una partida de este juego, está dañado o es de
+  una versión más nueva se rechaza con su aviso.
+- **Inicio:** «Continuar» abre la partida guardada más reciente (y dice cuál es); «Cargar
+  partida» abre la lista y deja importar un archivo.
+- **Indicador de guardado** arriba en el centro («Guardando…», lo guardado o el error), con un
+  sonido propio al guardar a mano o exportar; los automáticos no suenan.
+- **Iconos nuevos** (guardar, cargar, ajustes, exportar, importar y hecho) y sección «Guardar y
+  cargar» en la galería.
+
+### Cambiado
+
+- Formato de la partida 2 (identificador de la partida, efectos y agenda), con su migración desde
+  el formato 1 (v0.11 a v0.13). Al cargar, el azar se vuelve a sembrar (decisión de la Fase 12).
+- Al cerrar o recargar la pestaña, el navegador solo pregunta si hay algo jugado sin guardar.
+
 ## 0.14.0 - 2026-11-17
 
 Fase 13: efectos y pausa automática.
