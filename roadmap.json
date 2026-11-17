@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T20:44:36Z",
+  "actualizado": "2026-11-17T20:48:22Z",
   "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 17 en curso. f17-t1 hecha (datos del Banco Mundial). f17-t2 hecha: presupuesto de 2010 de cada país en la partida (formato 6, con migración): 7 ingresos por tipo; 20 ministerios con personal, inversión, mantenimiento y programas; pensiones, desempleo e intereses; deuda real y tipo implícito. Cuadra con el FMI (España: ingresos 36,4 %, gastos 45,8 %, déficit −9,5 %; pensiones 10,1 %, desempleo 3 %). Aún no evoluciona ni se ve en pantalla.",
-    "siguientePaso": "f17-t3: evolución mensual del presupuesto (estabilizadores automáticos, déficit → deuda por la tesorería, recortes del ajuste forzoso), con tests de «si se hace mal, empeora».",
+    "resumen": "Fase 17 en curso. f17-t1 (datos del Banco Mundial) y f17-t2 (presupuesto de 2010 en el motor) hechas. f17-t3 hecha: el presupuesto avanza cada mes (sistemaPresupuesto, entre la economía y las alertas): recaudación por tipo efectivo × base, ministerios con el PIB potencial nominal y los recortes del ajuste forzoso, pensiones con precios y envejecimiento, desempleo con el paro, intereses con la deuda; el saldo pasa por la tesorería y el déficit se cubre con deuda. Grecia: deuda del 148 % al 287 % en 5 años; Japón 179 % → 245 %; Noruega paga su deuda.",
+    "siguientePaso": "f17-t4: el presupuesto en la ficha (pestaña Economía) y en Gobierno › Presupuesto, con gráfico de ingresos y gastos, iconos de las partidas (ya dibujados: personal, mantenimiento, programas, pensiones, renta, IVA) y la tesorería y la deuda; después, cerrar la Fase 17 como v0.18.0.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1068,20 +1068,20 @@
           "titulo": "El presupuesto en el motor: ingresos por tipo y gastos por ministerio con sus partidas internas (personal, inversión, mantenimiento, programas), pensiones, prestaciones e intereses; cuadra con el FMI; deuda y tesorería",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/949a8e3"
         },
         {
           "id": "f17-t3",
           "titulo": "Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora»",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f17-t4",
           "titulo": "Audiovisual: gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         }
       ]

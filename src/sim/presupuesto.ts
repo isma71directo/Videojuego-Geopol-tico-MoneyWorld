@@ -19,7 +19,8 @@ import {
   type EconomiaPais,
   type NivelRenta,
 } from './economia';
-import type { Partida as PartidaJuego } from './partida';
+import type { Sistema } from './motor';
+import type { EstadoPais, Partida as PartidaJuego } from './partida';
 
 /** Los ingresos, por tipo. */
 export const INGRESOS = [
@@ -87,12 +88,19 @@ export interface PresupuestoPais {
   porParado: number;
   /** Consumo público de la economía el último mes (para llevar al presupuesto sus recortes). */
   consumoPublicoVisto: number;
+  /** PIB potencial nominal el último mes: los ministerios crecen con él (tarea f17-t3). */
+  potencialVisto: number;
+  /**
+   * Ingresos, gastos y deuda de cada mes desde que empezó (en % del PIB nominal, para los
+   * gráficos; tarea f17-t3).
+   */
+  serie: { ingresos: number[]; gastos: number[]; deuda: number[] };
 }
 
 /** Lo que la economía aporta a las bases de los ingresos (null: sin economía, todo el PIB). */
 type EconomiaParaBases = Pick<
   EconomiaPais,
-  'pib' | 'pibPotencial' | 'nivelPrecios' | 'paro' | 'demanda'
+  'pib' | 'pibPotencial' | 'nivelPrecios' | 'paro' | 'demanda' | 'demandaBase'
 >;
 
 const b = config.bases;
@@ -335,7 +343,7 @@ export function presupuestoInicial(
   ) as Record<Ingreso, number>;
   const paro = economia?.paro ?? (dato(datos, 'paro') ?? 8) / 100;
 
-  return {
+  const presupuesto: PresupuestoPais = {
     ingresos,
     ministerios: ajustarPartidas(totales, objetivo),
     transversales,
@@ -343,9 +351,89 @@ export function presupuestoInicial(
     tipoInteres,
     tipos,
     porParado: paro > 0 ? transversales.desempleo / (paro * pib) : 0,
-    consumoPublicoVisto: economia?.demanda.consumoPublico ?? 0,
+    consumoPublicoVisto: economia?.demandaBase.consumoPublico ?? 0,
+    potencialVisto: economia ? economia.pibPotencial * economia.nivelPrecios : pib,
+    serie: { ingresos: [], gastos: [], deuda: [] },
   };
+  anotarMes(presupuesto, pib);
+  return presupuesto;
 }
+
+/** Lo que se redondea cada dato de las series (en % del PIB). */
+const redondear = (valor: number): number => Math.round(valor * 1e3) / 1e3;
+
+/** Anota en las series los ingresos, los gastos y la deuda de este mes, en % del PIB. */
+function anotarMes(presupuesto: PresupuestoPais, pib: number): void {
+  const enPib = (valor: number) => redondear(pib > 0 ? (valor / pib) * 100 : 0);
+  presupuesto.serie.ingresos.push(enPib(totalIngresos(presupuesto)));
+  presupuesto.serie.gastos.push(enPib(totalGastos(presupuesto)));
+  presupuesto.serie.deuda.push(enPib(presupuesto.deuda));
+}
+
+const e = config.evolucion;
+
+/**
+ * Un mes del presupuesto (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 23):
+ * la recaudación sigue a sus bases, los ministerios crecen con los precios y el potencial (y
+ * pierden los recortes del ajuste forzoso), las pensiones suben con los precios y el
+ * envejecimiento, el desempleo sigue al paro y los intereses, a la deuda. El saldo pasa por la
+ * tesorería (`estado`), y el déficit se cubre con deuda.
+ */
+export function avanzarPresupuesto(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais,
+  estado: Pick<EstadoPais, 'tesoreria'>,
+): void {
+  const pib = pibNominal(economia);
+  const precios = Math.pow(1 + economia.inflacion, 1 / 12);
+  // Ingresos: el tipo efectivo por su base de ahora.
+  const bases = basesDeIngresos(economia);
+  for (const i of INGRESOS) presupuesto.ingresos[i] = presupuesto.tipos[i] * bases[i];
+  // Ministerios: con el PIB potencial nominal (precios y capacidad), así que pesan lo mismo con la
+  // economía en su potencial y más si cae por debajo (estabilizador automático)…
+  const potencial = economia.pibPotencial * economia.nivelPrecios;
+  const crecer = presupuesto.potencialVisto > 0 ? potencial / presupuesto.potencialVisto : precios;
+  presupuesto.potencialVisto = potencial;
+  const ministerios = suma(MINISTERIOS.map((m) => gastoMinisterio(presupuesto, m)));
+  // … menos los recortes del ajuste forzoso de este mes (f15-a1), repartidos entre todos.
+  const recorte =
+    Math.max(0, presupuesto.consumoPublicoVisto - economia.demandaBase.consumoPublico) * pib;
+  presupuesto.consumoPublicoVisto = economia.demandaBase.consumoPublico;
+  const quedan = ministerios > 0 ? Math.max(0, 1 - recorte / (ministerios * crecer)) : 1;
+  for (const m of MINISTERIOS) {
+    for (const p of PARTIDAS) presupuesto.ministerios[m][p] *= crecer * quedan;
+  }
+  // Pensiones, con los precios y el envejecimiento; desempleo, con el paro; intereses, con la deuda.
+  presupuesto.transversales.pensiones *=
+    precios * Math.pow(1 + e.envejecimiento[economia.nivelRenta], 1 / 12);
+  presupuesto.transversales.desempleo = presupuesto.porParado * economia.paro * pib;
+  presupuesto.transversales.intereses = presupuesto.deuda * presupuesto.tipoInteres;
+  // El saldo del mes pasa por la tesorería; el déficit se cubre con deuda y el superávit la paga.
+  estado.tesoreria += saldo(presupuesto) / 12;
+  const gastoMes = totalGastos(presupuesto) / 12;
+  if (estado.tesoreria < e.colchonMeses * gastoMes) {
+    const emitir = e.colchonMeses * gastoMes - estado.tesoreria;
+    presupuesto.deuda += emitir;
+    estado.tesoreria += emitir;
+  } else if (estado.tesoreria > e.maximoMeses * gastoMes) {
+    const amortizar = Math.min(presupuesto.deuda, estado.tesoreria - e.objetivoMeses * gastoMes);
+    presupuesto.deuda -= amortizar;
+    estado.tesoreria -= amortizar;
+  }
+  anotarMes(presupuesto, pib);
+}
+
+/** Sistema del presupuesto (tarea f17-t3): cada mes, después de la economía, en todos los países. */
+export const sistemaPresupuesto: Sistema = (pasos, partida) => {
+  for (const paso of pasos) {
+    if (paso.ritmo !== 'mensual') continue;
+    for (const estado of Object.values(partida.paises)) {
+      if (estado.presupuesto && estado.economia) {
+        avanzarPresupuesto(estado.presupuesto, estado.economia, estado);
+      }
+    }
+  }
+};
 
 /** Lo que hace falta de cada país para completar el presupuesto de una partida guardada. */
 export interface PaisParaPresupuesto {

@@ -80,5 +80,17 @@
   "$comentarioFuncionamiento": "Personal y mantenimiento suman el consumo público de todas las administraciones (ONU), como mucho «maximoFuncionamiento» de lo que queda para los ministerios, repartidos como los sueldos y las compras del gobierno central (si no hay dato, «parteSueldos» de personal). La inversión pública del gobierno central se multiplica por lo que le falta a ese gobierno para llegar al consumo público de todas las administraciones (entre 1 y «maximoDescentralizacion»).",
   "maximoFuncionamiento": 0.85,
   "parteSueldos": 0.6,
-  "maximoDescentralizacion": 4
+  "maximoDescentralizacion": 4,
+  "$comentarioEvolucion": "Cada mes (tarea f17-t3; decisión del jugador: responde a la economía): los ingresos son su tipo efectivo por su base de ahora; los ministerios crecen con el PIB potencial nominal (pesan lo mismo con la economía en su potencial y más si cae por debajo; y pierden los recortes del ajuste forzoso); las pensiones, con los precios y el envejecimiento («envejecimiento», al año, por nivel de renta); el desempleo, con el paro; y los intereses son la deuda por su tipo. El saldo pasa por la tesorería: si baja de «colchonMeses» meses de gasto, el Estado emite deuda hasta tenerlos; si pasa de «maximoMeses», amortiza deuda hasta quedarse con «objetivoMeses».",
+  "evolucion": {
+    "envejecimiento": {
+      "bajo": 0.01,
+      "medio-bajo": 0.015,
+      "medio-alto": 0.02,
+      "alto": 0.02
+    },
+    "colchonMeses": 1,
+    "maximoMeses": 3,
+    "objetivoMeses": 2
+  }
 }

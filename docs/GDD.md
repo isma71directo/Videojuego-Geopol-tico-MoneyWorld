@@ -296,6 +296,30 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Cada ministerio parte de un perfil estimado (Educación, sobre todo personal; Transportes, sobre todo inversión). Se ajusta para que, entre todos, cada partida sume lo del país y cada ministerio, lo suyo.
 - **Deuda:** la real de 2010 (FMI). La tesorería inicial sigue siendo un mes de ingresos.
 
+**Evolución mes a mes (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 23):**
+- **Ingresos:** cada uno es su tipo efectivo de 2010 por su base de ahora.
+  - Renta de las personas: el PIB nominal, que cae la mitad de lo que cae la brecha de producción.
+  - Renta de las sociedades (beneficios): cae el doble.
+  - IVA y consumos: el consumo.
+  - Cotizaciones: el empleo.
+  - Aranceles: las importaciones.
+  - El resto: el PIB nominal.
+- **Gastos:**
+  - Ministerios: crecen con el PIB potencial nominal, así que pesan lo mismo con la economía en su potencial y más si cae por debajo (estabilizador automático). Pierden los recortes del ajuste forzoso (f15-a1).
+  - Pensiones: suben con los precios y con el envejecimiento (2 % real al año en los países de renta media-alta y alta).
+  - Desempleo: sigue al paro.
+  - Intereses: la deuda por su tipo.
+- **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda hasta tenerlo; si pasa de tres, paga deuda hasta quedarse con dos.
+- **Sin intervención, en 10 años:**
+  - Grecia: del 148 % de deuda al 287 % en cinco años y al 367 % en diez (con su bola de nieve de intereses; en la Fase 18 llegará la crisis de deuda);
+  - España: del 60 % al 189 %;
+  - Japón: del 179 % al 245 % (real en 2019: 236 %);
+  - Italia: del 119 % al 132 % (real: 134 %);
+  - Alemania: del 81 % al 96 %; China, del 33 % al 13 %.
+  - Noruega y Arabia Saudí pagan su deuda y ahorran.
+  - Nada se arregla solo: los déficits que no se corrigen acumulan deuda e intereses.
+
+
 
 ### 6.3 Impuestos
 
