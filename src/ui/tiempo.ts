@@ -1,7 +1,7 @@
 /**
  * Controles del tiempo de la partida (tarea f11-t3): pausa y velocidades ×1, ×2, ×4 y ×8 en la
- * barra superior (y ×16, ajuste f11-a3), con el ratón o con el teclado (espacio y 1 a 5). Mientras
- * no está en pausa,
+ * barra superior (×1, ×2, ×8, ×16, ×32 y ×64 desde el ajuste f11-a4), con el ratón o con el
+ * teclado (espacio y 1 a 6). Mientras no está en pausa,
  * pide un fotograma tras otro, pregunta al motor (src/sim/reloj.ts) cuántas horas tocan por el
  * tiempo real que ha pasado y avisa para que la partida avance. En pausa no gasta nada.
  */
@@ -171,7 +171,7 @@ export function crearControlTiempo(opciones: OpcionesTiempo): ControlTiempo {
         if (!evento.repeat) alternarPausa();
         return true;
       }
-      // 1 para ×1, 2 para ×2… y 5 para ×16: una tecla por botón, en orden.
+      // Una tecla por botón, en orden: 1 para ×1, 2 para ×2, 3 para ×8… y 6 para ×64.
       const indice = /^[1-9]$/.test(evento.key) ? Number(evento.key) - 1 : -1;
       if (indice >= 0 && velocidades[indice] !== undefined) {
         evento.preventDefault();

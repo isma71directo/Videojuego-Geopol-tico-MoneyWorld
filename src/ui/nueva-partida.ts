@@ -2,7 +2,8 @@
  * Pantalla «Nueva partida» (tarea f10-t1, decisión del jugador: mapa grande y panel). El mapa
  * ocupa toda la pantalla; a la izquierda, la lista de países jugables (con filtro y orden); a la
  * derecha, el país elegido con su líder y las opciones de la partida (dificultad, eventos
- * históricos y semilla). Un país se elige con un clic en el mapa o en la lista.
+ * históricos). Un país se elige con un clic en el mapa o en la lista. Cada partida tiene su propio
+ * azar, que no se elige (ajuste f11-a5, decisión del jugador).
  */
 import { urlBandera } from '../av/banderas';
 import { icono } from '../av/iconos';
@@ -27,7 +28,6 @@ import {
   FECHA_INICIO,
   OPCIONES_POR_DEFECTO,
   semillaAlAzar,
-  semillaDeTexto,
   type Dificultad,
   type Partida,
 } from '../sim/partida';
@@ -118,7 +118,6 @@ export function abrirPantallaNuevaPartida(
   let criterio: CriterioOrden = 'nombre';
   let dificultad: Dificultad = OPCIONES_POR_DEFECTO.dificultad;
   let eventos = OPCIONES_POR_DEFECTO.eventosHistoricos;
-  let semilla: number | null = semillaAlAzar();
   let empezada = false;
 
   // ── Panel izquierdo: la lista ─────────────────────────────────────────────────────────────
@@ -206,51 +205,15 @@ export function abrirPantallaNuevaPartida(
     eventos = casillaEventos.checked;
     reproducir('boton');
   });
-  const campoSemilla = el('input', {
-    class: 'nueva-partida__semilla',
-    type: 'text',
-    inputmode: 'text',
-    value: String(semilla),
-    'aria-label': t('juego.nuevaPartida.opciones.semilla'),
-    spellcheck: 'false',
-  });
-  const errorSemilla = el(
-    'p',
-    { class: 'nueva-partida__error', hidden: true },
-    t('juego.nuevaPartida.opciones.semillaNoValida'),
-  );
-  campoSemilla.addEventListener('input', () => {
-    semilla = semillaDeTexto(campoSemilla.value);
-    errorSemilla.hidden = semilla !== null;
-    campoSemilla.setAttribute('aria-invalid', String(semilla === null));
-    pintarEmpezar();
-  });
-  const otraSemilla = el(
-    'button',
-    {
-      class: 'boton nueva-partida__dado',
-      type: 'button',
-      'aria-label': t('juego.nuevaPartida.opciones.semillaOtra'),
-      title: t('juego.nuevaPartida.opciones.semillaOtra'),
-    },
-    '⟳',
-  );
-  otraSemilla.addEventListener('click', () => {
-    semilla = semillaAlAzar();
-    campoSemilla.value = String(semilla);
-    errorSemilla.hidden = true;
-    campoSemilla.setAttribute('aria-invalid', 'false');
-    reproducir('boton');
-    pintarEmpezar();
-  });
   const empezar = el('button', {
     class: 'boton boton--principal nueva-partida__empezar',
     type: 'button',
   });
   empezar.addEventListener('click', () => {
-    if (!conjunto || !elegido || semilla === null || empezada) return;
+    if (!conjunto || !elegido || empezada) return;
     const partida = crearPartida(
-      { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla },
+      // Cada partida, su propio azar (ajuste f11-a5): la semilla no se elige ni se ve.
+      { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla: semillaAlAzar() },
       conjunto.paises,
       gobiernos?.paises ?? {},
       husos?.paises ?? {},
@@ -301,18 +264,6 @@ export function abrirPantallaNuevaPartida(
             el('small', {}, t('juego.nuevaPartida.opciones.eventosDescripcion')),
           ),
         ),
-        el(
-          'div',
-          { class: 'nueva-partida__grupo' },
-          el('span', { class: 'nueva-partida__legenda' }, t('juego.nuevaPartida.opciones.semilla')),
-          el('div', { class: 'nueva-partida__fila-semilla' }, campoSemilla, otraSemilla),
-          errorSemilla,
-          el(
-            'p',
-            { class: 'nueva-partida__nota' },
-            t('juego.nuevaPartida.opciones.semillaDescripcion'),
-          ),
-        ),
       ),
     ),
     empezar,
@@ -343,7 +294,7 @@ export function abrirPantallaNuevaPartida(
     empezar.textContent = pais
       ? t('juego.nuevaPartida.empezar', { pais: pais.nombre })
       : t('juego.nuevaPartida.empezarSin');
-    empezar.disabled = !pais || semilla === null || empezada;
+    empezar.disabled = !pais || empezada;
   }
 
   function retratoLider(pais: PaisDatos): HTMLElement | null {

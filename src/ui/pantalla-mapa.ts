@@ -207,7 +207,7 @@ export function abrirPantallaMapa(
         },
         // Manecillas y noche sin saltos dentro de cada hora (tarea f11-t4).
         alFotograma: (fraccion) => {
-          barraPartida?.ponerFraccion(fraccion, (tiempo?.velocidad ?? 0) <= 4);
+          barraPartida?.ponerFraccion(fraccion, (tiempo?.velocidad ?? 0) <= 2);
           moverNoche(fraccion);
         },
         alCambiarVelocidad: (velocidad, antes) => {

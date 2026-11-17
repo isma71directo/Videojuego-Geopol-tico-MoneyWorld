@@ -78,7 +78,7 @@
 | Herramientas | Vite (compilación), Vitest (tests) |
 | Publicación | GitHub Pages mediante GitHub Actions. Cada fusión en `main` publica una versión nueva. |
 | Mapa | `d3-geo` + TopoJSON simplificado, dibujado en Canvas (más rápido que SVG con ~200 países y miles de regiones) |
-| Simulación | Motor puro y determinista (semilla aleatoria guardada) que se ejecuta en un Web Worker para no bloquear la interfaz |
+| Simulación | Motor puro que se ejecuta en un Web Worker para no bloquear la interfaz. El azar es distinto en cada partida y al cargar una partida guardada no tiene por qué repetirse (decisión del jugador, 17/11/2026); su semilla se anota por dentro solo para reproducir fallos |
 | Guardado | IndexedDB (partidas) + exportar e importar partida como archivo `.json` |
 | Datos | Archivos JSON en `/public/data`, generados con scripts reproducibles en `/scripts` |
 | Idioma | Interfaz en español. Los textos van en `/src/i18n/es.json` para poder traducir en el futuro. |
@@ -164,7 +164,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 **Tiempo**
 - Tiempo real con pausa. El reloj corre **por horas** (decisión del jugador, issue n.º 3, como en Power & Revolution) y marca la **hora local de la capital** del jugador; los días empiezan a su medianoche. La simulación sigue sus ritmos (abajo): lo diario se calcula al cambiar de día. Sin horario de verano ni diferencias horarias entre países: no son parte del juego (decisión del jugador, 17/11/2026).
 - Noche y día en el mapa: en la capital del jugador anochece a las 20:00 y amanece a las 7:00 todo el año (decisión del jugador, 17/11/2026); el resto del mundo se oscurece según su longitud, sin estaciones.
-- Velocidades (ajuste f11-a2, decisión del jugador, 17/11/2026: un año tiene que ser mucho tiempo, porque guerras, manifestaciones o campañas durarán días o semanas): Pausa · ×1 (1 hora = 2 s; 1 día = 48 s; 1 semana ≈ 5,6 min) · ×2 (1 día = 24 s) · ×4 (1 día = 12 s; 1 semana = 84 s) · ×8 (1 día = 6 s; 1 año ≈ 36 min; una legislatura ≈ 2,4 h) · ×16 (1 día = 3 s; 1 año ≈ 18 min; ajuste f11-a3, decisión del jugador, 17/11/2026). Teclas: espacio (pausa) y 1 a 5 (velocidades). La partida empieza en pausa.
+- Velocidades (ajuste f11-a2, decisión del jugador, 17/11/2026: un año tiene que ser mucho tiempo, porque guerras, manifestaciones o campañas durarán días o semanas): Pausa · ×1 (1 hora = 2 s; 1 día = 48 s; 1 semana ≈ 5,6 min) · ×2 (1 día = 24 s) · ×8 (1 día = 6 s; 1 semana = 42 s; 1 año ≈ 36 min; una legislatura ≈ 2,4 h) · ×16 (1 día = 3 s; 1 año ≈ 18 min) · ×32 (1 día = 1,5 s; 1 año ≈ 9 min) · ×64 (1 día = 0,75 s; 1 año ≈ 4,6 min). Sin ×4 (ajustes f11-a3 y f11-a4, decisiones del jugador, 17/11/2026). Teclas: espacio (pausa) y 1 a 6 (velocidades). La partida empieza en pausa.
 - Ritmos de simulación:
   - **Diario:** movimiento militar, combates, construcción, eventos.
   - **Semanal:** encuestas y opinión pública.
@@ -521,7 +521,7 @@ El jugador también puede **apoyar movimientos independentistas en otros países
 
 **Pantallas**
 1. **Inicio:** nueva partida, cargar, ajustes, enlace a la Hoja de ruta, versión del juego.
-2. **Nueva partida:** elegir país en el mapa, dificultad, eventos históricos sí o no, semilla.
+2. **Nueva partida:** elegir país en el mapa, dificultad y eventos históricos sí o no. Sin semilla: cada partida tiene su propio azar (ajuste f11-a5, decisión del jugador).
 3. **Mapa principal:**
    - **Mapa de juego (decisión del jugador, 12/11/2026):** un mapa grande, plano y rectangular a pantalla completa, como el modo plano de los simuladores geopolíticos del género, sin 3D. Se mueve con el dedo o el ratón, con zoom continuo desde el mundo entero hasta las regiones y las ciudades. Todo lo que se ve es clicable: países, regiones, capitales y ciudades y, más adelante, infraestructuras y unidades. Proyección Miller, con desplazamiento continuo este-oeste (sección 13).
    - **Mapa vivo:** relieve sombreado y fondo oceánico, ríos y lagos, ciudades y, según avance el juego, infraestructuras, unidades, rutas comerciales y efectos (crisis, protestas, combates, desastres). Más detalle cuanto más se acerca el jugador.
@@ -827,7 +827,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 #### Fase 10 — v0.11.0 · Nueva partida
 **Objetivo:** empezar una partida eligiendo cualquier país.
 **Tareas** (concretadas con el jugador el 16/11/2026)
-1. Pantalla «Nueva partida» (decisión del jugador: mapa grande y panel): el mapa a pantalla completa y, a la izquierda, un panel con la lista de países jugables ordenable (nombre, población, PIB, PIB por habitante, región), el resumen del país elegido (bandera, líder con su retrato y datos clave), la dificultad (Fácil, Normal o Realista; sus efectos llegan en la Fase 103), los eventos históricos (activados por defecto) y la semilla (al azar, se puede cambiar). La partida se crea en el motor (`/src/sim`).
+1. Pantalla «Nueva partida» (decisión del jugador: mapa grande y panel): el mapa a pantalla completa y, a la izquierda, un panel con la lista de países jugables ordenable (nombre, población, PIB, PIB por habitante, región), el resumen del país elegido (bandera, líder con su retrato y datos clave), la dificultad (Fácil, Normal o Realista; sus efectos llegan en la Fase 103), los eventos históricos (activados por defecto) y la semilla (al azar, se puede cambiar; quitada en el ajuste f11-a5: cada partida tiene su propio azar, sin elegirlo). La partida se crea en el motor (`/src/sim`).
 2. Datos y valores iniciales provisionales (decisión del jugador: estimados con fórmula): ingresos y gasto de las administraciones públicas de 2010 (FMI); **tesorería inicial** estimada con los ingresos del Estado y **popularidad inicial** estimada con el crecimiento, el paro, la inflación y los años del líder en el cargo. Fórmulas documentadas en `/src/sim/config`, marcadas como provisionales hasta las fases de economía y opinión pública.
 3. Pantalla principal de partida con barra superior (fecha 1 de enero de 2010, tesorería y popularidad), el país del jugador destacado y salida al menú con confirmación (aún no se guarda: llega en la Fase 14). La barra de secciones con sus ventanas vacías ya llegó en la v0.8.1 (ajuste f7-a2, decisión del jugador).
 4. **Audiovisual:** animación de la elección de país y transición al comienzo de la partida.
@@ -853,13 +853,13 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Hecho cuando:** el tiempo avanza a cada velocidad y se detiene al pausar.
 
 #### Fase 12 — v0.13.0 · Motor en segundo plano
-**Objetivo:** la simulación calcula sin bloquear la pantalla y de forma repetible.
+**Objetivo:** la simulación calcula sin bloquear la pantalla, con un azar distinto en cada partida.
 **Tareas**
 1. Motor de simulación en un Web Worker con comunicación por mensajes.
-2. Generador aleatorio determinista con semilla guardada.
+2. Azar de la partida (decisión del jugador, 17/11/2026): distinto en cada partida, de modo que la IA de los otros países no repita sus decisiones ni las del jugador tengan siempre la misma consecuencia; al cargar una partida guardada en un punto anterior, repetir lo mismo puede dar el mismo resultado o no. Generador propio con su semilla anotada por dentro, solo para reproducir fallos y para los tests.
 3. **Audiovisual:** primera música ambiental sintetizada, con su propio volumen.
 
-**Tests:** dos partidas con la misma semilla y las mismas acciones dan el mismo resultado.
+**Tests:** dos partidas nuevas dan azares distintos; con la semilla fija de un test, el motor da siempre lo mismo (para poder comprobarlo).
 **Prueba en el PC:** jugar a ×8 y comprobar que los menús siguen respondiendo al instante.
 **Hecho cuando:** el tiempo avanza sin bloquear la interfaz.
 
@@ -2120,6 +2120,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Noche y día en el mapa: anochece a las 20:00 y amanece a las 7:00 en la capital del jugador todo el año, sin estaciones; el reloj no tendrá horario de verano ni diferencias horarias entre países | Mensaje del jugador tras probar la v0.12.0 (ajuste f11-a1) | 5, 13 |
 | 17/11/2026 | Reloj más lento: ×1 = una hora cada 2 s (un día en 48 s); a ×8, un año en unos 36 min. Un año debe ser mucho tiempo: guerras, manifestaciones o campañas durarán días o semanas | Mensaje del jugador tras probar la v0.12.1 (ajuste f11-a2) | 5, 13 |
 | 17/11/2026 | Velocidad ×16 (un día en 3 s, un año en unos 18 min), con la tecla 5 | Petición del jugador tras probar la v0.12.2 (ajuste f11-a3) | 5, 13 |
+| 17/11/2026 | Velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4), con las teclas 1 a 6 | Petición del jugador tras probar la v0.12.3 (ajuste f11-a4) | 5, 13 |
+| 17/11/2026 | Azar distinto en cada partida: se quita la semilla de «Nueva partida» (ajuste f11-a5) y la Fase 12 deja de buscar partidas repetibles; al cargar, repetir lo mismo puede dar otro resultado | Decisión del jugador al comentar el plan de la Fase 12 | 2, 7, 9, 13 |
 
 ---
 
@@ -2140,7 +2142,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Plataforma | Móvil y PC / solo PC | **Decidido por el jugador (12/11/2026):** solo PC, en el navegador, con ratón y teclado; los recursos y la jugabilidad están pensados para PC. Niveles de calidad para PC modestos y potentes |
 | Tipografía | La del sistema / una letra libre incluida en el juego | **Decidido por el jugador (16/11/2026):** Inter (licencia OFL), igual en todos los PC y con cifras legibles en tablas |
 | Ventanas | Fijas a los lados / movibles | **Decidido por el jugador (16/11/2026):** movibles, arrastrando el título; recuerdan su sitio y puede haber varias abiertas |
-| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | **Decidido por el jugador (16/11/2026, issue n.º 3):** reloj por horas, con la hora local de la capital del jugador; ×1 = una hora cada 2 s (un día en 48 s; ajuste f11-a2, 17/11/2026, antes 0,5 s), ×2, ×4, ×8 y ×16 (ajuste f11-a3); la simulación mantiene sus ritmos diario, semanal, mensual y anual. Noche y día en el mapa (ajuste f11-a1, 17/11/2026: la noche va de las 20:00 a las 7:00 en la capital del jugador todo el año; sin horario de verano ni diferencias horarias entre países) |
+| Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | **Decidido por el jugador (16/11/2026, issue n.º 3):** reloj por horas, con la hora local de la capital del jugador; ×1 = una hora cada 2 s (un día en 48 s; ajuste f11-a2, 17/11/2026, antes 0,5 s), ×2, ×8, ×16, ×32 y ×64 (ajustes f11-a3 y f11-a4, sin ×4); la simulación mantiene sus ritmos diario, semanal, mensual y anual. Noche y día en el mapa (ajuste f11-a1, 17/11/2026: la noche va de las 20:00 a las 7:00 en la capital del jugador todo el año; sin horario de verano ni diferencias horarias entre países) |
+| Azar de la partida | Repetible con la misma semilla / distinto en cada partida | **Decidido por el jugador (17/11/2026):** distinto en cada partida, sin semilla que elegir (se quita de «Nueva partida», ajuste f11-a5); la IA de 200 países no debe repetir decisiones ni las del jugador tener siempre la misma consecuencia. Al cargar una partida guardada en un punto anterior, repetir lo mismo puede dar el mismo resultado o no |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
