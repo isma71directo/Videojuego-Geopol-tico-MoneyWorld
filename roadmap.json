@@ -1,13 +1,19 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.16.0",
-  "actualizado": "2026-11-17T18:21:44Z",
+  "versionActual": "0.16.1",
+  "actualizado": "2026-11-17T18:22:50Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f15-a1 hecha (nada mejora solo): la productividad solo converge con base (alfabetización, electricidad, internet y educación; sin ella apenas crece); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan, a los seis meses, un ajuste que recorta el gasto público, cierra el crédito y hunde la confianza hasta cerrar el déficit; dureza según la dificultad (realista 100 %, normal 75 %, fácil 50 %; dura lo mismo). Sin intervención, Grecia cae cuatro años (−8 %, −7 %, −4 %, −2 %) y en diez no recupera su PIB de 2010; Portugal, España, Islandia y Letonia también encogen; EE. UU., Japón y Alemania no. Fila «Ajuste forzoso» en la ficha. Formato de partida 4 con migración.",
-    "siguientePaso": "Publicar la v0.16.1 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "v0.16.1 publicada (PR abierto). f15-a1 (nada mejora solo): la productividad solo converge con base (alfabetización, electricidad, internet y educación; sin ella apenas crece); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan, a los seis meses, un ajuste que recorta el gasto público, cierra el crédito y hunde la confianza hasta cerrar el déficit; dureza según la dificultad (realista 100 %, normal 75 %, fácil 50 %; dura lo mismo). Sin intervención, Grecia cae cuatro años (−8 %, −7 %, −4 %, −2 %) y en diez no recupera su PIB de 2010; Portugal, España, Islandia y Letonia también encogen; EE. UU., Japón y Alemania no. Fila «Ajuste forzoso» en la ficha. Formato de partida 4 con migración.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.16.1: apuntar sus ajustes o presentar el plan de la Fase 16 (economía: inflación y paro), seguida de las Fases 17 (presupuesto) y 18 (deuda).",
+    "pendienteDelJugador": [
+      "Probar la v0.16.1 en el PC: empezar una partida en «realista», abrir la ficha de Grecia (pestaña Economía) y avanzar dos o tres años a ×64: el PIB cae varios años seguidos, la confianza baja y la fila «Ajuste forzoso» muestra lo que falta por recortar",
+      "Comparar con una partida en «fácil»: Grecia cae menos (el ajuste dura lo mismo)",
+      "Mirar Portugal, España o Islandia (también encogen) y Estados Unidos, Alemania o China (no tienen ese ajuste o es leve)",
+      "Cargar una partida guardada con la v0.16.0 y comprobar que la carga y que Grecia tiene su ajuste forzoso",
+      "Fusionar el PR de la v0.16.1"
+    ]
   },
   "etapas": [
     {
@@ -1000,7 +1006,7 @@
           "origen": "Consulta del jugador tras la v0.16.0: «la economía no siempre va a crecer»",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/43393ed"
         }
       ]
     },
@@ -4707,6 +4713,16 @@
         "Economía de cada país mes a mes, sin azar (decisión del jugador): cada sector produce con su capital, su trabajo y su productividad; la inversión acumula capital; la productividad converge hacia la de los países más avanzados; y cada país arranca con su crecimiento real de 2010",
         "Confianza de consumidores y empresas, que sube o baja según el crecimiento y mueve el consumo, la inversión y el PIB; ahorro nacional",
         "La economía en vivo en la ficha de cada país y en Economía › Economía, con iconos nuevos y gráfico animado del PIB desde 2010; sección «Economía de un país» en la galería"
+      ]
+    },
+    {
+      "version": "0.16.1",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Nada mejora solo (ajuste f15-a1, decisión del jugador): la productividad solo se acerca a la de los países avanzados si el país tiene base (alfabetización, electricidad, internet y educación); sin ella, apenas crece",
+        "Los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan un ajuste si nadie actúa: recortes del gasto, crédito cerrado y menos confianza hasta cerrar el déficit; Grecia cae cuatro años seguidos y Portugal, España, Islandia o Letonia también encogen (provisional hasta la deuda de la Fase 18)",
+        "Dureza según la dificultad: en «realista» el ajuste pesa por completo; en «normal», un 75 %, y en «fácil», la mitad",
+        "Fila «Ajuste forzoso» en la economía de la ficha y de Economía › Economía; las partidas de la v0.16.0 reciben los desequilibrios al cargarse"
       ]
     }
   ]
