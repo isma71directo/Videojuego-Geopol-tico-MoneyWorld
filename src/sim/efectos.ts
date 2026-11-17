@@ -10,8 +10,10 @@ import type { EstadoPais } from './partida';
 export const OPERACIONES = ['sumar', 'multiplicar', 'fijar'] as const;
 export type Operacion = (typeof OPERACIONES)[number];
 
-/** Datos de un país que pueden cambiar los efectos (crecerá con cada sistema). */
-export type CampoEstado = keyof EstadoPais;
+/** Datos de un país que pueden cambiar los efectos: los numéricos (crecerá con cada sistema). */
+export type CampoEstado = {
+  [K in keyof EstadoPais]: EstadoPais[K] extends number ? K : never;
+}[keyof EstadoPais];
 
 /** Límites de cada dato con los efectos aplicados. */
 export const LIMITES: Record<CampoEstado, [number, number]> = {

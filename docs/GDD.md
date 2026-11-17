@@ -208,6 +208,12 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Arranque:** cada país empieza creciendo como creció de verdad en 2010 (muchos salían de la crisis de 2009) y el modelo lo lleva poco a poco a su crecimiento potencial.
 - **Dónde se ve:** en la pestaña Economía de la ficha de cada país (valores en vivo y gráfico desde el 1 de enero de 2010) y, para el país del jugador, en la ventana Economía › Economía (la pantalla completa de Economía llega en la Fase 17).
 
+**Modelo de la Fase 15 (tarea f15-t2; parámetros en `src/sim/config/economia.json`):**
+- Cada sector produce A · K^0,35 · L^0,65. Al empezar, el capital es el de equilibrio con la inversión de 2010 del país (entre 1,5 y 4 veces el PIB), repartido según lo intensivo de cada sector; el empleo, la población activa sin parados, repartida según la productividad de cada sector; y la productividad A sale de que cada sector produzca lo que dicen los datos.
+- Cada mes: la inversión (su peso real en el PIB) se suma al capital, que se desgasta un 5 % al año; el trabajo crece con la población (por nivel de renta, hasta la Fase 28); y la productividad crece más en los países con menos renta por habitante, que se acercan a los más avanzados (convergencia), con un ajuste por sector.
+- El PIB crece como el potencial más el impulso de 2010, que se apaga a la mitad cada 18 meses. Cada sector produce su parte del PIB según su producción potencial, así que su peso cambia con el tiempo.
+- Valores en dólares de 2010 (PIB real): la inflación, el PIB nominal y el paro llegan en la Fase 16; la confianza y el ahorro, en la tarea f15-t3; las decisiones que mueven la demanda, con el presupuesto y los impuestos.
+
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
 ### 6.2 Presupuesto y deuda

@@ -6,6 +6,7 @@
  * migraciones (src/sim/guardado.ts) cada vez que cambia el formato.
  */
 import type { Efecto } from './efectos';
+import { economiaInicial, type EconomiaPais } from './economia';
 import type { Suceso } from './sucesos';
 import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
@@ -19,9 +20,10 @@ import {
  * Versión del formato del estado de la partida. Cada vez que cambia, src/sim/guardado.ts lleva la
  * migración desde la anterior (regla 9 de CLAUDE.md):
  *  - 1: v0.11.0 a v0.13.x (sin efectos ni agenda).
- *  - 2: v0.14.0 en adelante: efectos (f13-t1), agenda de sucesos (f13-t3) e identificador (f14-t1).
+ *  - 2: v0.14.0 y v0.15.x: efectos (f13-t1), agenda de sucesos (f13-t3) e identificador (f14-t1).
+ *  - 3: v0.16.0 en adelante: la economía de cada país (f15-t2).
  */
-export const FORMATO_PARTIDA = 2;
+export const FORMATO_PARTIDA = 3;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
@@ -68,13 +70,18 @@ export interface Partida {
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */
-export type EstadoPais = ValoresIniciales;
+export interface EstadoPais extends ValoresIniciales {
+  /** Su economía (tarea f15-t2); null si no hay datos para crearla. */
+  economia: EconomiaPais | null;
+}
 
 /** Lo que el motor necesita saber de cada país para crear la partida. */
 export interface PaisParaPartida {
   jugable: boolean;
   /** Datos de 2010 (paises-2010.json). */
   datos: DatosParaInicio;
+  /** Nivel de renta de 2010 (para el crecimiento de su economía). */
+  nivelRenta?: string | null;
 }
 
 export const OPCIONES_POR_DEFECTO: Omit<OpcionesPartida, 'paisId' | 'semilla'> = {
@@ -133,7 +140,10 @@ export function crearPartida(
     paises: Object.fromEntries(
       paisesJugables(paises).map((id) => [
         id,
-        valoresIniciales(paises[id]!.datos, gobiernos[id], FECHA_INICIO),
+        {
+          ...valoresIniciales(paises[id]!.datos, gobiernos[id], FECHA_INICIO),
+          economia: economiaInicial(paises[id]!.datos, paises[id]!.nivelRenta),
+        },
       ]),
     ),
   };

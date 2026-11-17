@@ -1,0 +1,59 @@
+{
+  "$comentario": "Modelo económico de la Fase 15 (sección 6.1 del GDD; decisiones del jugador: siete sectores con datos reales de la ONU, sin azar, arranque con el crecimiento real de 2010). Producción de cada sector = productividad × capital^alfa × trabajo^(1 − alfa). Son parámetros de calibración (supuestos razonables, no datos): los datos reales de 2010 están en paises-2010.json.",
+  "alfaCapital": 0.35,
+  "$comentarioDepreciacion": "Parte del capital que se gasta cada año.",
+  "depreciacion": 0.05,
+  "$comentarioCapital": "Capital inicial: el de equilibrio con su inversión de 2010, inversión / (depreciación + crecimiento de referencia de su nivel de renta), entre «minimo» y «maximo» veces el PIB.",
+  "crecimientoReferencia": { "bajo": 0.05, "medio-bajo": 0.05, "medio-alto": 0.04, "alto": 0.02 },
+  "capitalPorProducto": { "minimo": 1.5, "maximo": 4.0 },
+  "$comentarioIntensidad": "Cuánto capital usa cada sector por cada dólar que produce, frente a la media del país.",
+  "intensidadCapital": {
+    "agricultura": 0.8,
+    "mineriaEnergia": 2.0,
+    "manufactura": 0.9,
+    "construccion": 0.5,
+    "comercio": 0.6,
+    "transporte": 1.4,
+    "otrosServicios": 1.2
+  },
+  "$comentarioProductividad": "Producción por trabajador de cada sector frente a la media del país (para repartir el empleo entre sectores, a falta de datos de empleo por sector).",
+  "productividadRelativa": {
+    "agricultura": 0.4,
+    "mineriaEnergia": 3.0,
+    "manufactura": 1.2,
+    "construccion": 0.8,
+    "comercio": 0.7,
+    "transporte": 1.2,
+    "otrosServicios": 1.1
+  },
+  "$comentarioTrabajo": "Población activa = población × «tasaActividad»; trabajan los que no están en paro.",
+  "tasaActividad": 0.45,
+  "$comentarioCrecimientos": "Crecimiento anual de la productividad: «base» más «convergencia» × ln(frontera / PIB por habitante), entre «minimo» y «maximo» (los países con menos renta se acercan a los más avanzados), más el de cada sector. Y el de la población por nivel de renta (hasta que llegue la demografía, en la Fase 28).",
+  "crecimientoProductividad": {
+    "base": 0.008,
+    "convergencia": 0.005,
+    "frontera": 50000,
+    "minimo": 0.005,
+    "maximo": 0.028
+  },
+  "productividadSector": {
+    "agricultura": -0.005,
+    "mineriaEnergia": 0,
+    "manufactura": 0.005,
+    "construccion": -0.003,
+    "comercio": 0,
+    "transporte": 0.003,
+    "otrosServicios": -0.002
+  },
+  "crecimientoPoblacion": {
+    "bajo": 0.025,
+    "medio-bajo": 0.016,
+    "medio-alto": 0.008,
+    "alto": 0.004
+  },
+  "$comentarioArranque": "El crecimiento real de 2010 (entre «minimo» y «maximo») se aparta del potencial y esa diferencia se apaga poco a poco: queda la mitad a los «mesesMitad» meses.",
+  "crecimientoInicial": { "minimo": -0.15, "maximo": 0.2 },
+  "mesesMitad": 18,
+  "$comentarioInversion": "La inversión que se usa para acumular capital, entre estos límites (en tanto por uno del PIB).",
+  "inversion": { "minimo": 0.05, "maximo": 0.6 }
+}

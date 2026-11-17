@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.15.1",
-  "actualizado": "2026-11-17T12:35:47Z",
+  "actualizado": "2026-11-17T12:47:21Z",
   "faseActiva": "fase-15",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.15.1 y empieza la Fase 15. f15-t1 hecha: script 25-onu-cuentas.ts con las cuentas nacionales de la ONU (UNSD, AMA) de 2008–2010: peso de las siete ramas en el valor añadido (agricultura; minería y energía; manufactura; construcción; comercio, hostelería y turismo; transporte y comunicaciones; otros servicios) y reparto de la demanda en el PIB (consumo de los hogares, consumo público, inversión, exportaciones e importaciones). Los países se cruzan con la tabla oficial M49 de la ONU; Tanzania suma sus dos partes y Sudán y las Antillas Neerlandesas se toman por partes. 206 países con datos reales; 17 territorios, entre ellos Taiwán (la ONU no lo publica), van estimados y marcados. Ningún dato anterior cambia.",
-    "siguientePaso": "f15-t2: estado económico de cada país en la partida (formato 3 con migración) y modelo mensual de producción por sector y demanda, sin azar.",
+    "resumen": "f15-t2 hecha: cada país tiene su economía en la partida (formato 3): siete sectores que producen productividad × capital^0,35 × trabajo^0,65, calibrados con los datos de 2010, y el reparto de la demanda. Cada mes, sin azar, la inversión acumula capital, el trabajo crece con la población, la productividad converge hacia la de los países más avanzados y el PIB crece como el potencial más el impulso real de 2010, que se apaga a la mitad cada 18 meses (China: 9,9 %, 8,1 %, 7 %…; EE. UU., ~2 %). El motor la avanza en el worker; las partidas de antes reciben al cargarse su economía de 2010. Una partida guardada ocupa unos 290 KB. f15-t1 hecha: datos de la ONU.",
+    "siguientePaso": "f15-t3: ahorro y confianza de consumidores y empresas, con su efecto en el consumo y la inversión; valores en vivo en la ficha de cada país y en Economía › Economía.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -968,20 +968,20 @@
           "titulo": "Datos de 2010 por país (script con fuente ONU y Banco Mundial): valor añadido de siete ramas, consumo de los hogares, gasto público, inversión, exportaciones e importaciones; lo que falte, estimado y marcado",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/137759a"
         },
         {
           "id": "f15-t2",
           "titulo": "Estado económico de cada país en la partida (formato 3 con migración) y modelo mensual de producción por sector y demanda, sin azar (decisión del jugador), que arranca con el crecimiento real de 2010 y converge al potencial",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f15-t3",
           "titulo": "Ahorro y confianza de consumidores y empresas, con su efecto en el consumo y la inversión; valores en vivo en la ficha de cada país y en Economía › Economía (decisión del jugador)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

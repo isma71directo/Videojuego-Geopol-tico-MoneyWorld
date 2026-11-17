@@ -6,6 +6,7 @@ import type { ConjuntoGobiernos } from '../src/datos/gobiernos';
 import type { ConjuntoPaises } from '../src/datos/paises';
 import config from '../src/sim/config/inicio.json';
 import { crearPartida, FECHA_INICIO, paisesJugables } from '../src/sim/partida';
+import { economiaInicial } from '../src/sim/economia';
 import {
   aniosEnElCargo,
   llegadaDelLider,
@@ -178,9 +179,11 @@ describe('valores iniciales con los datos reales (tarea f10-t2)', () => {
       gobiernos.paises,
     );
     expect(Object.keys(partida.paises)).toEqual(jugables);
-    expect(partida.paises.ESP).toEqual(
-      valoresIniciales(paises.paises.ESP!.datos, gobiernos.paises.ESP, FECHA_INICIO),
-    );
+    expect(partida.paises.ESP).toEqual({
+      ...valoresIniciales(paises.paises.ESP!.datos, gobiernos.paises.ESP, FECHA_INICIO),
+      // Y su economía de 2010 (tarea f15-t2).
+      economia: economiaInicial(paises.paises.ESP!.datos, paises.paises.ESP!.nivelRenta),
+    });
     // Sin los gobiernos (si no se han podido cargar): sin desgaste ni régimen.
     const sinGobiernos = crearPartida(
       { paisId: 'ESP', dificultad: 'normal', eventosHistoricos: true, semilla: 1 },
