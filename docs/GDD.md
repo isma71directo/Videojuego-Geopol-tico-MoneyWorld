@@ -170,7 +170,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - **Semanal:** encuestas y opinión pública.
   - **Mensual:** economía, presupuesto, comercio, energía y demografía.
   - **Anual:** cierre presupuestario, cuentas nacionales, investigación agregada y envejecimiento de infraestructuras.
-- El juego se pausa automáticamente ante decisiones importantes (declaración de guerra, moción de censura, referéndum…), y es configurable.
+- El juego se pausa automáticamente ante decisiones importantes (declaración de guerra, moción de censura, referéndum…), y es configurable. Decisión del jugador (17/11/2026): una opción en Ajustes, «Sucesos importantes» (activada por defecto); el aviso es una ventana en el centro con lo que ha pasado, «Seguir» y, si procede, «Ver», y un sonido.
 
 **Bucle básico:** observar (mapa, informes y alertas) → decidir (leyes, presupuesto, órdenes a ministerios, diplomacia, ejército) → ver las consecuencias (indicadores, encuestas, reacciones de otros países) → ajustar.
 
@@ -866,13 +866,14 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 13 — v0.14.0 · Efectos y pausa automática
 **Objetivo:** una forma común de aplicar consecuencias y de avisar de lo importante.
-**Tareas**
-1. Sistema genérico de efectos y modificadores (sección 8).
-2. Pausa automática configurable ante eventos importantes.
-3. **Audiovisual:** aviso visual y sonoro de la pausa automática.
+**Tareas** (concretadas con el jugador el 17/11/2026: pausa ante sucesos importantes, aviso en una ventana central, efectos visibles en cada dato y en una ventana de Informes; la popularidad no cambia hasta la opinión pública)
+1. Sistema genérico de efectos y modificadores (sección 8) en el motor: variable, operación (sumar, multiplicar o fijar), valor, retraso y duración; se aplican y caducan solos.
+2. Ver los efectos en curso: en la explicación de cada dato (qué lo cambia y hasta cuándo) y en la ventana «Efectos en curso» de Informes.
+3. Pausa automática configurable ante sucesos importantes (opción en Ajustes): el motor se para en el momento exacto del suceso. Modo de prueba («?prueba» en la dirección): un efecto y un suceso importante de prueba, marcados como tales.
+4. **Audiovisual:** aviso visual (ventana en el centro) y sonoro de la pausa automática, también en la galería.
 
-**Tests:** un modificador con retraso y duración empieza y termina en las fechas correctas.
-**Prueba en el PC:** activar y desactivar la pausa automática en Ajustes.
+**Tests:** un modificador con retraso y duración empieza y termina en las fechas correctas; un suceso importante para el motor si la opción está activada y no lo para si no.
+**Prueba en el PC:** con «?prueba», ver el efecto de prueba en la popularidad y en «Efectos en curso» y cómo la partida se para el 3 de enero con su aviso; desactivar la pausa automática en Ajustes y comprobar que ya no se para.
 **Hecho cuando:** los efectos se aplican y caducan solos, y la pausa automática funciona.
 
 #### Fase 14 — v0.15.0 · Guardar y cargar partidas
@@ -2124,6 +2125,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4), con las teclas 1 a 6 | Petición del jugador tras probar la v0.12.3 (ajuste f11-a4) | 5, 13 |
 | 17/11/2026 | Azar distinto en cada partida: se quita la semilla de «Nueva partida» (ajuste f11-a5) y la Fase 12 deja de buscar partidas repetibles; al cargar, repetir lo mismo puede dar otro resultado | Decisión del jugador al comentar el plan de la Fase 12 | 2, 7, 9, 13 |
 | 17/11/2026 | Fase 12 concretada con el jugador: motor en un Web Worker; azar distinto en cada partida (el conjunto de decisiones de todos los países hace prácticamente imposible repetir una partida); música tranquila y tensa según la situación, en piezas fijas abundantes, en el menú y en la partida; la fase pasa a 4 tareas | Plan de la Fase 12 aprobado por el jugador | 9, 13 |
+| 17/11/2026 | Fase 13 concretada con el jugador: pausa automática ante sucesos importantes (opción en Ajustes) con aviso en una ventana central; efectos visibles en cada dato y en «Efectos en curso»; sin efectos reales todavía (la popularidad espera a la opinión pública); modo de prueba «?prueba»; la fase pasa a 4 tareas | Plan de la Fase 13 aprobado por el jugador | 5, 9, 13 |
 
 ---
 
@@ -2147,6 +2149,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | **Decidido por el jugador (16/11/2026, issue n.º 3):** reloj por horas, con la hora local de la capital del jugador; ×1 = una hora cada 2 s (un día en 48 s; ajuste f11-a2, 17/11/2026, antes 0,5 s), ×2, ×8, ×16, ×32 y ×64 (ajustes f11-a3 y f11-a4, sin ×4); la simulación mantiene sus ritmos diario, semanal, mensual y anual. Noche y día en el mapa (ajuste f11-a1, 17/11/2026: la noche va de las 20:00 a las 7:00 en la capital del jugador todo el año; sin horario de verano ni diferencias horarias entre países) |
 | Azar de la partida | Repetible con la misma semilla / distinto en cada partida | **Decidido por el jugador (17/11/2026):** distinto en cada partida, sin semilla que elegir (se quita de «Nueva partida», ajuste f11-a5); la IA de 200 países no debe repetir decisiones ni las del jugador tener siempre la misma consecuencia. Al cargar una partida guardada en un punto anterior, repetir lo mismo puede dar el mismo resultado o no |
 | Música ambiental | Una pieza / tranquila / tensa / las dos según la situación; generativa / piezas fijas; solo en la partida / también en el menú | **Decidido por el jugador (17/11/2026):** las dos según la situación (la tensa, con crisis, guerras y elecciones); piezas fijas compuestas con código pero abundantes, para que no se repitan en poco tiempo; en el menú y en la partida |
+| Pausa automática | Sucesos importantes / fin de efectos / cada mes / cada año; ventana central / franja bajo la barra | **Decidido por el jugador (17/11/2026):** una opción, «Sucesos importantes» (guerras, mociones, referéndums, crisis…), con aviso en una ventana en el centro y sonido. Los efectos en curso se ven en la explicación de cada dato y en la ventana «Efectos en curso» de Informes. La luna de miel de la popularidad no caduca todavía: espera a la opinión pública (Fase 56) |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |

@@ -1,17 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.13.0",
-  "actualizado": "2026-11-17T07:14:41Z",
+  "actualizado": "2026-11-17T07:27:18Z",
   "faseActiva": "fase-13",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 12 cerrada como v0.13.0: motor de la partida en un Web Worker, azar distinto en cada partida y música ambiental (doce piezas tranquilas y ocho tensas, compuestas con código). PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.13.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 13 (efectos y pausa automática).",
-    "pendienteDelJugador": [
-      "Probar la v0.13.0 en el PC: tras el primer clic en el inicio suena la música; en Ajustes, su volumen; en una partida, jugar a ×64 y comprobar que el mapa y los menús responden al instante, y que en pausa la música baja; en la galería, escuchar las piezas tranquilas y tensas y el cambio de ambiente",
-      "Opcional: abrir el juego con «?carga=200» al final de la dirección para ver que, aunque el motor vaya muy cargado, la pantalla no se bloquea (el tiempo va más despacio)",
-      "Fusionar el PR de la Fase 12"
-    ]
+    "resumen": "El jugador fusionó la v0.13.0. Plan de la Fase 13 aprobado: motor de efectos; pausa automática ante sucesos importantes (una opción en Ajustes) con aviso en una ventana central y sonido; efectos visibles en la explicación de cada dato y en «Efectos en curso» (Informes); la luna de miel no caduca todavía (espera a la opinión pública); modo de prueba «?prueba» para probarlo en el PC. La fase pasa a 4 tareas.",
+    "siguientePaso": "f13-t1: motor de efectos en src/sim.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -862,26 +858,33 @@
       "objetivo": "Una forma común de aplicar consecuencias y de avisar de lo importante",
       "dependeDe": ["fase-12"],
       "hechoCuando": "Los efectos se aplican y caducan solos, y la pausa automática funciona",
-      "pruebaJugador": "Activar y desactivar la pausa automática en Ajustes",
-      "estado": "pendiente",
+      "pruebaJugador": "Abrir el juego con «?prueba» al final de la dirección y empezar una partida: ver el efecto de prueba en la explicación de la popularidad y en Informes › Efectos en curso, dejar correr el tiempo y comprobar que el 3 de enero la partida se para sola con su aviso; después, desactivar «Sucesos importantes» en Ajustes y comprobar que ya no se para.",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f13-t1",
-          "titulo": "Sistema genérico de efectos y modificadores (sección 8)",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Motor de efectos (sección 8): modificadores con variable, operación (sumar, multiplicar o fijar), valor, retraso y duración, que se aplican y caducan solos en el motor",
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f13-t2",
-          "titulo": "Pausa automática configurable ante eventos importantes",
+          "titulo": "Ver los efectos en curso: en la explicación de cada dato (qué lo cambia y hasta cuándo) y en la ventana «Efectos en curso» de Informes (decisión del jugador)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f13-t3",
-          "titulo": "Audiovisual: aviso visual y sonoro de la pausa automática",
+          "titulo": "Pausa automática ante sucesos importantes, con su opción en Ajustes; el motor se para en el momento exacto; modo de prueba «?prueba» con un efecto y un suceso de prueba",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f13-t4",
+          "titulo": "Audiovisual: aviso de la pausa automática en una ventana en el centro (decisión del jugador) con su sonido, también en la galería",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
