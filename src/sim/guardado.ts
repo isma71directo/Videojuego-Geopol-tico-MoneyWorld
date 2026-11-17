@@ -167,6 +167,9 @@ export const MIGRACIONES: Record<number, (partida: Datos) => Datos> = {
   // 4 → 5 (Fase 16): el paro y la inflación en la economía. También se completan al cargar con
   // los datos de los países (completarEconomia).
   4: (partida) => ({ ...partida, formato: 5 }),
+  // 5 → 6 (Fase 17): el presupuesto de cada país. Se completa al cargar con los datos de los
+  // países (completarPresupuesto).
+  5: (partida) => ({ ...partida, formato: 6 }),
 };
 
 /** Lleva una partida de cualquier formato anterior al actual. */

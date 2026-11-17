@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T20:42:15Z",
+  "actualizado": "2026-11-17T20:44:36Z",
   "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 17 en curso. f17-t1 hecha: 14 indicadores del Banco Mundial (composición de ingresos y gastos públicos de 2010, inversión pública, sanidad pública y población de 65 años o más) en paises-2010.json, de 92 a 217 países según el indicador; el resto, estimado con la mediana de su región y nivel de renta. El servidor del API del Banco Mundial fallaba con las consultas de todos los países: el script es reanudable y, si el API no responde, usa la descarga en CSV de cada indicador.",
-    "siguientePaso": "f17-t2: el presupuesto en el motor (ya escrito): ingresos por tipo, ministerios con sus partidas, pensiones, desempleo e intereses; cuadre con el FMI; formato de partida 6 con migración; tests.",
+    "resumen": "Fase 17 en curso. f17-t1 hecha (datos del Banco Mundial). f17-t2 hecha: presupuesto de 2010 de cada país en la partida (formato 6, con migración): 7 ingresos por tipo; 20 ministerios con personal, inversión, mantenimiento y programas; pensiones, desempleo e intereses; deuda real y tipo implícito. Cuadra con el FMI (España: ingresos 36,4 %, gastos 45,8 %, déficit −9,5 %; pensiones 10,1 %, desempleo 3 %). Aún no evoluciona ni se ve en pantalla.",
+    "siguientePaso": "f17-t3: evolución mensual del presupuesto (estabilizadores automáticos, déficit → deuda por la tesorería, recortes del ajuste forzoso), con tests de «si se hace mal, empeora».",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1066,15 +1066,15 @@
         {
           "id": "f17-t2",
           "titulo": "El presupuesto en el motor: ingresos por tipo y gastos por ministerio con sus partidas internas (personal, inversión, mantenimiento, programas), pensiones, prestaciones e intereses; cuadra con el FMI; deuda y tesorería",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f17-t3",
           "titulo": "Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora»",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

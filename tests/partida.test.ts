@@ -51,7 +51,8 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
       expect(partida.paises[id]).toBeDefined();
     }
     expect(FECHA_INICIO).toBe('2010-01-01');
-  });
+    // Crea más de 200 partidas completas (economía y presupuesto de todos los países en cada una).
+  }, 30_000);
 
   it('no deja empezar con un país no jugable, inexistente o con datos raros', () => {
     const crear = (paisId: string, extra = {}) =>

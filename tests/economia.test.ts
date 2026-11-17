@@ -21,6 +21,7 @@ import {
 } from '../src/sim/economia';
 import { desempaquetar, empaquetar, JUEGO } from '../src/sim/guardado';
 import { crearMotor } from '../src/sim/motor';
+import { completarPresupuesto } from '../src/sim/presupuesto';
 import { crearPartida, FORMATO_PARTIDA } from '../src/sim/partida';
 
 const paises = JSON.parse(
@@ -296,6 +297,8 @@ describe('en la partida (tarea f15-t2)', () => {
     expect(faltaEconomia(cargada)).toBe(true);
     completarEconomia(cargada, paises.paises);
     expect(faltaEconomia(cargada)).toBe(false);
+    // (Y su presupuesto, como al cargarla en la pantalla: Fase 17.)
+    completarPresupuesto(cargada, paises.paises);
     expect(cargada).toEqual(partida);
   });
 

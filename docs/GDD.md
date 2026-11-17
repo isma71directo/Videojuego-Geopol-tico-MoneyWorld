@@ -279,6 +279,24 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda automáticamente, al tipo medio que pagaba en 2010. La deuda empieza en su dato real de 2010 y sus intereses entran en el gasto (bola de nieve). En la Fase 18, el precio lo ponen los mercados (prima de riesgo y rating).
 - **Dónde se ve:** en la pestaña Economía de la ficha de cada país y en Gobierno › Presupuesto (solo lectura hasta la Fase 23), con un gráfico de ingresos y gastos.
 
+**Modelo del presupuesto de 2010 (tarea f17-t2; parámetros en `src/sim/config/presupuesto.json`):**
+- **Totales:** los ingresos y el gasto de todas las administraciones del FMI (% del PIB de 2010). El saldo resultante es el déficit real; en unos pocos países no cuadra en la propia fuente.
+- **Ingresos:** las partes del Banco Mundial (gobierno central) se reparten sobre el total. La renta se divide entre personas y sociedades según el nivel de renta (estimado: 70 % personas en los países ricos, 35 % en los pobres).
+- **Fuera de los ministerios:**
+  - pensiones: población de 65 años o más × un factor según el nivel de renta (estimado; España sale en el 10 % del PIB, como en la realidad);
+  - desempleo: paro × un factor según el nivel de renta (estimado; España, el 3 %);
+  - intereses: la deuda real de 2010 por su tipo implícito (lo que se pagó entre la deuda; entre el 0,5 % y el 15 %).
+- **Ministerios:**
+  - sanidad (gasto sanitario público), educación y defensa, con sus datos reales;
+  - el resto, repartido entre los otros 17 con pesos estimados a partir de la clasificación por funciones COFOG (por ejemplo, Trabajo, con las demás prestaciones sociales, el 22 %; Transportes, el 12 %).
+- **Partidas de cada ministerio:**
+  - personal y mantenimiento suman el consumo público de todas las administraciones (ONU), repartido como los sueldos y las compras del gobierno central;
+  - la inversión pública del gobierno central se corrige por lo descentralizado que esté el país;
+  - los programas son el resto.
+  - Cada ministerio parte de un perfil estimado (Educación, sobre todo personal; Transportes, sobre todo inversión). Se ajusta para que, entre todos, cada partida sume lo del país y cada ministerio, lo suyo.
+- **Deuda:** la real de 2010 (FMI). La tesorería inicial sigue siendo un mes de ingresos.
+
+
 ### 6.3 Impuestos
 
 | Impuesto | Parámetros |
