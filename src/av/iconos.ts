@@ -61,6 +61,8 @@ import mundo from './iconos/mundo.svg?raw';
 import calendario from './iconos/calendario.svg?raw';
 import popularidad from './iconos/popularidad.svg?raw';
 import salir from './iconos/salir.svg?raw';
+import pausa from './iconos/pausa.svg?raw';
+import seguir from './iconos/seguir.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -150,6 +152,9 @@ const ICONOS = {
   calendario,
   popularidad,
   salir,
+  // Controles del tiempo (tarea f11-t3).
+  pausa,
+  seguir,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

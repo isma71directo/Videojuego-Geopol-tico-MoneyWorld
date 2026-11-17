@@ -26,7 +26,8 @@ import { superficieKm2, type ColorRegion, type Coloreado } from './capas';
 import { mezclarHex } from './rampas';
 import { coloresDelMapa } from './colores';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
-import { ANCHO_MUNDO, crearProyeccion } from './proyeccion';
+import { ALTO_MUNDO, ANCHO_MUNDO, crearProyeccion } from './proyeccion';
+import { pintarNoche, posicionDelSol } from './noche';
 import { paisEnPunto, UMBRAL_PEQUENO_PX } from './seleccion';
 import { Relieve } from './relieve';
 import {
@@ -100,6 +101,9 @@ export const LATIDOS_RESALTADO = 3;
 const NITIDEZ_TERRENO = 0.4;
 /** Cambio de capa: los colores pasan de una capa a otra en este tiempo (tarea f6-t4). */
 const DURACION_CAMBIO_CAPA_MS = 450;
+/** Ancho en píxeles de la imagen de la noche (un grado de longitud por píxel). */
+const ANCHO_IMAGEN_NOCHE = 360;
+
 /** Color del contorno del país del jugador (tarea f10-t3). */
 export const COLOR_JUGADOR = '#8fd3ff';
 
@@ -215,6 +219,11 @@ export class MapaMundo {
   private seleccionado: string | null = null;
   /** País del jugador en una partida (tarea f10-t3): siempre lleva un contorno propio. */
   private jugador: string | null = null;
+  /**
+   * Sombra de la noche (tarea f11-t4): imagen del mundo para el Sol sobre el meridiano 0, que se
+   * desplaza con la longitud del Sol; se rehace solo cuando cambia la declinación.
+   */
+  private noche: { imagen: HTMLCanvasElement; declinacion: number; longitud: number } | null = null;
   private readonly proyeccion = crearProyeccion();
   /** Capa de datos activa (Fase 6); null es la capa política, con un color por país. */
   private coloreado: Coloreado | null = null;
@@ -656,6 +665,42 @@ export class MapaMundo {
   set nombres(nombres: Map<string, string>) {
     this.nombresPaises = nombres;
     this.pedirDibujo();
+  }
+
+  /**
+   * Instante real (ms, UTC) para la noche y el día sobre el mapa (tarea f11-t4), o null para no
+   * enseñarlos. El mapa solo se vuelve a dibujar si la sombra se ha movido de verdad.
+   */
+  set instanteNoche(instante: number | null) {
+    if (instante === null) {
+      if (this.noche) {
+        this.noche = null;
+        this.pedirDibujo();
+      }
+      return;
+    }
+    const sol = posicionDelSol(instante);
+    let noche = this.noche;
+    if (!noche || Math.abs(noche.declinacion - sol.declinacion) > 0.05) {
+      const imagen = noche?.imagen ?? document.createElement('canvas');
+      imagen.width = ANCHO_IMAGEN_NOCHE;
+      imagen.height = Math.round((ANCHO_IMAGEN_NOCHE * ALTO_MUNDO) / ANCHO_MUNDO);
+      const pincel = imagen.getContext('2d');
+      if (!pincel) return;
+      const datos = pincel.createImageData(imagen.width, imagen.height);
+      pintarNoche(datos.data, imagen.width, imagen.height, sol.declinacion, (fila) => {
+        const y = ((fila + 0.5) / imagen.height) * ALTO_MUNDO;
+        return this.proyeccion.invert?.([ANCHO_MUNDO / 2, y])?.[1] ?? 0;
+      });
+      pincel.putImageData(datos, 0, 0);
+      noche = { imagen, declinacion: sol.declinacion, longitud: Number.NaN };
+      this.noche = noche;
+    }
+    // Un grado de longitud son menos de 3 px del mundo a escala 1: por debajo, no se redibuja.
+    if (!(Math.abs(noche.longitud - sol.longitud) < 0.75)) {
+      noche.longitud = sol.longitud;
+      this.pedirDibujo();
+    }
   }
 
   /** País del jugador (o null en el mapa libre): se destaca con un contorno azul claro. */
@@ -1104,6 +1149,24 @@ export class MapaMundo {
     }
   }
 
+  /** Sombra de la noche sobre esta copia del mundo, desplazada con la longitud del Sol. */
+  private dibujarNoche(): void {
+    const noche = this.noche;
+    if (!noche) return;
+    const { ctx } = this;
+    const desplazamiento = (noche.longitud / 360) * ANCHO_MUNDO;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, ANCHO_MUNDO, ALTO_MUNDO);
+    ctx.clip();
+    ctx.imageSmoothingEnabled = true;
+    for (const x of [desplazamiento - ANCHO_MUNDO, desplazamiento, desplazamiento + ANCHO_MUNDO]) {
+      if (x + ANCHO_MUNDO <= 0 || x >= ANCHO_MUNDO) continue;
+      ctx.drawImage(noche.imagen, x, 0, ANCHO_MUNDO, ALTO_MUNDO);
+    }
+    ctx.restore();
+  }
+
   private caminoAgua(elemento: ElementoAgua): Path2D {
     let camino = this.caminosAgua.get(elemento);
     if (!camino) {
@@ -1513,6 +1576,8 @@ export class MapaMundo {
         ctx.lineJoin = 'round';
         for (const figura of [...zonas, ...paises]) ctx.stroke(this.camino(nivel, figura));
         this.dibujarRegiones(nivel, paises, camara);
+        // La noche, debajo de lo resaltado y de los nombres, que se siguen leyendo.
+        this.dibujarNoche();
         this.resaltar(nivel, paises, camara, visible);
       }
       this.dibujarRotulos(camara);

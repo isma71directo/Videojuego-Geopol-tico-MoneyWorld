@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.11.0",
-  "actualizado": "2026-11-16T23:01:00Z",
-  "faseActiva": "fase-11",
+  "versionActual": "0.12.0",
+  "actualizado": "2026-11-16T23:54:45Z",
+  "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-16",
-    "resumen": "Fase 10 cerrada como v0.11.0: pantalla «Nueva partida» (mapa grande y panel), tesorería y popularidad iniciales estimadas con fórmula, pantalla de partida con barra superior y salida con confirmación, y transición al empezar. Con ella termina la Etapa A (prealfa). PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.11.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 11 (reloj del juego), que incluye decidir con él la unidad de tiempo visible (issue n.º 3: reloj por horas).",
+    "resumen": "Fase 11 cerrada como v0.12.0: reloj por horas con la hora de la capital del jugador, pausa y velocidades ×1 a ×8 (ratón y teclado), reloj de manecillas, noche y día en el mapa y sonidos del tiempo. Atiende la issue n.º 3. PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.12.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
     "pendienteDelJugador": [
-      "Probar la v0.11.0 en el PC: desde el inicio, «Nueva partida»; elegir España en la lista y otro país en el mapa, mirar su tesorería y popularidad y «Cómo se estiman»; empezar y ver la transición; en la partida, revisar la barra superior (fecha, tesorería, popularidad y sus explicaciones), el contorno de tu país, abrir las secciones de abajo y salir con «Menú» (y con «atrás»), comprobando que pregunta",
-      "Fusionar el PR de la Fase 10"
+      "Probar la v0.12.0 en el PC: empezar una partida (empieza en pausa a medianoche), ponerla en marcha con la barra espaciadora o el botón, cambiar entre ×1, ×2, ×4 y ×8 (también con las teclas 1 a 4), ver avanzar la fecha y la hora de tu capital, el reloj de manecillas y la noche moviéndose sobre el mapa (aléjate para ver el mundo entero), pausar y comprobar que el tiempo se para; probar a quitar la noche en Ajustes",
+      "Fusionar el PR de la Fase 11"
     ]
   },
   "etapas": [
@@ -732,29 +732,36 @@
       "objetivo": "El tiempo del juego avanza, se pausa y cambia de velocidad",
       "dependeDe": ["fase-10"],
       "hechoCuando": "El tiempo avanza a cada velocidad y se detiene al pausar",
-      "pruebaJugador": "Pausar, cambiar de velocidad y ver cómo avanza la fecha",
-      "estado": "pendiente",
+      "pruebaJugador": "Empezar una partida (empieza en pausa), ponerla en marcha y pausarla con el botón y con la barra espaciadora, cambiar entre ×1, ×2, ×4 y ×8 (también con las teclas 1 a 4) y ver cómo avanzan la fecha, la hora de tu capital y la noche sobre el mapa.",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f11-t1",
-          "titulo": "Reloj con pausa y velocidades (×1, ×2, ×4 y ×8) y ritmos diario, semanal, mensual y anual",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Motor del reloj por horas (decisión del jugador, issue n.º 3): la partida guarda la hora; al avanzar salen los pasos diarios, semanales (lunes), mensuales (día 1) y anuales (1 de enero); pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en config/tiempo.json",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/597c906"
         },
         {
           "id": "f11-t2",
-          "titulo": "Decidir con el jugador la unidad de tiempo visible (idea de la issue n.º 3: reloj por horas del día, como en Power & Revolution) y aplicarla",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Hora de la capital: huso horario de cada país el 1 de enero de 2010 (base de datos IANA de husos horarios, dominio público); el reloj marca la hora local de la capital del jugador",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/95522c1"
         },
         {
           "id": "f11-t3",
-          "titulo": "Audiovisual: reloj animado del paso del tiempo y sonidos de pausa y de cambio de velocidad",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Controles del tiempo en la barra superior: pausa y ×1, ×2, ×4 y ×8 con el ratón y el teclado (espacio y 1 a 4); la fecha y la hora avanzan en pantalla; la partida empieza en pausa",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2130c72"
+        },
+        {
+          "id": "f11-t4",
+          "titulo": "Audiovisual: reloj animado con manecillas, sombra de la noche en el mapa que avanza con las horas (se puede quitar en Ajustes) y sonidos de pausa y de cambio de velocidad",
+          "estado": "hecha",
+          "fecha": "2026-11-16",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f9268a9"
         }
       ]
     },
@@ -4510,6 +4517,16 @@
         "Pantalla de partida: barra superior con el país del jugador, la fecha, la tesorería y la popularidad; el país del jugador destacado en el mapa; salir al menú pide confirmación (también con «atrás»)",
         "Ingresos y gasto públicos de 2010 (FMI) en la ficha del país",
         "Animación al elegir país y transición al empezar con la bandera, el nombre y la fecha, con una fanfarria corta; ventana de confirmación y transición en la galería"
+      ]
+    },
+    {
+      "version": "0.12.0",
+      "fecha": "2026-11-16",
+      "cambios": [
+        "Reloj por horas (decisión del jugador, issue n.º 3): la partida empieza el 1 de enero de 2010 a medianoche, en pausa, y el tiempo avanza hora a hora con los pasos diarios, semanales, mensuales y anuales de la simulación",
+        "Pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en la barra superior, con el ratón, la barra espaciadora y las teclas 1 a 4",
+        "El reloj marca la hora local de la capital del jugador, con su huso horario de 2010 (base de datos IANA)",
+        "Reloj de manecillas, noche y día sobre el mapa con la posición real del Sol (se puede quitar en Ajustes) y sonidos de pausa, seguir y cambio de velocidad"
       ]
     }
   ]

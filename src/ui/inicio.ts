@@ -143,6 +143,23 @@ function casillaBrilloAgua(): HTMLElement {
   );
 }
 
+/** Noche y día sobre el mapa de la partida (tarea f11-t4). */
+function casillaNocheMapa(): HTMLElement {
+  const casilla = el('input', { type: 'checkbox', checked: leerAjuste('nocheMapa') });
+  casilla.addEventListener('change', () => guardarAjuste('nocheMapa', casilla.checked));
+  return el(
+    'label',
+    { class: 'ajuste' },
+    casilla,
+    el(
+      'span',
+      {},
+      el('strong', {}, t('juego.ajustes.nocheMapa')),
+      el('small', {}, t('juego.ajustes.nocheMapaAyuda')),
+    ),
+  );
+}
+
 function abrirAjustes(): void {
   abrirHoja(
     t('juego.ajustes.titulo'),
@@ -150,6 +167,7 @@ function abrirAjustes(): void {
     ...ajustesSonido(),
     deslizadorTerreno(),
     casillaBrilloAgua(),
+    casillaNocheMapa(),
     el('p', { class: 'hoja__nota' }, t('juego.ajustes.vacio')),
     el(
       'p',

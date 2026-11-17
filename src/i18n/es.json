@@ -37,7 +37,9 @@
       "intensidadTerreno": "Intensidad del terreno",
       "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos).",
       "brilloAgua": "Brillo animado del agua",
-      "brilloAguaAyuda": "Un reflejo de luz suave que se mueve despacio sobre el mar. No se ve si el sistema pide reducir el movimiento."
+      "brilloAguaAyuda": "Un reflejo de luz suave que se mueve despacio sobre el mar. No se ve si el sistema pide reducir el movimiento.",
+      "nocheMapa": "Noche y día en el mapa",
+      "nocheMapaAyuda": "En la partida, una sombra suave cubre la parte del mundo donde es de noche y avanza con las horas."
     },
     "hoja": {
       "cerrar": "Cerrar"
@@ -1011,7 +1013,8 @@
           "lunaDeMiel": "Primer año de gobierno",
           "regimen": "Régimen sin elecciones libres"
         },
-        "ingresos": "Ingresos públicos de un mes ({porcentaje} del PIB al año)"
+        "ingresos": "Ingresos públicos de un mes ({porcentaje} del PIB al año)",
+        "huso": "Huso horario"
       },
       "opciones": {
         "titulo": "Opciones de la partida",
@@ -1047,7 +1050,7 @@
       "menuAyuda": "Salir al menú principal",
       "pais": "Tu país: {pais}. Pulsa para ir a él en el mapa.",
       "fecha": "Fecha",
-      "fechaAyuda": "Fecha de la partida. El reloj y sus velocidades llegan en la Fase 11.",
+      "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 0,5 s a ×1.",
       "tesoreria": "Tesorería",
       "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 21.",
       "popularidad": "Popularidad",
@@ -1062,6 +1065,15 @@
         "etiqueta": "Empieza la partida con {pais}",
         "rol": "Al frente del Gobierno",
         "saltar": "Pulsa cualquier tecla para seguir"
+      },
+      "hora": "Hora",
+      "tiempo": {
+        "etiqueta": "Velocidad del tiempo",
+        "pausar": "Pausar (espacio)",
+        "seguir": "Seguir (espacio)",
+        "velocidad": "Velocidad ×{n} (tecla {tecla})",
+        "enPausa": "En pausa",
+        "aVelocidad": "Velocidad ×{n}"
       }
     }
   },
@@ -1206,7 +1218,9 @@
       "cristales": "Minerales industriales",
       "calendario": "Fecha",
       "popularidad": "Popularidad",
-      "salir": "Salir"
+      "salir": "Salir",
+      "pausa": "Pausa",
+      "seguir": "Seguir"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1240,7 +1254,10 @@
       "pestana": "Cambiar de pestaña",
       "menu": "Abrir el menú contextual",
       "resaltar": "Llegar a un resultado del buscador",
-      "comenzar": "Empezar una partida"
+      "comenzar": "Empezar una partida",
+      "pausa": "Pausar el tiempo",
+      "seguir": "Seguir el tiempo",
+      "velocidad": "Cambiar la velocidad del tiempo"
     },
     "paleta": {
       "titulo": "Colores de referencia",

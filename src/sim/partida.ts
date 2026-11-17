@@ -5,6 +5,7 @@
  * estado (sección 8 del GDD) se irá añadiendo en cada fase, y el guardado llega en la Fase 14
  * (con migraciones si cambia el formato).
  */
+import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
   valoresIniciales,
   type DatosParaInicio,
@@ -16,6 +17,8 @@ import {
 export const FORMATO_PARTIDA = 1;
 
 export const FECHA_INICIO = '2010-01-01';
+/** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
+export const HORA_INICIO = 0;
 
 /** Dificultades del GDD (sección 13): sus efectos llegan en la Fase 103. */
 export const DIFICULTADES = ['facil', 'normal', 'realista'] as const;
@@ -33,8 +36,12 @@ export interface OpcionesPartida {
 export interface Partida {
   formato: number;
   semilla: number;
-  /** Fecha de la partida (AAAA-MM-DD). */
+  /** Fecha de la partida (AAAA-MM-DD), en la hora local de la capital del jugador. */
   fecha: string;
+  /** Hora en punto (0 a 23), local de la capital del jugador (el reloj corre por horas). */
+  hora: number;
+  /** Huso horario de la capital del jugador el 1 de enero de 2010 (tarea f11-t2). */
+  huso: Huso;
   jugador: { paisId: string; rol: 'gobierno' };
   opciones: { dificultad: Dificultad; eventosHistoricos: boolean };
   /** Estado de cada país jugable (por ahora, sus valores iniciales provisionales). */
@@ -89,6 +96,12 @@ export function semillaDeTexto(texto: string): number | null {
   return h === 0 ? 1 : h;
 }
 
+/** Huso de un país; sin el dato (si no se ha podido cargar), UTC. */
+function husoDe(paisId: string, husos: Record<string, readonly [string, number]>): Huso {
+  const huso = husos[paisId];
+  return huso ? { zona: huso[0], minutos: huso[1] } : { ...HUSO_UTC };
+}
+
 /**
  * Crea la partida, o lanza un error si el país no existe o no es jugable. Sin los gobiernos
  * (si no se han podido cargar), la popularidad no tiene en cuenta el líder ni el régimen.
@@ -97,6 +110,7 @@ export function crearPartida(
   opciones: OpcionesPartida,
   paises: Record<string, PaisParaPartida>,
   gobiernos: Record<string, GobiernoParaInicio> = {},
+  husos: Record<string, readonly [string, number]> = {},
 ): Partida {
   const pais = paises[opciones.paisId];
   if (!pais) throw new Error(`No existe el país ${opciones.paisId}`);
@@ -111,6 +125,8 @@ export function crearPartida(
     formato: FORMATO_PARTIDA,
     semilla: opciones.semilla,
     fecha: FECHA_INICIO,
+    hora: HORA_INICIO,
+    huso: husoDe(opciones.paisId, husos),
     jugador: { paisId: opciones.paisId, rol: 'gobierno' },
     opciones: { dificultad: opciones.dificultad, eventosHistoricos: opciones.eventosHistoricos },
     paises: Object.fromEntries(
@@ -120,4 +136,17 @@ export function crearPartida(
       ]),
     ),
   };
+}
+
+/**
+ * Avanza la partida `horas` horas (tarea f11-t1). Devuelve la partida con la fecha y la hora
+ * nuevas y los pasos de la simulación que tocan (diarios, semanales, mensuales y anuales), que
+ * los sistemas de las próximas fases irán atendiendo.
+ */
+export function avanzarPartida(
+  partida: Partida,
+  horas: number,
+): { partida: Partida; pasos: Paso[] } {
+  const { momento, pasos } = avanzarHoras({ fecha: partida.fecha, hora: partida.hora }, horas);
+  return { partida: { ...partida, fecha: momento.fecha, hora: momento.hora }, pasos };
 }

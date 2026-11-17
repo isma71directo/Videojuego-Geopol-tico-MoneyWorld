@@ -20,6 +20,8 @@ export interface Ajustes {
   intensidadTerreno: number;
   /** Brillo suave y animado sobre el mar (tarea f6-t4); con «reducir movimiento» no se ve. */
   brilloAgua: boolean;
+  /** Sombra de la noche sobre el mapa en la partida (tarea f11-t4, decisión del jugador). */
+  nocheMapa: boolean;
 }
 
 const POR_DEFECTO: Ajustes = {
@@ -30,6 +32,7 @@ const POR_DEFECTO: Ajustes = {
   capaMapa: 'politica',
   intensidadTerreno: 0.7,
   brilloAgua: true,
+  nocheMapa: true,
 };
 
 export function leerAjuste<K extends keyof Ajustes>(clave: K): Ajustes[K] {

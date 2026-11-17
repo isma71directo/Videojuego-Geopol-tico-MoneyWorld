@@ -29,7 +29,10 @@ export type Efecto =
   | 'pestana'
   | 'menu'
   | 'resaltar'
-  | 'comenzar';
+  | 'comenzar'
+  | 'pausa'
+  | 'seguir'
+  | 'velocidad';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -148,6 +151,22 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'triangle', inicio: 0.12, duracion: 0.1, frecuencia: 659.3, volumen: 0.13 },
     { forma: 'sine', inicio: 0.17, duracion: 0.12, frecuencia: 784, volumen: 0.13 },
     { forma: 'sine', inicio: 0.17, duracion: 0.12, frecuencia: 392, volumen: 0.07 },
+  ],
+  // Reloj de la partida (tarea f11-t4). Pausa: dos notas que bajan, como un freno suave.
+  pausa: [
+    { forma: 'triangle', inicio: 0, duracion: 0.09, frecuencia: 587.3, volumen: 0.15 },
+    { forma: 'triangle', inicio: 0.08, duracion: 0.14, frecuencia: 392, volumen: 0.14 },
+  ],
+  // Seguir: las mismas dos notas al revés, que suben.
+  seguir: [
+    { forma: 'triangle', inicio: 0, duracion: 0.09, frecuencia: 392, volumen: 0.14 },
+    { forma: 'triangle', inicio: 0.08, duracion: 0.14, frecuencia: 587.3, volumen: 0.15 },
+  ],
+  // Cambio de velocidad: un «tic» corto con un soplo de ruido, como un engranaje.
+  velocidad: [
+    { forma: 'square', inicio: 0, duracion: 0.035, frecuencia: 1318.5, volumen: 0.06 },
+    { forma: 'ruido', inicio: 0, duracion: 0.05, frecuencia: 3200, volumen: 0.05 },
+    { forma: 'sine', inicio: 0.03, duracion: 0.08, frecuencia: 880, volumen: 0.12 },
   ],
 };
 

@@ -23,6 +23,9 @@ import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './
 import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
+import { crearControlTiempo } from './tiempo';
+import { avanzarPartida } from '../sim/partida';
+import { instanteUTC } from '../sim/reloj';
 import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
@@ -39,6 +42,11 @@ export interface PantallaMapa {
   mapa: MapaMundo;
   /** Partida que se juega en esta pantalla (null en el mapa libre). */
   partida: Partida | null;
+  /**
+   * Pregunta antes de salir de la partida, con el tiempo en pausa mientras tanto (tarea
+   * f11-t3); si se cancela, sigue a la velocidad que llevaba. En el mapa libre, sí sin más.
+   */
+  pedirSalida(): Promise<boolean>;
   cerrar(): void;
 }
 
@@ -187,8 +195,41 @@ export function abrirPantallaMapa(
     buscador.alTeclear(evento);
   };
   document.addEventListener('keydown', alTeclearBuscador);
-  // Barra superior de la partida (tarea f10-t3): país, fecha, tesorería y popularidad, con las
-  // herramientas del mapa a la derecha. En el mapa libre, solo las herramientas.
+  // El tiempo de la partida (tarea f11-t3): empieza en pausa; al avanzar, la partida (el mismo
+  // objeto que guarda main.ts) cambia de fecha y de hora y la barra se repinta.
+  const tiempo = partida
+    ? crearControlTiempo({
+        alAvanzar: (horas) => {
+          const { partida: nueva } = avanzarPartida(partida, horas);
+          partida.fecha = nueva.fecha;
+          partida.hora = nueva.hora;
+          barraPartida?.actualizar(partida);
+        },
+        // Manecillas y noche sin saltos dentro de cada hora (tarea f11-t4).
+        alFotograma: (fraccion) => {
+          barraPartida?.ponerFraccion(fraccion, (tiempo?.velocidad ?? 0) <= 2);
+          moverNoche(fraccion);
+        },
+        alCambiarVelocidad: (velocidad, antes) => {
+          reproducir(velocidad === 0 ? 'pausa' : antes === 0 ? 'seguir' : 'velocidad');
+          barraPartida?.marcarPausa(velocidad === 0);
+        },
+      })
+    : null;
+  /** La sombra de la noche, en el instante de la partida (si el jugador la quiere ver). */
+  const moverNoche = (fraccion = 0): void => {
+    if (!partida || !leerAjuste('nocheMapa')) return;
+    mapa.instanteNoche =
+      instanteUTC({ fecha: partida.fecha, hora: partida.hora }, partida.huso) +
+      fraccion * 3_600_000;
+  };
+  const alTeclearTiempo = (evento: KeyboardEvent): void => {
+    tiempo?.alTeclear(evento);
+  };
+  if (tiempo) document.addEventListener('keydown', alTeclearTiempo);
+  // Barra superior de la partida (tarea f10-t3): menú, país, fecha y hora con los controles del
+  // tiempo, tesorería y popularidad. Las herramientas del mapa van en una fila debajo, a la
+  // izquierda (en el mapa libre, arriba, junto a «Volver»).
   const barraPartida = partida
     ? crearBarraPartida({
         partida,
@@ -197,18 +238,16 @@ export function abrirPantallaMapa(
           mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
           lienzo.focus({ preventScroll: true });
         },
+        ...(tiempo ? { controles: tiempo.elemento } : {}),
       })
     : null;
   const herramientas = [botonSonido, selector.elemento, buscador.boton];
   const barra = barraPartida
-    ? el(
-        'header',
-        { class: 'mapa__barra mapa__barra--partida' },
-        volver,
-        barraPartida.elemento,
-        el('div', { class: 'mapa__herramientas' }, ...herramientas),
-      )
+    ? el('header', { class: 'mapa__barra mapa__barra--partida' }, volver, barraPartida.elemento)
     : el('div', { class: 'mapa__barra' }, volver, ...herramientas);
+  const filaHerramientas = barraPartida
+    ? el('div', { class: 'mapa__herramientas mapa__herramientas--partida' }, ...herramientas)
+    : null;
   const estado = el('p', { class: 'mapa__estado', role: 'status' }, t('juego.mapa.cargando'));
   const lienzo = el('div', {
     class: 'mapa__contenedor',
@@ -255,6 +294,7 @@ export function abrirPantallaMapa(
     lienzo,
     brillo,
     barra,
+    filaHerramientas,
     estado,
     medidor,
     leyenda,
@@ -266,6 +306,8 @@ export function abrirPantallaMapa(
 
   const mapa = crearMapaDelJuego(lienzo);
   if (partida) mapa.paisJugador = partida.jugador.paisId;
+  moverNoche(tiempo?.fraccionHora ?? 0);
+  if (tiempo) barraPartida?.marcarPausa(tiempo.velocidad === 0);
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
   };
@@ -499,7 +541,7 @@ export function abrirPantallaMapa(
       );
       pintarCapa();
       const propio = partida ? datos.paises[partida.jugador.paisId] : undefined;
-      if (propio) barraPartida?.ponerNombrePais(propio.nombre);
+      if (propio) barraPartida?.ponerNombrePais(propio.nombre, propio.capital);
     })
     .catch(() => {
       // Sin datos el mapa sigue funcionando; solo faltan las fichas.
@@ -627,6 +669,8 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alPulsarEscape);
     document.removeEventListener('keydown', alTeclearSecciones);
     document.removeEventListener('keydown', alTeclearBuscador);
+    document.removeEventListener('keydown', alTeclearTiempo);
+    tiempo?.destruir();
     buscador.cerrar(false);
     barraPartida?.destruir();
     secciones.destruir();
@@ -636,15 +680,23 @@ export function abrirPantallaMapa(
     mapa.destruir();
     elemento.remove();
   };
+  const pedirSalida = async (): Promise<boolean> => {
+    if (!tiempo) return true;
+    const velocidad = tiempo.velocidad;
+    tiempo.ponerVelocidad(0);
+    const salir = await confirmarSalidaDePartida();
+    if (!salir) tiempo.ponerVelocidad(velocidad);
+    return salir;
+  };
   volver.addEventListener('click', () => {
     reproducir('boton');
     if (!partida) {
       alCerrar();
       return;
     }
-    void confirmarSalidaDePartida().then((salir) => {
+    void pedirSalida().then((salir) => {
       if (salir) alCerrar();
     });
   });
-  return { elemento, mapa, partida, cerrar };
+  return { elemento, mapa, partida, pedirSalida, cerrar };
 }

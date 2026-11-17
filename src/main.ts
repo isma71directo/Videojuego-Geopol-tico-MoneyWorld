@@ -9,7 +9,6 @@ import { crearPantallaInicio } from './ui/inicio';
 import { abrirPantallaMapa, type PantallaMapa } from './ui/pantalla-mapa';
 import { abrirPantallaNuevaPartida, type PantallaNuevaPartida } from './ui/nueva-partida';
 import type { Partida } from './sim/partida';
-import { confirmarSalidaDePartida } from './ui/barra-partida';
 import { botonReportar } from './ui/reportar';
 import { sonidosDeComponentes } from './ui/componentes/sonidos';
 import { activarSonidoAlInteractuar, reproducir } from './ui/sonido';
@@ -108,7 +107,7 @@ window.addEventListener('hashchange', () => {
   // salir, como con el botón «Menú».
   if (partida && pantallaMapa?.partida === partida && location.hash !== '#partida') {
     history.pushState(null, '', '#partida');
-    void confirmarSalidaDePartida().then((salir) => {
+    void pantallaMapa.pedirSalida().then((salir) => {
       if (salir) terminarPartida();
     });
     return;

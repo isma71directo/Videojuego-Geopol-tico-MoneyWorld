@@ -1,0 +1,37 @@
+{
+  "$comentario": "Husos horarios a mano (tarea f11-t2): territorios sin código ISO propio en la base de datos IANA o con una hora distinta de la del país al que pertenecen según la ONU. Zonas de la base de datos IANA; el desfase del 1 de enero de 2010 se calcula con sus reglas históricas.",
+  "zonas": {
+    "ABK": {
+      "zona": "Europe/Moscow",
+      "motivo": "Abjasia usa en la práctica la hora de Moscú, no la de Georgia"
+    },
+    "SOS": {
+      "zona": "Europe/Moscow",
+      "motivo": "Osetia del Sur usa en la práctica la hora de Moscú, no la de Georgia"
+    },
+    "ANT": {
+      "zona": "America/Curacao",
+      "motivo": "Antillas Neerlandesas (disueltas en octubre de 2010): la zona de su capital, Willemstad (Curazao)"
+    },
+    "CHI": {
+      "zona": "Europe/Jersey",
+      "motivo": "Islas del Canal: Jersey y Guernsey tienen zonas propias con la misma hora; se toma la de Saint Helier"
+    },
+    "CYN": {
+      "zona": "Asia/Nicosia",
+      "motivo": "Chipre del Norte tenía en 2010 la misma hora que el resto de Chipre"
+    },
+    "PMR": {
+      "zona": "Europe/Chisinau",
+      "motivo": "Transnistria usa la misma hora que Moldavia"
+    },
+    "SOL": {
+      "zona": "Africa/Mogadishu",
+      "motivo": "Somalilandia usa la misma hora que Somalia"
+    },
+    "XKX": {
+      "zona": "Europe/Belgrade",
+      "motivo": "Kosovo no tiene código propio en la base de datos IANA; usa la hora de Europa central, como Serbia"
+    }
+  }
+}
