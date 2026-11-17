@@ -11,6 +11,7 @@
  * - Al pasar el ratón (o con las flechas del teclado) se ven los valores; y cada gráfico tiene
  *   su vista de tabla, para que ningún dato dependa del color ni del ratón.
  */
+import { icono as crearIcono, type NombreIcono } from '../../av/iconos';
 import { t } from '../../i18n';
 import { el } from '../dom';
 import { COLORES_SERIES, escalaLineal, formatoEje, marcasBonitas } from './escalas';
@@ -125,6 +126,12 @@ export interface OpcionesLineas {
   formatoY?: (y: number) => string;
   /** Nombre de la columna de x en la vista de tabla (por defecto, «Año»). */
   nombreX?: string;
+  /** Las líneas se dibujan de izquierda a derecha al aparecer (tarea f15-t4). */
+  animado?: boolean;
+  /** Valores de x con etiqueta en el eje (por defecto, unas ocho repartidas). */
+  marcasX?: readonly number[];
+  /** El punto final late una vez (al llegar un dato nuevo, tarea f15-t4). */
+  latido?: boolean;
   /**
    * El eje vertical empieza en 0 (por defecto). Sin él, se ajusta a los valores, para ver
    * cambios pequeños (p. ej. el PIB mes a mes, tarea f15-t3).
@@ -178,18 +185,22 @@ export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
     ),
   );
   const pasoX = Math.max(1, Math.ceil(xs.length / 8));
-  const ejeX = xs
-    .filter((_, i) => i % pasoX === 0 || i === xs.length - 1)
-    .map((v) =>
-      svg(
-        'text',
-        { class: 'grafico__eje', x: x(v), y: alto - 6, 'text-anchor': 'middle' },
-        formatoX(v),
-      ),
-    );
+  const ejeX = (
+    opciones.marcasX
+      ? opciones.marcasX.filter((v) => v >= xs[0]! && v <= xs.at(-1)!)
+      : xs.filter((_, i) => i % pasoX === 0 || i === xs.length - 1)
+  ).map((v) =>
+    svg(
+      'text',
+      { class: 'grafico__eje', x: x(v), y: alto - 6, 'text-anchor': 'middle' },
+      formatoX(v),
+    ),
+  );
   const lineas = series.map((serie, i) =>
     svg('path', {
-      class: 'grafico__linea',
+      class: opciones.animado ? 'grafico__linea grafico__linea--dibujar' : 'grafico__linea',
+      // Con largo 1, la animación no depende de lo larga que sea la línea.
+      ...(opciones.animado ? { pathLength: 1 } : {}),
       d: serie.puntos
         .map(([px, py], j) => `${j ? 'L' : 'M'}${x(px).toFixed(1)},${y(py).toFixed(1)}`)
         .join(''),
@@ -208,7 +219,13 @@ export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
       'g',
       {},
       svg('circle', {
-        class: 'grafico__punto',
+        class: [
+          'grafico__punto',
+          opciones.animado ? 'grafico__punto--aparecer' : '',
+          opciones.latido ? 'grafico__punto--latido' : '',
+        ]
+          .filter(Boolean)
+          .join(' '),
         cx: x(px),
         cy: y(py),
         r: 4,
@@ -482,6 +499,8 @@ export interface Parte {
    * siempre el mismo color aunque falten otras (la leyenda sigue al ente, no a su posición).
    */
   color?: number;
+  /** Icono que acompaña a la parte en la leyenda (p. ej. cada sector, tarea f15-t4). */
+  icono?: NombreIcono;
 }
 
 /**
@@ -522,7 +541,13 @@ export function barraDePartes(opciones: {
     ...partes.map((parte, i) => {
       const muestra = el('span', { class: 'grafico__muestra grafico__muestra--cuadro' });
       muestra.style.background = COLORES_SERIES[parte.color ?? i]!;
-      return el('li', {}, muestra, `${parte.etiqueta} · ${formato(parte.valor)}`);
+      return el(
+        'li',
+        {},
+        muestra,
+        parte.icono ? crearIcono(parte.icono) : null,
+        `${parte.etiqueta} · ${formato(parte.valor)}`,
+      );
     }),
   );
   const { figura, info } = marco(

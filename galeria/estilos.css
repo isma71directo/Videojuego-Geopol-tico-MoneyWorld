@@ -498,3 +498,9 @@
 .galeria__indicador .indicador-guardado {
   top: 8px;
 }
+
+/* La economía de un país (tarea f15-t4). */
+.galeria__economia {
+  max-width: 560px;
+  margin-top: 8px;
+}

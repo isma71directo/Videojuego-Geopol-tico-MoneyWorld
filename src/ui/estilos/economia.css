@@ -50,3 +50,52 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+
+/* Iconos de los indicadores (tarea f15-t4). */
+.economia__termino {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.economia__termino .icono {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--acento);
+}
+
+/* Filas del bloque: las mismas que las de la ficha, para que se vean igual en la galería. */
+.economia .panel-pais__datos {
+  margin: 0;
+}
+
+.economia .panel-pais__fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 6%);
+  font-size: 14px;
+}
+
+.economia .panel-pais__fila dt {
+  color: var(--texto-suave);
+  cursor: help;
+}
+
+.economia .panel-pais__fila dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.economia .panel-pais__fila dd.es-estimado {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.economia .panel-pais__pie {
+  color: var(--texto-suave);
+  font-size: 12px;
+}

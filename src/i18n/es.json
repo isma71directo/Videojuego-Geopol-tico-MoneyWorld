@@ -1370,7 +1370,15 @@
       "ajustes": "Ajustes",
       "exportar": "Exportar a un archivo",
       "importar": "Importar un archivo",
-      "hecho": "Hecho"
+      "hecho": "Hecho",
+      "consumo": "Consumo",
+      "inversion": "Inversión",
+      "ahorro": "Ahorro",
+      "confianza": "Confianza",
+      "empresas": "Empresas",
+      "construccion": "Construcción",
+      "servicios": "Servicios",
+      "potencial": "Crecimiento potencial"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1410,6 +1418,12 @@
       "velocidad": "Cambiar la velocidad del tiempo",
       "aviso": "Aviso de un suceso importante",
       "guardado": "Partida guardada"
+    },
+    "economia": {
+      "titulo": "Economía de un país",
+      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos, producción de los siete sectores y el gráfico del PIB, que se dibuja al aparecer y late con cada dato nuevo. Pulsa «Avanzar un año» para ver cómo evoluciona.",
+      "avanzar": "Avanzar un año",
+      "reiniciar": "Volver a 2010"
     },
     "guardado": {
       "titulo": "Guardar y cargar",

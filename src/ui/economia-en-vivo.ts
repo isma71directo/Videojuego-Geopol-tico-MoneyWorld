@@ -7,6 +7,7 @@
  * Los bloques a la vista se ponen al día solos cada mes (refrescarEconomiaEnVivo), sin rehacer
  * la ficha ni perder por dónde se está leyendo.
  */
+import { icono, type NombreIcono } from '../av/iconos';
 import { formatearFechaLarga } from '../compartido/fechas';
 import { dolares, porcentaje, puntosConSigno } from '../compartido/formato';
 import { t } from '../i18n';
@@ -16,6 +17,7 @@ import {
   crecimientoPotencial,
   SECTORES,
   type EconomiaPais,
+  type Sector,
 } from '../sim/economia';
 import { barraDePartes, graficoLineas } from './componentes/graficos';
 import { conInformacion } from './componentes/info';
@@ -63,6 +65,25 @@ export function textoMes(mes: number): string {
 }
 
 /**
+ * Marcas del eje del gráfico del PIB: cada tres meses durante los dos primeros años y, después,
+ * cada enero (cada dos o más eneros si la partida es muy larga), para que no se pisen.
+ */
+export function marcasMeses(meses: number): number[] {
+  if (meses <= 24) {
+    return Array.from({ length: Math.floor(meses / 3) + 1 }, (_, i) => i * 3);
+  }
+  const anios = Math.floor(meses / 12);
+  const cada = Math.max(1, Math.ceil(anios / 6));
+  return Array.from({ length: Math.floor(anios / cada) + 1 }, (_, i) => i * cada * 12);
+}
+
+/** Etiqueta de una marca: «ene 2010» con pocos meses y «2012» con varios años. */
+const etiquetaMarca =
+  (meses: number) =>
+  (mes: number): string =>
+    meses <= 24 ? textoMes(mes) : String(2010 + Math.round(mes / 12));
+
+/**
  * Crecimiento que se enseña: el de los últimos 12 meses o, si aún no ha pasado un año, el que
  * lleva desde enero de 2010 al ritmo de un año. Null al empezar.
  */
@@ -77,9 +98,26 @@ export function crecimientoVisible(
   return { valor, desdeInicio: true };
 }
 
-/** Una fila «nombre: valor», con su explicación al pasar el ratón o con el foco. */
-function fila(nombre: string, valor: string, ayuda: string, clase?: string): HTMLElement {
-  const termino = el('dt', { tabindex: 0 }, nombre);
+/** Icono de cada sector (tarea f15-t4). */
+export const ICONO_SECTOR: Record<Sector, NombreIcono> = {
+  agricultura: 'agricultura',
+  mineriaEnergia: 'pico',
+  manufactura: 'industria',
+  construccion: 'construccion',
+  comercio: 'comercio',
+  transporte: 'transportes',
+  otrosServicios: 'servicios',
+};
+
+/** Una fila «nombre: valor» con su icono y su explicación al pasar el ratón o con el foco. */
+function fila(
+  nombreIcono: NombreIcono,
+  nombre: string,
+  valor: string,
+  ayuda: string,
+  clase?: string,
+): HTMLElement {
+  const termino = el('dt', { tabindex: 0, class: 'economia__termino' }, icono(nombreIcono), nombre);
   conInformacion(termino, () => [el('strong', {}, nombre), el('br'), ayuda]);
   return el('div', { class: 'panel-pais__fila' }, termino, el('dd', { class: clase }, valor));
 }
@@ -93,13 +131,19 @@ export interface OpcionesBloque {
   anchoGrafico?: number;
 }
 
-function contenido(economia: EconomiaPais, fecha: string, opciones: OpcionesBloque): HTMLElement[] {
+function contenido(
+  economia: EconomiaPais,
+  fecha: string,
+  opciones: OpcionesBloque,
+  primera: boolean,
+): HTMLElement[] {
   const crecimiento = crecimientoVisible(economia);
   const datos = el(
     'dl',
     { class: 'panel-pais__datos economia__datos' },
-    fila(t('juego.economia.pib'), dolares(economia.pib), t('juego.economia.pibAyuda')),
+    fila('pib', t('juego.economia.pib'), dolares(economia.pib), t('juego.economia.pibAyuda')),
     fila(
+      'crecimiento',
       crecimiento?.desdeInicio
         ? t('juego.economia.crecimientoDesde')
         : t('juego.economia.crecimiento'),
@@ -108,33 +152,39 @@ function contenido(economia: EconomiaPais, fecha: string, opciones: OpcionesBloq
       crecimiento && crecimiento.valor < 0 ? 'economia__baja' : undefined,
     ),
     fila(
+      'potencial',
       t('juego.economia.potencial'),
       porcentaje(crecimientoPotencial(economia) * 100),
       t('juego.economia.potencialAyuda'),
     ),
     fila(
+      'confianza',
       t('juego.economia.confianzaConsumidores'),
       textoConfianza(economia.confianzaConsumidores),
       t('juego.economia.confianzaAyuda'),
       'es-estimado',
     ),
     fila(
+      'empresas',
       t('juego.economia.confianzaEmpresas'),
       textoConfianza(economia.confianzaEmpresas),
       t('juego.economia.confianzaAyuda'),
       'es-estimado',
     ),
     fila(
+      'consumo',
       t('juego.economia.consumo'),
       porcentaje(economia.demanda.consumo * 100),
       t('juego.economia.consumoAyuda'),
     ),
     fila(
+      'inversion',
       t('juego.economia.inversion'),
       porcentaje(economia.demanda.inversion * 100),
       t('juego.economia.inversionAyuda'),
     ),
     fila(
+      'ahorro',
       t('juego.economia.ahorro'),
       porcentaje(ahorroNacional(economia) * 100),
       t('juego.economia.ahorroAyuda'),
@@ -146,6 +196,7 @@ function contenido(economia: EconomiaPais, fecha: string, opciones: OpcionesBloq
       etiqueta: t(`juego.economia.sectores.${sector}`),
       valor: (economia.sectores[sector].valor / economia.pib) * 100,
       color,
+      icono: ICONO_SECTOR[sector],
     })),
     formato: (v) => porcentaje(v),
   });
@@ -160,7 +211,11 @@ function contenido(economia: EconomiaPais, fecha: string, opciones: OpcionesBloq
     ancho: opciones.anchoGrafico ?? 520,
     alto: opciones.anchoGrafico && opciones.anchoGrafico < 400 ? 200 : 180,
     desdeCero: false,
-    formatoX: textoMes,
+    // La primera vez se dibuja; después, con cada mes nuevo, late el último punto.
+    animado: primera,
+    latido: !primera,
+    formatoX: etiquetaMarca(economia.meses),
+    marcasX: marcasMeses(economia.meses),
     formatoY: (v) =>
       t('juego.economia.milesDeMillones', { valor: Math.round(v).toLocaleString('es-ES') }),
     nombreX: t('juego.economia.mes'),
@@ -189,6 +244,7 @@ export function bloqueEconomia(
     class: 'economia',
     'aria-label': t('juego.economia.enLaPartida'),
   });
+  let primera = true;
   const bloque: BloqueEconomia = {
     elemento,
     actualizar() {
@@ -199,9 +255,10 @@ export function bloqueEconomia(
       }
       elemento.replaceChildren(
         ...(actual.economia
-          ? contenido(actual.economia, actual.fecha, opciones)
+          ? contenido(actual.economia, actual.fecha, opciones, primera)
           : [el('p', { class: 'economia__vacio' }, t('juego.economia.sinDatos'))]),
       );
+      primera = false;
     },
   };
   bloque.actualizar();

@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.15.1",
-  "actualizado": "2026-11-17T13:00:39Z",
+  "actualizado": "2026-11-17T13:06:24Z",
   "faseActiva": "fase-15",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f15-t3 hecha: confianza de consumidores y empresas (índice, 100 = normal, estimada al empezar con el crecimiento de 2010), que se acerca cada mes a la que corresponde al crecimiento frente al potencial y mueve el consumo, la inversión y el PIB; ahorro nacional. En la partida, la pestaña Economía de la ficha de cada país y la ventana Economía › Economía enseñan en vivo el PIB real, el crecimiento, el potencial, las confianzas, el consumo, la inversión, el ahorro, la producción de los siete sectores y el gráfico del PIB desde 2010, y se ponen al día cada mes. China: 9,7 %, 7,7 %, 6,6 %…; Grecia: −4,4 %, −1,9 %, −0,6 %, con la confianza hundida que se recupera.",
-    "siguientePaso": "f15-t4: iconos de los indicadores macroeconómicos y de los sectores que falten y gráfico animado del PIB; después, cerrar la Fase 15 como v0.16.0.",
+    "resumen": "f15-t4 hecha: ocho iconos nuevos (consumo, inversión, ahorro, confianza, empresas, construcción, servicios y crecimiento potencial) en las filas de la economía y en la leyenda de los siete sectores; el gráfico del PIB se dibuja de izquierda a derecha al aparecer y, con cada mes nuevo, late su último punto (quieto con «reducir movimiento»); el eje marca cada tres meses al principio y cada enero después. La galería tiene la sección «Economía de un país» (España, China, Grecia y EE. UU., con «Avanzar un año»). f15-t3 hecha: confianza, ahorro y economía en vivo.",
+    "siguientePaso": "Cerrar la Fase 15 como v0.16.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -982,12 +982,12 @@
           "titulo": "Ahorro y confianza de consumidores y empresas, con su efecto en el consumo y la inversión; valores en vivo en la ficha de cada país y en Economía › Economía (decisión del jugador)",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/83fe600"
         },
         {
           "id": "f15-t4",
           "titulo": "Audiovisual: iconos de los indicadores macroeconómicos y de los sectores que falten, y gráfico animado de la evolución del PIB desde 2010",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

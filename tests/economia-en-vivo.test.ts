@@ -149,3 +149,50 @@ describe('la economía en vivo (tarea f15-t3)', () => {
     expect(vacia.textContent).toContain('Sin datos para su economía');
   });
 });
+
+describe('iconos y gráfico animado (tarea f15-t4)', () => {
+  it('cada sector y cada indicador tiene su icono, con nombre en la galería', async () => {
+    const { NOMBRES_ICONOS } = await import('../src/av/iconos');
+    const { ICONO_SECTOR } = await import('../src/ui/economia-en-vivo');
+    const { SECTORES } = await import('../src/sim/economia');
+    const { t } = await import('../src/i18n');
+    for (const sector of SECTORES) expect(NOMBRES_ICONOS).toContain(ICONO_SECTOR[sector]);
+    for (const nuevo of [
+      'consumo',
+      'inversion',
+      'ahorro',
+      'confianza',
+      'empresas',
+      'construccion',
+      'servicios',
+      'potencial',
+    ]) {
+      expect(NOMBRES_ICONOS).toContain(nuevo);
+      expect(t(`galeria.iconos.${nuevo}`)).not.toContain('galeria.');
+    }
+    const bloque = bloqueEconomia(() => ({ economia: economiaDe('ITA'), fecha: '2010-01-01' }));
+    expect(bloque.elemento.querySelectorAll('.economia__termino .icono')).toHaveLength(8);
+    expect(bloque.elemento.querySelectorAll('.grafico__leyenda--partes .icono')).toHaveLength(7);
+  });
+
+  it('el gráfico se dibuja la primera vez y después solo late el último punto', () => {
+    const e = economiaDe('IND');
+    const bloque = bloqueEconomia(() => ({ economia: e, fecha: '2010-01-01' }));
+    document.body.appendChild(bloque.elemento);
+    expect(bloque.elemento.querySelector('.grafico__linea--dibujar')).not.toBeNull();
+    expect(bloque.elemento.querySelector('.grafico__linea')!.getAttribute('pathLength')).toBe('1');
+    meses(e, 1);
+    refrescarEconomiaEnVivo();
+    expect(bloque.elemento.querySelector('.grafico__linea--dibujar')).toBeNull();
+    expect(bloque.elemento.querySelector('.grafico__punto--latido')).not.toBeNull();
+  });
+
+  it('las marcas del eje no se pisan: cada tres meses al principio y cada enero después', async () => {
+    const { marcasMeses } = await import('../src/ui/economia-en-vivo');
+    expect(marcasMeses(7)).toEqual([0, 3, 6]);
+    expect(marcasMeses(24)).toEqual([0, 3, 6, 9, 12, 15, 18, 21, 24]);
+    expect(marcasMeses(61)).toEqual([0, 12, 24, 36, 48, 60]);
+    // Con muchos años, cada dos o más eneros: nunca más de siete marcas.
+    expect(marcasMeses(12 * 30).length).toBeLessThanOrEqual(7);
+  });
+});
