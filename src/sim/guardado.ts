@@ -81,6 +81,17 @@ export function idDeGuardado(destino: DestinoGuardado, partida: Partida): string
   }
 }
 
+/** El archivo de una partida, con una copia de ella (lo guardado no cambia aunque siga). */
+export function archivoDe(partida: Partida, version: string, ahora: Date): ArchivoPartida {
+  return {
+    juego: JUEGO,
+    formato: partida.formato,
+    version,
+    guardadoEn: ahora.toISOString(),
+    partida: structuredClone(partida),
+  };
+}
+
 /** Prepara un guardado: el archivo (con una copia de la partida) y su resumen. */
 export function empaquetar(
   partida: Partida,
@@ -88,15 +99,8 @@ export function empaquetar(
   version: string,
   ahora: Date,
 ): { resumen: ResumenGuardado; archivo: ArchivoPartida } {
-  const guardadoEn = ahora.toISOString();
-  const archivo: ArchivoPartida = {
-    juego: JUEGO,
-    formato: partida.formato,
-    version,
-    guardadoEn,
-    // Una copia: lo que se guarda no cambia aunque la partida siga.
-    partida: structuredClone(partida),
-  };
+  const archivo = archivoDe(partida, version, ahora);
+  const { guardadoEn } = archivo;
   return {
     archivo,
     resumen: {
@@ -233,4 +237,37 @@ export function ordenarResumenes(resumenes: readonly ResumenGuardado[]): Resumen
       (a.ranura ?? 0) - (b.ranura ?? 0) ||
       b.guardadoEn.localeCompare(a.guardadoEn),
   );
+}
+
+/** Tamaño máximo de un archivo de partida que se deja importar (para no colgar la página). */
+export const TAMANO_MAXIMO_ARCHIVO = 50 * 1024 * 1024;
+
+/**
+ * Nombre del archivo .json al exportar (tarea f14-t3): el juego, el país y la fecha de la
+ * partida, p. ej. «geopolitica-2010-ESP-2011-03-01.json».
+ */
+export function nombreArchivo(partida: Pick<Partida, 'jugador' | 'fecha'>): string {
+  return `${JUEGO}-${partida.jugador.paisId}-${partida.fecha}.json`;
+}
+
+/** El texto del archivo .json de una partida. */
+export function aTexto(archivo: ArchivoPartida): string {
+  return JSON.stringify(archivo);
+}
+
+/**
+ * Lee el texto de un archivo .json importado (tarea f14-t3): comprueba que es una partida de
+ * este juego, la migra al formato actual y comprueba que no está dañada.
+ */
+export function deTexto(texto: string): ArchivoPartida {
+  if (texto.length > TAMANO_MAXIMO_ARCHIVO) {
+    throw new ErrorGuardado('noEsPartida', 'Archivo demasiado grande');
+  }
+  let datos: unknown;
+  try {
+    datos = JSON.parse(texto);
+  } catch {
+    throw new ErrorGuardado('noEsPartida', 'No es un archivo JSON');
+  }
+  return desempaquetar(datos);
 }

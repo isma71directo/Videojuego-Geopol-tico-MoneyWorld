@@ -29,7 +29,14 @@ import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
 import { horaAbsoluta, msPorHora } from '../sim/reloj';
 import { semillaNueva } from '../sim/azar';
-import { ErrorGuardado, paraSeguir, type ResumenGuardado } from '../sim/guardado';
+import {
+  archivoDe,
+  ErrorGuardado,
+  paraSeguir,
+  type ArchivoPartida,
+  type ResumenGuardado,
+} from '../sim/guardado';
+import { descargarArchivo, elegirArchivo, leerArchivo } from './archivos-partida';
 import { VERSION } from '../compartido/version';
 import { almacenPartidas, cargarPartida, guardarPartida } from './almacen-partidas';
 import { abrirCargar, abrirGuardar, textoPartida } from './guardar-cargar';
@@ -363,14 +370,42 @@ export function abrirPantallaMapa(
     if (ranuraActual !== null) void guardarEnRanura(ranuraActual);
     else void elegirRanura();
   };
-  /** Carga un guardado y cambia de partida (preguntando antes si se pierde algo). */
-  const cargarGuardado = async (resumen: ResumenGuardado, seguir: () => void): Promise<void> => {
-    if (!almacen) return;
+  /** No se ha podido cargar: se dice por qué. */
+  const avisarErrorCarga = async (error: unknown): Promise<void> => {
+    const motivo = error instanceof ErrorGuardado ? error.motivo : 'otro';
+    await pedirEleccion({
+      titulo: t('juego.guardado.cargarTitulo'),
+      texto: t(`juego.guardado.errorCargar.${motivo}`),
+      respuestas: [{ id: 'vale', texto: t('juego.guardado.entendido'), estilo: 'principal' }],
+    });
+  };
+  /**
+   * Cambia a una partida guardada o importada, preguntando antes si se pierde algo. Al cargar, el
+   * azar se vuelve a sembrar (decisión del jugador, Fase 12). Si no se cambia, el tiempo sigue.
+   */
+  const cambiarA = async (
+    leer: () => Promise<ArchivoPartida | null>,
+    ranura: number | null,
+    seguir: () => void,
+  ): Promise<void> => {
+    let archivo: ArchivoPartida | null;
+    try {
+      archivo = await leer();
+    } catch (error) {
+      await avisarErrorCarga(error);
+      seguir();
+      return;
+    }
+    if (!archivo) {
+      seguir();
+      return;
+    }
     if (hayCambios()) {
+      const { partida: otra } = archivo;
       const si = await pedirConfirmacion({
         titulo: t('juego.guardado.cargarAviso.titulo'),
         texto: t('juego.guardado.cargarAviso.texto', {
-          partida: textoPartida(resumen, nombreDe),
+          partida: textoPartida({ ...otra, paisId: otra.jugador.paisId }, nombreDe),
         }),
         aceptar: t('juego.guardado.cargarAviso.aceptar'),
         cancelar: t('juego.guardado.cargarAviso.cancelar'),
@@ -380,23 +415,35 @@ export function abrirPantallaMapa(
         return;
       }
     }
-    try {
-      const archivo = await cargarPartida(almacen, resumen.id);
-      if (!archivo) throw new ErrorGuardado('danado', `No existe ${resumen.id}`);
-      // Al cargar, el azar se vuelve a sembrar (decisión del jugador, Fase 12).
-      opciones.alCargar?.(
-        paraSeguir(archivo, semillaNueva()),
-        resumen.tipo === 'manual' ? resumen.ranura : null,
-      );
-    } catch (error) {
-      const motivo = error instanceof ErrorGuardado ? error.motivo : 'otro';
-      await pedirEleccion({
-        titulo: t('juego.guardado.cargarTitulo'),
-        texto: t(`juego.guardado.errorCargar.${motivo}`),
-        respuestas: [{ id: 'vale', texto: t('juego.guardado.entendido'), estilo: 'principal' }],
-      });
-      seguir();
-    }
+    opciones.alCargar?.(paraSeguir(archivo, semillaNueva()), ranura);
+  };
+  /** Carga un guardado del almacén. */
+  const cargarGuardado = (resumen: ResumenGuardado, seguir: () => void): Promise<void> =>
+    cambiarA(
+      async () => {
+        const archivo = almacen ? await cargarPartida(almacen, resumen.id) : null;
+        if (!archivo) throw new ErrorGuardado('danado', `No existe ${resumen.id}`);
+        return archivo;
+      },
+      resumen.tipo === 'manual' ? resumen.ranura : null,
+      seguir,
+    );
+  /** Importa un archivo .json (tarea f14-t3); no queda en ninguna ranura hasta guardarlo. */
+  const importarArchivo = (seguir: () => void): Promise<void> =>
+    cambiarA(
+      async () => {
+        const archivo = await elegirArchivo();
+        return archivo ? leerArchivo(archivo) : null;
+      },
+      null,
+      seguir,
+    );
+  /** Exporta la partida tal y como está ahora a un archivo .json (tarea f14-t3). */
+  const exportarArchivo = async (): Promise<void> => {
+    if (!motor) return;
+    const copia = await pedirPartida();
+    const nombre = descargarArchivo(archivoDe(copia, VERSION, new Date()));
+    avisarGuardado(t('juego.guardado.exportado', { nombre }));
   };
   /** «Cargar…»: la lista de guardados (con el tiempo parado). */
   const elegirCarga = (): void => {
@@ -407,6 +454,7 @@ export function abrirPantallaMapa(
       nombreDe,
       alElegir: (resumen) => void cargarGuardado(resumen, seguir),
       alCerrar: seguir,
+      alImportar: () => void importarArchivo(seguir),
     });
   };
   /** Ctrl+S, en la fase de captura para que el navegador no abra «Guardar página». */
@@ -1062,6 +1110,11 @@ export function abrirPantallaMapa(
             const seguir = pausarMientras();
             void abrirAjustes().cerrada.then(seguir);
           },
+        },
+        {
+          etiqueta: t('juego.guardado.menu.exportar'),
+          icono: 'exportar',
+          accion: () => void exportarArchivo(),
         },
         SEPARADOR,
         {

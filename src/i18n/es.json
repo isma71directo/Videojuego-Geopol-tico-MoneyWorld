@@ -1116,8 +1116,12 @@
         "guardarEn": "Guardar en…",
         "cargar": "Cargar…",
         "ajustes": "Ajustes",
+        "exportar": "Exportar a un archivo",
         "salir": "Salir al menú"
       },
+      "importar": "Importar un archivo…",
+      "importarAyuda": "Carga una partida exportada como archivo .json (de este u otro navegador).",
+      "exportado": "Exportada: {nombre}",
       "guardarTitulo": "Guardar partida",
       "guardarNota": "Elige una ranura. Después, Ctrl+S guarda al momento en la última que hayas usado.",
       "cargarTitulo": "Cargar partida",
@@ -1320,7 +1324,9 @@
       "efectos": "Efectos en curso",
       "guardar": "Guardar la partida",
       "cargar": "Cargar una partida",
-      "ajustes": "Ajustes"
+      "ajustes": "Ajustes",
+      "exportar": "Exportar a un archivo",
+      "importar": "Importar un archivo"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",

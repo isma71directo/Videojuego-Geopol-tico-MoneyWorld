@@ -5,6 +5,7 @@
  * antes de sobrescribirla.
  */
 import { urlBandera } from '../av/banderas';
+import { icono } from '../av/iconos';
 import { formatearFechaHora, formatearFechaLarga } from '../compartido/fechas';
 import { t } from '../i18n';
 import { ordenarResumenes, RANURAS_MANUALES, type ResumenGuardado } from '../sim/guardado';
@@ -165,6 +166,8 @@ export async function abrirCargar(
   opciones: OpcionesGuardados & {
     alElegir: (resumen: ResumenGuardado) => void;
     alCerrar?: () => void;
+    /** «Importar un archivo…» (tarea f14-t3): si se da, la ventana tiene el botón. */
+    alImportar?: () => void;
   },
 ): Promise<Ventana> {
   const resumenes = ordenarResumenes(await opciones.almacen.listar());
@@ -201,9 +204,30 @@ export async function abrirCargar(
             ),
           ),
         );
+  let importar: HTMLElement | string = '';
+  if (opciones.alImportar) {
+    const alImportar = opciones.alImportar;
+    const boton = el(
+      'button',
+      {
+        class: 'boton guardados__importar',
+        type: 'button',
+        title: t('juego.guardado.importarAyuda'),
+      },
+      icono('importar'),
+      t('juego.guardado.importar'),
+    );
+    boton.addEventListener('click', () => {
+      elegida = true;
+      ventana.cerrar();
+      alImportar();
+    });
+    importar = boton;
+  }
   ventana.cuerpo.replaceChildren(
     el('p', { class: 'guardados__nota' }, t('juego.guardado.cargarNota')),
     avisoSoloMemoria(opciones.almacen) ?? '',
+    importar,
     lista,
   );
   return ventana;

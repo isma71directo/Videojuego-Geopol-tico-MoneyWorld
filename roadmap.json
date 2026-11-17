@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.14.0",
-  "actualizado": "2026-11-17T09:11:43Z",
+  "actualizado": "2026-11-17T10:55:16Z",
   "faseActiva": "fase-14",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f14-t2 hecha: el botón «Menú» de la partida abre su menú (Guardar con Ctrl+S, Guardar en…, Cargar…, Ajustes y Salir al menú, con iconos nuevos). Guardar elige entre cinco ranuras con la bandera, el país, la fecha y la hora de cada una, y pregunta antes de sobrescribir; después, Ctrl+S guarda directo en esa ranura. Al empezar cada mes (el día 1 a las 00:00 en punto) se guarda solo, y el 1 de enero también el del año. Cargar lista ranuras, automáticos y anuales y pregunta si se pierde algo. Salir con algo sin guardar pregunta «¿Guardar antes de salir?» (Seguir jugando, Salir sin guardar o Guardar y salir). Ajustes se abre en la partida y lo que se cambia se nota al momento; su ayuda de la pausa automática habla ya de cualquier suceso importante. El tiempo se para mientras están abiertas estas ventanas.",
-    "siguientePaso": "f14-t3: exportar e importar la partida como archivo .json, con número de versión y migraciones.",
+    "resumen": "f14-t3 hecha: «Exportar a un archivo» en el menú de la partida descarga la partida como .json (nombre con el país y la fecha, p. ej. geopolitica-2010-FRA-2010-01-04.json; lleva el juego, el formato y la versión). «Importar un archivo…» en Cargar partida la vuelve a cargar, de este u otro navegador, con la misma comprobación y migración que un guardado; lo que no es una partida de este juego, está dañado o es de una versión más nueva se rechaza con su aviso. Iconos nuevos de exportar e importar.",
+    "siguientePaso": "f14-t4: indicador de guardado animado y con sonido, «Continuar» y «Cargar partida» en el inicio; después, cerrar la Fase 14 como v0.15.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -914,20 +914,20 @@
           "titulo": "Menú de la partida (decisión del jugador): Guardar (con ranura y aviso antes de sobrescribir), Cargar, Ajustes y Salir (pregunta si guardar antes); Ctrl+S guarda en la última ranura; guardado automático al empezar cada mes; la ayuda de la pausa automática dice que vale para cualquier suceso importante",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d1924d5"
         },
         {
           "id": "f14-t3",
           "titulo": "Exportar e importar la partida como archivo .json, con número de versión y migraciones",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f14-t4",
           "titulo": "Audiovisual: indicador de guardado, pantalla de cargar partida con la bandera, el país, la fecha y la hora de cada ranura, y «Continuar» y «Cargar partida» en el inicio (decisión del jugador)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         }
       ]

@@ -103,3 +103,16 @@
   color: var(--texto-suave);
   font-size: 12px;
 }
+
+/* «Importar un archivo…» (tarea f14-t3). */
+.guardados__importar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.guardados__importar .icono {
+  width: 18px;
+  height: 18px;
+}
