@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.14.0",
-  "actualizado": "2026-11-17T08:52:23Z",
+  "actualizado": "2026-11-17T08:59:01Z",
   "faseActiva": "fase-14",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.14.0. Plan de la Fase 14 aprobado: cinco ranuras manuales; guardado automático al empezar cada mes (se conservan los tres últimos) más uno por año; menú de la partida con Guardar, Cargar, Ajustes y Salir (pregunta si guardar antes), y Ctrl+S; «Continuar» y «Cargar partida» en el inicio. Recordatorio del jugador anotado en el GDD: la pausa automática vale para cualquier suceso importante, no solo guerras o crisis (la ayuda de Ajustes se amplía en f14-t2). La fase pasa a 4 tareas.",
-    "siguientePaso": "f14-t1: almacén de partidas en IndexedDB con ranuras, guardados automáticos y migraciones.",
+    "resumen": "f14-t1 hecha: almacén de partidas en IndexedDB (dos almacenes, resúmenes y archivos, escritos en una sola transacción; en memoria si el navegador no tiene IndexedDB; se pide al navegador que no borre los datos). Motor del guardado en src/sim/guardado.ts: cinco ranuras, un automático por mes (se conservan los tres más recientes) y uno por año de cada partida; cada partida tiene ya su identificador; el formato pasa a 2 con la migración desde el 1 (v0.11 a v0.13); al cargar se comprueba que es una partida de este juego, no dañada ni de un formato más nuevo, y el azar se vuelve a sembrar. Probado también con el IndexedDB real de Chromium.",
+    "siguientePaso": "f14-t2: menú de la partida (Guardar, Cargar, Ajustes y Salir), Ctrl+S y guardado automático al empezar cada mes.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -905,15 +905,15 @@
         {
           "id": "f14-t1",
           "titulo": "Almacén de partidas en IndexedDB: cinco ranuras manuales y guardados automáticos (los tres últimos meses y uno por año, decisión del jugador), con número de formato y migraciones; al cargar, el azar se vuelve a sembrar y la partida empieza en pausa",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f14-t2",
           "titulo": "Menú de la partida (decisión del jugador): Guardar (con ranura y aviso antes de sobrescribir), Cargar, Ajustes y Salir (pregunta si guardar antes); Ctrl+S guarda en la última ranura; guardado automático al empezar cada mes; la ayuda de la pausa automática dice que vale para cualquier suceso importante",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

@@ -2,8 +2,8 @@
  * Partida nueva (tarea f10-t1): el estado con el que empieza una partida el 1 de enero de 2010.
  * Motor puro, sin interfaz. Guarda lo que se elige en la pantalla «Nueva partida» y la tesorería
  * y la popularidad iniciales (provisionales, tarea f10-t2) de cada país jugable; el resto del
- * estado (sección 8 del GDD) se irá añadiendo en cada fase, y el guardado llega en la Fase 14
- * (con migraciones si cambia el formato).
+ * estado (sección 8 del GDD) se irá añadiendo en cada fase; se guarda desde la Fase 14, con
+ * migraciones (src/sim/guardado.ts) cada vez que cambia el formato.
  */
 import type { Efecto } from './efectos';
 import type { Suceso } from './sucesos';
@@ -15,8 +15,13 @@ import {
   type ValoresIniciales,
 } from './valores-iniciales';
 
-/** Versión del formato del estado de la partida (para migrar partidas guardadas). */
-export const FORMATO_PARTIDA = 1;
+/**
+ * Versión del formato del estado de la partida. Cada vez que cambia, src/sim/guardado.ts lleva la
+ * migración desde la anterior (regla 9 de CLAUDE.md):
+ *  - 1: v0.11.0 a v0.13.x (sin efectos ni agenda).
+ *  - 2: v0.14.0 en adelante: efectos (f13-t1), agenda de sucesos (f13-t3) e identificador (f14-t1).
+ */
+export const FORMATO_PARTIDA = 2;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
@@ -40,6 +45,11 @@ export interface OpcionesPartida {
 
 export interface Partida {
   formato: number;
+  /**
+   * Identifica la partida en sus guardados (el guardado de cada año es de una partida). No cambia
+   * al cargarla, aunque el azar se vuelva a sembrar (tarea f14-t1).
+   */
+  id: string;
   semilla: number;
   /** Fecha de la partida (AAAA-MM-DD), en la hora local de la capital del jugador. */
   fecha: string;
@@ -71,6 +81,11 @@ export const OPCIONES_POR_DEFECTO: Omit<OpcionesPartida, 'paisId' | 'semilla'> =
   dificultad: 'normal',
   eventosHistoricos: true,
 };
+
+/** Identificador de una partida a partir de su primera semilla (al azar en cada partida). */
+export function idDePartida(semilla: number): string {
+  return `p${semilla.toString(36)}`;
+}
 
 /** Códigos de los países jugables, en el orden en que llegan. */
 export function paisesJugables(paises: Record<string, PaisParaPartida>): string[] {
@@ -106,6 +121,7 @@ export function crearPartida(
   }
   return {
     formato: FORMATO_PARTIDA,
+    id: idDePartida(opciones.semilla),
     semilla: opciones.semilla,
     fecha: FECHA_INICIO,
     hora: HORA_INICIO,
