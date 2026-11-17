@@ -54,8 +54,8 @@ describe('la economía de 2010 (tarea f15-t2)', () => {
     }
     expect(e.demandaBase.consumo * 100).toBeCloseTo(espana.consumoHogaresPib!, 5);
     expect(e.demandaBase.inversion * 100).toBeCloseTo(espana.inversionPib!, 5);
-    // Al empezar, la producción potencial de cada sector es lo que produce de verdad.
-    expect(e.pibPotencial).toBe(e.pib);
+    // Al empezar, lo que podría producir es el PIB sin la brecha de la confianza de 2010 (f16-t1).
+    expect(e.pibPotencial * (1 + e.brechaDemanda)).toBeCloseTo(e.pib, -3);
   });
 
   it('todos los países jugables tienen su economía, con valores válidos', () => {
@@ -323,8 +323,24 @@ describe('en la partida (tarea f15-t2)', () => {
     antigua.formato = 3;
     for (const estado of Object.values(antigua.paises)) {
       if (!estado.economia) continue;
-      delete estado.economia.desequilibrio;
-      delete estado.economia.demandaReferencia;
+      // Como se guardaba en la v0.16.0: la demanda de base era la de los datos, y aún no había
+      // desequilibrios, paro ni inflación.
+      estado.economia.demandaBase = { ...(estado.economia.demandaReferencia as object) };
+      for (const campo of [
+        'desequilibrio',
+        'demandaReferencia',
+        'paro',
+        'paroEstructural',
+        'sensibilidadParo',
+        'brechaAsumida',
+        'serieParo',
+        'inflacion',
+        'inflacionEsperada',
+        'nivelPrecios',
+        'serieInflacion',
+      ]) {
+        delete estado.economia[campo];
+      }
       estado.economia.crecimientoProductividad = 0.01;
     }
     const cargada = desempaquetar({
@@ -337,6 +353,10 @@ describe('en la partida (tarea f15-t2)', () => {
     expect(faltaEconomia(cargada)).toBe(true);
     completarEconomia(cargada, paises.paises);
     expect(faltaEconomia(cargada)).toBe(false);
+    // (Sin salto: la brecha de ahora se toma como asumida.)
+    for (const estado of Object.values(cargada.paises)) {
+      if (estado.economia) estado.economia.brechaAsumida = 0;
+    }
     expect(cargada).toEqual(partida);
   });
 });

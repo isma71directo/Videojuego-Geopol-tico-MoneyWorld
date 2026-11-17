@@ -1,18 +1,19 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.16.1",
-  "actualizado": "2026-11-17T18:22:50Z",
-  "faseActiva": "fase-16",
+  "versionActual": "0.17.0",
+  "actualizado": "2026-11-17T19:13:27Z",
+  "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "v0.16.1 publicada (PR abierto). f15-a1 (nada mejora solo): la productividad solo converge con base (alfabetización, electricidad, internet y educación; sin ella apenas crece); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan, a los seis meses, un ajuste que recorta el gasto público, cierra el crédito y hunde la confianza hasta cerrar el déficit; dureza según la dificultad (realista 100 %, normal 75 %, fácil 50 %; dura lo mismo). Sin intervención, Grecia cae cuatro años (−8 %, −7 %, −4 %, −2 %) y en diez no recupera su PIB de 2010; Portugal, España, Islandia y Letonia también encogen; EE. UU., Japón y Alemania no. Fila «Ajuste forzoso» en la ficha. Formato de partida 4 con migración.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.16.1: apuntar sus ajustes o presentar el plan de la Fase 16 (economía: inflación y paro), seguida de las Fases 17 (presupuesto) y 18 (deuda).",
+    "resumen": "Fase 16 cerrada como v0.17.0: paro con la ley de Okun, adaptación del mercado de trabajo e histéresis (los parados dejan de producir y gastan menos); inflación persistente sin ancla hasta el banco central, con PIB nominal (la alta resta inversión y la deflación, consumo); paro, inflación y PIB nominal en la ficha y en Economía › Economía con su gráfico; test de credibilidad del GDD en verde; alertas económicas del país del jugador con aviso, iconos y sonido propio. PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.17.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 17 (presupuesto: ingresos y gastos).",
     "pendienteDelJugador": [
-      "Probar la v0.16.1 en el PC: empezar una partida en «realista», abrir la ficha de Grecia (pestaña Economía) y avanzar dos o tres años a ×64: el PIB cae varios años seguidos, la confianza baja y la fila «Ajuste forzoso» muestra lo que falta por recortar",
-      "Comparar con una partida en «fácil»: Grecia cae menos (el ajuste dura lo mismo)",
-      "Mirar Portugal, España o Islandia (también encogen) y Estados Unidos, Alemania o China (no tienen ese ajuste o es leve)",
-      "Cargar una partida guardada con la v0.16.0 y comprobar que la carga y que Grecia tiene su ajuste forzoso",
-      "Fusionar el PR de la v0.16.1"
+      "Probar la v0.17.0 en el PC: jugar un año con España (o Grecia) a ×64 y revisar en la ficha (pestaña Economía) el paro, que sube, y la inflación, que baja, con su gráfico",
+      "Esperar las alertas: con Grecia, la recesión para la partida en septiembre de 2010 (aviso del centro con su sonido); después, la tarjeta de «El paro se dispara» arriba a la derecha",
+      "Comparar con Alemania o China, donde el paro y la inflación apenas cambian y no hay alertas",
+      "En la galería: «Alertas económicas» (ver y oír cada una), los sonidos nuevos y la «Economía de un país» con «Avanzar un año»",
+      "Cargar una partida guardada con la v0.16.1 y comprobar que tiene paro e inflación",
+      "Fusionar el PR de la Fase 16"
     ]
   },
   "etapas": [
@@ -1019,28 +1020,35 @@
       "dependeDe": ["fase-15"],
       "hechoCuando": "Pasa el test de credibilidad",
       "pruebaJugador": "Jugar un año y revisar el paro y la inflación de España",
-      "estado": "pendiente",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f16-t1",
-          "titulo": "Inflación, paro (ley de Okun), productividad y crecimiento potencial",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Paro: ley de Okun, paro estructural e histéresis; los ocupados producen y el paro baja la confianza y el consumo",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d63badd"
         },
         {
           "id": "f16-t2",
-          "titulo": "Test de credibilidad: 5 años sin intervención en los 20 mayores países",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Inflación persistente (expectativas y brecha de producción) y PIB nominal; la inflación alta baja la inversión y la deflación, el consumo",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3d24053"
         },
         {
           "id": "f16-t3",
-          "titulo": "Audiovisual: sonidos de las alertas económicas",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Paro, inflación y PIB nominal en vivo (ficha y Economía › Economía) con su gráfico; test de credibilidad: 5 años sin intervención en los 20 mayores países",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3f844fb"
+        },
+        {
+          "id": "f16-t4",
+          "titulo": "Audiovisual: alertas económicas del país del jugador con aviso, iconos y un sonido propio de cada una",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/c683ab1"
         }
       ]
     },
@@ -4723,6 +4731,16 @@
         "Los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan un ajuste si nadie actúa: recortes del gasto, crédito cerrado y menos confianza hasta cerrar el déficit; Grecia cae cuatro años seguidos y Portugal, España, Islandia o Letonia también encogen (provisional hasta la deuda de la Fase 18)",
         "Dureza según la dificultad: en «realista» el ajuste pesa por completo; en «normal», un 75 %, y en «fácil», la mitad",
         "Fila «Ajuste forzoso» en la economía de la ficha y de Economía › Economía; las partidas de la v0.16.0 reciben los desequilibrios al cargarse"
+      ]
+    },
+    {
+      "version": "0.17.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Paro de cada país desde el de 2010: sube cuando la economía produce por debajo de lo que podría (ley de Okun, más en los mercados rígidos), y si se queda alto parte se vuelve estructural y ya no baja solo; los parados gastan menos y hunden la confianza (decisiones del jugador)",
+        "Inflación persistente desde la de 2010: baja con mucho paro y sube cuando falta, sin ancla hasta el banco central; por encima del 10 % resta inversión y la deflación frena el consumo; PIB nominal",
+        "Paro, inflación y PIB nominal en la ficha de cada país y en Economía › Economía, con un gráfico del paro y la inflación; test de credibilidad del GDD (5 años sin intervención en los 20 mayores países)",
+        "Alertas económicas de tu país (recesión, paro que se dispara, inflación alta o desbocada y deflación) con su icono y un sonido propio; las graves paran la partida si la pausa automática está activada; sección en la galería"
       ]
     }
   ]

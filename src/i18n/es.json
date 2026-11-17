@@ -1171,6 +1171,30 @@
         "otro": "No se ha podido leer la partida guardada."
       }
     },
+    "alertas": {
+      "etiqueta": "Alerta económica",
+      "cerrar": "Cerrar la alerta",
+      "recesion": {
+        "titulo": "Recesión",
+        "texto": "El PIB lleva dos trimestres seguidos cayendo ({valor} en seis meses). Con él caen el empleo y la confianza; si no se corrige, la caída se alimenta sola."
+      },
+      "paro": {
+        "titulo": "El paro se dispara",
+        "texto": "El paro ha subido más de 2 puntos en un año y ya está en el {valor}. Los parados gastan menos y, si se queda alto, parte se volverá estructural."
+      },
+      "inflacion": {
+        "titulo": "Inflación alta",
+        "texto": "Los precios suben un {valor} al año. Por encima del 10 %, la incertidumbre resta inversión y confianza a las empresas."
+      },
+      "inflacionGrave": {
+        "titulo": "Inflación desbocada",
+        "texto": "Los precios suben un {valor} al año. La inversión cae con fuerza y la confianza de las empresas se hunde. (El banco central, que puede frenarla, llega en la Fase 20.)"
+      },
+      "deflacion": {
+        "titulo": "Deflación",
+        "texto": "Los precios bajan ({valor} al año): se espera a que bajen más y se consume menos, lo que frena la economía."
+      }
+    },
     "sucesos": {
       "aviso": "Pausa automática",
       "seguir": "Seguir",
@@ -1187,7 +1211,13 @@
       "enLaPartida": "En la partida",
       "datos2010": "Datos de 2010",
       "pib": "PIB real",
-      "pibAyuda": "Lo que produce el país al ritmo de un año, en dólares de 2010 (sin inflación, que llega en la Fase 16).",
+      "pibAyuda": "Lo que produce el país al ritmo de un año, en dólares de 2010 (sin la subida de los precios).",
+      "pibNominal": "PIB nominal",
+      "pibNominalAyuda": "El PIB real a los precios de ahora (dólares corrientes): crece también con la inflación.",
+      "paro": "Paro",
+      "paroAyuda": "Parados sobre la población activa (dato de 2010 del Banco Mundial); entre paréntesis, cuánto ha cambiado en 12 meses. Sube cuando la economía produce por debajo de lo que podría (ley de Okun) y, si se queda alto mucho tiempo, parte se vuelve estructural y ya no baja solo. Los parados gastan menos y el paro hunde la confianza.",
+      "inflacion": "Inflación",
+      "inflacionAyuda": "Cuánto suben los precios al año al ritmo de este mes (dato de 2010 del Banco Mundial). Cada país arrastra la suya: baja con mucho paro y sube cuando falta (por ejemplo, si se gasta de más). Por encima del 10 % resta inversión y confianza de las empresas; con deflación (en negativo) se consume menos. El banco central, que la frena, llega en la Fase 20.",
       "crecimiento": "Crecimiento (12 meses)",
       "crecimientoDesde": "Crecimiento desde 2010 (anual)",
       "crecimientoAyuda": "Cuánto ha crecido el PIB real en los últimos 12 meses (o, si aún no ha pasado un año, desde enero de 2010, al ritmo de un año). Empieza con el crecimiento real de 2010 y se acerca poco a poco al potencial.",
@@ -1218,7 +1248,8 @@
       "graficoTitulo": "PIB real desde enero de 2010 (miles de millones de dólares de 2010)",
       "mes": "Mes",
       "milesDeMillones": "{valor} mil M$",
-      "nota": "Dólares de 2010 (la inflación llega en la Fase 16). * Confianza estimada.",
+      "nota": "PIB real en dólares de 2010. * Confianza estimada.",
+      "graficoPreciosTitulo": "Paro e inflación desde enero de 2010 (%)",
       "sinDatos": "Sin datos para su economía.",
       "ventanaNota": "La pantalla completa de Economía llega en la Fase 19, y el banco central, en la 20."
     }
@@ -1381,7 +1412,9 @@
       "empresas": "Empresas",
       "construccion": "Construcción",
       "servicios": "Servicios",
-      "potencial": "Crecimiento potencial"
+      "potencial": "Crecimiento potencial",
+      "recesion": "Recesión",
+      "deflacion": "Deflación"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1420,11 +1453,16 @@
       "seguir": "Seguir el tiempo",
       "velocidad": "Cambiar la velocidad del tiempo",
       "aviso": "Aviso de un suceso importante",
-      "guardado": "Partida guardada"
+      "guardado": "Partida guardada",
+      "alertaRecesion": "Alerta: recesión",
+      "alertaParo": "Alerta: el paro se dispara",
+      "alertaInflacion": "Alerta: inflación alta",
+      "alertaInflacionGrave": "Alerta: inflación desbocada",
+      "alertaDeflacion": "Alerta: deflación"
     },
     "economia": {
       "titulo": "Economía de un país",
-      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos, producción de los siete sectores y el gráfico del PIB, que se dibuja al aparecer y late con cada dato nuevo. Pulsa «Avanzar un año» para ver cómo evoluciona.",
+      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos (también el paro y la inflación), producción de los siete sectores y los gráficos del PIB y del paro y la inflación, que se dibujan al aparecer y laten con cada dato nuevo. Pulsa «Avanzar un año» para ver cómo evoluciona.",
       "avanzar": "Avanzar un año",
       "reiniciar": "Volver a 2010"
     },
@@ -1445,6 +1483,10 @@
       "nada": "Aún no has abierto el aviso.",
       "seguido": "Has elegido «Seguir»: la partida volvería a la velocidad que llevaba.",
       "enPausa": "Has elegido «Quedarse en pausa»: la partida seguiría parada."
+    },
+    "alertas": {
+      "titulo": "Alertas económicas",
+      "nota": "Las alertas del país del jugador, cada una con su icono y su sonido. Salen en una tarjeta arriba a la derecha que se va sola; las graves (recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. Pulsa para ver y oír cada una con un dato de ejemplo."
     },
     "musica": {
       "titulo": "Música ambiental",

@@ -5,6 +5,7 @@
  * si son importantes y la pausa automática está activada (decisión del jugador), para el tiempo
  * justo en ese momento. Motor puro, sin interfaz.
  */
+import type { AlertaEconomica } from './alertas';
 import { horaAbsoluta } from './reloj';
 
 /** De dónde viene un suceso. */
@@ -21,6 +22,8 @@ export interface Suceso {
   /** Los importantes paran la partida si la pausa automática está activada. */
   importante: boolean;
   origen: OrigenSuceso;
+  /** Si es una alerta económica (tarea f16-t4): la pantalla pone el título y el texto. */
+  alerta?: AlertaEconomica;
 }
 
 /** Hora absoluta de un suceso (para ordenarlos y compararlos con el reloj). */

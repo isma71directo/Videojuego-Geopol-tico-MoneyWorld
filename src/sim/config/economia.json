@@ -107,5 +107,50 @@
     "facil": 0.5,
     "normal": 0.75,
     "realista": 1
+  },
+  "$comentarioParo": "Paro (tarea f16-t1; decisiones del jugador: ley de Okun e histéresis). El paro tiende al estructural menos «sensibilidad» × la brecha de producción (PIB frente a su potencial) que el mercado de trabajo aún no ha asumido, acercándose «ajusteMensual» cada mes. El mercado de trabajo asume la brecha poco a poco (salarios más bajos con los que se vuelve a contratar): la mitad cada «mesesAsumir» meses. La sensibilidad (estimada) depende del nivel de renta (los mercados informales de los países pobres absorben más) y crece «porPuntoRigido» por cada punto de paro de 2010 por encima de «paroRigido» (mercados rígidos o con mucho empleo temporal), hasta «sensibilidadMaxima». El estructural es el paro de 2010 y, mientras el paro esté por encima, sube «histeresisMensual» de la diferencia cada mes (histéresis; no baja solo): esos parados dejan de contar como trabajo para producir. El paro no baja de «minimo» ni de «minimoRelativo» × el estructural, ni pasa de «maximo». Consecuencias: cada punto de paro por encima del estructural resta «consumoPorPunto» puntos al consumo (los parados gastan menos) y «confianzaPorPuntoCiclico» a la confianza de los consumidores, y cada punto que ha subido en un año, «confianzaPorPuntoSubida».",
+  "paro": {
+    "ajusteMensual": 0.25,
+    "mesesAsumir": 84,
+    "sensibilidad": {
+      "bajo": 0.1,
+      "medio-bajo": 0.2,
+      "medio-alto": 0.3,
+      "alto": 0.45
+    },
+    "paroRigido": 10,
+    "porPuntoRigido": 0.05,
+    "sensibilidadMaxima": 1,
+    "histeresisMensual": 0.008,
+    "minimo": 0.01,
+    "minimoRelativo": 0.5,
+    "maximo": 0.5,
+    "consumoPorPunto": 0.5,
+    "confianzaPorPuntoCiclico": 1,
+    "confianzaPorPuntoSubida": 2
+  },
+  "$comentarioInflacion": "Inflación (tarea f16-t2; decisión del jugador: persistente, sin ancla hasta el banco central de la Fase 20). Cada mes, la inflación (tasa anual) es la esperada menos «pendiente» × el paro por encima del estructural (curva de Phillips: con paro de más, los salarios y los precios suben menos; con paro de menos, más); la esperada se acerca a la de verdad, a la mitad cada «mesesExpectativas» meses. Empieza en la de 2010 («sinDato» si no hay), entre «minimo» y «maximo». Consecuencias: cada punto por encima de «umbralInversion» resta «inversionPorPunto» a la inversión (hasta «inversionMaxima») y «confianzaEmpresasPorPunto» puntos a la confianza de las empresas; cada punto de deflación resta «consumoPorPuntoDeflacion» al consumo (se espera a que bajen los precios). La demanda de 2010 ya trae el daño de la inflación de ese año.",
+  "inflacion": {
+    "pendiente": 0.15,
+    "mesesExpectativas": 12,
+    "sinDato": 0.03,
+    "minimo": -0.1,
+    "maximo": 1,
+    "umbralInversion": 0.1,
+    "inversionPorPunto": 0.01,
+    "inversionMaxima": 0.5,
+    "confianzaEmpresasPorPunto": 1,
+    "consumoPorPuntoDeflacion": 0.01
+  },
+  "$comentarioAlertas": "Alertas económicas del país del jugador (tarea f16-t4). Recesión: dos trimestres seguidos cayendo (sale cuando el último ya crece). Inflación alta: por encima de «inflacion» (sale por debajo de «inflacionSalida»); grave, por encima de «inflacionGrave» (sale por debajo de «inflacionGraveSalida»). Deflación: por debajo de «deflacion» (sale por encima de «deflacionSalida»). Paro que se dispara: sube «subidaParo» o más en un año (sale cuando sube menos de «subidaParoSalida»). Todo en tanto por uno.",
+  "alertas": {
+    "inflacion": 0.1,
+    "inflacionSalida": 0.09,
+    "inflacionGrave": 0.2,
+    "inflacionGraveSalida": 0.18,
+    "deflacion": 0,
+    "deflacionSalida": 0.005,
+    "subidaParo": 0.02,
+    "subidaParoSalida": 0.01
   }
 }

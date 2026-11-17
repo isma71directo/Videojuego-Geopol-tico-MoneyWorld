@@ -78,6 +78,8 @@ import empresas from './iconos/empresas.svg?raw';
 import construccion from './iconos/construccion.svg?raw';
 import servicios from './iconos/servicios.svg?raw';
 import potencial from './iconos/potencial.svg?raw';
+import recesion from './iconos/recesion.svg?raw';
+import deflacion from './iconos/deflacion.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -190,6 +192,9 @@ const ICONOS = {
   construccion,
   servicios,
   potencial,
+  // Alertas económicas (tarea f16-t4).
+  recesion,
+  deflacion,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

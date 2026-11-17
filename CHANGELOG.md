@@ -7,6 +7,45 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.17.0 - 2026-11-17
+
+Fase 16: economía, inflación y paro.
+
+### Añadido
+
+- **Paro** de cada país desde el de 2010 (Banco Mundial), con las decisiones del jugador:
+  - **Ley de Okun:** sube cuando la economía produce por debajo de lo que podría y baja cuando
+    produce por encima. Es más sensible en los países ricos y en los mercados laborales rígidos
+    o con mucho empleo temporal (estimado y marcado).
+  - **Histéresis:** si se queda alto mucho tiempo, parte se vuelve estructural y ya no baja solo;
+    esos parados dejan de producir. El mercado de trabajo asume la caída poco a poco, con
+    salarios más bajos.
+  - Los parados gastan menos y el paro hunde la confianza de los consumidores.
+  - Sin intervención, Grecia pasa del 12,7 % al 24 % en cuatro años y baja hacia el 19 %;
+    España, del 19,9 % al 25 %. Alemania, China o México apenas cambian.
+- **Inflación persistente** desde la de 2010 (decisión del jugador): cada país arrastra la suya
+  por las expectativas; baja con mucho paro y sube cuando falta (curva de Phillips), sin ancla
+  hasta el banco central (Fase 20). Por encima del 10 % resta inversión y confianza de las
+  empresas; la deflación frena el consumo. Gastar de más recalienta: baja el paro, pero sube la
+  inflación. **PIB nominal** (a precios de cada momento).
+- **En pantalla:** PIB nominal, paro (con lo que ha cambiado en 12 meses) e inflación en la ficha
+  de cada país y en Economía › Economía, y un gráfico del paro y la inflación desde 2010.
+- **Test de credibilidad del GDD:** en 5 años sin intervención, los 20 mayores países crecen entre
+  −10 % y +15 % al año, con inflación entre −5 % y +30 % (solo Macao y Zimbabue se salen el
+  primer año, por su crecimiento real de 2010).
+- **Alertas económicas** de tu país: recesión, paro que se dispara, inflación alta o desbocada y
+  deflación. Las graves paran la partida (si la pausa automática está activada) y salen en el
+  aviso del centro; las demás, en una tarjeta arriba a la derecha que se va sola. Cada una con
+  su icono (nuevos: recesión y deflación) y un **sonido sintetizado propio**. Sección «Alertas
+  económicas» en la galería.
+
+### Cambiado
+
+- Formato de la partida 5, con el paro y la inflación; las partidas guardadas antes los reciben
+  al cargarse, con los datos de 2010.
+- El crecimiento de 2010 por encima del potencial (rebote tras 2009 o auge) se toma como
+  capacidad nueva; por debajo, abre una brecha de producción.
+
 ## 0.16.1 - 2026-11-17
 
 Ajuste de la Fase 15 tras la consulta del jugador («la economía no siempre va a crecer»).

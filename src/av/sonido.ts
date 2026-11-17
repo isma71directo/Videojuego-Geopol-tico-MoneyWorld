@@ -34,7 +34,12 @@ export type Efecto =
   | 'seguir'
   | 'velocidad'
   | 'aviso'
-  | 'guardado';
+  | 'guardado'
+  | 'alertaRecesion'
+  | 'alertaParo'
+  | 'alertaInflacion'
+  | 'alertaInflacionGrave'
+  | 'alertaDeflacion';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -184,6 +189,54 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'ruido', inicio: 0, duracion: 0.035, frecuencia: 2400, volumen: 0.05 },
     { forma: 'triangle', inicio: 0.01, duracion: 0.07, frecuencia: 1174.7, volumen: 0.1 },
     { forma: 'sine', inicio: 0.07, duracion: 0.17, frecuencia: 1568, volumen: 0.12 },
+  ],
+  // Alertas económicas (tarea f16-t4), cada una con su sonido. Recesión: tres notas graves que
+  // bajan despacio (la, fa y re), como una caída.
+  alertaRecesion: [
+    { forma: 'triangle', inicio: 0, duracion: 0.22, frecuencia: 440, volumen: 0.15 },
+    { forma: 'triangle', inicio: 0.2, duracion: 0.22, frecuencia: 349.2, volumen: 0.15 },
+    { forma: 'triangle', inicio: 0.4, duracion: 0.42, frecuencia: 293.7, volumen: 0.16 },
+    { forma: 'sine', inicio: 0.4, duracion: 0.42, frecuencia: 146.8, volumen: 0.08 },
+  ],
+  // Paro que se dispara: dos golpes sordos y graves, como una puerta que se cierra.
+  alertaParo: [
+    { forma: 'ruido', inicio: 0, duracion: 0.06, frecuencia: 500, volumen: 0.08 },
+    { forma: 'sine', inicio: 0, duracion: 0.18, frecuencia: 196, volumen: 0.18 },
+    { forma: 'ruido', inicio: 0.22, duracion: 0.06, frecuencia: 450, volumen: 0.08 },
+    { forma: 'sine', inicio: 0.22, duracion: 0.26, frecuencia: 164.8, volumen: 0.18 },
+  ],
+  // Inflación alta: tres notas cortas que suben (do, mi y sol), como precios que suben.
+  alertaInflacion: [
+    { forma: 'square', inicio: 0, duracion: 0.07, frecuencia: 523.3, volumen: 0.06 },
+    { forma: 'square', inicio: 0.08, duracion: 0.07, frecuencia: 659.3, volumen: 0.06 },
+    { forma: 'triangle', inicio: 0.16, duracion: 0.2, frecuencia: 784, volumen: 0.13 },
+  ],
+  // Inflación desbocada: la misma subida, más rápida y aguda, que acaba en un intervalo tenso.
+  alertaInflacionGrave: [
+    { forma: 'square', inicio: 0, duracion: 0.05, frecuencia: 659.3, volumen: 0.06 },
+    { forma: 'square', inicio: 0.05, duracion: 0.05, frecuencia: 784, volumen: 0.06 },
+    { forma: 'square', inicio: 0.1, duracion: 0.05, frecuencia: 987.8, volumen: 0.06 },
+    { forma: 'triangle', inicio: 0.15, duracion: 0.3, frecuencia: 1046.5, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0.15, duracion: 0.3, frecuencia: 1480, volumen: 0.07 },
+  ],
+  // Deflación: un tono suave que se desinfla, bajando una octava.
+  alertaDeflacion: [
+    {
+      forma: 'sine',
+      inicio: 0,
+      duracion: 0.45,
+      frecuencia: 784,
+      frecuenciaFinal: 392,
+      volumen: 0.15,
+    },
+    {
+      forma: 'sine',
+      inicio: 0.05,
+      duracion: 0.4,
+      frecuencia: 392,
+      frecuenciaFinal: 196,
+      volumen: 0.06,
+    },
   ],
 };
 

@@ -25,9 +25,20 @@
  * inversión y recortes del gasto hasta cerrar el déficit, que hunden la demanda y la confianza.
  * Es provisional: lo sustituyen la deuda y la prima de riesgo de verdad (Fase 18). Su dureza
  * depende de la dificultad.
+ *
+ * Paro (tarea f16-t1; ley de Okun e histéresis, decisiones del jugador): cuando el PIB está por
+ * debajo de su potencial, el paro sube por encima del estructural (el de 2010); si se queda alto
+ * mucho tiempo, parte se vuelve estructural, ya no baja solo y esos parados dejan de producir. Los
+ * parados consumen menos y el paro hunde la confianza de los consumidores.
+ *
+ * Inflación (tarea f16-t2; persistente, decisión del jugador): cada país arrastra la suya (las
+ * expectativas); baja si el paro está por encima del estructural y sube si está por debajo (curva
+ * de Phillips), sin un ancla que la arregle sola hasta el banco central (Fase 20). Una inflación
+ * alta resta inversión y confianza de las empresas; la deflación frena el consumo.
  */
 import config from './config/economia.json';
 import type { Sistema } from './motor';
+import type { TipoAlerta } from './alertas';
 import type { Partida } from './partida';
 
 export const SECTORES = [
@@ -120,6 +131,35 @@ export interface EconomiaPais {
   meses: number;
   /** PIB de cada mes desde el 1 de enero de 2010, en dólares de 2010 (para los gráficos). */
   serie: number[];
+  /** Paro, en tanto por uno de la población activa (tarea f16-t1). */
+  paro: number;
+  /**
+   * Paro estructural: el que hay con la economía en su potencial. Empieza en el de 2010 y sube si
+   * el paro se queda por encima mucho tiempo (histéresis); solo lo bajan las decisiones.
+   */
+  paroEstructural: number;
+  /** Puntos que sube el paro por cada punto que el PIB está por debajo de su potencial (Okun). */
+  sensibilidadParo: number;
+  /**
+   * La brecha de producción que el mercado de trabajo ya ha asumido (con salarios más bajos se
+   * vuelve a contratar aunque el PIB no se recupere); el paro responde a lo que queda.
+   */
+  brechaAsumida: number;
+  /** Paro de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
+  serieParo: number[];
+  /** Inflación: subida anual de los precios al ritmo de este mes (tanto por uno; tarea f16-t2). */
+  inflacion: number;
+  /** La inflación que se espera (las expectativas), que sigue a la de verdad con retraso. */
+  inflacionEsperada: number;
+  /** Nivel de los precios (1 = enero de 2010): el PIB nominal es el real por él. */
+  nivelPrecios: number;
+  /** Inflación de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
+  serieInflacion: number[];
+  /**
+   * Alertas en que está ahora (tarea f16-t4; solo las del país del jugador). Sin ellas, aún no
+   * se ha mirado: la primera vez se anotan sin avisar.
+   */
+  alertas?: TipoAlerta[];
 }
 
 /** Lo que hace falta de los datos de un país (paises-2010.json, campo «datos»). */
@@ -197,6 +237,137 @@ export function desequilibrioInicial(
     // Como mucho, la mitad del gasto público.
     ajustePendiente: Math.min(Math.max(0, deficit - d.deficitSeguro) / 100, consumoPublico / 2),
     creditoPerdido: 0,
+  };
+}
+
+const p = config.paro;
+
+/**
+ * Sensibilidad del paro a la brecha de producción (ley de Okun; estimada): mayor en los países
+ * ricos (con menos economía informal que absorba a los parados) y en los que ya tenían mucho paro
+ * en 2010 (mercados laborales rígidos o con mucho empleo temporal).
+ */
+export function sensibilidadDelParo(nivel: NivelRenta, paro2010: number): number {
+  const rigidez = 1 + p.porPuntoRigido * Math.max(0, paro2010 * 100 - p.paroRigido);
+  return Math.min(p.sensibilidadMaxima, p.sensibilidad[nivel] * rigidez);
+}
+
+/** El paro de 2010 de un país (tanto por uno; 8 % si no hay dato). */
+function paroDe(datos: DatosEconomia): number {
+  return recortar((dato(datos, 'paro') ?? 8) / 100, [0, p.maximo]);
+}
+
+/** Lo que se redondea el paro en su serie mensual. */
+const redondearParo = (paro: number): number => Math.round(paro * 1e5) / 1e5;
+
+/** Brecha de producción: cuánto se aparta el PIB de lo que podría producir (tanto por uno). */
+export function brechaProduccion(economia: Pick<EconomiaPais, 'pib' | 'pibPotencial'>): number {
+  return economia.pibPotencial > 0 ? economia.pib / economia.pibPotencial - 1 : 0;
+}
+
+/** Paro por encima del estructural (tanto por uno; negativo si está por debajo). */
+export function paroCiclico(economia: Pick<EconomiaPais, 'paro' | 'paroEstructural'>): number {
+  return economia.paro - economia.paroEstructural;
+}
+
+/** Cuánto ha subido el paro en los últimos 12 meses (tanto por uno), o null si aún no hay un año. */
+export function subidaDelParo(economia: Pick<EconomiaPais, 'serieParo'>): number | null {
+  const { serieParo } = economia;
+  if (serieParo.length < 13) return null;
+  return serieParo[serieParo.length - 1]! - serieParo[serieParo.length - 13]!;
+}
+
+/** Puntos de confianza que quita el paro a los consumidores (por encima del estructural y si sube). */
+function golpeDelParo(economia: EconomiaPais): number {
+  const subida = Math.max(0, subidaDelParo(economia) ?? 0);
+  return (
+    p.confianzaPorPuntoCiclico * Math.max(0, paroCiclico(economia)) * 100 +
+    p.confianzaPorPuntoSubida * subida * 100
+  );
+}
+
+/**
+ * Un mes del paro (tarea f16-t1): tiende al estructural menos la brecha de producción por su
+ * sensibilidad (ley de Okun); si se queda por encima, parte se vuelve estructural (histéresis) y
+ * esos parados dejan de contar como trabajo para producir.
+ */
+function avanzarParo(economia: EconomiaPais): void {
+  const brecha = brechaProduccion(economia);
+  economia.brechaAsumida +=
+    (brecha - economia.brechaAsumida) * (1 - Math.pow(0.5, 1 / p.mesesAsumir));
+  const objetivo =
+    economia.paroEstructural - economia.sensibilidadParo * (brecha - economia.brechaAsumida);
+  const minimo = Math.max(p.minimo, economia.paroEstructural * p.minimoRelativo);
+  economia.paro = recortar(economia.paro + (objetivo - economia.paro) * p.ajusteMensual, [
+    minimo,
+    p.maximo,
+  ]);
+  const ciclico = paroCiclico(economia);
+  if (ciclico > 0) {
+    const antes = economia.paroEstructural;
+    economia.paroEstructural = Math.min(p.maximo, antes + ciclico * p.histeresisMensual);
+    const quedan = (1 - economia.paroEstructural) / (1 - antes);
+    for (const s of SECTORES) economia.sectores[s].trabajo *= quedan;
+  }
+  economia.serieParo.push(redondearParo(economia.paro));
+}
+
+const inf = config.inflacion;
+
+/** La inflación de 2010 de un país (tanto por uno; «sinDato» si no hay). */
+function inflacionDe(datos: DatosEconomia): number {
+  const valor = dato(datos, 'inflacion');
+  return recortar(valor === null ? inf.sinDato : valor / 100, [inf.minimo, inf.maximo]);
+}
+
+/** Lo que se redondea la inflación en su serie mensual. */
+const redondearInflacion = (inflacion: number): number => Math.round(inflacion * 1e5) / 1e5;
+
+/** Lo que queda de la inversión con una inflación alta (1 = nada perdido). */
+function inversionConInflacion(inflacion: number): number {
+  const exceso = Math.max(0, inflacion - inf.umbralInversion) * 100;
+  return 1 - Math.min(inf.inversionMaxima, inf.inversionPorPunto * exceso);
+}
+
+/** Lo que queda del consumo con deflación (1 = nada perdido). */
+function consumoConDeflacion(inflacion: number): number {
+  return 1 - inf.consumoPorPuntoDeflacion * Math.max(0, -inflacion) * 100;
+}
+
+/** Puntos de confianza que quita a las empresas una inflación alta. */
+function golpeDeLaInflacion(inflacion: number): number {
+  return inf.confianzaEmpresasPorPunto * Math.max(0, inflacion - inf.umbralInversion) * 100;
+}
+
+/** PIB nominal: el real a los precios de ahora (dólares corrientes; tarea f16-t2). */
+export function pibNominal(economia: Pick<EconomiaPais, 'pib' | 'nivelPrecios'>): number {
+  return economia.pib * economia.nivelPrecios;
+}
+
+/**
+ * Un mes de la inflación (tarea f16-t2): la esperada menos la pendiente × el paro por encima del
+ * estructural (curva de Phillips); la esperada la sigue con retraso, sin ancla.
+ */
+function avanzarInflacion(economia: EconomiaPais): void {
+  economia.inflacion = recortar(
+    economia.inflacionEsperada - inf.pendiente * paroCiclico(economia),
+    [inf.minimo, inf.maximo],
+  );
+  const seguir = 1 - Math.pow(0.5, 1 / inf.mesesExpectativas);
+  economia.inflacionEsperada += (economia.inflacion - economia.inflacionEsperada) * seguir;
+  economia.nivelPrecios *= Math.pow(1 + economia.inflacion, 1 / 12);
+  economia.serieInflacion.push(redondearInflacion(economia.inflacion));
+}
+
+/**
+ * La demanda de 2010 ya trae el daño de la inflación de ese año: la de base es la que habría sin él
+ * (con la inflación de 2010, la demanda es la de los datos; tarea f16-t2).
+ */
+function sinElDanoDeLaInflacion(base: DemandaEconomia, inflacion: number): DemandaEconomia {
+  return {
+    ...base,
+    consumo: base.consumo / consumoConDeflacion(inflacion),
+    inversion: base.inversion / inversionConInflacion(inflacion),
   };
 }
 
@@ -283,7 +454,7 @@ export function economiaInicial(
   );
   // Trabajo: población activa sin parados, repartida según la productividad de cada sector.
   const poblacion = dato(datos, 'poblacion') ?? pib / 10_000;
-  const paro = recortar((dato(datos, 'paro') ?? 8) / 100, [0, 0.6]);
+  const paro = paroDe(datos);
   const ocupados = poblacion * config.tasaActividad * (1 - paro);
   const empleoRelativo = SECTORES.map((s, i) => pesos[i]! / config.productividadRelativa[s]);
   const sumaEmpleo = empleoRelativo.reduce((a, b) => a + b, 0);
@@ -307,7 +478,7 @@ export function economiaInicial(
     pib,
     confianzaConsumidores: 100,
     confianzaEmpresas: 100,
-    demandaBase: { ...demanda },
+    demandaBase: sinElDanoDeLaInflacion(demanda, inflacionDe(datos)),
     demandaReferencia: { ...demanda },
     desequilibrio: desequilibrioInicial(datos, demanda.consumoPublico),
     brechaDemanda: 0,
@@ -319,6 +490,15 @@ export function economiaInicial(
     impulsoInicial: 0,
     meses: 0,
     serie: [Math.round(pib)],
+    inflacion: inflacionDe(datos),
+    inflacionEsperada: inflacionDe(datos),
+    nivelPrecios: 1,
+    serieInflacion: [redondearInflacion(inflacionDe(datos))],
+    paro,
+    paroEstructural: paro,
+    sensibilidadParo: sensibilidadDelParo(nivel, paro),
+    brechaAsumida: 0,
+    serieParo: [redondearParo(paro)],
   };
   // Lo que creció de verdad en 2010 por encima (o por debajo) de su potencial.
   const crecimiento2010 = recortar((dato(datos, 'crecimientoPib') ?? 3) / 100, [
@@ -329,10 +509,18 @@ export function economiaInicial(
   // La confianza de partida (estimada: no hay datos de todos los países), la que corresponde a
   // lo que creció en 2010 frente a su potencial; y con ella, el consumo y la inversión.
   economia.confianzaConsumidores = objetivoConfianza(economia.impulsoInicial, 'consumidores');
-  economia.confianzaEmpresas = objetivoConfianza(economia.impulsoInicial, 'empresas');
+  economia.confianzaEmpresas = Math.max(
+    confianza.minimo,
+    objetivoConfianza(economia.impulsoInicial, 'empresas') - golpeDeLaInflacion(economia.inflacion),
+  );
   economia.demanda = demandaConConfianza(economia);
   // El PIB de 2010 ya es el de esa demanda: la brecha empieza ahí (sin salto el primer mes).
   economia.brechaDemanda = brechaDe(economia);
+  // Y lo que podría producir es el PIB sin esa brecha: con más confianza que la normal, la
+  // economía de 2010 iba por encima de su potencial (tarea f16-t1).
+  const sinBrecha = 1 / (1 + economia.brechaDemanda);
+  for (const s of SECTORES) economia.sectores[s].productividad *= sinBrecha;
+  economia.pibPotencial = pib * sinBrecha;
   return economia;
 }
 
@@ -367,12 +555,20 @@ export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
   const base = economia.demandaBase;
   // Sin crédito se invierte menos (ajuste f15-a1).
   const inversionBase = Math.max(0, base.inversion - economia.desequilibrio.creditoPerdido);
+  // Los parados (por encima del estructural) gastan menos (tarea f16-t1); con deflación se
+  // espera a que bajen los precios, y con mucha inflación se invierte menos (tarea f16-t2).
+  const conParo = 1 - (p.consumoPorPunto * paroCiclico(economia) * 100) / 100;
   return {
     ...base,
     consumo:
-      base.consumo * (1 + (confianza.efectoConsumo * (economia.confianzaConsumidores - 100)) / 100),
+      base.consumo *
+      conParo *
+      consumoConDeflacion(economia.inflacion) *
+      (1 + (confianza.efectoConsumo * (economia.confianzaConsumidores - 100)) / 100),
     inversion:
-      inversionBase * (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
+      inversionBase *
+      inversionConInflacion(economia.inflacion) *
+      (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
   };
 }
 
@@ -430,10 +626,15 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   // Lo que queda del capital al cabo de un mes tras su desgaste.
   const desgaste = Math.pow(1 - config.depreciacion, 1 / 12);
   const crecimientoTrabajo = 1 + mensual(config.crecimientoPoblacion[nivelRenta]);
+  // Lo que queda del impulso de 2010. Si crecía por encima de su potencial (rebote tras 2009 o
+  // auge), se toma como capacidad nueva; si crecía por debajo, estaba en recesión: el PIB se queda
+  // por debajo de lo que podría producir (brecha de producción, con más paro; tarea f16-t1).
+  const impulso = mensual(impulsoEnMes(economia, economia.meses));
   for (const s of SECTORES) {
     const sector = sectores[s];
     if (sector.capital <= 0 || sector.trabajo <= 0) continue;
-    sector.productividad *= 1 + mensual(crecimientoProductividad(economia, s));
+    sector.productividad *=
+      (1 + mensual(crecimientoProductividad(economia, s))) * (1 + Math.max(0, impulso));
     sector.trabajo *= crecimientoTrabajo;
     sector.capital = sector.capital * desgaste + (inversionMes * sector.capital) / capitalTotal;
   }
@@ -441,14 +642,13 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   const potencialAhora = potencial.reduce((a, b) => a + b, 0);
   if (potencialAntes <= 0 || potencialAhora <= 0) return;
   // El PIB crece como el potencial más lo que queda del impulso de 2010…
-  const impulso = mensual(impulsoEnMes(economia, economia.meses));
   const pibAntes = economia.pib;
-  economia.pib *= (potencialAhora / potencialAntes) * (1 + impulso);
+  economia.pib *= (potencialAhora / potencialAntes) * (1 + Math.min(0, impulso));
   economia.pibPotencial = potencialAhora;
   // … el ajuste forzoso de los desequilibrios de 2010 (recortes y crédito cerrado) …
   const enAjuste = ajusteForzoso(economia, dureza);
   // … y la confianza se mueve hacia la que corresponde a ese crecimiento frente al potencial,
-  // más baja mientras dura el ajuste.
+  // más baja mientras dura el ajuste (y, la de los consumidores, con el paro).
   const crecimientoMes = Math.pow(economia.pib / pibAntes, 12) - 1;
   const diferencia = crecimientoMes - crecimientoPotencial(economia);
   const acercar = (actual: number, objetivo: number): number =>
@@ -457,14 +657,18 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
     economia.confianzaConsumidores,
     Math.max(
       confianza.minimo,
-      objetivoConfianza(diferencia, 'consumidores') - d.confianzaPorPuntoConsumidores * enAjuste,
+      objetivoConfianza(diferencia, 'consumidores') -
+        d.confianzaPorPuntoConsumidores * enAjuste -
+        golpeDelParo(economia),
     ),
   );
   economia.confianzaEmpresas = acercar(
     economia.confianzaEmpresas,
     Math.max(
       confianza.minimo,
-      objetivoConfianza(diferencia, 'empresas') - d.confianzaPorPuntoEmpresas * enAjuste,
+      objetivoConfianza(diferencia, 'empresas') -
+        d.confianzaPorPuntoEmpresas * enAjuste -
+        golpeDeLaInflacion(economia.inflacion),
     ),
   );
   // Con la confianza cambian el consumo y la inversión; la demanda mueve el PIB.
@@ -486,6 +690,8 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   });
   economia.meses += 1;
   economia.serie.push(Math.round(economia.pib));
+  avanzarParo(economia);
+  avanzarInflacion(economia);
 }
 
 /** Crecimiento del PIB en los últimos 12 meses (tanto por uno), o null si aún no hay un año. */
@@ -523,15 +729,44 @@ export function completarEconomia(
 ): Partida {
   for (const [id, estado] of Object.entries(partida.paises)) {
     const pais = paises[id];
-    if (estado.economia && !estado.economia.desequilibrio && pais) {
-      // Guardada con la v0.16.0 (formato 3): le faltan los desequilibrios (ajuste f15-a1).
-      completarAjuste(estado.economia, pais.datos);
+    if (estado.economia === undefined) {
+      estado.economia = pais ? economiaInicial(pais.datos, pais.nivelRenta) : null;
       continue;
     }
-    if (estado.economia !== undefined) continue;
-    estado.economia = pais ? economiaInicial(pais.datos, pais.nivelRenta) : null;
+    if (!estado.economia || !pais) continue;
+    // (En orden: los desequilibrios toman la demanda de base de los datos, antes de que la
+    // inflación le quite su daño.)
+    // Guardada con la v0.16.0 (formato 3): le faltan los desequilibrios (ajuste f15-a1).
+    if (!estado.economia.desequilibrio) completarAjuste(estado.economia, pais.datos);
+    // Guardada con la v0.16.1 o antes (formato 4): le falta el paro (tarea f16-t1)…
+    if (estado.economia.paro === undefined) completarParo(estado.economia, pais.datos);
+    // … y la inflación (tarea f16-t2).
+    if (estado.economia.inflacion === undefined) completarInflacion(estado.economia, pais.datos);
   }
   return partida;
+}
+
+/** Lo que la tarea f16-t1 añadió a la economía: el paro, desde el de 2010. */
+function completarParo(economia: EconomiaPais, datos: DatosEconomia): void {
+  const paro = paroDe(datos);
+  economia.paro = paro;
+  economia.paroEstructural = paro;
+  economia.sensibilidadParo = sensibilidadDelParo(economia.nivelRenta, paro);
+  // Sin salto: la brecha de ahora se toma como asumida.
+  economia.brechaAsumida = brechaProduccion(economia);
+  // (No se sabe cómo fue antes: los meses ya jugados se rellenan con el de 2010.)
+  economia.serieParo = economia.serie.map(() => redondearParo(paro));
+}
+
+/** Lo que la tarea f16-t2 añadió a la economía: la inflación, desde la de 2010. */
+function completarInflacion(economia: EconomiaPais, datos: DatosEconomia): void {
+  const inflacion = inflacionDe(datos);
+  economia.inflacion = inflacion;
+  economia.inflacionEsperada = inflacion;
+  // (Los meses ya jugados, con la de 2010.)
+  economia.nivelPrecios = Math.pow(1 + inflacion, economia.meses / 12);
+  economia.serieInflacion = economia.serie.map(() => redondearInflacion(inflacion));
+  economia.demandaBase = sinElDanoDeLaInflacion(economia.demandaBase, inflacion);
 }
 
 /** Lo que el ajuste f15-a1 añadió a la economía de las partidas de la v0.16.0. */
@@ -550,12 +785,16 @@ function completarAjuste(economia: EconomiaPais, datos: DatosEconomia): void {
 }
 
 /**
- * ¿Le falta algo de la economía a algún país? (Partidas de antes de la Fase 15, sin economía, o
- * de la v0.16.0, sin los desequilibrios del ajuste f15-a1.)
+ * ¿Le falta algo de la economía a algún país? (Partidas de antes de la Fase 15, sin economía; de
+ * la v0.16.0, sin los desequilibrios del ajuste f15-a1; o de la v0.16.1, sin el paro.)
  */
 export function faltaEconomia(partida: Pick<Partida, 'paises'>): boolean {
   return Object.values(partida.paises).some(
     (estado) =>
-      estado.economia === undefined || (estado.economia !== null && !estado.economia.desequilibrio),
+      estado.economia === undefined ||
+      (estado.economia !== null &&
+        (!estado.economia.desequilibrio ||
+          estado.economia.paro === undefined ||
+          estado.economia.inflacion === undefined)),
   );
 }

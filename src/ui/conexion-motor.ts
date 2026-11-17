@@ -6,6 +6,7 @@
  */
 import { arrancarBucle } from '../sim/bucle';
 import { crearMotor, type MensajeMotor, type OrdenMotor } from '../sim/motor';
+import { sistemaAlertas } from '../sim/alertas';
 import { sistemaEconomia } from '../sim/economia';
 
 export interface ConexionMotor {
@@ -58,7 +59,7 @@ export function conectarMotor(opciones: OpcionesConexion = {}): ConexionMotor {
     },
     enOtroHilo: false,
   };
-  const bucle = arrancarBucle(crearMotor({ sistemas: [sistemaEconomia] }), {
+  const bucle = arrancarBucle(crearMotor({ sistemas: [sistemaEconomia, sistemaAlertas] }), {
     // Como con un worker, el mensaje llega después, no en mitad de la orden.
     enviar: (mensaje) =>
       queueMicrotask(() => {

@@ -5,6 +5,7 @@
  */
 import { arrancarBucle } from './bucle';
 import { crearMotor, type MensajeMotor, type OrdenMotor } from './motor';
+import { sistemaAlertas } from './alertas';
 import { sistemaEconomia } from './economia';
 
 /** Lo que se usa del ámbito del worker (sin depender de los tipos de la ventana). */
@@ -13,8 +14,8 @@ const ambito = self as unknown as {
   onmessage: ((evento: MessageEvent<OrdenMotor>) => void) | null;
 };
 
-// Los sistemas de la simulación (tarea f15-t2: la economía).
-const sistemas = [sistemaEconomia];
+// Los sistemas de la simulación (tarea f15-t2: la economía; f16-t4: sus alertas, después).
+const sistemas = [sistemaEconomia, sistemaAlertas];
 const bucle = arrancarBucle(crearMotor({ ahora: () => performance.now(), sistemas }), {
   enviar: (mensaje) => ambito.postMessage(mensaje),
   ahora: () => performance.now(),
