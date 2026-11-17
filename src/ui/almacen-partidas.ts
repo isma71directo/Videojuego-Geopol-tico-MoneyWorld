@@ -6,7 +6,8 @@
  *   archivos (la partida entera). Se escriben juntos en una sola transacción.
  * - Al guardar un automático mensual, se borran los que sobran (se conservan los tres últimos).
  * - Se pide al navegador que no borre los datos por falta de espacio («la partida no se pierde
- *   nunca»); si no deja, se sigue igual.
+ *   nunca»), la primera vez que el jugador guarda a mano y no al abrir el juego, porque Firefox
+ *   lo pregunta con un aviso (ajuste f14-a2); si no deja, se sigue igual.
  * - Si el navegador no tiene IndexedDB, se guarda en memoria mientras dure la página.
  */
 import {
@@ -145,13 +146,20 @@ export function almacenPartidas(): AlmacenPartidas {
   if (!almacenDelJuego) {
     almacenDelJuego =
       typeof indexedDB === 'undefined' ? almacenEnMemoria() : almacenIndexedDB(indexedDB);
-    pedirQueNoSeBorre();
   }
   return almacenDelJuego;
 }
 
-/** Pide al navegador que no borre las partidas cuando le falte espacio (si deja). */
+/** ¿Ya se ha pedido en esta visita que no se borren las partidas? */
+let persistenciaPedida = false;
+
+/**
+ * Pide al navegador que no borre las partidas cuando le falte espacio (si deja), una sola vez por
+ * visita: al guardar a mano, que es una acción del jugador (ajuste f14-a2).
+ */
 function pedirQueNoSeBorre(): void {
+  if (persistenciaPedida) return;
+  persistenciaPedida = true;
   try {
     void navigator.storage?.persist?.().catch(() => undefined);
   } catch {
@@ -170,8 +178,19 @@ export async function guardarPartida(
   version: string,
   ahora: Date = new Date(),
 ): Promise<ResumenGuardado> {
+  if (destino.tipo === 'manual' && destino.nombre === undefined) {
+    // Sin nombre nuevo (Ctrl+S): la ranura conserva el suyo si es de esta misma partida.
+    const { ranura } = destino;
+    const anterior = (await almacen.listar()).find(
+      (r) => r.tipo === 'manual' && r.ranura === ranura,
+    );
+    if (anterior?.nombre && anterior.partidaId === partida.id) {
+      destino = { ...destino, nombre: anterior.nombre };
+    }
+  }
   const { resumen, archivo } = empaquetar(partida, destino, version, ahora);
   await almacen.escribir(resumen, archivo);
+  if (destino.tipo === 'manual' && almacen.persistente) pedirQueNoSeBorre();
   if (destino.tipo === 'automatico') {
     for (const id of automaticosQueSobran(await almacen.listar())) await almacen.borrar(id);
   }

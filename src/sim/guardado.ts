@@ -14,6 +14,8 @@ import { FORMATO_PARTIDA, idDePartida, type Partida } from './partida';
 export const JUEGO = 'geopolitica-2010';
 export const RANURAS_MANUALES: number = config.ranurasManuales;
 export const AUTOMATICOS_MENSUALES: number = config.automaticosMensuales;
+/** Largo máximo del nombre de un guardado manual (ajuste f14-a1). */
+export const LONGITUD_NOMBRE: number = config.longitudNombre;
 
 export type TipoGuardado = 'manual' | 'automatico' | 'anual';
 
@@ -43,11 +45,30 @@ export interface ResumenGuardado {
   guardadoEn: string;
   version: string;
   formato: number;
+  /** Nombre que le ha puesto el jugador (solo los manuales y si quiere; ajuste f14-a1). */
+  nombre?: string;
 }
 
-/** Destino de un guardado: una ranura manual o uno automático. */
+/**
+ * Destino de un guardado: una ranura manual (con su nombre, si lo tiene) o uno automático. Sin
+ * `nombre`, la ranura conserva el que tenía si es de la misma partida (lo hace el almacén).
+ */
 export type DestinoGuardado =
-  { tipo: 'manual'; ranura: number } | { tipo: 'automatico' } | { tipo: 'anual' };
+  { tipo: 'manual'; ranura: number; nombre?: string } | { tipo: 'automatico' } | { tipo: 'anual' };
+
+/**
+ * El nombre tal y como se guarda: sin espacios de más ni caracteres de control, y como mucho
+ * LONGITUD_NOMBRE caracteres; vacío, sin nombre (undefined).
+ */
+export function limpiarNombre(texto: string | undefined): string | undefined {
+  if (texto === undefined) return undefined;
+  // Los caracteres de control (saltos de línea, tabuladores…) cuentan como un espacio.
+  const sinControl = [...texto]
+    .map((c) => (c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127 ? ' ' : c))
+    .join('');
+  const limpio = sinControl.replace(/\s+/g, ' ').trim();
+  return limpio === '' ? undefined : [...limpio].slice(0, LONGITUD_NOMBRE).join('').trim();
+}
 
 /** Por qué no se puede cargar un guardado. */
 export type MotivoError = 'noEsPartida' | 'formatoFuturo' | 'danado';
@@ -101,6 +122,7 @@ export function empaquetar(
 ): { resumen: ResumenGuardado; archivo: ArchivoPartida } {
   const archivo = archivoDe(partida, version, ahora);
   const { guardadoEn } = archivo;
+  const nombre = destino.tipo === 'manual' ? limpiarNombre(destino.nombre) : undefined;
   return {
     archivo,
     resumen: {
@@ -114,6 +136,7 @@ export function empaquetar(
       guardadoEn,
       version,
       formato: partida.formato,
+      ...(nombre ? { nombre } : {}),
     },
   };
 }

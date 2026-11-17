@@ -325,7 +325,8 @@ export function crearPantallaInicio(opciones: OpcionesInicio = {}): PantallaInic
     }
     if (masNueva) {
       const conNombres = await nombresDePaises();
-      resumenContinuar.textContent = textoPartida(masNueva, (id) => conNombres.get(id) ?? id);
+      const partida = textoPartida(masNueva, (id) => conNombres.get(id) ?? id);
+      resumenContinuar.textContent = masNueva.nombre ? `${masNueva.nombre} · ${partida}` : partida;
     }
     continuar.hidden = masNueva === null;
     // Con una partida que seguir, «Continuar» es el botón principal.

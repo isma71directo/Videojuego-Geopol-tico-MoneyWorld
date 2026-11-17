@@ -278,7 +278,7 @@ function guardarCargar(conjunto: ConjuntoPaises): HTMLElement {
       }),
     );
   const guardados = [
-    ejemplo('manual', 1, 'ESP', '2011-03-14', 9),
+    { ...ejemplo('manual', 1, 'ESP', '2011-03-14', 9), nombre: t('galeria.guardado.nombre') },
     ejemplo('automatico', null, 'JPN', '2012-06-01', 0),
     ejemplo('anual', null, 'BRA', '2013-01-01', 0),
   ];
