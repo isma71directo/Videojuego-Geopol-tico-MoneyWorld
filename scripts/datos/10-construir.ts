@@ -32,6 +32,7 @@ const entradas: Entradas = {
     bm: archivo('banco-mundial'),
     fmi: archivo('fmi'),
     fiscal: archivo('fmi-fiscal'),
+    onu: archivo('onu-cuentas'),
     energia: archivo('owid-energia'),
     emisiones: archivo('owid-emisiones'),
     recursos: archivo('recursos'),
@@ -63,6 +64,7 @@ escribirTexto(
     notas: [
       ...incidencias,
       ...(entradas.archivos.recursos.notas ?? []),
+      ...(entradas.archivos.onu.notas ?? []),
       ...(entradas.archivos.superficie.notas ?? []),
     ],
     // Las banderas se ven en GitHub al abrir el informe (las descarga 07-banderas.ts).

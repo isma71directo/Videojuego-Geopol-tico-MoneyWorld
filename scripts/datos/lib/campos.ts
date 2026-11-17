@@ -6,13 +6,15 @@
 import type { GrupoCampo } from '../../../src/datos/paises.ts';
 
 /** Archivo intermedio de fuentes/datos/ del que sale un indicador. */
-export type Archivo = 'bm' | 'fmi' | 'fiscal' | 'energia' | 'emisiones' | 'recursos' | 'superficie';
+export type Archivo =
+  'bm' | 'fmi' | 'fiscal' | 'onu' | 'energia' | 'emisiones' | 'recursos' | 'superficie';
 
 /** Sigla de cada archivo en el campo «origen». */
 export const SIGLA: Record<Archivo, string> = {
   bm: 'BM',
   fmi: 'FMI',
   fiscal: 'FMI',
+  onu: 'ONU',
   energia: 'OWID',
   emisiones: 'OWID',
   recursos: 'OWID',
@@ -59,6 +61,42 @@ const PORCENTAJE: [number, number] = [0, 100];
 const ENERGIA: [number, number] = [0, 6000];
 
 const bm = (indicador: string) => ({ archivo: 'bm' as const, indicador });
+const onu = (indicador: string) => ({ archivo: 'onu' as const, indicador });
+
+/** Una de las siete ramas de actividad de la ONU (tarea f15-t1), en % del valor añadido. */
+function rama(clave: string, nombre: string, habitual: [number, number]): Campo {
+  return {
+    clave,
+    nombre,
+    unidad: '% del valor añadido',
+    grupo: 'economia',
+    fuentes: [onu(clave)],
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    limites: PORCENTAJE,
+    habitual,
+  };
+}
+
+/** Una parte de la demanda (tarea f15-t1), en % del PIB. */
+function demanda(
+  clave: string,
+  nombre: string,
+  limites: [number, number],
+  habitual: [number, number],
+): Campo {
+  return {
+    clave,
+    nombre,
+    unidad: '% del PIB',
+    grupo: 'economia',
+    fuentes: [onu(clave)],
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    limites,
+    habitual,
+  };
+}
 const fmi = (indicador: string, factor?: number) => ({
   archivo: 'fmi' as const,
   indicador,
@@ -230,6 +268,20 @@ export const CAMPOS: Campo[] = [
     limites: [-300, 300],
     habitual: [-40, 40],
   },
+  // ── Economía por ramas y demanda (tarea f15-t1, decisión del jugador: siete sectores) ──
+  rama('vabAgricultura', 'Agricultura, ganadería y pesca', [0, 60]),
+  rama('vabMineriaEnergia', 'Minería y energía', [0, 70]),
+  rama('vabManufactura', 'Industria manufacturera', [0, 45]),
+  rama('vabConstruccion', 'Construcción', [0, 25]),
+  rama('vabComercio', 'Comercio, hostelería y turismo', [0, 40]),
+  rama('vabTransporte', 'Transporte y comunicaciones', [0, 30]),
+  rama('vabOtrosServicios', 'Otros servicios', [5, 85]),
+  demanda('consumoHogaresPib', 'Consumo de los hogares', [0, 250], [20, 110]),
+  // Hasta el 150 %: Timor Oriental (2010) gasta el fondo del petróleo sobre un PIB sin petróleo.
+  demanda('consumoPublicoPib', 'Consumo público', [0, 150], [3, 40]),
+  demanda('inversionPib', 'Inversión (formación bruta de capital)', [-20, 150], [5, 60]),
+  demanda('exportacionesPib', 'Exportaciones de bienes y servicios', [0, 400], [2, 150]),
+  demanda('importacionesPib', 'Importaciones de bienes y servicios', [0, 400], [5, 150]),
   // ── Estado ──
   {
     clave: 'deudaPib',

@@ -1,17 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.15.1",
-  "actualizado": "2026-11-17T11:29:01Z",
+  "actualizado": "2026-11-17T12:35:47Z",
   "faseActiva": "fase-15",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Versión 0.15.1 publicada (PR n.º 33, pendiente de fusionar) con los ajustes f14-a1 (nombre de los guardados) y f14-a2 (almacenamiento persistente al guardar). Plan de la Fase 15 aprobado por el jugador: siete sectores con datos reales de la ONU (comprobado que se pueden descargar), sin azar en la economía (cambia por las decisiones), arranque con el crecimiento real de 2010 y evolución en la ficha y en Economía › Economía; la fase pasa a 4 tareas.",
-    "siguientePaso": "En cuanto el jugador fusione el PR n.º 33: f15-t1, script de datos económicos de 2010 por sector (ONU y Banco Mundial). No se sube nada de la Fase 15 a la rama antes, para no publicar media fase con la v0.15.1.",
-    "pendienteDelJugador": [
-      "Probar la v0.15.1: en la partida, Menú › Guardar en…, escribir un nombre y elegir una ranura; el nombre sale en la ranura, en Cargar partida y en Continuar; Ctrl+S lo conserva",
-      "Fusionar el PR de la v0.15.1",
-      "Fusionar el PR n.º 33 para empezar la Fase 15"
-    ]
+    "resumen": "El jugador fusionó la v0.15.1 y empieza la Fase 15. f15-t1 hecha: script 25-onu-cuentas.ts con las cuentas nacionales de la ONU (UNSD, AMA) de 2008–2010: peso de las siete ramas en el valor añadido (agricultura; minería y energía; manufactura; construcción; comercio, hostelería y turismo; transporte y comunicaciones; otros servicios) y reparto de la demanda en el PIB (consumo de los hogares, consumo público, inversión, exportaciones e importaciones). Los países se cruzan con la tabla oficial M49 de la ONU; Tanzania suma sus dos partes y Sudán y las Antillas Neerlandesas se toman por partes. 206 países con datos reales; 17 territorios, entre ellos Taiwán (la ONU no lo publica), van estimados y marcados. Ningún dato anterior cambia.",
+    "siguientePaso": "f15-t2: estado económico de cada país en la partida (formato 3 con migración) y modelo mensual de producción por sector y demanda, sin azar.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -970,15 +966,15 @@
         {
           "id": "f15-t1",
           "titulo": "Datos de 2010 por país (script con fuente ONU y Banco Mundial): valor añadido de siete ramas, consumo de los hogares, gasto público, inversión, exportaciones e importaciones; lo que falte, estimado y marcado",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f15-t2",
           "titulo": "Estado económico de cada país en la partida (formato 3 con migración) y modelo mensual de producción por sector y demanda, sin azar (decisión del jugador), que arranca con el crecimiento real de 2010 y converge al potencial",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
