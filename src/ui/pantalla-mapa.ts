@@ -25,6 +25,12 @@ import { crearBarraSecciones, ponerContenido, refrescarElemento } from './seccio
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
 import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from './aviso-suceso';
+import {
+  cerrarAlertasEconomicas,
+  mostrarAlertaEconomica,
+  SONIDO_ALERTA,
+  traducirSuceso,
+} from './alerta-economica';
 import type { Suceso } from '../sim/sucesos';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
@@ -451,14 +457,24 @@ export function abrirPantallaMapa(
     if (modoPrueba() && empieza) programarPrueba(motor, partida);
   }
   /** Un suceso: si ha parado la partida, se avisa en una ventana en el centro (tarea f13-t3). */
-  function atenderSuceso(suceso: Suceso, pausado: boolean): void {
-    if (!pausado) return;
+  function atenderSuceso(sucesoMotor: Suceso, pausado: boolean): void {
+    // Las alertas económicas (tarea f16-t4) llevan su título, su texto y su sonido.
+    const suceso = traducirSuceso(sucesoMotor);
+    const alerta = suceso.alerta;
+    if (!pausado) {
+      // Las que no paran, en la tarjeta de arriba a la derecha.
+      if (alerta) {
+        reproducir(SONIDO_ALERTA[alerta.tipo]);
+        mostrarAlertaEconomica(suceso);
+      }
+      return;
+    }
     velocidadMotor = 0;
     tiempo?.reflejarVelocidad(0);
     barraPartida?.marcarPausa(true);
     atenuarMusica(true);
-    // La campanada del aviso (tarea f13-t4) en lugar del sonido de la pausa.
-    reproducir('aviso');
+    // La campanada del aviso (tarea f13-t4), o el sonido de la alerta, en lugar del de la pausa.
+    reproducir(alerta ? SONIDO_ALERTA[alerta.tipo] : 'aviso');
     mostrarAvisoSuceso({
       suceso,
       // «Seguir»: a la velocidad que llevaba (suena como al quitar la pausa).
@@ -986,6 +1002,7 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alTeclearTiempo);
     tiempo?.destruir();
     if (avisoAbierto()) cerrarAviso();
+    cerrarAlertasEconomicas();
     document.removeEventListener('keydown', alTeclearGuardar, true);
     dejarDeEscucharAjustes();
     indicador.destruir();

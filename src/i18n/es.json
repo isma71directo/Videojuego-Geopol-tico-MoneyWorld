@@ -1171,6 +1171,30 @@
         "otro": "No se ha podido leer la partida guardada."
       }
     },
+    "alertas": {
+      "etiqueta": "Alerta económica",
+      "cerrar": "Cerrar la alerta",
+      "recesion": {
+        "titulo": "Recesión",
+        "texto": "El PIB lleva dos trimestres seguidos cayendo ({valor} en seis meses). Con él caen el empleo y la confianza; si no se corrige, la caída se alimenta sola."
+      },
+      "paro": {
+        "titulo": "El paro se dispara",
+        "texto": "El paro ha subido más de 2 puntos en un año y ya está en el {valor}. Los parados gastan menos y, si se queda alto, parte se volverá estructural."
+      },
+      "inflacion": {
+        "titulo": "Inflación alta",
+        "texto": "Los precios suben un {valor} al año. Por encima del 10 %, la incertidumbre resta inversión y confianza a las empresas."
+      },
+      "inflacionGrave": {
+        "titulo": "Inflación desbocada",
+        "texto": "Los precios suben un {valor} al año. La inversión cae con fuerza y la confianza de las empresas se hunde. (El banco central, que puede frenarla, llega en la Fase 20.)"
+      },
+      "deflacion": {
+        "titulo": "Deflación",
+        "texto": "Los precios bajan ({valor} al año): se espera a que bajen más y se consume menos, lo que frena la economía."
+      }
+    },
     "sucesos": {
       "aviso": "Pausa automática",
       "seguir": "Seguir",
@@ -1388,7 +1412,9 @@
       "empresas": "Empresas",
       "construccion": "Construcción",
       "servicios": "Servicios",
-      "potencial": "Crecimiento potencial"
+      "potencial": "Crecimiento potencial",
+      "recesion": "Recesión",
+      "deflacion": "Deflación"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1427,7 +1453,12 @@
       "seguir": "Seguir el tiempo",
       "velocidad": "Cambiar la velocidad del tiempo",
       "aviso": "Aviso de un suceso importante",
-      "guardado": "Partida guardada"
+      "guardado": "Partida guardada",
+      "alertaRecesion": "Alerta: recesión",
+      "alertaParo": "Alerta: el paro se dispara",
+      "alertaInflacion": "Alerta: inflación alta",
+      "alertaInflacionGrave": "Alerta: inflación desbocada",
+      "alertaDeflacion": "Alerta: deflación"
     },
     "economia": {
       "titulo": "Economía de un país",
@@ -1452,6 +1483,10 @@
       "nada": "Aún no has abierto el aviso.",
       "seguido": "Has elegido «Seguir»: la partida volvería a la velocidad que llevaba.",
       "enPausa": "Has elegido «Quedarse en pausa»: la partida seguiría parada."
+    },
+    "alertas": {
+      "titulo": "Alertas económicas",
+      "nota": "Las alertas del país del jugador, cada una con su icono y su sonido. Salen en una tarjeta arriba a la derecha que se va sola; las graves (recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. Pulsa para ver y oír cada una con un dato de ejemplo."
     },
     "musica": {
       "titulo": "Música ambiental",

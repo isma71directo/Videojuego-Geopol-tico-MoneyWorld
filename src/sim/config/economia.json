@@ -141,5 +141,16 @@
     "inversionMaxima": 0.5,
     "confianzaEmpresasPorPunto": 1,
     "consumoPorPuntoDeflacion": 0.01
+  },
+  "$comentarioAlertas": "Alertas económicas del país del jugador (tarea f16-t4). Recesión: dos trimestres seguidos cayendo (sale cuando el último ya crece). Inflación alta: por encima de «inflacion» (sale por debajo de «inflacionSalida»); grave, por encima de «inflacionGrave» (sale por debajo de «inflacionGraveSalida»). Deflación: por debajo de «deflacion» (sale por encima de «deflacionSalida»). Paro que se dispara: sube «subidaParo» o más en un año (sale cuando sube menos de «subidaParoSalida»). Todo en tanto por uno.",
+  "alertas": {
+    "inflacion": 0.1,
+    "inflacionSalida": 0.09,
+    "inflacionGrave": 0.2,
+    "inflacionGraveSalida": 0.18,
+    "deflacion": 0,
+    "deflacionSalida": 0.005,
+    "subidaParo": 0.02,
+    "subidaParoSalida": 0.01
   }
 }

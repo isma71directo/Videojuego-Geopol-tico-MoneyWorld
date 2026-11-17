@@ -244,6 +244,11 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 **En pantalla (tarea f16-t3):** la pestaña Economía de la ficha de cada país y Economía › Economía muestran el PIB nominal, el paro (con lo que ha cambiado en 12 meses; en rojo si sube) y la inflación (en rojo por encima del 10 % o en deflación), y un segundo gráfico con el paro y la inflación desde enero de 2010. **Test de credibilidad:** en 5 años sin intervención, los 20 mayores países crecen entre −10 % y +15 % al año, con inflación entre −5 % y +30 %. Fuera de ese rango solo quedan Macao y Zimbabue, y solo el primer año, porque arrancan con su crecimiento real de 2010 (25 % y 19,7 %).
 
+**Alertas económicas (tarea f16-t4; umbrales en `src/sim/config/economia.json`, «alertas»):**
+- Cada mes se mira la economía del país del jugador. Las alertas son cuatro: recesión (dos trimestres seguidos cayendo), paro que se dispara (2 puntos o más en un año), inflación alta (más del 10 %; desbocada si pasa del 20 %) y deflación. Cada una tiene un margen para salir de ella, así que no se repite cada mes. Lo que ya pasaba al empezar la partida, o al cargarla, no salta: se ve en la ficha.
+- Llegan como sucesos del motor una hora después del cambio de mes. Las graves (recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. Las demás salen en una tarjeta arriba a la derecha que se va sola a los 9 segundos (como mucho, tres a la vez).
+- Cada alerta tiene su sonido sintetizado: notas graves que bajan (recesión), golpes sordos (paro), notas que suben (inflación; más rápidas y tensas si se desboca) y un tono que se desinfla (deflación). También tiene su icono; los de recesión y deflación son nuevos. Hay una sección para verlas y oírlas en la galería.
+
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
 ### 6.2 Presupuesto y deuda

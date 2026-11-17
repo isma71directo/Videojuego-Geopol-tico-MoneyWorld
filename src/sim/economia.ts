@@ -38,6 +38,7 @@
  */
 import config from './config/economia.json';
 import type { Sistema } from './motor';
+import type { TipoAlerta } from './alertas';
 import type { Partida } from './partida';
 
 export const SECTORES = [
@@ -154,6 +155,11 @@ export interface EconomiaPais {
   nivelPrecios: number;
   /** Inflación de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
   serieInflacion: number[];
+  /**
+   * Alertas en que está ahora (tarea f16-t4; solo las del país del jugador). Sin ellas, aún no
+   * se ha mirado: la primera vez se anotan sin avisar.
+   */
+  alertas?: TipoAlerta[];
 }
 
 /** Lo que hace falta de los datos de un país (paises-2010.json, campo «datos»). */

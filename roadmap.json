@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.16.1",
-  "actualizado": "2026-11-17T19:01:02Z",
+  "actualizado": "2026-11-17T19:12:25Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 16 en curso. f16-t1 (paro con Okun e histéresis) y f16-t2 (inflación persistente y PIB nominal) hechas. f16-t3 hecha: el PIB nominal, el paro (con su cambio en 12 meses) y la inflación se ven en la ficha y en Economía › Economía, con un gráfico del paro y la inflación; probado a 1280 × 720 y 1920 × 1080 y en la galería. Test de credibilidad del GDD en verde (solo Macao y Zimbabue se salen el primer año, por su crecimiento real de 2010).",
-    "siguientePaso": "f16-t4: alertas económicas del país del jugador (recesión, paro que se dispara, inflación alta, deflación) con aviso, icono y un sonido propio de cada una; las graves pausan si la pausa automática está activada. Después, cerrar la Fase 16 como v0.17.0.",
+    "resumen": "Fase 16: tareas t1 a t4 hechas. f16-t4: alertas económicas del país del jugador (recesión, paro que se dispara, inflación alta o desbocada y deflación) como sucesos del motor; las graves paran con el aviso del centro y las demás salen en una tarjeta arriba a la derecha; un sonido propio de cada una, iconos nuevos de recesión y deflación y sección en la galería. Probado en la partida: Grecia entra en recesión el 1 de septiembre de 2010 y la partida se para.",
+    "siguientePaso": "Cerrar la Fase 16 como v0.17.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1034,12 +1034,12 @@
           "titulo": "Paro, inflación y PIB nominal en vivo (ficha y Economía › Economía) con su gráfico; test de credibilidad: 5 años sin intervención en los 20 mayores países",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3f844fb"
         },
         {
           "id": "f16-t4",
           "titulo": "Audiovisual: alertas económicas del país del jugador con aviso, iconos y un sonido propio de cada una",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

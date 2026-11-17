@@ -29,6 +29,8 @@ import { el, reemplazar, type Hijo } from '../src/ui/dom';
 import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { muestrario } from './muestrario';
 import { mostrarAvisoSuceso } from '../src/ui/aviso-suceso';
+import { ICONO_ALERTA, mostrarAlertaEconomica, SONIDO_ALERTA } from '../src/ui/alerta-economica';
+import { ALERTAS_GRAVES, TIPOS_ALERTA, type TipoAlerta } from '../src/sim/alertas';
 import { filaGuardado, etiquetaGuardado } from '../src/ui/guardar-cargar';
 import { crearIndicadorGuardado } from '../src/ui/indicador-guardado';
 import { bloqueEconomia } from '../src/ui/economia-en-vivo';
@@ -238,6 +240,50 @@ function avisoPausa(): HTMLElement {
     t('galeria.aviso.nota'),
     el('ul', { class: 'galeria__sonidos' }, el('li', {}, boton)),
     estado,
+  );
+}
+
+/** Un dato de ejemplo para cada alerta (tanto por uno). */
+const EJEMPLO_ALERTA: Record<TipoAlerta, number> = {
+  recesion: -0.031,
+  paro: 0.214,
+  inflacion: 0.124,
+  inflacionGrave: 0.27,
+  deflacion: -0.008,
+};
+
+/** Alertas económicas (tarea f16-t4): cada una con su icono, su sonido y su tarjeta. */
+function alertasEconomicas(): HTMLElement {
+  return seccion(
+    t('galeria.alertas.titulo'),
+    t('galeria.alertas.nota'),
+    el(
+      'ul',
+      { class: 'galeria__sonidos' },
+      ...TIPOS_ALERTA.map((tipo) => {
+        const boton = el(
+          'button',
+          { class: 'boton', type: 'button' },
+          icono(ICONO_ALERTA[tipo]),
+          t(`juego.alertas.${tipo}.titulo`),
+        );
+        boton.addEventListener('click', () => {
+          sonido.activar();
+          sonido.reproducir(SONIDO_ALERTA[tipo]);
+          mostrarAlertaEconomica({
+            id: `galeria-${tipo}`,
+            titulo: '',
+            texto: '',
+            fecha: '2011-06-01',
+            hora: 1,
+            importante: ALERTAS_GRAVES.has(tipo),
+            origen: 'economia',
+            alerta: { tipo, valor: EJEMPLO_ALERTA[tipo] },
+          });
+        });
+        return el('li', {}, boton);
+      }),
+    ),
   );
 }
 
@@ -673,6 +719,7 @@ async function iniciar(): Promise<void> {
       sonidos(),
       musicaAmbiental(),
       avisoPausa(),
+      alertasEconomicas(),
       guardarCargar(conjunto),
       economia(conjunto),
       retratos(gobiernos, conjunto),

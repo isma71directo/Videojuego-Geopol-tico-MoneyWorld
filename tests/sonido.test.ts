@@ -125,8 +125,11 @@ describe('motor de sonido', () => {
 
   it('los efectos de interfaz son cortos y suaves', () => {
     for (const [nombre, notas] of Object.entries(EFECTOS)) {
+      // Las alertas económicas (tarea f16-t4) llegan como mucho una vez al mes: pueden durar algo
+      // más que los efectos de cada clic, pero menos de un segundo.
+      const maximo = nombre.startsWith('alerta') ? 0.9 : 0.3;
       for (const nota of notas) {
-        expect(nota.inicio + nota.duracion, nombre).toBeLessThanOrEqual(0.3);
+        expect(nota.inicio + nota.duracion, nombre).toBeLessThanOrEqual(maximo);
         expect(nota.volumen, nombre).toBeLessThanOrEqual(0.25);
         expect(nota.frecuencia, nombre).toBeGreaterThan(100);
       }
