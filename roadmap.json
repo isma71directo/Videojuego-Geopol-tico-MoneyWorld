@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T19:59:28Z",
+  "actualizado": "2026-11-17T20:33:03Z",
   "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.17.0. Plan de la Fase 17 (presupuesto) aprobado: cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI, lo demás estimado y marcado; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto. La fase pasa a 4 tareas.",
-    "siguientePaso": "f17-t1: script de datos del Banco Mundial con la composición de ingresos y gastos de 2010 (impuestos por tipo, cotizaciones, sueldos, compras, intereses, transferencias, inversión, sanidad pública) y la deuda; integrarlo en paises-2010.json.",
+    "resumen": "Fase 17 en curso (plan aprobado: cada ministerio por dentro; Banco Mundial + FMI; responde a la economía; déficit → deuda). f17-t1 en curso: script reanudable 26-bm-presupuesto.ts (composición de ingresos y gastos, inversión pública, sanidad pública y población de 65 años o más), con descarga por curl con tiempo límite. El servidor del Banco Mundial falla a ratos (errores 502 y sin respuesta): 7 de 14 indicadores descargados en una caché fuera del repositorio (../cache-datos/bm-presupuesto) y reintentos en marcha. El cableado de los datos, el motor del presupuesto, sus tests y los iconos están en un git stash local a la espera de los datos.",
+    "siguientePaso": "Terminar la descarga (npm run datos:presupuesto; se puede repetir, guarda lo descargado), recuperar el stash, construir paises-2010.json y cerrar f17-t1; después, f17-t2 (motor del presupuesto, ya escrito) y f17-t3.",
     "pendienteDelJugador": []
   },
   "etapas": [
