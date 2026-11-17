@@ -7,6 +7,34 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.13.0 - 2026-11-17
+
+Fase 12: motor en segundo plano, azar de la partida y música.
+
+### Añadido
+
+- **Motor en un Web Worker** (otro hilo del navegador):
+  - La partida y el reloj viven en el worker; la pantalla le manda la velocidad y recibe el estado.
+  - La pantalla nunca se bloquea: si calcular un paso tarda, el tiempo del juego va más despacio.
+  - Para comprobarlo, «?carga=200» al final de la dirección añade 200 ms de cálculo a cada día.
+  - El reloj de manecillas y la noche se siguen moviendo sin saltos entre mensaje y mensaje.
+- **Azar de la partida** (decisión del jugador):
+  - Generador propio, sembrado con una semilla de verdad al azar en cada partida nueva (y de nuevo
+    al cargar, cuando lleguen las partidas guardadas).
+  - La IA puede repetir alguna decisión, pero el conjunto de lo que pasa en todos los países hace
+    prácticamente imposible que dos partidas sean iguales. De momento no se nota: es la base de la
+    economía, la IA y los eventos de las próximas fases.
+- **Música ambiental compuesta con código** (decisiones del jugador: tranquila y tensa según la
+  situación, en piezas fijas pero abundantes, en el menú y en la partida):
+  - Doce piezas tranquilas (media hora), cada una con su tonalidad, modo, tempo, compás y acordes,
+    con colchón de acordes, bajo, arpegios, melodía y campanas sintetizados y una reverberación.
+  - Suenan desde el primer clic en el inicio y siguen en la partida, en orden al azar sin repetir
+    hasta que han sonado todas. En pausa bajan un poco.
+  - Volumen de la música en Ajustes.
+  - Ocho piezas tensas (más de un cuarto de hora) para las crisis, guerras y elecciones, con cambio
+    de ambiente con fundido; sonarán cuando lleguen esos sistemas.
+  - Galería: sección «Música ambiental» para escuchar cada pieza y el cambio de ambiente.
+
 ## 0.12.4 - 2026-11-17
 
 Ajustes pedidos por el jugador al probar la v0.12.3 y al comentar el plan de la Fase 12.
