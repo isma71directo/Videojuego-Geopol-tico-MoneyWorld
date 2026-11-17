@@ -24,7 +24,8 @@ import { cerrarVentanas } from './componentes/ventana';
 import { crearBarraSecciones } from './secciones';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
-import { avanzarPartida } from '../sim/partida';
+import { msPorHora } from '../sim/reloj';
+import { conectarMotor } from './conexion-motor';
 import { solDelJuego } from '../map/noche';
 import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
@@ -32,6 +33,15 @@ import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
 import { reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
+
+/**
+ * Carga de prueba del motor (tarea f12-t1): «?carga=50» en la dirección hace que cada día de
+ * juego cueste 50 ms de cálculo en el worker, para comprobar que la pantalla no se bloquea.
+ */
+function cargaDePrueba(): number {
+  const valor = Number(new URLSearchParams(location.search).get('carga'));
+  return Number.isFinite(valor) && valor > 0 ? valor : 0;
+}
 
 function medidorActivo(): boolean {
   return medidorFpsActivo(location.search, import.meta.env.DEV, leerAjuste('medidorFps'));
@@ -195,22 +205,48 @@ export function abrirPantallaMapa(
     buscador.alTeclear(evento);
   };
   document.addEventListener('keydown', alTeclearBuscador);
-  // El tiempo de la partida (tarea f11-t3): empieza en pausa; al avanzar, la partida (el mismo
-  // objeto que guarda main.ts) cambia de fecha y de hora y la barra se repinta.
+  // El motor de la partida (tarea f12-t1): la partida y el reloj viven en un Web Worker; la
+  // pantalla le manda la velocidad y recibe el estado. La partida de aquí (el mismo objeto que
+  // guarda main.ts) es una copia que se pone al día con cada mensaje.
+  const motor = partida ? conectarMotor() : null;
+  /** Último estado del motor: fracción de la hora, cuándo llegó y a qué velocidad. */
+  let ultimaFraccion = 0;
+  let recibidoEn = 0;
+  let velocidadMotor = 0;
+  let animacion: number | null = null;
+  /** Parte de la hora en curso ahora mismo, contando desde el último mensaje del motor. */
+  const fraccionActual = (): number =>
+    velocidadMotor > 0
+      ? Math.min(
+          0.999,
+          ultimaFraccion + (performance.now() - recibidoEn) / msPorHora(velocidadMotor),
+        )
+      : ultimaFraccion;
+  /** Manecillas y noche sin saltos entre mensaje y mensaje (tarea f11-t4). */
+  const animar = (): void => {
+    animacion = null;
+    const fraccion = fraccionActual();
+    barraPartida?.ponerFraccion(fraccion, velocidadMotor <= 2);
+    moverNoche(fraccion);
+    if (velocidadMotor > 0) animacion = requestAnimationFrame(animar);
+  };
+  if (motor && partida) {
+    motor.alRecibir = (mensaje) => {
+      partida.fecha = mensaje.fecha;
+      partida.hora = mensaje.hora;
+      ultimaFraccion = mensaje.fraccion;
+      recibidoEn = performance.now();
+      velocidadMotor = mensaje.velocidad;
+      barraPartida?.actualizar(partida);
+      if (animacion === null) animar();
+    };
+    motor.enviar({ tipo: 'empezar', partida, cargaPruebaMs: cargaDePrueba() });
+  }
+  // Los controles del tiempo (tarea f11-t3): la partida empieza en pausa.
   const tiempo = partida
     ? crearControlTiempo({
-        alAvanzar: (horas) => {
-          const { partida: nueva } = avanzarPartida(partida, horas);
-          partida.fecha = nueva.fecha;
-          partida.hora = nueva.hora;
-          barraPartida?.actualizar(partida);
-        },
-        // Manecillas y noche sin saltos dentro de cada hora (tarea f11-t4).
-        alFotograma: (fraccion) => {
-          barraPartida?.ponerFraccion(fraccion, (tiempo?.velocidad ?? 0) <= 2);
-          moverNoche(fraccion);
-        },
         alCambiarVelocidad: (velocidad, antes) => {
+          motor?.enviar({ tipo: 'velocidad', velocidad });
           reproducir(velocidad === 0 ? 'pausa' : antes === 0 ? 'seguir' : 'velocidad');
           barraPartida?.marcarPausa(velocidad === 0);
         },
@@ -316,7 +352,7 @@ export function abrirPantallaMapa(
 
   const mapa = crearMapaDelJuego(lienzo);
   if (partida) mapa.paisJugador = partida.jugador.paisId;
-  moverNoche(tiempo?.fraccionHora ?? 0);
+  moverNoche(fraccionActual());
   if (tiempo) barraPartida?.marcarPausa(tiempo.velocidad === 0);
   mapa.alDibujar = ({ fps, msUltimo, nivel }) => {
     if (!medidor.hidden) medidor.textContent = `${fps} fps · ${msUltimo.toFixed(1)} ms · ${nivel}`;
@@ -579,7 +615,7 @@ export function abrirPantallaMapa(
       // En una partida, el mapa va al país del jugador y abre su ficha.
       if (partida) mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
       // Con las ciudades ya cargadas se sabe dónde está la capital: la noche, en su sitio.
-      moverNoche(tiempo?.fraccionHora ?? 0);
+      moverNoche(fraccionActual());
     })
     .catch(() => {
       estado.textContent = t('juego.mapa.error');
@@ -683,6 +719,9 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alTeclearBuscador);
     document.removeEventListener('keydown', alTeclearTiempo);
     tiempo?.destruir();
+    if (animacion !== null) cancelAnimationFrame(animacion);
+    motor?.enviar({ tipo: 'terminar' });
+    motor?.cerrar();
     buscador.cerrar(false);
     barraPartida?.destruir();
     secciones.destruir();

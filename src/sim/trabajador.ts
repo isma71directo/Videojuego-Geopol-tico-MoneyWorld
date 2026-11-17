@@ -1,0 +1,22 @@
+/**
+ * Web Worker del motor (tarea f12-t1): la simulación corre aquí, en otro hilo, para que la
+ * pantalla nunca se bloquee aunque calcular un paso lleve tiempo. Solo une el motor y su bucle
+ * con los mensajes del navegador; la lógica está en motor.ts y bucle.ts.
+ */
+import { arrancarBucle } from './bucle';
+import { crearMotor, type MensajeMotor, type OrdenMotor } from './motor';
+
+/** Lo que se usa del ámbito del worker (sin depender de los tipos de la ventana). */
+const ambito = self as unknown as {
+  postMessage(mensaje: MensajeMotor): void;
+  onmessage: ((evento: MessageEvent<OrdenMotor>) => void) | null;
+};
+
+const bucle = arrancarBucle(crearMotor({ ahora: () => performance.now() }), {
+  enviar: (mensaje) => ambito.postMessage(mensaje),
+  ahora: () => performance.now(),
+  programar: (accion, ms) => setTimeout(accion, ms),
+  cancelar: (id) => clearTimeout(id as ReturnType<typeof setTimeout>),
+});
+
+ambito.onmessage = (evento) => bucle.atender(evento.data);

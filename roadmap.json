@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.12.4",
-  "actualizado": "2026-11-17T06:51:50Z",
+  "actualizado": "2026-11-17T06:57:25Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.12.4. Plan de la Fase 12 aprobado: motor en un Web Worker; azar distinto en cada partida (el conjunto de decisiones de todos los países hace prácticamente imposible repetir una partida; al cargar se vuelve a sembrar); música tranquila y tensa según la situación, en piezas fijas compuestas con código pero abundantes, en el menú y en la partida. La fase pasa a 4 tareas.",
-    "siguientePaso": "f12-t1: llevar la partida y el reloj a un Web Worker.",
+    "resumen": "f12-t1 hecha: la partida y el reloj viven en un Web Worker (src/sim/motor.ts, bucle.ts y trabajador.ts); la pantalla le manda la velocidad y recibe el estado (src/ui/conexion-motor.ts) y mueve el reloj y la noche sin saltos entre mensajes. Si un paso tarda, el tiempo va más despacio sin bloquear la pantalla: con «?carga=200» en la dirección (200 ms de cálculo por día) la pantalla va igual de fluida. Sin workers (pruebas), el mismo motor corre en el hilo de la pantalla. Comprobado también en la versión compilada.",
+    "siguientePaso": "f12-t2: generador del azar de la partida, sembrado al azar en cada partida.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -823,15 +823,15 @@
         {
           "id": "f12-t1",
           "titulo": "Motor en un Web Worker: la partida y el reloj viven en el worker; la pantalla manda órdenes (pausa, velocidad) y recibe el estado; si un paso tarda, el tiempo va más despacio sin bloquear la pantalla (carga de prueba en desarrollo)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f12-t2",
           "titulo": "Azar de la partida (decisión del jugador): generador propio sembrado al azar en cada partida y de nuevo al cargar; el conjunto de decisiones de todos los países hace prácticamente imposible repetir una partida; semilla interna solo para tests y fallos",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
