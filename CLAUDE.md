@@ -26,6 +26,7 @@ El juego es solo para PC (navegador, ratón y teclado); la Hoja de ruta y la gal
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
 19. **Audiovisual en cada fase:** cada fase entrega su contenido audiovisual (gráficos, animación, sonido y, si procede, 3D) según la sección 7.1. Se crea con código o con material de licencia libre anotado en `/docs/creditos.md`; nunca se usa material sin licencia clara. El 3D se propone al jugador en el plan de la fase y siempre tiene alternativa en 2D.
+20. **Consecuencias probadas:** nada mejora solo y nada es gratis (pilar 9 del GDD). Cada sistema llega con al menos un test de «si se hace mal, empeora» y ningún modelo da mejoras gratis por defecto.
 
 ## Órdenes útiles
 

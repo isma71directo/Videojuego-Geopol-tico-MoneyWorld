@@ -1063,7 +1063,7 @@
       "fecha": "Fecha",
       "fechaAyuda": "Fecha y hora de la partida, en la hora local de {capital} ({huso}). El reloj corre por horas: una hora cada 2 s a ×1.",
       "tesoreria": "Tesorería",
-      "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 21.",
+      "tesoreriaAyuda": "Dinero en caja del Estado. Estimación provisional: los ingresos públicos de un mes. El presupuesto llega en la Fase 17.",
       "popularidad": "Popularidad",
       "popularidadAyuda": "Popularidad del gobierno. Estimación provisional con la economía, los años del líder en el cargo y el régimen. La opinión pública llega en la Fase 56.",
       "salir": {
@@ -1217,7 +1217,7 @@
       "milesDeMillones": "{valor} mil M$",
       "nota": "Dólares de 2010 (la inflación llega en la Fase 16). * Confianza estimada.",
       "sinDatos": "Sin datos para su economía.",
-      "ventanaNota": "La pantalla completa de Economía llega en la Fase 17, y el banco central, en la 18."
+      "ventanaNota": "La pantalla completa de Economía llega en la Fase 19, y el banco central, en la 20."
     }
   },
   "hojaDeRuta": {

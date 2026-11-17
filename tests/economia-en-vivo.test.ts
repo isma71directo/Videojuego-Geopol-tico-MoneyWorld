@@ -144,7 +144,7 @@ describe('la economía en vivo (tarea f15-t3)', () => {
       'Francia',
     );
     expect(ventana.textContent).toContain('Francia');
-    expect(ventana.textContent).toContain('Fase 17');
+    expect(ventana.textContent).toContain('Fase 19');
     const vacia = contenidoVentanaEconomia(() => ({ economia: null, fecha: '2010-01-01' }), 'X');
     expect(vacia.textContent).toContain('Sin datos para su economía');
   });

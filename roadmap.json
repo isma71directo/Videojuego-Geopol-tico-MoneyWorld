@@ -1,18 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.16.0",
-  "actualizado": "2026-11-17T13:07:37Z",
+  "actualizado": "2026-11-17T13:51:22Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 15 cerrada como v0.16.0: datos de 2010 por sector y demanda de la ONU (siete sectores reales), economía de cada país mes a mes sin azar (producción por sector, inversión que acumula capital, convergencia de la productividad, arranque con el crecimiento real de 2010), confianza de consumidores y empresas y ahorro, y la economía en vivo en la ficha de cada país y en Economía › Economía, con iconos y gráfico animado del PIB. PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.16.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 16 (economía: inflación y paro).",
-    "pendienteDelJugador": [
-      "Probar la v0.16.0 en el PC: empezar una partida, abrir la ficha de tu país (pestaña Economía) y Economía › Economía, avanzar un año a ×8 o más y ver cambiar el PIB, el crecimiento, la confianza y los sectores, con el gráfico; mirar también la ficha de otros países (China crece mucho, Grecia cae en 2010–2012)",
-      "Cargar una partida guardada con la v0.15 y comprobar que tiene economía",
-      "En la galería: «Economía de un país» con «Avanzar un año» y los iconos nuevos",
-      "Fusionar el PR de la Fase 15"
-    ]
+    "resumen": "El jugador fusionó la v0.16.0 y señaló que la economía no puede crecer siempre: si se hace mal, tiene que ir mal. Decisiones: sin intervención, cada país sigue sus datos (nada mejora solo; pilar 9 del GDD); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda se adelantan a las Fases 17 y 18 (Pantalla de Economía, banco central, moneda y bancos pasan a las 19 a 22); la dureza depende de la dificultad. Regla 20: cada sistema con tests de «si se hace mal, empeora».",
+    "siguientePaso": "f15-a1: productividad con convergencia condicionada, desequilibrios de 2010 que fuerzan un ajuste, dureza según la dificultad y tests; después, publicar la v0.16.1.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -996,6 +991,17 @@
           "fecha": "2026-11-17",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3877fbc"
         }
+      ],
+      "ajustes": [
+        {
+          "id": "f15-a1",
+          "titulo": "Nada mejora solo (decisión del jugador): la productividad solo converge si el país tiene base (alfabetización, electricidad, internet, educación); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan un ajuste (menos crédito e inversión, recorte del gasto) que hunde la demanda y la confianza hasta cerrar el déficit, provisional hasta la deuda de la Fase 18; dureza según la dificultad; tests de «si se hace mal, empeora»",
+          "version": "0.16.1",
+          "origen": "Consulta del jugador tras la v0.16.0: «la economía no siempre va a crecer»",
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
+          "enlace": ""
+        }
       ]
     },
     {
@@ -1036,30 +1042,30 @@
       "id": "fase-17",
       "etapa": "B",
       "version": "0.18.0",
-      "nombre": "Pantalla de Economía",
-      "objetivo": "Ver la evolución de la economía con gráficos",
+      "nombre": "Presupuesto: ingresos y gastos",
+      "objetivo": "El Estado tiene ingresos y gastos por partida",
       "dependeDe": ["fase-16"],
-      "hechoCuando": "Los gráficos funcionan con los datos de la partida",
-      "pruebaJugador": "Jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido",
+      "hechoCuando": "Todos los países tienen su presupuesto de 2010",
+      "pruebaJugador": "Ver el presupuesto inicial de España y compararlo con el de Alemania",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f17-t1",
-          "titulo": "Historial mensual de indicadores",
+          "titulo": "Estructura de ingresos y gastos por partida y ministerio (6.2)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f17-t2",
-          "titulo": "Pantalla «Economía» con gráficos y capa del mapa con crecimiento e inflación en tiempo real",
+          "titulo": "Datos iniciales de 2010: gasto por función y deuda real",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f17-t3",
-          "titulo": "Audiovisual: gráficos históricos animados",
+          "titulo": "Audiovisual: gráfico de ingresos y gastos",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1070,30 +1076,30 @@
       "id": "fase-18",
       "etapa": "B",
       "version": "0.19.0",
-      "nombre": "Banco central y tipos de interés",
-      "objetivo": "Política monetaria",
+      "nombre": "Deuda, prima de riesgo y rating",
+      "objetivo": "El déficit se convierte en deuda y los mercados reaccionan",
       "dependeDe": ["fase-17"],
-      "hechoCuando": "La política monetaria funciona",
-      "pruebaJugador": "Subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses",
+      "hechoCuando": "La deuda y el rating responden al déficit",
+      "pruebaJugador": "Ver la prima de riesgo de Grecia durante 2010 (sin intervención, entra en crisis de deuda)",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f18-t1",
-          "titulo": "Banco central (independiente o no) con regla tipo Taylor",
+          "titulo": "Déficit, emisión de bonos, intereses, prima de riesgo y rating",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f18-t2",
-          "titulo": "Zona euro: el BCE decide para los 16 miembros de 2010",
+          "titulo": "Impago y petición de ayuda al FMI",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f18-t3",
-          "titulo": "Audiovisual: visualización de los tipos de interés y de su evolución",
+          "titulo": "Audiovisual: distintivo animado del rating",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1104,30 +1110,30 @@
       "id": "fase-19",
       "etapa": "B",
       "version": "0.20.0",
-      "nombre": "Moneda y divisas",
-      "objetivo": "Tipos de cambio y regímenes de moneda",
+      "nombre": "Pantalla de Economía",
+      "objetivo": "Ver la evolución de la economía con gráficos",
       "dependeDe": ["fase-18"],
-      "hechoCuando": "Cada país tiene su régimen de moneda y se puede cambiar",
-      "pruebaJugador": "Devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses",
+      "hechoCuando": "Los gráficos funcionan con los datos de la partida",
+      "pruebaJugador": "Jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f19-t1",
-          "titulo": "Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar",
+          "titulo": "Historial mensual de indicadores",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f19-t2",
-          "titulo": "Reservas de divisas y controles de capital",
+          "titulo": "Pantalla «Economía» con gráficos y capa del mapa con crecimiento e inflación en tiempo real",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f19-t3",
-          "titulo": "Audiovisual: símbolos de las monedas y gráfico del tipo de cambio",
+          "titulo": "Audiovisual: gráficos históricos animados",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1138,30 +1144,30 @@
       "id": "fase-20",
       "etapa": "B",
       "version": "0.21.0",
-      "nombre": "Bancos, bolsa y crisis",
-      "objetivo": "Crisis financieras con contagio",
+      "nombre": "Banco central y tipos de interés",
+      "objetivo": "Política monetaria",
       "dependeDe": ["fase-19"],
-      "hechoCuando": "Puede producirse una crisis financiera y contagiarse",
-      "pruebaJugador": "Seguir en el mapa el contagio de una crisis en una partida de prueba",
+      "hechoCuando": "La política monetaria funciona",
+      "pruebaJugador": "Subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f20-t1",
-          "titulo": "Sistema bancario simplificado: solvencia, crédito y rescates",
+          "titulo": "Banco central (independiente o no) con regla tipo Taylor",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f20-t2",
-          "titulo": "Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio",
+          "titulo": "Zona euro: el BCE decide para los 16 miembros de 2010",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f20-t3",
-          "titulo": "Audiovisual: animación del contagio de una crisis en el mapa",
+          "titulo": "Audiovisual: visualización de los tipos de interés y de su evolución",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1172,30 +1178,30 @@
       "id": "fase-21",
       "etapa": "B",
       "version": "0.22.0",
-      "nombre": "Presupuesto: ingresos y gastos",
-      "objetivo": "El Estado tiene ingresos y gastos por partida",
+      "nombre": "Moneda y divisas",
+      "objetivo": "Tipos de cambio y regímenes de moneda",
       "dependeDe": ["fase-20"],
-      "hechoCuando": "Todos los países tienen su presupuesto de 2010",
-      "pruebaJugador": "Ver el presupuesto inicial de España y compararlo con el de Alemania",
+      "hechoCuando": "Cada país tiene su régimen de moneda y se puede cambiar",
+      "pruebaJugador": "Devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f21-t1",
-          "titulo": "Estructura de ingresos y gastos por partida y ministerio (6.2)",
+          "titulo": "Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f21-t2",
-          "titulo": "Datos iniciales de 2010: gasto por función y deuda real",
+          "titulo": "Reservas de divisas y controles de capital",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f21-t3",
-          "titulo": "Audiovisual: gráfico de ingresos y gastos",
+          "titulo": "Audiovisual: símbolos de las monedas y gráfico del tipo de cambio",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1206,30 +1212,30 @@
       "id": "fase-22",
       "etapa": "B",
       "version": "0.23.0",
-      "nombre": "Deuda, prima de riesgo y rating",
-      "objetivo": "El déficit se convierte en deuda y los mercados reaccionan",
+      "nombre": "Bancos, bolsa y crisis",
+      "objetivo": "Crisis financieras con contagio",
       "dependeDe": ["fase-21"],
-      "hechoCuando": "La deuda y el rating responden al déficit",
-      "pruebaJugador": "Ver la prima de riesgo de Grecia durante 2010",
+      "hechoCuando": "Puede producirse una crisis financiera y contagiarse",
+      "pruebaJugador": "Seguir en el mapa el contagio de una crisis en una partida de prueba",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f22-t1",
-          "titulo": "Déficit, emisión de bonos, intereses, prima de riesgo y rating",
+          "titulo": "Sistema bancario simplificado: solvencia, crédito y rescates",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f22-t2",
-          "titulo": "Impago y petición de ayuda al FMI",
+          "titulo": "Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f22-t3",
-          "titulo": "Audiovisual: distintivo animado del rating",
+          "titulo": "Audiovisual: animación del contagio de una crisis en el mapa",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""

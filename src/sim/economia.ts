@@ -5,7 +5,7 @@
  *  - Siete sectores, con los datos reales de 2010 de la ONU. Cada uno produce según
  *    productividad × capital^α × trabajo^(1 − α).
  *  - Sin azar: la economía cambia por las decisiones (inversión, gasto, impuestos, servicios…).
- *    Mientras no las haya (presupuesto e impuestos, Fases 21 a 25), evoluciona según el modelo.
+ *    Mientras no las haya (presupuesto y deuda, Fases 17 y 18; impuestos, Fases 24 y 25), evoluciona según el modelo.
  *  - Arranque: cada país crece en 2010 como creció de verdad, y esa diferencia con su crecimiento
  *    potencial se apaga poco a poco.
  *
