@@ -145,8 +145,8 @@
     "economia": {
       "icono": "crecimiento",
       "pestanas": {
-        "indicadores": 17,
-        "banco": 18
+        "indicadores": 19,
+        "banco": 20
       }
     },
     "sectores": {
@@ -253,7 +253,7 @@
     },
     "economia": {
       "icono": "hacienda",
-      "faseAcciones": 22,
+      "faseAcciones": 18,
       "infraestructuras": false
     },
     "exteriores": {
@@ -356,9 +356,9 @@
   },
   "fases": {
     "13": "Efectos y pausa automática",
-    "17": "Pantalla de Economía",
-    "18": "Banco central y tipos de interés",
-    "22": "Deuda, prima de riesgo y rating",
+    "18": "Deuda, prima de riesgo y rating",
+    "19": "Pantalla de Economía",
+    "20": "Banco central y tipos de interés",
     "23": "Pantalla de Presupuesto",
     "25": "Impuestos: efectos y simulador",
     "26": "Consejo de Ministros",

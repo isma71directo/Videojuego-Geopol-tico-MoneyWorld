@@ -1,5 +1,5 @@
 {
-  "$comentario": "Valores iniciales PROVISIONALES de cada país el 1 de enero de 2010 (tarea f10-t2, decisión del jugador: estimados con fórmula). Se sustituyen por el presupuesto (Fase 21) y por la opinión pública (Fase 56). Las fórmulas están explicadas en docs/GDD.md, sección 13, y se aplican en src/sim/valores-iniciales.ts.",
+  "$comentario": "Valores iniciales PROVISIONALES de cada país el 1 de enero de 2010 (tarea f10-t2, decisión del jugador: estimados con fórmula). Se sustituyen por el presupuesto (Fase 17) y por la opinión pública (Fase 56). Las fórmulas están explicadas en docs/GDD.md, sección 13, y se aplican en src/sim/valores-iniciales.ts.",
   "tesoreria": {
     "$comentario": "Tesorería = ingresos públicos (% del PIB, FMI) × PIB × meses / 12. Es el dinero en caja para empezar: los ingresos de un mes. Se redondea al millón de dólares.",
     "mesesDeIngresos": 1,

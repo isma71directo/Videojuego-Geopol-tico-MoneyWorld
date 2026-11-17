@@ -190,6 +190,21 @@ function contenido(
       t('juego.economia.ahorroAyuda'),
     ),
   );
+  // El ajuste forzoso por los desequilibrios de 2010, mientras dure (ajuste f15-a1).
+  const { desequilibrio } = economia;
+  if (desequilibrio.intensidad > 0 && desequilibrio.ajustePendiente > 0) {
+    datos.append(
+      fila(
+        'deuda',
+        t('juego.economia.ajuste'),
+        t('juego.economia.ajusteValor', {
+          cantidad: porcentaje(desequilibrio.ajustePendiente * 100),
+        }),
+        t('juego.economia.ajusteAyuda'),
+        'economia__baja',
+      ),
+    );
+  }
   const sectores = barraDePartes({
     titulo: t('juego.economia.sectoresTitulo'),
     partes: SECTORES.map((sector, color) => ({

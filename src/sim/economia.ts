@@ -5,7 +5,7 @@
  *  - Siete sectores, con los datos reales de 2010 de la ONU. Cada uno produce según
  *    productividad × capital^α × trabajo^(1 − α).
  *  - Sin azar: la economía cambia por las decisiones (inversión, gasto, impuestos, servicios…).
- *    Mientras no las haya (presupuesto e impuestos, Fases 21 a 25), evoluciona según el modelo.
+ *    Mientras no las haya (presupuesto y deuda, Fases 17 y 18; impuestos, Fases 24 y 25), evoluciona según el modelo.
  *  - Arranque: cada país crece en 2010 como creció de verdad, y esa diferencia con su crecimiento
  *    potencial se apaga poco a poco.
  *
@@ -18,6 +18,13 @@
  * normal) sube cuando el país crece por encima de su potencial y baja cuando crece por debajo,
  * poco a poco. Con más confianza se consume e invierte algo más: sube la demanda (y con ella el
  * PIB) y se acumula más capital. El ahorro nacional es lo que no se consume.
+ *
+ * Nada mejora solo (ajuste f15-a1, decisión del jugador): la productividad solo se acerca a la
+ * de los países más avanzados si el país tiene base para ello, y los desequilibrios de 2010
+ * (deuda, déficit, déficit exterior y paro) fuerzan un ajuste si nadie actúa: menos crédito e
+ * inversión y recortes del gasto hasta cerrar el déficit, que hunden la demanda y la confianza.
+ * Es provisional: lo sustituyen la deuda y la prima de riesgo de verdad (Fase 18). Su dureza
+ * depende de la dificultad.
  */
 import config from './config/economia.json';
 import type { Sistema } from './motor';
@@ -67,14 +74,34 @@ export interface DemandaEconomia {
   importaciones: number;
 }
 
+/** El desequilibrio de 2010 y el ajuste que fuerza (ajuste f15-a1, provisional hasta la Fase 18). */
+export interface DesequilibrioEconomia {
+  /** Intensidad (0 = ninguno; Grecia, en torno a 2). */
+  intensidad: number;
+  /** Gasto público que falta por recortar para cerrar el déficit (tanto por uno del PIB). */
+  ajustePendiente: number;
+  /** Inversión perdida por el cierre del crédito (tanto por uno del PIB). */
+  creditoPerdido: number;
+}
+
 export interface EconomiaPais {
   /** PIB real al ritmo de un año, en dólares de 2010. */
   pib: number;
   /** Confianza de los consumidores y de las empresas (índice, 100 = normal; tarea f15-t3). */
   confianzaConsumidores: number;
   confianzaEmpresas: number;
-  /** El reparto de la demanda de 2010, del que se aparta con la confianza (y las decisiones). */
+  /**
+   * El reparto de la demanda sin la confianza: el de 2010 con lo que han cambiado los ajustes (y
+   * cambiarán las decisiones). La confianza lo aparta en `demanda`.
+   */
   demandaBase: DemandaEconomia;
+  /**
+   * La demanda a la que está adaptada la economía: el PIB se aparta de su camino por la diferencia
+   * con ella y se va adaptando a la nueva poco a poco (ajuste f15-a1).
+   */
+  demandaReferencia: DemandaEconomia;
+  /** Desequilibrio de 2010 y ajuste forzoso (ajuste f15-a1). */
+  desequilibrio: DesequilibrioEconomia;
   /** Cuánto se aparta el PIB del camino de su producción por la demanda (tanto por uno). */
   brechaDemanda: number;
   /** PIB potencial: lo que producirían su capital, su trabajo y su productividad. */
@@ -119,10 +146,63 @@ export function produccion(sector: SectorEconomia): number {
  * Crecimiento anual de la productividad de un país: los que tienen menos renta por habitante se
  * acercan a los más avanzados (convergencia), dentro de unos límites.
  */
-export function productividadDelPais(pibPerCapita: number): number {
+export function productividadDelPais(pibPerCapita: number, baseParaCrecer = 1): number {
   const p = config.crecimientoProductividad;
   const distancia = Math.log(p.frontera / Math.max(100, pibPerCapita));
-  return recortar(p.base + p.convergencia * Math.max(0, distancia), [p.minimo, p.maximo]);
+  const crecimiento =
+    p.base +
+    p.convergencia * Math.max(0, distancia) * baseParaCrecer -
+    p.lastre * (1 - baseParaCrecer);
+  return recortar(crecimiento, [p.minimo, p.maximo]);
+}
+
+/**
+ * Base de un país para crecer, de 0 a 1 (ajuste f15-a1): alfabetización, acceso a la
+ * electricidad, uso de internet y gasto en educación de 2010. Sin datos, 0,5.
+ */
+export function baseParaCrecer(datos: DatosEconomia): number {
+  const p = config.crecimientoProductividad;
+  const partes = [
+    dato(datos, 'alfabetizacion'),
+    dato(datos, 'accesoElectricidad'),
+    ((v) => (v === null ? null : (v / p.internetPleno) * 100))(dato(datos, 'usuariosInternet')),
+    ((v) => (v === null ? null : (v / p.educacionPlena) * 100))(dato(datos, 'gastoEducacionPib')),
+  ]
+    .filter((v): v is number => v !== null)
+    .map((v) => recortar(v / 100, [0, 1]));
+  return partes.length > 0 ? partes.reduce((a, b) => a + b, 0) / partes.length : 0.5;
+}
+
+const d = config.desequilibrio;
+
+/** El desequilibrio de un país con sus datos de 2010 (ajuste f15-a1). */
+export function desequilibrioInicial(
+  datos: DatosEconomia,
+  consumoPublico: number,
+): DesequilibrioEconomia {
+  const deuda = dato(datos, 'deudaPib') ?? 50;
+  const deficit = -(dato(datos, 'saldoFiscalPib') ?? -3);
+  const cuentaCorriente = dato(datos, 'cuentaCorrientePib') ?? 0;
+  const paro = dato(datos, 'paro') ?? 8;
+  const riesgoFiscal =
+    Math.max(0, deuda - d.deudaSegura) / 100 + Math.max(0, deficit - d.deficitSeguro) / 10;
+  const dependenciaExterior = Math.max(0, -cuentaCorriente) / 10;
+  const intensidad = Math.min(
+    d.intensidadMaxima,
+    riesgoFiscal * (d.baseExterna + dependenciaExterior) +
+      (Math.max(0, paro - d.paroSeguro) / 10) * d.pesoParo,
+  );
+  return {
+    intensidad,
+    // Como mucho, la mitad del gasto público.
+    ajustePendiente: Math.min(Math.max(0, deficit - d.deficitSeguro) / 100, consumoPublico / 2),
+    creditoPerdido: 0,
+  };
+}
+
+/** Cuánto pesan el ajuste forzoso y la caída de la confianza según la dificultad. */
+export function durezaDe(dificultad: string | undefined): number {
+  return config.dureza[dificultad as keyof typeof config.dureza] ?? config.dureza.normal;
 }
 
 /** Crecimiento anual de la productividad de un sector de un país. */
@@ -228,12 +308,14 @@ export function economiaInicial(
     confianzaConsumidores: 100,
     confianzaEmpresas: 100,
     demandaBase: { ...demanda },
+    demandaReferencia: { ...demanda },
+    desequilibrio: desequilibrioInicial(datos, demanda.consumoPublico),
     brechaDemanda: 0,
     pibPotencial: pib,
     sectores,
     demanda,
     nivelRenta: nivel,
-    crecimientoProductividad: productividadDelPais(pib / poblacion),
+    crecimientoProductividad: productividadDelPais(pib / poblacion, baseParaCrecer(datos)),
     impulsoInicial: 0,
     meses: 0,
     serie: [Math.round(pib)],
@@ -254,12 +336,18 @@ export function economiaInicial(
   return economia;
 }
 
-/** Cuánto aparta la demanda (consumo e inversión frente a los de base) al PIB de su camino. */
-function brechaDe(economia: Pick<EconomiaPais, 'demanda' | 'demandaBase'>): number {
-  const { demanda, demandaBase: base } = economia;
+/**
+ * Cuánto aparta la demanda (consumo, inversión y gasto público frente a la demanda a la que está
+ * adaptada la economía) al PIB de su camino.
+ */
+function brechaDe(economia: Pick<EconomiaPais, 'demanda' | 'demandaReferencia'>): number {
+  const { demanda, demandaReferencia: ref } = economia;
   return (
     config.confianza.multiplicador *
-    (demanda.consumo - base.consumo + (demanda.inversion - base.inversion))
+    (demanda.consumo -
+      ref.consumo +
+      (demanda.inversion - ref.inversion) +
+      (demanda.consumoPublico - ref.consumoPublico))
   );
 }
 
@@ -277,13 +365,43 @@ export function objetivoConfianza(diferencia: number, quien: 'consumidores' | 'e
 /** El reparto de la demanda con la confianza de ahora: más confianza, más consumo e inversión. */
 export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
   const base = economia.demandaBase;
+  // Sin crédito se invierte menos (ajuste f15-a1).
+  const inversionBase = Math.max(0, base.inversion - economia.desequilibrio.creditoPerdido);
   return {
     ...base,
     consumo:
       base.consumo * (1 + (confianza.efectoConsumo * (economia.confianzaConsumidores - 100)) / 100),
     inversion:
-      base.inversion * (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
+      inversionBase * (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
   };
+}
+
+/**
+ * Un mes del ajuste forzoso por los desequilibrios de 2010 (ajuste f15-a1): mientras quede
+ * déficit por cerrar, el Estado recorta su gasto y el crédito se cierra; al cerrarlo, el crédito
+ * vuelve poco a poco. Devuelve cuánta confianza resta este mes (en puntos por cada «intensidad»).
+ */
+function ajusteForzoso(economia: EconomiaPais, dureza: number): number {
+  const des = economia.desequilibrio;
+  // Los mercados tardan unos meses en reaccionar (en 2010, a partir de mayo con Grecia).
+  const enAjuste = economia.meses >= d.mesesEspera && des.ajustePendiente > 0 && des.intensidad > 0;
+  // La dureza no alarga el ajuste: lo suaviza (se recorta y se pierde menos).
+  const intensidad = enAjuste ? des.intensidad * dureza : 0;
+  if (enAjuste) {
+    const avance = Math.min(des.ajustePendiente, (d.recorteAnual * des.intensidad) / 12);
+    des.ajustePendiente -= avance;
+    economia.demandaBase.consumoPublico = Math.max(
+      0,
+      economia.demandaBase.consumoPublico - avance * dureza,
+    );
+  }
+  // El crédito perdido va hacia su objetivo: se cierra mientras dura el ajuste y vuelve al
+  // terminarlo, poco a poco en los dos casos.
+  const objetivo =
+    Math.min(d.creditoMaximo, d.creditoPorPunto * intensidad) * economia.demandaBase.inversion;
+  const paso = 1 - Math.pow(0.5, 1 / (enAjuste ? d.mesesCierreCredito : d.mesesCredito));
+  des.creditoPerdido += (objetivo - des.creditoPerdido) * paso;
+  return intensidad;
 }
 
 /** Ahorro nacional en tanto por uno del PIB: lo que no consumen los hogares ni el Estado. */
@@ -299,8 +417,11 @@ export function impulsoEnMes(
   return economia.impulsoInicial * Math.pow(0.5, meses / config.mesesMitad);
 }
 
-/** Avanza un mes la economía de un país (sin azar: siempre igual con lo mismo). */
-export function avanzarMes(economia: EconomiaPais): void {
+/**
+ * Avanza un mes la economía de un país (sin azar: siempre igual con lo mismo). `dureza` es
+ * cuánto pesan el ajuste forzoso y la caída de la confianza (según la dificultad).
+ */
+export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   const { sectores, nivelRenta } = economia;
   const potencialAntes = SECTORES.reduce((suma, s) => suma + produccion(sectores[s]), 0);
   const capitalTotal = SECTORES.reduce((suma, s) => suma + sectores[s].capital, 0);
@@ -324,24 +445,41 @@ export function avanzarMes(economia: EconomiaPais): void {
   const pibAntes = economia.pib;
   economia.pib *= (potencialAhora / potencialAntes) * (1 + impulso);
   economia.pibPotencial = potencialAhora;
-  // … y la confianza se mueve hacia la que corresponde a ese crecimiento frente al potencial.
+  // … el ajuste forzoso de los desequilibrios de 2010 (recortes y crédito cerrado) …
+  const enAjuste = ajusteForzoso(economia, dureza);
+  // … y la confianza se mueve hacia la que corresponde a ese crecimiento frente al potencial,
+  // más baja mientras dura el ajuste.
   const crecimientoMes = Math.pow(economia.pib / pibAntes, 12) - 1;
   const diferencia = crecimientoMes - crecimientoPotencial(economia);
   const acercar = (actual: number, objetivo: number): number =>
     actual + (objetivo - actual) * confianza.ajusteMensual;
   economia.confianzaConsumidores = acercar(
     economia.confianzaConsumidores,
-    objetivoConfianza(diferencia, 'consumidores'),
+    Math.max(
+      confianza.minimo,
+      objetivoConfianza(diferencia, 'consumidores') - d.confianzaPorPuntoConsumidores * enAjuste,
+    ),
   );
   economia.confianzaEmpresas = acercar(
     economia.confianzaEmpresas,
-    objetivoConfianza(diferencia, 'empresas'),
+    Math.max(
+      confianza.minimo,
+      objetivoConfianza(diferencia, 'empresas') - d.confianzaPorPuntoEmpresas * enAjuste,
+    ),
   );
   // Con la confianza cambian el consumo y la inversión; la demanda mueve el PIB.
   economia.demanda = demandaConConfianza(economia);
   const brecha = brechaDe(economia);
   economia.pib *= (1 + brecha) / (1 + economia.brechaDemanda);
-  economia.brechaDemanda = brecha;
+  // La economía se adapta poco a poco a la demanda nueva (la brecha se va cerrando).
+  const adaptar = 1 - Math.pow(0.5, 1 / d.mesesAdaptacion);
+  const ref = economia.demandaReferencia;
+  for (const clave of ['consumo', 'inversion', 'consumoPublico'] as const) {
+    ref[clave] += (economia.demanda[clave] - ref[clave]) * adaptar;
+  }
+  economia.brechaDemanda = brechaDe(economia);
+  // (El PIB ya está en el nivel de la brecha de antes de adaptarse: no salta.)
+  economia.pib *= (1 + economia.brechaDemanda) / (1 + brecha);
   // Cada sector produce su parte del PIB según su producción potencial.
   SECTORES.forEach((s, i) => {
     sectores[s].valor = (economia.pib * potencial[i]!) / potencialAhora;
@@ -360,10 +498,11 @@ export function crecimientoInteranual(economia: Pick<EconomiaPais, 'serie'>): nu
 
 /** Sistema de la economía (tarea f15-t2): avanza un mes cada país en cada paso mensual. */
 export const sistemaEconomia: Sistema = (pasos, partida) => {
+  const dureza = durezaDe(partida.opciones.dificultad);
   for (const paso of pasos) {
     if (paso.ritmo !== 'mensual') continue;
     for (const estado of Object.values(partida.paises)) {
-      if (estado.economia) avanzarMes(estado.economia);
+      if (estado.economia) avanzarMes(estado.economia, dureza);
     }
   }
 };
@@ -383,14 +522,40 @@ export function completarEconomia(
   paises: Record<string, PaisParaEconomia>,
 ): Partida {
   for (const [id, estado] of Object.entries(partida.paises)) {
-    if (estado.economia) continue;
     const pais = paises[id];
+    if (estado.economia && !estado.economia.desequilibrio && pais) {
+      // Guardada con la v0.16.0 (formato 3): le faltan los desequilibrios (ajuste f15-a1).
+      completarAjuste(estado.economia, pais.datos);
+      continue;
+    }
+    if (estado.economia !== undefined) continue;
     estado.economia = pais ? economiaInicial(pais.datos, pais.nivelRenta) : null;
   }
   return partida;
 }
 
-/** ¿Le falta la economía a algún país? (partidas de antes de la Fase 15) */
+/** Lo que el ajuste f15-a1 añadió a la economía de las partidas de la v0.16.0. */
+function completarAjuste(economia: EconomiaPais, datos: DatosEconomia): void {
+  economia.demandaReferencia = { ...economia.demandaBase };
+  economia.desequilibrio = desequilibrioInicial(datos, economia.demandaBase.consumoPublico);
+  const poblacion = dato(datos, 'poblacion');
+  const pib = dato(datos, 'pib');
+  if (poblacion && pib) {
+    economia.crecimientoProductividad = productividadDelPais(
+      pib / poblacion,
+      baseParaCrecer(datos),
+    );
+  }
+  economia.brechaDemanda = brechaDe(economia);
+}
+
+/**
+ * ¿Le falta algo de la economía a algún país? (Partidas de antes de la Fase 15, sin economía, o
+ * de la v0.16.0, sin los desequilibrios del ajuste f15-a1.)
+ */
 export function faltaEconomia(partida: Pick<Partida, 'paises'>): boolean {
-  return Object.values(partida.paises).some((estado) => estado.economia === undefined);
+  return Object.values(partida.paises).some(
+    (estado) =>
+      estado.economia === undefined || (estado.economia !== null && !estado.economia.desequilibrio),
+  );
 }

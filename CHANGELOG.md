@@ -7,6 +7,35 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.16.1 - 2026-11-17
+
+Ajuste de la Fase 15 tras la consulta del jugador («la economía no siempre va a crecer»).
+
+### Cambiado
+
+- **Nada mejora solo** (ajuste f15-a1, decisión del jugador; pilar 9 del GDD). Sin
+  intervención, cada país sigue sus datos de 2010:
+  - La productividad solo se acerca a la de los países más avanzados si el país tiene base para
+    ello (alfabetización, acceso a la electricidad, uso de internet y gasto en educación); sin
+    esa base, apenas crece.
+  - Los **desequilibrios de 2010** (deuda y déficit públicos altos, déficit exterior, paro)
+    fuerzan un ajuste a los seis meses: el Estado recorta su gasto hasta dejar el déficit en el
+    3 % del PIB, los mercados cierran el crédito (baja la inversión) y cae la confianza. Grecia
+    cae cuatro años seguidos y en diez no recupera su PIB de 2010; Portugal, España, Islandia y
+    Letonia también encogen. Es provisional hasta la deuda y la prima de riesgo de la Fase 18.
+  - **Dureza según la dificultad:** en «realista», el ajuste pesa por completo; en «normal», un
+    75 %, y en «fácil», la mitad. Dura lo mismo en todas.
+- Formato de la partida 4: las partidas guardadas con la v0.16.0 reciben los desequilibrios de
+  2010 al cargarse.
+
+### Añadido
+
+- Fila **«Ajuste forzoso»** en la economía en vivo (ficha y Economía › Economía): cuánto gasto
+  falta por recortar mientras dura el ajuste.
+- Tests de «si se hace mal, empeora» (regla 20): menos inversión da menos capital y menos PIB,
+  recortar el gasto hunde el PIB a corto plazo, sin base la productividad apenas crece, y
+  «realista» es más duro que «fácil».
+
 ## 0.16.0 - 2026-11-17
 
 Fase 15: economía, producción y demanda.

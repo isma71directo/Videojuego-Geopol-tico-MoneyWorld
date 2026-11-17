@@ -7,7 +7,7 @@
  * - Popularidad del gobierno: una base corregida por el crecimiento, el paro, la inflación, los
  *   años del líder en el cargo y el tipo de régimen.
  *
- * Se sustituirán por el presupuesto (Fase 21) y por la opinión pública (Fase 56).
+ * Se sustituirán por el presupuesto (Fase 17) y por la opinión pública (Fase 56).
  */
 import config from './config/inicio.json';
 

@@ -64,6 +64,7 @@
 6. **Pensado para PC (decisión del jugador).** Se juega en el navegador del ordenador, con ratón y teclado, y aprovecha su potencia: más detalle en el mapa y en la simulación y una interfaz densa, con varios paneles a la vez. La Hoja de ruta y la galería siguen funcionando en el móvil para consultar el progreso.
 7. **Largo plazo.** El juego no tiene fin. Las tecnologías permiten llegar a 2075 y más allá.
 8. **Acabado audiovisual desde el principio.** Cada sistema llega con sus gráficos, sus animaciones y su sonido; no se deja para el final.
+9. **Nada mejora solo y nada es gratis (decisión del jugador, 17/11/2026).** Si nadie hace nada, cada país sigue lo que dicen sus datos: con desequilibrios (deuda, déficit, déficit exterior, paro…) cae en crisis si no se corrigen; con buenos fundamentos crece. El crecimiento depende de cosas que se pueden estropear (capital, trabajo, productividad, energía, infraestructuras, instituciones), y la economía puede encogerse años seguidos. Cada palanca tiene su coste: subir impuestos frena el consumo y quita votos, gastar endeuda, imprimir dinero trae inflación, recortar hunde la demanda… Las consecuencias tienen siempre una razón económica realista. Su dureza depende de la dificultad: en «realista», tan duras como en la realidad (los errores tardan años en arreglarse y una crisis de deuda puede hundir el PIB un 20 %); en «normal» y «fácil», las mismas causas con golpes más suaves y recuperaciones más rápidas.
 
 **Referencias:** Power & Revolution / Geopolitical Simulator (profundidad política y económica, mapa 2D), Geoplanetical (sistemas interconectados, energía y red eléctrica, árbol tecnológico largo), Democracy (grupos de votantes y políticas), Supreme Ruler (militar en mapa).
 
@@ -204,9 +205,9 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 **Decisiones del jugador (17/11/2026, plan de la Fase 15):**
 - **Sectores:** siete ramas de actividad, con los datos reales de 2010 de la ONU (UNSD, *National Accounts – Analysis of Main Aggregates*): agricultura, ganadería y pesca; minería y energía; industria manufacturera; construcción; comercio, hostelería y turismo; transporte y comunicaciones; y otros servicios (finanzas, inmobiliaria, administración, educación, sanidad…). Cada una con su productividad, trabajo y capital.
-- **Sin azar en la economía:** no hay variaciones al azar mes a mes; la economía cambia por las decisiones que se toman (del jugador y de la IA): inversión, gasto, impuestos, servicios… Mientras esas decisiones no existan (presupuesto e impuestos, Fases 21 a 25), evoluciona según el modelo. El azar de la partida está en las decisiones de la IA y en los sucesos, no en el PIB.
+- **Sin azar en la economía:** no hay variaciones al azar mes a mes; la economía cambia por las decisiones que se toman (del jugador y de la IA): inversión, gasto, impuestos, servicios… Mientras esas decisiones no existan (presupuesto y deuda, Fases 17 y 18; impuestos, Fases 24 y 25), evoluciona según el modelo y según sus desequilibrios de 2010 (ajuste f15-a1). El azar de la partida está en las decisiones de la IA y en los sucesos, no en el PIB.
 - **Arranque:** cada país empieza creciendo como creció de verdad en 2010 (muchos salían de la crisis de 2009) y el modelo lo lleva poco a poco a su crecimiento potencial.
-- **Dónde se ve:** en la pestaña Economía de la ficha de cada país (valores en vivo y gráfico desde el 1 de enero de 2010) y, para el país del jugador, en la ventana Economía › Economía (la pantalla completa de Economía llega en la Fase 17).
+- **Dónde se ve:** en la pestaña Economía de la ficha de cada país (valores en vivo y gráfico desde el 1 de enero de 2010) y, para el país del jugador, en la ventana Economía › Economía (la pantalla completa de Economía llega en la Fase 19).
 
 **Modelo de la Fase 15 (tarea f15-t2; parámetros en `src/sim/config/economia.json`):**
 - Cada sector produce A · K^0,35 · L^0,65. Al empezar, el capital es el de equilibrio con la inversión de 2010 del país (entre 1,5 y 4 veces el PIB), repartido según lo intensivo de cada sector; el empleo, la población activa sin parados, repartida según la productividad de cada sector; y la productividad A sale de que cada sector produzca lo que dicen los datos.
@@ -215,6 +216,11 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Confianza de consumidores y empresas (tarea f15-t3): índice con 100 = normal, estimado al empezar con el crecimiento de 2010 frente al potencial (no hay datos de todos los países). Cada mes se acerca a la que corresponde al crecimiento del país frente a su potencial (2 puntos por cada punto en los consumidores y 3 en las empresas). Con más confianza suben el consumo y, sobre todo, la inversión, y la demanda mueve el PIB (multiplicador 0,8); la inversión mayor también acumula más capital. El ahorro nacional es lo que no consumen los hogares ni el Estado.
 - Se ve en vivo, y se pone al día cada mes, en la pestaña Economía de la ficha de cada país y en Economía › Economía para el del jugador: PIB real, crecimiento, crecimiento potencial, confianzas, consumo, inversión, ahorro, producción por sectores y gráfico del PIB desde 2010.
 - Valores en dólares de 2010 (PIB real): la inflación, el PIB nominal y el paro llegan en la Fase 16; las decisiones que mueven la demanda, con el presupuesto y los impuestos.
+
+**Ajuste f15-a1 (v0.16.1; decisiones del jugador del 17/11/2026: nada mejora solo, se corrige ya, dureza según la dificultad):**
+- **El crecimiento deja de estar garantizado.** La productividad solo se acerca a la de los países más avanzados si el país tiene base para ello (alfabetización, acceso a la electricidad, uso de internet y gasto en educación de 2010); sin esa base, apenas crece. Cuando lleguen la educación, las infraestructuras y la energía, serán ellas las que la muevan, también hacia abajo.
+- **Desequilibrios de 2010 (provisional hasta la deuda de la Fase 18).** Un país con deuda y déficit públicos altos, que además depende de financiarse fuera (déficit exterior), o con mucho paro, sufre un ajuste forzoso si nadie actúa: los mercados le cierran el crédito (baja la inversión) y tiene que recortar el gasto público hasta cerrar su déficit. Eso hunde la demanda, el PIB y la confianza durante años (Grecia, Portugal, Irlanda o España en 2010–2013). Pesa menos si el país se financia en casa (Japón) y casi nada si no tiene desequilibrios. Empieza a los seis meses (los mercados tardaron en reaccionar: con Grecia, en mayo de 2010). Cuando termina el ajuste, el crédito vuelve poco a poco; el gasto público queda más bajo, y parte de lo perdido no se recupera, porque con menos inversión hay menos capital (sin intervención, Grecia cae cuatro años seguidos y en diez no vuelve a su PIB de 2010).
+- **Dureza según la dificultad:** los recortes, el crédito perdido y la caída de la confianza pesan por completo en «realista», un 75 % en «normal» y la mitad en «fácil»; el ajuste dura lo mismo.
 
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
@@ -925,7 +931,31 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Prueba en el PC:** jugar un año y revisar el paro y la inflación de España.
 **Hecho cuando:** pasa el test de credibilidad.
 
-#### Fase 17 — v0.18.0 · Pantalla de Economía
+#### Fase 17 — v0.18.0 · Presupuesto: ingresos y gastos
+**Objetivo:** el Estado tiene ingresos y gastos por partida. (Adelantada el 17/11/2026, decisión del jugador: el presupuesto y la deuda son la palanca principal y la causa más habitual de que la economía vaya mal; antes eran las Fases 21 y 22.)
+**Tareas**
+1. Estructura de ingresos y gastos por partida y ministerio (6.2).
+2. Datos iniciales de 2010: gasto por función y deuda real.
+3. **Audiovisual:** gráfico de ingresos y gastos.
+
+**Tests:** la suma de las partidas es el total y el saldo coincide con el déficit.
+**Prueba en el PC:** ver el presupuesto inicial de España y compararlo con el de Alemania.
+**Hecho cuando:** todos los países tienen su presupuesto de 2010.
+
+#### Fase 18 — v0.19.0 · Deuda, prima de riesgo y rating
+**Objetivo:** el déficit se convierte en deuda y los mercados reaccionan.
+**Tareas**
+1. Déficit, emisión de bonos, intereses, prima de riesgo y rating.
+2. Impago y petición de ayuda al FMI.
+3. **Audiovisual:** distintivo animado del rating.
+
+**Notas:** hasta el banco central (Fase 20), el tipo de interés de base de cada país es provisional. Sustituye al desequilibrio provisional del ajuste f15-a1 (la deuda, el déficit y el déficit exterior de 2010 pasan a ser los de verdad, que cambian con el presupuesto).
+
+**Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo; sin intervención, Grecia entra en crisis de deuda en 2010–2012.
+**Prueba en el PC:** ver la prima de riesgo de Grecia durante 2010.
+**Hecho cuando:** la deuda y el rating responden al déficit.
+
+#### Fase 19 — v0.20.0 · Pantalla de Economía
 **Objetivo:** ver la evolución de la economía con gráficos.
 **Tareas**
 1. Historial mensual de indicadores.
@@ -936,7 +966,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Prueba en el PC:** jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido.
 **Hecho cuando:** los gráficos funcionan con los datos de la partida.
 
-#### Fase 18 — v0.19.0 · Banco central y tipos de interés
+#### Fase 20 — v0.21.0 · Banco central y tipos de interés
 **Objetivo:** política monetaria.
 **Tareas**
 1. Banco central (independiente o no) con regla tipo Taylor.
@@ -947,7 +977,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Prueba en el PC:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses.
 **Hecho cuando:** la política monetaria funciona.
 
-#### Fase 19 — v0.20.0 · Moneda y divisas
+#### Fase 21 — v0.22.0 · Moneda y divisas
 **Objetivo:** tipos de cambio y regímenes de moneda.
 **Tareas**
 1. Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar.
@@ -958,7 +988,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Prueba en el PC:** devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses.
 **Hecho cuando:** cada país tiene su régimen de moneda y se puede cambiar.
 
-#### Fase 20 — v0.21.0 · Bancos, bolsa y crisis
+#### Fase 22 — v0.23.0 · Bancos, bolsa y crisis
 **Objetivo:** crisis financieras con contagio.
 **Tareas**
 1. Sistema bancario simplificado: solvencia, crédito y rescates.
@@ -968,28 +998,6 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Tests:** una crisis bancaria se contagia a los socios con mucha exposición.
 **Prueba en el PC:** seguir en el mapa el contagio de una crisis en una partida de prueba.
 **Hecho cuando:** puede producirse una crisis financiera y contagiarse.
-
-#### Fase 21 — v0.22.0 · Presupuesto: ingresos y gastos
-**Objetivo:** el Estado tiene ingresos y gastos por partida.
-**Tareas**
-1. Estructura de ingresos y gastos por partida y ministerio (6.2).
-2. Datos iniciales de 2010: gasto por función y deuda real.
-3. **Audiovisual:** gráfico de ingresos y gastos.
-
-**Tests:** la suma de las partidas es el total y el saldo coincide con el déficit.
-**Prueba en el PC:** ver el presupuesto inicial de España y compararlo con el de Alemania.
-**Hecho cuando:** todos los países tienen su presupuesto de 2010.
-
-#### Fase 22 — v0.23.0 · Deuda, prima de riesgo y rating
-**Objetivo:** el déficit se convierte en deuda y los mercados reaccionan.
-**Tareas**
-1. Déficit, emisión de bonos, intereses, prima de riesgo y rating.
-2. Impago y petición de ayuda al FMI.
-3. **Audiovisual:** distintivo animado del rating.
-
-**Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo.
-**Prueba en el PC:** ver la prima de riesgo de Grecia durante 2010.
-**Hecho cuando:** la deuda y el rating responden al déficit.
 
 #### Fase 23 — v0.24.0 · Pantalla de Presupuesto
 **Objetivo:** editar el presupuesto.
@@ -2087,6 +2095,7 @@ La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, 
 17. **Prioridad de los fallos:** un fallo que rompa el juego publicado se corrige antes que cualquier tarea nueva.
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
 19. **Audiovisual en cada fase:** cada fase entrega su contenido audiovisual (gráficos, animación, sonido y, si procede, 3D) según la sección 7.1. Se crea con código o con material de licencia libre anotado en `/docs/creditos.md`; nunca se usa material sin licencia clara. El 3D se propone al jugador en el plan de la fase y siempre tiene alternativa en 2D.
+20. **Consecuencias probadas (pilar 9):** cada sistema llega con al menos un test de «si se hace mal, empeora» (p. ej. recortar la inversión hace caer el PIB; gastar sin ingresos dispara la deuda y los intereses) y ningún modelo da mejoras gratis por defecto.
 
 ---
 
@@ -2146,6 +2155,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Fase 14 concretada con el jugador: cinco ranuras manuales; guardado automático mensual (se conservan los tres últimos) y uno por año; menú de la partida con Guardar, Cargar, Ajustes y Salir, y Ctrl+S; «Continuar» y «Cargar partida» en el inicio; la fase pasa a 4 tareas | Plan de la Fase 14 aprobado por el jugador | 9, 13 |
 | 17/11/2026 | Los guardados manuales pueden llevar un nombre (opcional, hasta 60 caracteres), que se ve en las ranuras, en «Cargar partida» y en «Continuar»; Ctrl+S conserva el de la ranura. El almacenamiento persistente se pide al guardar por primera vez | Petición y duda del jugador tras probar la v0.15.0 (ajustes f14-a1 y f14-a2) | 13 |
 | 17/11/2026 | Fase 15 concretada con el jugador: siete sectores con datos reales de la ONU; sin azar en la economía (cambia por las decisiones: inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010; evolución en la ficha y en Economía › Economía; la fase pasa a 4 tareas | Plan de la Fase 15 aprobado por el jugador | 6.1, 9, 13 |
+| 17/11/2026 | Nada mejora solo y nada es gratis: sin decisiones, cada país sigue sus datos (con desequilibrios, cae en crisis si no se corrigen); cada palanca tiene su coste; dureza según la dificultad. Ajuste f15-a1 (v0.16.1): productividad que solo converge con base, desequilibrios de 2010 que fuerzan un ajuste. Presupuesto y deuda adelantados a las Fases 17 y 18 (la pantalla de Economía, el banco central, la moneda y los bancos pasan a las 19 a 22). Regla 20: tests de «si se hace mal, empeora» | Consulta del jugador tras la v0.16.0 («la economía no siempre va a crecer») | 1, 6.1, 9, 11, 13 |
 
 ---
 
@@ -2172,6 +2182,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Pausa automática | Sucesos importantes / fin de efectos / cada mes / cada año; ventana central / franja bajo la barra | **Decidido por el jugador (17/11/2026):** una opción, «Sucesos importantes» (cualquier suceso importante: elecciones, guerras, golpes de Estado, catástrofes, tratados, crisis…), con aviso en una ventana en el centro y sonido. Los efectos en curso se ven en la explicación de cada dato y en la ventana «Efectos en curso» de Informes. La luna de miel de la popularidad no caduca todavía: espera a la opinión pública (Fase 56) |
 | Guardar y cargar | Ranuras: 3 / 5 / sin límite; automáticos: el último / los 3 últimos / los 3 últimos y uno por año; botones en la barra / menú de la partida; en el inicio, «Continuar» y «Cargar» / solo «Cargar» | **Decidido por el jugador (17/11/2026):** cinco ranuras manuales (pregunta antes de sobrescribir); guardado automático al empezar cada mes, del que se conservan los tres últimos, más el del 1 de enero de cada año; se guarda y se carga desde el menú de la partida (botón «Menú»: Guardar, Cargar, Ajustes y Salir, que pregunta si guardar antes) y con Ctrl+S; en el inicio, «Continuar» (la partida más reciente) y «Cargar partida». Los guardados manuales pueden llevar un nombre (ajuste f14-a1, petición del jugador). Las partidas del navegador se conservan mientras no se borren los datos del sitio; para llevarlas a otro navegador u ordenador, o como copia de seguridad, se exportan a un archivo .json |
 | Economía: sectores y azar | 3 sectores / uno / más sectores; variaciones al azar / sin azar; arranque real de 2010 / crecimiento normal | **Decidido por el jugador (17/11/2026):** siete sectores con datos reales de la ONU (sección 6.1); sin azar en la economía, que cambia por las decisiones del jugador y de la IA (inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010, que converge al potencial; se ve en la ficha de cada país y en Economía › Economía |
+| Economía sin intervención y dureza | Según sus datos / casi quieta; corregir ya / en la Fase 16; adelantar presupuesto y deuda / mantener el orden; dureza según la dificultad / siempre realista / manejable | **Decidido por el jugador (17/11/2026):** sin intervención, cada país sigue sus datos (nada mejora solo; con desequilibrios cae en crisis); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda pasan a las Fases 17 y 18; la dureza depende de la dificultad («realista», como la realidad) |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
@@ -2180,7 +2191,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Color de cada país | Reparto automático / por bandera (A) / por bandera y colores tradicionales (B) | **Decidido por el jugador (16/11/2026):** B, y en la v0.8.2 con una tabla completa de colores representativos (España y Rumanía amarillo, Portugal y Reino Unido rojo, Marruecos rojo y verde…) y colores libres alrededor de cada tono, sin que se note la repetición |
 | Ventanas de las secciones | En la Fase 10 (A) / ya, vacías hasta su fase (B) | **Decidido por el jugador (16/11/2026):** B, en la v0.8.1; en la v0.8.2, barra de 8 apartados con sub-barra y una ventana por ministerio |
 | Elegir país en la nueva partida | Mapa grande y panel / menú con mapa pequeño | **Decidido por el jugador (16/11/2026):** mapa grande a pantalla completa y panel a la izquierda con la lista ordenable, el resumen del país y las opciones |
-| Tesorería inicial (provisional) | 0 y el déficit real / estimada con fórmula | **Decidido por el jugador (16/11/2026):** estimada con fórmula a partir de los ingresos del Estado (FMI), marcada como provisional hasta la economía. **Fórmula (f10-t2, `src/sim/config/inicio.json`):** ingresos de las administraciones públicas de 2010 (% del PIB, FMI Monitor Fiscal) × PIB / 12, es decir, los ingresos de un mes, redondeados al millón de dólares. La sustituye el presupuesto (Fase 21) |
+| Tesorería inicial (provisional) | 0 y el déficit real / estimada con fórmula | **Decidido por el jugador (16/11/2026):** estimada con fórmula a partir de los ingresos del Estado (FMI), marcada como provisional hasta la economía. **Fórmula (f10-t2, `src/sim/config/inicio.json`):** ingresos de las administraciones públicas de 2010 (% del PIB, FMI Monitor Fiscal) × PIB / 12, es decir, los ingresos de un mes, redondeados al millón de dólares. La sustituye el presupuesto (Fase 17) |
 | Popularidad inicial (provisional) | Estimada con fórmula / 50 % para todos | **Decidido por el jugador (16/11/2026):** estimada con el crecimiento, el paro, la inflación y los años del líder en el cargo, marcada como provisional hasta la opinión pública. **Fórmula (f10-t2, `src/sim/config/inicio.json`):** 50 + crecimiento ((PIB % − 2) × 2, entre −10 y +10) + paro ((paro % − 7) × −0,6, entre −12 y +6) + inflación ((inflación % − 3) × −0,5, entre −10 y +3) − 1,2 por año del jefe de Gobierno en el cargo (máximo −12) + 6 en su primer año + 5 en los regímenes sin elecciones libres (partido único, monarquía absoluta, junta y teocracia); el resultado, redondeado y entre 15 y 85. La sustituye la opinión pública (Fase 56) |
 | Buscador | Caja fija arriba / lupa y ventana central | **Decidido por el jugador (16/11/2026):** lupa arriba y tecla B, que abren una ventana de búsqueda en el centro; encuentra países, regiones y ciudades |
 | Ficha de región | Solo datos que ya hay / con el líder regional de 2010 | **Decidido por el jugador (16/11/2026):** ficha con pestañas como la de país, con la actividad económica principal y los recursos de cada región |
