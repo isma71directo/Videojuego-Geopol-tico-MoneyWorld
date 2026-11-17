@@ -21,9 +21,10 @@ import {
  * migración desde la anterior (regla 9 de CLAUDE.md):
  *  - 1: v0.11.0 a v0.13.x (sin efectos ni agenda).
  *  - 2: v0.14.0 y v0.15.x: efectos (f13-t1), agenda de sucesos (f13-t3) e identificador (f14-t1).
- *  - 3: v0.16.0 en adelante: la economía de cada país (f15-t2).
+ *  - 3: v0.16.0: la economía de cada país (f15-t2).
+ *  - 4: v0.16.1 en adelante: los desequilibrios de 2010 en la economía (ajuste f15-a1).
  */
-export const FORMATO_PARTIDA = 3;
+export const FORMATO_PARTIDA = 4;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */

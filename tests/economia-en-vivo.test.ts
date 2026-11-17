@@ -53,7 +53,8 @@ describe('confianza y ahorro (tarea f15-t3)', () => {
   it('con el tiempo vuelve poco a poco hacia lo normal, al acercarse al potencial', () => {
     const grecia = economiaDe('GRC');
     const antes = grecia.confianzaEmpresas;
-    meses(grecia, 48);
+    // (Tras el ajuste forzoso de sus desequilibrios de 2010: ajuste f15-a1.)
+    meses(grecia, 96);
     expect(grecia.confianzaEmpresas).toBeGreaterThan(antes);
     expect(Math.abs(grecia.confianzaEmpresas - 100)).toBeLessThan(Math.abs(antes - 100));
   });
@@ -170,9 +171,22 @@ describe('iconos y gráfico animado (tarea f15-t4)', () => {
       expect(NOMBRES_ICONOS).toContain(nuevo);
       expect(t(`galeria.iconos.${nuevo}`)).not.toContain('galeria.');
     }
-    const bloque = bloqueEconomia(() => ({ economia: economiaDe('ITA'), fecha: '2010-01-01' }));
+    // (China no tiene desequilibrios en 2010: no sale la fila del ajuste forzoso.)
+    const bloque = bloqueEconomia(() => ({ economia: economiaDe('CHN'), fecha: '2010-01-01' }));
     expect(bloque.elemento.querySelectorAll('.economia__termino .icono')).toHaveLength(8);
     expect(bloque.elemento.querySelectorAll('.grafico__leyenda--partes .icono')).toHaveLength(7);
+  });
+
+  it('mientras dura el ajuste forzoso, se ve cuánto falta por recortar (ajuste f15-a1)', () => {
+    const e = economiaDe('GRC');
+    const bloque = bloqueEconomia(() => ({ economia: e, fecha: '2010-01-01' }));
+    document.body.appendChild(bloque.elemento);
+    const texto = () => bloque.elemento.textContent!;
+    expect(texto()).toContain('Ajuste forzoso');
+    expect(texto()).toContain('8,4 % por recortar');
+    meses(e, 120);
+    refrescarEconomiaEnVivo();
+    expect(texto()).not.toContain('Ajuste forzoso');
   });
 
   it('el gráfico se dibuja la primera vez y después solo late el último punto', () => {

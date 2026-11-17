@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.16.0",
-  "actualizado": "2026-11-17T13:51:22Z",
+  "actualizado": "2026-11-17T18:21:44Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "El jugador fusionó la v0.16.0 y señaló que la economía no puede crecer siempre: si se hace mal, tiene que ir mal. Decisiones: sin intervención, cada país sigue sus datos (nada mejora solo; pilar 9 del GDD); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda se adelantan a las Fases 17 y 18 (Pantalla de Economía, banco central, moneda y bancos pasan a las 19 a 22); la dureza depende de la dificultad. Regla 20: cada sistema con tests de «si se hace mal, empeora».",
-    "siguientePaso": "f15-a1: productividad con convergencia condicionada, desequilibrios de 2010 que fuerzan un ajuste, dureza según la dificultad y tests; después, publicar la v0.16.1.",
+    "resumen": "f15-a1 hecha (nada mejora solo): la productividad solo converge con base (alfabetización, electricidad, internet y educación; sin ella apenas crece); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan, a los seis meses, un ajuste que recorta el gasto público, cierra el crédito y hunde la confianza hasta cerrar el déficit; dureza según la dificultad (realista 100 %, normal 75 %, fácil 50 %; dura lo mismo). Sin intervención, Grecia cae cuatro años (−8 %, −7 %, −4 %, −2 %) y en diez no recupera su PIB de 2010; Portugal, España, Islandia y Letonia también encogen; EE. UU., Japón y Alemania no. Fila «Ajuste forzoso» en la ficha. Formato de partida 4 con migración.",
+    "siguientePaso": "Publicar la v0.16.1 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -998,7 +998,7 @@
           "titulo": "Nada mejora solo (decisión del jugador): la productividad solo converge si el país tiene base (alfabetización, electricidad, internet, educación); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan un ajuste (menos crédito e inversión, recorte del gasto) que hunde la demanda y la confianza hasta cerrar el déficit, provisional hasta la deuda de la Fase 18; dureza según la dificultad; tests de «si se hace mal, empeora»",
           "version": "0.16.1",
           "origen": "Consulta del jugador tras la v0.16.0: «la economía no siempre va a crecer»",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

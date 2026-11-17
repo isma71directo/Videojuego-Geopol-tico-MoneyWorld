@@ -1202,6 +1202,9 @@
       "inversionAyuda": "Lo que se invierte en máquinas, edificios e infraestructuras, en % del PIB: se suma al capital y hace crecer la producción.",
       "ahorro": "Ahorro nacional",
       "ahorroAyuda": "Lo que no consumen los hogares ni el Estado, en % del PIB.",
+      "ajuste": "Ajuste forzoso",
+      "ajusteValor": "{cantidad} por recortar",
+      "ajusteAyuda": "Con la deuda, el déficit, el déficit exterior o el paro de 2010, los mercados le cierran el crédito y el Estado tiene que recortar su gasto (lo que falta, en % del PIB) hasta dejar el déficit en el 3 % del PIB: baja la inversión, cae la confianza y el PIB se hunde mientras dure. Si nadie actúa, no se arregla solo. (Provisional: la deuda de verdad llega en la Fase 18.)",
       "sectoresTitulo": "Producción por sectores",
       "sectores": {
         "agricultura": "Agricultura y pesca",

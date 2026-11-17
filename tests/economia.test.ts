@@ -5,10 +5,12 @@ import { describe, expect, it } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
 import {
   avanzarMes,
+  baseParaCrecer,
   CAMPO_SECTOR,
   completarEconomia,
   crecimientoInteranual,
   crecimientoPotencial,
+  durezaDe,
   economiaInicial,
   faltaEconomia,
   impulsoEnMes,
@@ -27,12 +29,12 @@ const paises = JSON.parse(
 const jugables = Object.values(paises.paises).filter((p) => p.jugable);
 const economiaDe = (id: string): EconomiaPais =>
   economiaInicial(paises.paises[id]!.datos, paises.paises[id]!.nivelRenta)!;
-/** Avanza unos meses y devuelve el crecimiento de cada año. */
-function anios(economia: EconomiaPais, cuantos: number): number[] {
+/** Avanza unos años (en «realista», si no se dice) y devuelve el crecimiento de cada uno. */
+function anios(economia: EconomiaPais, cuantos: number, dureza = 1): number[] {
   const crecimientos: number[] = [];
   for (let a = 0; a < cuantos; a++) {
     const antes = economia.pib;
-    for (let m = 0; m < 12; m++) avanzarMes(economia);
+    for (let m = 0; m < 12; m++) avanzarMes(economia, dureza);
     crecimientos.push(economia.pib / antes - 1);
   }
   return crecimientos;
@@ -73,12 +75,13 @@ describe('la economía de 2010 (tarea f15-t2)', () => {
     expect(productividadDelPais(1_000)).toBeGreaterThan(productividadDelPais(10_000));
     expect(productividadDelPais(10_000)).toBeGreaterThan(productividadDelPais(45_000));
     expect(productividadDelPais(80_000)).toBeCloseTo(0.008, 5);
-    expect(productividadDelPais(100)).toBeLessThanOrEqual(0.028);
+    expect(productividadDelPais(100)).toBeLessThanOrEqual(0.03);
   });
 });
 
 describe('cómo evoluciona (tarea f15-t2)', () => {
   it('sin intervención, el PIB de los 20 mayores países evoluciona en rangos creíbles durante 5 años (prueba del GDD)', () => {
+    // Ajuste f15-a1: nada mejora solo; España, con su paro y su déficit de 2010, puede encoger.
     const mayores = [...jugables]
       .sort((a, b) => (b.datos.pib ?? 0) - (a.datos.pib ?? 0))
       .slice(0, 20);
@@ -86,11 +89,11 @@ describe('cómo evoluciona (tarea f15-t2)', () => {
       const e = economiaDe(pais.id);
       const crecimientos = anios(e, 5);
       for (const g of crecimientos) {
-        expect(g, pais.id).toBeGreaterThan(-0.03);
+        expect(g, pais.id).toBeGreaterThan(-0.05);
         expect(g, pais.id).toBeLessThan(0.12);
       }
       const veces = e.pib / pais.datos.pib!;
-      expect(veces, pais.id).toBeGreaterThan(1.02);
+      expect(veces, pais.id).toBeGreaterThan(0.95);
       expect(veces, pais.id).toBeLessThan(1.6);
       expect(e.serie, pais.id).toHaveLength(61);
     }
@@ -143,6 +146,105 @@ describe('cómo evoluciona (tarea f15-t2)', () => {
   });
 });
 
+describe('nada mejora solo: si se hace mal, empeora (ajuste f15-a1)', () => {
+  it('sin base para crecer (alfabetización, electricidad, internet, educación), la productividad apenas crece', () => {
+    expect(productividadDelPais(1_000, 0.3)).toBeLessThan(productividadDelPais(1_000, 1) / 2);
+    expect(productividadDelPais(1_000, 0)).toBeGreaterThanOrEqual(0);
+    const base = (id: string) => baseParaCrecer(paises.paises[id]!.datos);
+    expect(base('TCD')).toBeLessThan(0.4);
+    expect(base('DEU')).toBeGreaterThan(0.95);
+    // Chad, más pobre que la India, crece menos en productividad: le falta base.
+    expect(economiaDe('TCD').crecimientoProductividad).toBeLessThan(
+      economiaDe('IND').crecimientoProductividad,
+    );
+  });
+
+  it('Grecia, sin hacer nada, se hunde cuatro años seguidos y en diez no recupera su PIB de 2010', () => {
+    // Real: −5,5 %, −10,1 %, −7,1 % y −2,7 % en 2010–2013 (−23 % en total).
+    const grecia = economiaDe('GRC');
+    const crecimientos = anios(grecia, 4);
+    for (const g of crecimientos) expect(g).toBeLessThan(0);
+    expect(grecia.pib / paises.paises.GRC!.datos.pib!).toBeLessThan(0.85);
+    anios(grecia, 6);
+    expect(grecia.pib).toBeLessThan(paises.paises.GRC!.datos.pib!);
+  });
+
+  it('los desequilibrios de 2010 fuerzan un ajuste: recorte del gasto, menos crédito y menos confianza', () => {
+    const grecia = economiaDe('GRC');
+    const gasto = grecia.demandaBase.consumoPublico;
+    const pendiente = grecia.desequilibrio.ajustePendiente;
+    expect(grecia.desequilibrio.intensidad).toBeGreaterThan(1.5);
+    // Déficit de 2010 del 11,4 %: hay que cerrar lo que pasa del 3 %.
+    expect(pendiente).toBeCloseTo(0.084, 3);
+    anios(grecia, 2);
+    expect(grecia.demandaBase.consumoPublico).toBeLessThan(gasto - 0.02);
+    expect(grecia.desequilibrio.ajustePendiente).toBeLessThan(pendiente);
+    expect(grecia.desequilibrio.creditoPerdido).toBeGreaterThan(0.03);
+    expect(grecia.confianzaEmpresas).toBeLessThan(85);
+    // Cerrado el déficit, el crédito vuelve poco a poco (a la mitad cada 3 años).
+    anios(grecia, 8);
+    expect(grecia.desequilibrio.ajustePendiente).toBe(0);
+    const credito = grecia.desequilibrio.creditoPerdido;
+    anios(grecia, 3);
+    expect(grecia.desequilibrio.creditoPerdido).toBeCloseTo(credito / 2, 3);
+  });
+
+  it('un país sin desequilibrios no sufre ese ajuste', () => {
+    const china = economiaDe('CHN');
+    expect(china.desequilibrio.intensidad).toBeLessThan(0.05);
+    anios(china, 3);
+    expect(china.desequilibrio.creditoPerdido).toBeLessThan(0.001);
+  });
+
+  it('si se invierte menos, hay menos capital y menos PIB', () => {
+    const normal = economiaDe('FRA');
+    const menos = economiaDe('FRA');
+    menos.demandaBase.inversion -= 0.05;
+    anios(normal, 5);
+    anios(menos, 5);
+    const capital = (e: EconomiaPais) => SECTORES.reduce((t, s) => t + e.sectores[s].capital, 0);
+    expect(capital(menos)).toBeLessThan(capital(normal));
+    expect(menos.pib).toBeLessThan(normal.pib);
+  });
+
+  it('si el Estado recorta su gasto, el PIB cae a corto plazo', () => {
+    const normal = economiaDe('DEU');
+    const recorte = economiaDe('DEU');
+    recorte.demandaBase.consumoPublico -= 0.03;
+    anios(normal, 1);
+    anios(recorte, 1);
+    expect(recorte.pib).toBeLessThan(normal.pib * 0.99);
+  });
+
+  it('sin intervención, varios países encogen en 5 años', () => {
+    const encogen = jugables.filter((pais) => {
+      const e = economiaInicial(pais.datos, pais.nivelRenta)!;
+      anios(e, 5);
+      return e.pib < pais.datos.pib!;
+    });
+    expect(encogen.map((p) => p.id)).toEqual(expect.arrayContaining(['GRC', 'PRT', 'ISL']));
+    expect(encogen.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it('según la dificultad: en realista es más duro que en fácil, y el ajuste dura lo mismo', () => {
+    expect(durezaDe('realista')).toBe(1);
+    expect(durezaDe('facil')).toBeLessThan(durezaDe('normal'));
+    expect(durezaDe('normal')).toBeLessThan(1);
+    const realista = economiaDe('GRC');
+    const facil = economiaDe('GRC');
+    const fin = (e: EconomiaPais, dureza: number) => {
+      let mes = 0;
+      while (e.desequilibrio.ajustePendiente > 0 && mes < 240) {
+        avanzarMes(e, dureza);
+        mes++;
+      }
+      return mes;
+    };
+    expect(fin(realista, 1)).toBe(fin(facil, durezaDe('facil')));
+    expect(realista.pib).toBeLessThan(facil.pib * 0.95);
+  });
+});
+
 describe('en la partida (tarea f15-t2)', () => {
   const nueva = () =>
     crearPartida(
@@ -188,6 +290,47 @@ describe('en la partida (tarea f15-t2)', () => {
       juego: JUEGO,
       formato: 2,
       version: '0.15.1',
+      partida: antigua,
+    }).partida;
+    expect(cargada.formato).toBe(FORMATO_PARTIDA);
+    expect(faltaEconomia(cargada)).toBe(true);
+    completarEconomia(cargada, paises.paises);
+    expect(faltaEconomia(cargada)).toBe(false);
+    expect(cargada).toEqual(partida);
+  });
+
+  it('el motor aplica la dureza de la dificultad de la partida (ajuste f15-a1)', () => {
+    const pibGrecia = (dificultad: 'facil' | 'realista') => {
+      const motor = crearMotor({ sistemas: [sistemaEconomia] });
+      const partida = crearPartida(
+        { paisId: 'ESP', dificultad, eventosHistoricos: true, semilla: 3 },
+        paises.paises,
+      );
+      motor.atender({ tipo: 'empezar', partida, pausaAutomatica: false });
+      motor.atender({ tipo: 'velocidad', velocidad: 64 });
+      while (motor.partida!.fecha < '2012-01-01') motor.avanzar(250);
+      return motor.partida!.paises.GRC!.economia!.pib;
+    };
+    expect(pibGrecia('realista')).toBeLessThan(pibGrecia('facil'));
+  });
+
+  it('una partida de la v0.16.0 (formato 3) se migra y recibe los desequilibrios de 2010 (ajuste f15-a1)', () => {
+    const partida = nueva();
+    const antigua = structuredClone(partida) as unknown as {
+      formato: number;
+      paises: Record<string, { economia: Record<string, unknown> | null }>;
+    };
+    antigua.formato = 3;
+    for (const estado of Object.values(antigua.paises)) {
+      if (!estado.economia) continue;
+      delete estado.economia.desequilibrio;
+      delete estado.economia.demandaReferencia;
+      estado.economia.crecimientoProductividad = 0.01;
+    }
+    const cargada = desempaquetar({
+      juego: JUEGO,
+      formato: 3,
+      version: '0.16.0',
       partida: antigua,
     }).partida;
     expect(cargada.formato).toBe(FORMATO_PARTIDA);
