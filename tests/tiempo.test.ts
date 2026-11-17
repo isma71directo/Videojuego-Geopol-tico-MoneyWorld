@@ -101,7 +101,7 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     expect(tiempo.velocidad).toBe(0);
   });
 
-  it('teclado: espacio pausa o sigue; 1 a 4 eligen ×1, ×2, ×4 y ×8', () => {
+  it('teclado: espacio pausa o sigue; 1 a 5 eligen ×1, ×2, ×4, ×8 y ×16', () => {
     const { tiempo } = crear();
     const pulsar = (key: string, destino: EventTarget = document.body, extra = {}) => {
       const evento = tecla(key, extra);
@@ -116,6 +116,11 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     expect(tiempo.velocidad).toBe(2);
     pulsar('3');
     expect(tiempo.velocidad).toBe(4);
+    pulsar('5');
+    expect(tiempo.velocidad).toBe(16);
+    expect(tiempo.elemento.querySelector('[data-velocidad="16"]')!.getAttribute('aria-label')).toBe(
+      'Velocidad ×16 (tecla 5)',
+    );
     pulsar(' ');
     expect(tiempo.velocidad).toBe(0);
     // Mantener el espacio pulsado no hace parpadear la pausa.
@@ -129,7 +134,8 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     const boton = document.createElement('button');
     document.body.appendChild(boton);
     expect(pulsar(' ', boton)).toBe(false);
-    expect(pulsar('5')).toBe(false);
+    expect(pulsar('6')).toBe(false);
+    expect(pulsar('0')).toBe(false);
     expect(tiempo.velocidad).toBe(0);
   });
 

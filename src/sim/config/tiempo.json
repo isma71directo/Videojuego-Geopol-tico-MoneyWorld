@@ -1,7 +1,7 @@
 {
-  "$comentario": "Reloj del juego (Fase 11, decisión del jugador e issue n.º 3): corre por horas y marca la hora local de la capital del jugador. A ×1 pasa una hora cada «msPorHora» milisegundos (ajuste f11-a2, decisión del jugador: una hora cada 2 s, un día en 48 s y, a ×8, un año en unos 36 min); cada velocidad lo multiplica. «maxMsPorFotograma» evita saltos de tiempo si la pantalla se queda parada (otra pestaña, el ordenador dormido). La partida empieza en pausa.",
+  "$comentario": "Reloj del juego (Fase 11, decisión del jugador e issue n.º 3): corre por horas y marca la hora local de la capital del jugador. A ×1 pasa una hora cada «msPorHora» milisegundos (ajuste f11-a2, decisión del jugador: una hora cada 2 s, un día en 48 s y, a ×8, un año en unos 36 min; ×16 añadida en el ajuste f11-a3); cada velocidad lo multiplica. «maxMsPorFotograma» evita saltos de tiempo si la pantalla se queda parada (otra pestaña, el ordenador dormido). La partida empieza en pausa.",
   "msPorHora": 2000,
-  "velocidades": [1, 2, 4, 8],
+  "velocidades": [1, 2, 4, 8, 16],
   "maxMsPorFotograma": 250,
   "empiezaEnPausa": true
 }
