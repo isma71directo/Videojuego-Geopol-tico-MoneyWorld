@@ -1,15 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.4",
-  "actualizado": "2026-11-17T06:42:26Z",
-  "faseActiva": "fase-12",
+  "versionActual": "0.13.0",
+  "actualizado": "2026-11-17T07:14:41Z",
+  "faseActiva": "fase-13",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "v0.12.4 publicada: velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (f11-a4) y «Nueva partida» sin semilla (f11-a5). Decisión del jugador sobre el azar anotada en el GDD y en el plan de la Fase 12. PR abierto.",
-    "siguientePaso": "Cuando el jugador fusione la v0.12.4: presentar el plan de la Fase 12 (motor en un Web Worker, azar distinto en cada partida y primera música ambiental) y preguntarle por el estilo de la música.",
+    "resumen": "Fase 12 cerrada como v0.13.0: motor de la partida en un Web Worker, azar distinto en cada partida y música ambiental (doce piezas tranquilas y ocho tensas, compuestas con código). PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.13.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 13 (efectos y pausa automática).",
     "pendienteDelJugador": [
-      "Probar la v0.12.4 en el PC: «Nueva partida» ya no tiene semilla; en la partida, las velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (teclas 1 a 6)",
-      "Fusionar el PR de la v0.12.4"
+      "Probar la v0.13.0 en el PC: tras el primer clic en el inicio suena la música; en Ajustes, su volumen; en una partida, jugar a ×64 y comprobar que el mapa y los menús responden al instante, y que en pausa la música baja; en la galería, escuchar las piezas tranquilas y tensas y el cambio de ambiente",
+      "Opcional: abrir el juego con «?carga=200» al final de la dirección para ver que, aunque el motor vaya muy cargado, la pantalla no se bloquea (el tiempo va más despacio)",
+      "Fusionar el PR de la Fase 12"
     ]
   },
   "etapas": [
@@ -820,29 +821,36 @@
       "objetivo": "La simulación calcula sin bloquear la pantalla, con un azar distinto en cada partida",
       "dependeDe": ["fase-11"],
       "hechoCuando": "El tiempo avanza sin bloquear la interfaz",
-      "pruebaJugador": "Jugar a ×64 y comprobar que los menús siguen respondiendo al instante; empezar dos partidas con el mismo país y ver que no se desarrollan igual",
-      "estado": "pendiente",
+      "pruebaJugador": "Jugar a ×64 y comprobar que los menús y el mapa siguen respondiendo al instante; escuchar la música en el menú y en la partida (baja un poco en pausa) y cambiar su volumen en Ajustes; oír las piezas tranquilas y tensas en la galería.",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f12-t1",
-          "titulo": "Motor de simulación en un Web Worker con comunicación por mensajes",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Motor en un Web Worker: la partida y el reloj viven en el worker; la pantalla manda órdenes (pausa, velocidad) y recibe el estado; si un paso tarda, el tiempo va más despacio sin bloquear la pantalla (carga de prueba en desarrollo)",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/df92973"
         },
         {
           "id": "f12-t2",
-          "titulo": "Azar de la partida (decisión del jugador): distinto en cada partida, sin semilla que elegir; la IA no repite decisiones ni las del jugador tienen siempre la misma consecuencia; generador propio con su semilla anotada por dentro solo para reproducir fallos y para los tests",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Azar de la partida (decisión del jugador): generador propio sembrado al azar en cada partida y de nuevo al cargar; el conjunto de decisiones de todos los países hace prácticamente imposible repetir una partida; semilla interna solo para tests y fallos",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3fd2e77"
         },
         {
           "id": "f12-t3",
-          "titulo": "Audiovisual: primera música ambiental sintetizada, con su propio volumen",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Audiovisual: motor de música con piezas fijas compuestas con código y las piezas tranquilas, en el menú y en la partida, con su volumen; en pausa baja un poco",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2383eb7"
+        },
+        {
+          "id": "f12-t4",
+          "titulo": "Audiovisual: piezas tensas (crisis, guerras y elecciones) y cambio de ambiente con fundido; reparto sin repetir hasta que suenan todas; muestrario de la música en la galería",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7078b71"
         }
       ]
     },
@@ -4603,6 +4611,16 @@
       "cambios": [
         "Velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4), con las teclas 1 a 6; a ×64, un día en 0,75 s",
         "«Nueva partida» sin semilla: cada partida tiene su propio azar, que no se elige"
+      ]
+    },
+    {
+      "version": "0.13.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "La partida y el reloj corren en un Web Worker (otro hilo): la pantalla nunca se bloquea, y si un paso tarda el tiempo va más despacio",
+        "Azar propio de la partida, distinto en cada una (decisión del jugador): base de la economía, la IA y los eventos de las próximas fases",
+        "Música ambiental compuesta con código: doce piezas tranquilas (media hora) en el menú y en la partida, con su volumen en Ajustes y más baja en pausa",
+        "Ocho piezas tensas para crisis, guerras y elecciones, cambio de ambiente con fundido y sección «Música ambiental» en la galería"
       ]
     }
   ]

@@ -73,14 +73,6 @@ export function paisesJugables(paises: Record<string, PaisParaPartida>): string[
     .map(([id]) => id);
 }
 
-/**
- * Semilla nueva al azar para cada partida (ajuste f11-a5, decisión del jugador: cada partida es
- * distinta y no se elige). Se anota en la partida solo para poder reproducir un fallo.
- */
-export function semillaAlAzar(azar: () => number = Math.random): number {
-  return 1 + Math.floor(azar() * 999_999_999);
-}
-
 /** Huso de un país; sin el dato (si no se ha podido cargar), UTC. */
 function husoDe(paisId: string, husos: Record<string, readonly [string, number]>): Huso {
   const huso = husos[paisId];

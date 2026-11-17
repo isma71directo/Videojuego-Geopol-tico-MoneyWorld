@@ -854,13 +854,14 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 12 — v0.13.0 · Motor en segundo plano
 **Objetivo:** la simulación calcula sin bloquear la pantalla, con un azar distinto en cada partida.
-**Tareas**
-1. Motor de simulación en un Web Worker con comunicación por mensajes.
-2. Azar de la partida (decisión del jugador, 17/11/2026): distinto en cada partida, de modo que la IA de los otros países no repita sus decisiones ni las del jugador tengan siempre la misma consecuencia; al cargar una partida guardada en un punto anterior, repetir lo mismo puede dar el mismo resultado o no. Generador propio con su semilla anotada por dentro, solo para reproducir fallos y para los tests.
-3. **Audiovisual:** primera música ambiental sintetizada, con su propio volumen.
+**Tareas** (concretadas con el jugador el 17/11/2026: azar distinto en cada partida; música tranquila y tensa según la situación, en piezas fijas abundantes, en el menú y en la partida)
+1. Motor en un Web Worker: la partida y el reloj viven en el worker; la pantalla le manda órdenes (pausa, velocidad) y recibe el estado. Si un paso tarda en calcularse, el tiempo va más despacio en lugar de bloquear la pantalla (carga de prueba en desarrollo para comprobarlo a ×64).
+2. Azar de la partida (decisión del jugador, 17/11/2026): distinto en cada partida. La IA puede repetir alguna decisión, pero el conjunto de lo que pasa en todos los países (acuerdos, alianzas, economías, partidos, guerras…) hace prácticamente imposible que dos partidas sean iguales, y las decisiones del jugador no tienen siempre la misma consecuencia. Al cargar una partida guardada en un punto anterior, el azar se vuelve a sembrar: repetir lo mismo puede dar el mismo resultado o no. Generador propio con su semilla anotada por dentro, solo para reproducir fallos y para los tests.
+3. **Audiovisual:** motor de música (piezas fijas compuestas con código, con su propio volumen) y las piezas tranquilas, en el menú y en la partida; en pausa la música baja un poco.
+4. **Audiovisual:** piezas tensas para crisis, guerras y elecciones (sonarán cuando lleguen esos sistemas), cambio de ambiente con un fundido y muestrario en la galería. Piezas abundantes que se reparten sin repetirse hasta haber sonado todas.
 
-**Tests:** dos partidas nuevas dan azares distintos; con la semilla fija de un test, el motor da siempre lo mismo (para poder comprobarlo).
-**Prueba en el PC:** jugar a ×8 y comprobar que los menús siguen respondiendo al instante.
+**Tests:** dos partidas nuevas dan azares distintos; con la semilla fija de un test, el motor da siempre lo mismo (para poder comprobarlo); el worker responde a las órdenes; la lista de piezas no repite ninguna hasta haber sonado todas.
+**Prueba en el PC:** jugar a ×64 y comprobar que los menús y el mapa siguen respondiendo al instante; escuchar la música en el menú y en la partida y cambiar su volumen en Ajustes. El azar aún no se nota: es la base de la economía, la IA y los eventos de las próximas fases.
 **Hecho cuando:** el tiempo avanza sin bloquear la interfaz.
 
 #### Fase 13 — v0.14.0 · Efectos y pausa automática
@@ -2122,6 +2123,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Velocidad ×16 (un día en 3 s, un año en unos 18 min), con la tecla 5 | Petición del jugador tras probar la v0.12.2 (ajuste f11-a3) | 5, 13 |
 | 17/11/2026 | Velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4), con las teclas 1 a 6 | Petición del jugador tras probar la v0.12.3 (ajuste f11-a4) | 5, 13 |
 | 17/11/2026 | Azar distinto en cada partida: se quita la semilla de «Nueva partida» (ajuste f11-a5) y la Fase 12 deja de buscar partidas repetibles; al cargar, repetir lo mismo puede dar otro resultado | Decisión del jugador al comentar el plan de la Fase 12 | 2, 7, 9, 13 |
+| 17/11/2026 | Fase 12 concretada con el jugador: motor en un Web Worker; azar distinto en cada partida (el conjunto de decisiones de todos los países hace prácticamente imposible repetir una partida); música tranquila y tensa según la situación, en piezas fijas abundantes, en el menú y en la partida; la fase pasa a 4 tareas | Plan de la Fase 12 aprobado por el jugador | 9, 13 |
 
 ---
 
@@ -2144,6 +2146,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Ventanas | Fijas a los lados / movibles | **Decidido por el jugador (16/11/2026):** movibles, arrastrando el título; recuerdan su sitio y puede haber varias abiertas |
 | Unidad de tiempo visible | 1 día (sección 5) / reloj por horas del día, como en Power & Revolution | **Decidido por el jugador (16/11/2026, issue n.º 3):** reloj por horas, con la hora local de la capital del jugador; ×1 = una hora cada 2 s (un día en 48 s; ajuste f11-a2, 17/11/2026, antes 0,5 s), ×2, ×8, ×16, ×32 y ×64 (ajustes f11-a3 y f11-a4, sin ×4); la simulación mantiene sus ritmos diario, semanal, mensual y anual. Noche y día en el mapa (ajuste f11-a1, 17/11/2026: la noche va de las 20:00 a las 7:00 en la capital del jugador todo el año; sin horario de verano ni diferencias horarias entre países) |
 | Azar de la partida | Repetible con la misma semilla / distinto en cada partida | **Decidido por el jugador (17/11/2026):** distinto en cada partida, sin semilla que elegir (se quita de «Nueva partida», ajuste f11-a5); la IA de 200 países no debe repetir decisiones ni las del jugador tener siempre la misma consecuencia. Al cargar una partida guardada en un punto anterior, repetir lo mismo puede dar el mismo resultado o no |
+| Música ambiental | Una pieza / tranquila / tensa / las dos según la situación; generativa / piezas fijas; solo en la partida / también en el menú | **Decidido por el jugador (17/11/2026):** las dos según la situación (la tensa, con crisis, guerras y elecciones); piezas fijas compuestas con código pero abundantes, para que no se repitan en poco tiempo; en el menú y en la partida |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |

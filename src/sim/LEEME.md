@@ -14,3 +14,10 @@ Lo que hay ya:
 - `valores-iniciales.ts`: tesorería y popularidad iniciales provisionales (Fase 10).
 - `reloj.ts`: el reloj por horas, sus pasos diarios, semanales, mensuales y anuales, y las
   velocidades (Fase 11).
+- `motor.ts`, `bucle.ts` y `trabajador.ts` (Fase 12): el motor guarda la partida y atiende las
+  órdenes de la pantalla; el bucle lo hace avanzar mientras el tiempo corre, y el Web Worker los
+  ejecuta en otro hilo para que la pantalla nunca se bloquee. La pantalla habla con él desde
+  `src/ui/conexion-motor.ts`.
+- `azar.ts` (Fase 12): el azar de la partida, sembrado distinto en cada una (y de nuevo al
+  cargar); los sistemas lo reciben del motor. Con la misma semilla da la misma serie, solo para los
+  tests y para reproducir fallos.

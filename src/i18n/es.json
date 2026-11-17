@@ -27,13 +27,14 @@
     },
     "ajustes": {
       "titulo": "Ajustes",
-      "vacio": "El resto de ajustes (velocidad, pausa automática, música, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
+      "vacio": "El resto de ajustes (pausa automática, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
       "version": "Versión del juego",
       "medidorFps": "Mostrar el medidor de rendimiento",
       "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
       "silenciar": "Silenciar el sonido",
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
       "volumenEfectos": "Volumen de los efectos",
+      "volumenMusica": "Volumen de la música",
       "intensidadTerreno": "Intensidad del terreno",
       "intensidadTerrenoAyuda": "Cuánto se ven los bosques, desiertos, montañas y hielo bajo los colores de los países (0 %: colores lisos).",
       "brilloAgua": "Brillo animado del agua",
@@ -1254,6 +1255,20 @@
       "pausa": "Pausar el tiempo",
       "seguir": "Seguir el tiempo",
       "velocidad": "Cambiar la velocidad del tiempo"
+    },
+    "musica": {
+      "titulo": "Música ambiental",
+      "nota": "Compuesta con código y sintetizada al momento, sin archivos de audio. Piezas fijas pero abundantes: media hora de música tranquila (la del menú y la partida) y un cuarto de hora de música tensa, que sonará con las crisis, guerras y elecciones. Se reparten sin repetirse hasta que suenan todas. Pulsa una pieza para escucharla o cambia de ambiente para oír el fundido.",
+      "tranquilas": "Piezas tranquilas",
+      "tensas": "Piezas tensas",
+      "tranquila": "tranquila",
+      "tensa": "tensa",
+      "escuchar": "Escuchar «{titulo}»",
+      "aTranquila": "Ambiente tranquilo",
+      "aTensa": "Ambiente tenso",
+      "parar": "Parar la música",
+      "nada": "No suena nada.",
+      "sonando": "Suena «{titulo}» (música {ambiente})."
     },
     "paleta": {
       "titulo": "Colores de referencia",

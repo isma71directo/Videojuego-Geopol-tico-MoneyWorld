@@ -1,45 +1,18 @@
 // @vitest-environment happy-dom
-/** Controles del tiempo de la partida: pausa, velocidades y teclado (tarea f11-t3). */
+/**
+ * Controles del tiempo de la partida: pausa, velocidades y teclado (tarea f11-t3). Desde la tarea
+ * f12-t1 el tiempo lo cuenta el motor (tests/motor.test.ts); los controles solo eligen la velocidad.
+ */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { NOMBRES_ICONOS } from '../src/av/iconos';
 import { t } from '../src/i18n';
 import { crearControlTiempo } from '../src/ui/tiempo';
 
-/** Reloj y fotogramas falsos: `correr(ms)` avanza el tiempo en fotogramas de 10 ms (exactos). */
-function relojFalso() {
-  let ahora = 0;
-  let siguienteId = 1;
-  const pendientes = new Map<number, (momento: number) => void>();
-  return {
-    ahora: () => ahora,
-    pedirFotograma: (accion: (momento: number) => void) => {
-      const id = siguienteId++;
-      pendientes.set(id, accion);
-      return id;
-    },
-    cancelarFotograma: (id: number) => pendientes.delete(id),
-    get pendientes() {
-      return pendientes.size;
-    },
-    correr(ms: number, paso = 10) {
-      for (let hecho = 0; hecho < ms; hecho += paso) {
-        ahora += paso;
-        const ahoraMismo = [...pendientes.entries()];
-        pendientes.clear();
-        for (const [, accion] of ahoraMismo) accion(ahora);
-      }
-    },
-  };
-}
-
 function crear() {
-  const reloj = relojFalso();
-  const alAvanzar = vi.fn();
   const alCambiarVelocidad = vi.fn();
-  const tiempo = crearControlTiempo({ alAvanzar, alCambiarVelocidad, ...reloj });
+  const tiempo = crearControlTiempo({ alCambiarVelocidad });
   document.body.appendChild(tiempo.elemento);
-  const horas = () => alAvanzar.mock.calls.reduce((total, [h]) => total + (h as number), 0);
-  return { reloj, tiempo, alAvanzar, alCambiarVelocidad, horas };
+  return { tiempo, alCambiarVelocidad };
 }
 
 const tecla = (key: string, opciones: KeyboardEventInit = {}) =>
@@ -48,44 +21,31 @@ const tecla = (key: string, opciones: KeyboardEventInit = {}) =>
 afterEach(() => document.body.replaceChildren());
 
 describe('controles del tiempo (tarea f11-t3)', () => {
-  it('empiezan en pausa y en pausa no se pide ningún fotograma', () => {
-    const { tiempo, reloj, horas } = crear();
+  it('empiezan en pausa', () => {
+    const { tiempo, alCambiarVelocidad } = crear();
     expect(tiempo.velocidad).toBe(0);
-    expect(reloj.pendientes).toBe(0);
-    reloj.correr(5000);
-    expect(horas()).toBe(0);
+    expect(alCambiarVelocidad).not.toHaveBeenCalled();
     const pausa = tiempo.elemento.querySelector<HTMLButtonElement>('.tiempo__pausa')!;
     expect(pausa.getAttribute('aria-pressed')).toBe('true');
     expect(pausa.getAttribute('aria-label')).toBe('Seguir (espacio)');
     expect(tiempo.elemento.textContent).toContain('En pausa');
   });
 
-  it('a ×1 pasa una hora cada 2 s; a ×8, un día en 6 s (ajuste f11-a2)', () => {
-    const { tiempo, reloj, horas, alCambiarVelocidad } = crear();
+  it('al pausar y seguir avisan de la velocidad nueva y de la anterior; siguen a la última', () => {
+    const { tiempo, alCambiarVelocidad } = crear();
     tiempo.alternarPausa();
     expect(tiempo.velocidad).toBe(1);
     expect(alCambiarVelocidad).toHaveBeenLastCalledWith(1, 0);
-    reloj.correr(6000);
-    expect(horas()).toBe(3);
     tiempo.ponerVelocidad(8);
-    reloj.correr(6000);
-    expect(horas()).toBe(3 + 24);
+    expect(alCambiarVelocidad).toHaveBeenLastCalledWith(8, 1);
     expect(tiempo.elemento.textContent).toContain('Velocidad ×8');
-  });
-
-  it('la pausa para el tiempo y al seguir vuelve a la última velocidad, sin contar lo parado', () => {
-    const { tiempo, reloj, horas } = crear();
-    tiempo.ponerVelocidad(8);
-    reloj.correr(500);
-    expect(horas()).toBe(2);
     tiempo.alternarPausa();
-    expect(reloj.pendientes).toBe(0);
-    reloj.correr(10_000);
-    expect(horas()).toBe(2);
+    expect(alCambiarVelocidad).toHaveBeenLastCalledWith(0, 8);
     tiempo.alternarPausa();
     expect(tiempo.velocidad).toBe(8);
-    reloj.correr(250);
-    expect(horas()).toBe(3);
+    // Una velocidad que no existe (×4 se quitó) no hace nada.
+    tiempo.ponerVelocidad(4);
+    expect(tiempo.velocidad).toBe(8);
   });
 
   it('botones: cada velocidad con el ratón, marcada como pulsada', () => {
@@ -141,15 +101,6 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     expect(pulsar('7')).toBe(false);
     expect(pulsar('0')).toBe(false);
     expect(tiempo.velocidad).toBe(0);
-  });
-
-  it('al destruirlo deja de pedir fotogramas', () => {
-    const { tiempo, reloj, horas } = crear();
-    tiempo.ponerVelocidad(1);
-    tiempo.destruir();
-    expect(reloj.pendientes).toBe(0);
-    reloj.correr(2000);
-    expect(horas()).toBe(0);
   });
 
   it('iconos de pausa y seguir registrados y con nombre', () => {

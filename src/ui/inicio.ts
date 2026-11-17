@@ -5,7 +5,13 @@ import { t } from '../i18n';
 import { guardarAjuste, leerAjuste } from './ajustes';
 import { el } from './dom';
 import { abrirHoja } from './hoja';
-import { cambiarVolumenEfectos, reproducir, silenciar, sonido } from './sonido';
+import {
+  cambiarVolumenEfectos,
+  cambiarVolumenMusica,
+  reproducir,
+  silenciar,
+  sonido,
+} from './sonido';
 import './estilos/inicio.css';
 
 /** Dirección de la Hoja de ruta vista desde el juego. */
@@ -75,6 +81,20 @@ function ajustesSonido(): HTMLElement[] {
   });
   // Al soltar el control suena un efecto de prueba con el volumen elegido.
   volumen.addEventListener('change', () => reproducir('seleccionar'));
+  // Volumen de la música (tarea f12-t3).
+  const volumenMusica = el('input', {
+    type: 'range',
+    min: 0,
+    max: 100,
+    step: 5,
+    value: Math.round(sonido.volumenMusica * 100),
+    'aria-label': t('juego.ajustes.volumenMusica'),
+  });
+  const valorMusica = el('output', {}, `${volumenMusica.value} %`);
+  volumenMusica.addEventListener('input', () => {
+    valorMusica.textContent = `${volumenMusica.value} %`;
+    cambiarVolumenMusica(Number(volumenMusica.value) / 100);
+  });
   return [
     el(
       'label',
@@ -93,6 +113,13 @@ function ajustesSonido(): HTMLElement[] {
       el('strong', {}, t('juego.ajustes.volumenEfectos')),
       volumen,
       valor,
+    ),
+    el(
+      'label',
+      { class: 'ajuste ajuste--deslizador' },
+      el('strong', {}, t('juego.ajustes.volumenMusica')),
+      volumenMusica,
+      valorMusica,
     ),
   ];
 }
