@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.13.0",
-  "actualizado": "2026-11-17T07:43:27Z",
+  "actualizado": "2026-11-17T07:48:56Z",
   "faseActiva": "fase-13",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f13-t3 hecha: la partida se para sola justo a la hora de un suceso importante (aunque vaya a ×64) y lo cuenta en una ventana en el centro con «Seguir» y «Quedarse en pausa» (Intro sigue; Escape se queda; las teclas del mapa no actúan detrás). La opción «Pausar ante sucesos importantes» está en Ajustes, activada por defecto; desactivada, la partida no se para. Con «?prueba» en la dirección, la partida empieza con un efecto de prueba (+3 de popularidad del 2 al 12 de enero) y un suceso de prueba el 3 de enero a las 08:00.",
-    "siguientePaso": "f13-t4: sonido del aviso de la pausa automática, animación pulida y el aviso en la galería; después, cerrar la Fase 13 como v0.14.0 y abrir su PR.",
+    "resumen": "f13-t4 hecha: el aviso de la pausa automática suena con una campanada propia (do y sol, más aguda que la pausa) en lugar del sonido de la pausa, aparece con el fondo oscurecido hacia los bordes y late dos veces (un anillo dorado y el icono de la pausa parpadeando); la caja es opaca para que se lea bien. Al cerrarse, el foco vuelve al mapa; «Seguir» suena como quitar la pausa y «Quedarse en pausa», como cerrar. En la galería, la sección «Aviso de la pausa automática» lo abre con un suceso de ejemplo y la campanada está en «Sonidos de la interfaz».",
+    "siguientePaso": "Cerrar la Fase 13 como v0.14.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -880,12 +880,12 @@
           "titulo": "Pausa automática ante sucesos importantes, con su opción en Ajustes; el motor se para en el momento exacto; modo de prueba «?prueba» con un efecto y un suceso de prueba",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/fbb3185"
         },
         {
           "id": "f13-t4",
           "titulo": "Audiovisual: aviso de la pausa automática en una ventana en el centro (decisión del jugador) con su sonido, también en la galería",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

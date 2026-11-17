@@ -28,6 +28,7 @@ import { t } from '../src/i18n';
 import { el, reemplazar, type Hijo } from '../src/ui/dom';
 import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { muestrario } from './muestrario';
+import { mostrarAvisoSuceso } from '../src/ui/aviso-suceso';
 import { RECURSOS_POR_TIPO, type TipoRecurso } from '../src/datos/regiones-economia';
 import { iconoDeRecurso } from '../src/ui/ficha-region';
 
@@ -189,6 +190,46 @@ function musicaAmbiental(): HTMLElement {
     sonando,
     lista(PIEZAS_TRANQUILAS, t('galeria.musica.tranquilas')),
     lista(PIEZAS_TENSAS, t('galeria.musica.tensas')),
+  );
+}
+
+/** Aviso de la pausa automática (tarea f13-t4): la ventana del centro con su campanada. */
+function avisoPausa(): HTMLElement {
+  const estado = el('p', { class: 'galeria__nota', role: 'status' }, t('galeria.aviso.nada'));
+  const boton = el(
+    'button',
+    { class: 'boton', type: 'button' },
+    icono('pausa'),
+    t('galeria.aviso.ver'),
+  );
+  boton.addEventListener('click', () => {
+    sonido.activar();
+    sonido.reproducir('aviso');
+    mostrarAvisoSuceso({
+      suceso: {
+        id: 'galeria',
+        titulo: t('galeria.aviso.ejemploTitulo'),
+        texto: t('galeria.aviso.ejemploTexto'),
+        fecha: '2010-03-14',
+        hora: 21,
+        importante: true,
+        origen: 'politica',
+      },
+      alSeguir: () => {
+        sonido.reproducir('seguir');
+        estado.textContent = t('galeria.aviso.seguido');
+      },
+      alCerrar: () => {
+        sonido.reproducir('cerrar');
+        estado.textContent = t('galeria.aviso.enPausa');
+      },
+    });
+  });
+  return seccion(
+    t('galeria.aviso.titulo'),
+    t('galeria.aviso.nota'),
+    el('ul', { class: 'galeria__sonidos' }, el('li', {}, boton)),
+    estado,
   );
 }
 
@@ -476,6 +517,7 @@ async function iniciar(): Promise<void> {
       recursos(),
       sonidos(),
       musicaAmbiental(),
+      avisoPausa(),
       retratos(gobiernos, conjunto),
       ...muestrario(conjunto, seccion),
       ...banderas(conjunto),

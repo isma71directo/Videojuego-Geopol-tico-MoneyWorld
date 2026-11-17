@@ -10,6 +10,8 @@ import { horaDe, horasHastaSiguiente, programar, type Suceso } from '../src/sim/
 import { leerAjuste } from '../src/ui/ajustes';
 import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from '../src/ui/aviso-suceso';
 import { t } from '../src/i18n';
+import { EFECTOS } from '../src/av/sonido';
+import { el } from '../src/ui/dom';
 
 const paises = JSON.parse(
   readFileSync(resolve('public/data/paises-2010.json'), 'utf8'),
@@ -167,5 +169,36 @@ describe('aviso de la pausa automática (tarea f13-t3)', () => {
     });
     expect(aviso.elemento.querySelector('.aviso-suceso__prueba')!.textContent).toBe('prueba');
     expect(aviso.elemento.textContent).toContain('Suceso de prueba');
+  });
+});
+
+describe('aviso visual y sonoro (tarea f13-t4)', () => {
+  const conId = { ...suceso(), id: 's2' };
+
+  it('la campanada es corta, suave, distinta de la pausa y tiene su nombre en la galería', () => {
+    const notas = EFECTOS.aviso;
+    expect(Math.max(...notas.map((n) => n.inicio + n.duracion))).toBeLessThanOrEqual(0.3);
+    expect(Math.max(...notas.map((n) => n.volumen))).toBeLessThanOrEqual(0.25);
+    // Más aguda que la pausa, para que no se confundan.
+    const masAguda = (efecto: 'aviso' | 'pausa') =>
+      Math.max(...EFECTOS[efecto].map((n) => n.frecuencia));
+    expect(masAguda('aviso')).toBeGreaterThan(masAguda('pausa'));
+    expect(t('galeria.sonidos.aviso')).toBe('Aviso de un suceso importante');
+    expect(t('galeria.aviso.ver')).toBe('Ver el aviso');
+  });
+
+  it('lleva el anillo que late, oculto para los lectores de pantalla', () => {
+    const aviso = mostrarAvisoSuceso({ suceso: conId, alSeguir: () => undefined });
+    const anillo = aviso.elemento.querySelector('.aviso-suceso__anillo')!;
+    expect(anillo.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('al cerrarse, el foco vuelve a donde estaba', () => {
+    const boton = document.body.appendChild(el('button', { type: 'button' }, 'Ver el aviso'));
+    boton.focus();
+    mostrarAvisoSuceso({ suceso: conId, alSeguir: () => undefined });
+    expect(document.activeElement).not.toBe(boton);
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(document.activeElement).toBe(boton);
   });
 });

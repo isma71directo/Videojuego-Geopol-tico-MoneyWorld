@@ -1113,7 +1113,6 @@
       "aviso": "Pausa automática",
       "seguir": "Seguir",
       "cerrar": "Quedarse en pausa",
-      "ver": "Ver",
       "cuando": "{fecha}, {hora}",
       "ayuda": "Intro sigue la partida; Escape la deja en pausa. Puedes desactivar la pausa automática en Ajustes.",
       "prueba": {
@@ -1304,7 +1303,18 @@
       "comenzar": "Empezar una partida",
       "pausa": "Pausar el tiempo",
       "seguir": "Seguir el tiempo",
-      "velocidad": "Cambiar la velocidad del tiempo"
+      "velocidad": "Cambiar la velocidad del tiempo",
+      "aviso": "Aviso de un suceso importante"
+    },
+    "aviso": {
+      "titulo": "Aviso de la pausa automática",
+      "nota": "Cuando llega un suceso importante, la partida se para sola y lo cuenta en una ventana en el centro, con una campanada. Pulsa para verlo con un suceso de ejemplo.",
+      "ver": "Ver el aviso",
+      "ejemploTitulo": "Ejemplo: moción de censura",
+      "ejemploTexto": "La oposición presenta una moción de censura contra el Gobierno. Es solo un ejemplo para ver cómo es el aviso; en la partida, los sucesos llegarán con sus sistemas.",
+      "nada": "Aún no has abierto el aviso.",
+      "seguido": "Has elegido «Seguir»: la partida volvería a la velocidad que llevaba.",
+      "enPausa": "Has elegido «Quedarse en pausa»: la partida seguiría parada."
     },
     "musica": {
       "titulo": "Música ambiental",

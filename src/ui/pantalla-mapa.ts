@@ -304,12 +304,15 @@ export function abrirPantallaMapa(
     tiempo?.reflejarVelocidad(0);
     barraPartida?.marcarPausa(true);
     atenuarMusica(true);
+    // La campanada del aviso (tarea f13-t4) en lugar del sonido de la pausa.
+    reproducir('aviso');
     mostrarAvisoSuceso({
       suceso,
-      // «Seguir»: a la velocidad que llevaba.
+      // «Seguir»: a la velocidad que llevaba (suena como al quitar la pausa).
       alSeguir: () => {
         if (tiempo && tiempo.velocidad === 0) tiempo.alternarPausa();
       },
+      alCerrar: () => reproducir('cerrar'),
     });
   }
   // Los controles del tiempo (tarea f11-t3): la partida empieza en pausa.

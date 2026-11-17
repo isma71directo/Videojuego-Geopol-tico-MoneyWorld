@@ -32,7 +32,8 @@ export type Efecto =
   | 'comenzar'
   | 'pausa'
   | 'seguir'
-  | 'velocidad';
+  | 'velocidad'
+  | 'aviso';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -167,6 +168,14 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'square', inicio: 0, duracion: 0.035, frecuencia: 1318.5, volumen: 0.06 },
     { forma: 'ruido', inicio: 0, duracion: 0.05, frecuencia: 3200, volumen: 0.05 },
     { forma: 'sine', inicio: 0.03, duracion: 0.08, frecuencia: 880, volumen: 0.12 },
+  ],
+  // Aviso de la pausa automática (tarea f13-t4): una campanada de dos notas que bajan (do y sol),
+  // más aguda que la pausa y con un armónico suave, para que el jugador mire la ventana del centro.
+  aviso: [
+    { forma: 'sine', inicio: 0, duracion: 0.13, frecuencia: 1046.5, volumen: 0.16 },
+    { forma: 'sine', inicio: 0, duracion: 0.1, frecuencia: 2093, volumen: 0.04 },
+    { forma: 'triangle', inicio: 0.11, duracion: 0.19, frecuencia: 784, volumen: 0.15 },
+    { forma: 'sine', inicio: 0.11, duracion: 0.19, frecuencia: 392, volumen: 0.06 },
   ],
 };
 

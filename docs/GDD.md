@@ -170,7 +170,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - **Semanal:** encuestas y opinión pública.
   - **Mensual:** economía, presupuesto, comercio, energía y demografía.
   - **Anual:** cierre presupuestario, cuentas nacionales, investigación agregada y envejecimiento de infraestructuras.
-- El juego se pausa automáticamente ante decisiones importantes (declaración de guerra, moción de censura, referéndum…), y es configurable. Decisión del jugador (17/11/2026): una opción en Ajustes, «Sucesos importantes» (activada por defecto); el aviso es una ventana en el centro con lo que ha pasado, «Seguir» y, si procede, «Ver», y un sonido.
+- El juego se pausa automáticamente ante decisiones importantes (declaración de guerra, moción de censura, referéndum…), y es configurable. Decisión del jugador (17/11/2026): una opción en Ajustes, «Sucesos importantes» (activada por defecto); el aviso es una ventana en el centro con lo que ha pasado (título, fecha y hora, y texto), «Seguir» (Intro), «Quedarse en pausa» (Escape) y una campanada; cuando un suceso tenga algo que abrir (una ventana de su sistema), llevará además «Ver».
 
 **Bucle básico:** observar (mapa, informes y alertas) → decidir (leyes, presupuesto, órdenes a ministerios, diplomacia, ejército) → ver las consecuencias (indicadores, encuestas, reacciones de otros países) → ajustar.
 

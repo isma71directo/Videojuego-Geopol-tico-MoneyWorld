@@ -27,6 +27,24 @@ export interface AvisoSuceso {
 
 let abierto: AvisoSuceso | null = null;
 
+/** Dos latidos del anillo que rodea el aviso: crece un poco y se desvanece. */
+const DURACION_LATIDO = 1400;
+const FOTOGRAMAS_LATIDO: readonly Keyframe[] = [
+  { opacity: 0, scale: '1', offset: 0 },
+  { opacity: 0.9, scale: '1', offset: 0.08 },
+  { opacity: 0, scale: '1.045', offset: 0.46 },
+  { opacity: 0.9, scale: '1', offset: 0.54 },
+  { opacity: 0, scale: '1.045', offset: 1 },
+];
+/** El icono de la pausa parpadea con el anillo. */
+const FOTOGRAMAS_PARPADEO: readonly Keyframe[] = [
+  { opacity: 1 },
+  { opacity: 0.35 },
+  { opacity: 1 },
+  { opacity: 0.35 },
+  { opacity: 1 },
+];
+
 /** ¿Hay un aviso a la vista? */
 export function avisoAbierto(): boolean {
   return abierto !== null;
@@ -40,6 +58,8 @@ export function cerrarAviso(): void {
 export function mostrarAvisoSuceso(opciones: OpcionesAviso): AvisoSuceso {
   abierto?.cerrar();
   const { suceso } = opciones;
+  // Al cerrarse, el foco vuelve a donde estaba (el mapa, o el botón de la galería).
+  const focoAntes = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   const seguir = el(
     'button',
     { class: 'boton boton--principal aviso-suceso__seguir', type: 'button' },
@@ -81,6 +101,8 @@ export function mostrarAvisoSuceso(opciones: OpcionesAviso): AvisoSuceso {
     el('p', { class: 'aviso-suceso__ayuda' }, t('juego.sucesos.ayuda')),
   );
   caja.setAttribute('aria-labelledby', `aviso-${suceso.id}`);
+  const anillo = el('div', { class: 'aviso-suceso__anillo', 'aria-hidden': 'true' });
+  caja.prepend(anillo);
   const fondo = el('div', { class: 'aviso-suceso__fondo' });
   const elemento = el('div', { class: 'aviso-suceso', 'data-suceso': suceso.id }, fondo, caja);
 
@@ -105,6 +127,8 @@ export function mostrarAvisoSuceso(opciones: OpcionesAviso): AvisoSuceso {
     document.removeEventListener('keydown', alTeclear, true);
     if (abierto === aviso) abierto = null;
     retirar(elemento, [{ opacity: 1 }, { opacity: 0 }], DURACIONES.cerrarVentana);
+    if (focoAntes?.isConnected && focoAntes !== document.body)
+      focoAntes.focus({ preventScroll: true });
     accion?.();
   };
   seguir.addEventListener('click', () => cerrarCon(opciones.alSeguir));
@@ -113,8 +137,15 @@ export function mostrarAvisoSuceso(opciones: OpcionesAviso): AvisoSuceso {
   quedarse.addEventListener('click', () => cerrarCon(opciones.alCerrar));
   document.addEventListener('keydown', alTeclear, true);
   document.body.appendChild(elemento);
-  void animar(caja, FOTOGRAMAS.ventana, DURACIONES.abrirVentana);
-  void animar(fondo, [{ opacity: 0 }, { opacity: 1 }], DURACIONES.abrirVentana);
+  // Aparece como las ventanas y después late dos veces (el anillo dorado y el icono de la pausa),
+  // a la vez que la campanada, para llevar la mirada al centro (tarea f13-t4). Con «reducir
+  // movimiento» aparece sin más.
+  void animar(fondo, [{ opacity: 0 }, { opacity: 1 }], DURACIONES.abrirVentana * 2);
+  void animar(caja, FOTOGRAMAS.ventana, DURACIONES.abrirVentana).then(() => {
+    void animar(anillo, FOTOGRAMAS_LATIDO, DURACION_LATIDO, 'ease-out');
+    const pausa = caja.querySelector('.aviso-suceso__etiqueta .icono');
+    if (pausa) void animar(pausa, FOTOGRAMAS_PARPADEO, DURACION_LATIDO, 'ease-in-out');
+  });
   seguir.focus({ preventScroll: true });
 
   const aviso: AvisoSuceso = { elemento, cerrar: () => cerrarCon() };
