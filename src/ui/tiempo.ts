@@ -19,6 +19,11 @@ export interface ControlTiempo {
   elemento: HTMLElement;
   readonly velocidad: Velocidad;
   ponerVelocidad(velocidad: Velocidad): void;
+  /**
+   * Enseña una velocidad que ya ha cambiado en el motor (la pausa automática, tarea f13-t3), sin
+   * volver a avisar.
+   */
+  reflejarVelocidad(velocidad: Velocidad): void;
   /** Pausa o sigue a la última velocidad. */
   alternarPausa(): void;
   /** Atajos: espacio (pausa) y 1 a 6 (velocidades). Devuelve si ha usado la tecla. */
@@ -105,6 +110,12 @@ export function crearControlTiempo(opciones: OpcionesTiempo = {}): ControlTiempo
       return velocidad;
     },
     ponerVelocidad,
+    reflejarVelocidad(nueva) {
+      if (!VELOCIDADES.includes(nueva) || nueva === velocidad) return;
+      velocidad = nueva;
+      if (nueva > 0) ultima = nueva;
+      pintar();
+    },
     alternarPausa,
     alTeclear(evento) {
       if (evento.ctrlKey || evento.altKey || evento.metaKey || evento.defaultPrevented) {

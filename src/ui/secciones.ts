@@ -21,7 +21,7 @@ import { indiceConTecla } from './componentes/geometria';
 import { ocultarInformacion } from './componentes/info';
 import { crearPestanas } from './componentes/pestanas';
 import { sonar } from './componentes/sonidos';
-import { abrirVentana, type Ventana } from './componentes/ventana';
+import { abrirVentana, ventanasAbiertas, type Ventana } from './componentes/ventana';
 import config from './config/secciones.json';
 import './estilos/secciones.css';
 
@@ -216,6 +216,25 @@ function tituloPestana(elemento: string, pestana: string): string {
     : t(`juego.secciones.${elemento}.pestanas.${pestana}.titulo`);
 }
 
+/**
+ * Elementos que ya tienen contenido de verdad (tarea f13-t2: «Efectos en curso»): en lugar del
+ * hueco «llega en la fase N», su ventana enseña lo que da esta función.
+ */
+const contenidosReales = new Map<string, () => HTMLElement>();
+
+/** Da (o quita, con null) el contenido de verdad de un elemento. */
+export function ponerContenido(elemento: string, contenido: (() => HTMLElement) | null): void {
+  if (contenido) contenidosReales.set(elemento, contenido);
+  else contenidosReales.delete(elemento);
+}
+
+/** Vuelve a pintar, si está abierta, la ventana de un elemento con contenido de verdad. */
+export function refrescarElemento(elemento: string): void {
+  const contenido = contenidosReales.get(elemento);
+  const ventana = ventanasAbiertas().find((v) => v.id === `seccion-${elemento}`);
+  if (contenido && ventana) ventana.cuerpo.replaceChildren(contenido());
+}
+
 /** Abre la ventana de un elemento (o la trae delante si ya está abierta). */
 export function abrirElemento(elemento: string): Ventana | null {
   const pestanas = pestanasDe(elemento);
@@ -223,8 +242,10 @@ export function abrirElemento(elemento: string): Ventana | null {
   if (pestanas.length === 0 || !iconoVentana) return null;
   const titulo = tituloElemento(elemento);
   const [unica] = pestanas;
-  const contenido =
-    pestanas.length === 1 && unica
+  const real = contenidosReales.get(elemento);
+  const contenido = real
+    ? real()
+    : pestanas.length === 1 && unica
       ? contenidoPestana(elemento, unica)
       : crearPestanas(
           pestanas.map((pestana) => ({

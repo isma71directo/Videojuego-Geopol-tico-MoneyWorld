@@ -21,11 +21,14 @@ import { contenidoLeyenda } from './leyenda';
 import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
-import { crearBarraSecciones } from './secciones';
+import { crearBarraSecciones, ponerContenido, refrescarElemento } from './secciones';
+import { contenidoEfectosEnCurso } from './efectos-en-curso';
+import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from './aviso-suceso';
+import type { Suceso } from '../sim/sucesos';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
 import { msPorHora } from '../sim/reloj';
-import { conectarMotor } from './conexion-motor';
+import { conectarMotor, type ConexionMotor } from './conexion-motor';
 import { solDelJuego } from '../map/noche';
 import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
@@ -33,6 +36,41 @@ import type { EntradaBusqueda } from './busqueda';
 import { icono } from '../av/iconos';
 import { atenuarMusica, reproducir, silenciar, sonido } from './sonido';
 import './estilos/mapa.css';
+
+/** Modo de prueba (tarea f13-t3): «?prueba» en la dirección. */
+function modoPrueba(): boolean {
+  return new URLSearchParams(location.search).has('prueba');
+}
+
+/**
+ * Modo de prueba: un efecto (+3 de popularidad del 2 al 12 de enero) y un suceso importante el
+ * 3 de enero a las 8:00, marcados como de prueba, para ver los efectos y la pausa automática.
+ */
+function programarPrueba(motor: ConexionMotor, partida: Partida): void {
+  motor.enviar({
+    tipo: 'efecto',
+    definicion: {
+      nombre: t('juego.sucesos.prueba.efecto'),
+      origen: 'prueba',
+      variable: { pais: partida.jugador.paisId, campo: 'popularidad' },
+      operacion: 'sumar',
+      valor: 3,
+      retrasoDias: 1,
+      duracionDias: 10,
+    },
+  });
+  motor.enviar({
+    tipo: 'programar',
+    suceso: {
+      titulo: t('juego.sucesos.prueba.titulo'),
+      texto: t('juego.sucesos.prueba.texto'),
+      fecha: '2010-01-03',
+      hora: 8,
+      importante: true,
+      origen: 'prueba',
+    },
+  });
+}
 
 /**
  * Carga de prueba del motor (tarea f12-t1): «?carga=50» en la dirección hace que cada día de
@@ -232,15 +270,50 @@ export function abrirPantallaMapa(
   };
   if (motor && partida) {
     motor.alRecibir = (mensaje) => {
+      if (mensaje.tipo === 'suceso') {
+        atenderSuceso(mensaje.suceso, mensaje.pausado);
+        return;
+      }
+      // Un día nuevo o efectos distintos cambian lo que dice «Efectos en curso» (tarea f13-t2).
+      const cambian =
+        partida.fecha !== mensaje.fecha ||
+        JSON.stringify(partida.efectos) !== JSON.stringify(mensaje.efectos);
       partida.fecha = mensaje.fecha;
       partida.hora = mensaje.hora;
+      partida.efectos = mensaje.efectos;
       ultimaFraccion = mensaje.fraccion;
       recibidoEn = performance.now();
       velocidadMotor = mensaje.velocidad;
       barraPartida?.actualizar(partida);
+      if (cambian) refrescarElemento('efectos');
       if (animacion === null) animar();
     };
-    motor.enviar({ tipo: 'empezar', partida, cargaPruebaMs: cargaDePrueba() });
+    motor.enviar({
+      tipo: 'empezar',
+      partida,
+      cargaPruebaMs: cargaDePrueba(),
+      // Pausa automática ante sucesos importantes (tarea f13-t3, opción de Ajustes).
+      pausaAutomatica: leerAjuste('pausaSucesos'),
+    });
+    if (modoPrueba()) programarPrueba(motor, partida);
+  }
+  /** Un suceso: si ha parado la partida, se avisa en una ventana en el centro (tarea f13-t3). */
+  function atenderSuceso(suceso: Suceso, pausado: boolean): void {
+    if (!pausado) return;
+    velocidadMotor = 0;
+    tiempo?.reflejarVelocidad(0);
+    barraPartida?.marcarPausa(true);
+    atenuarMusica(true);
+    // La campanada del aviso (tarea f13-t4) en lugar del sonido de la pausa.
+    reproducir('aviso');
+    mostrarAvisoSuceso({
+      suceso,
+      // «Seguir»: a la velocidad que llevaba (suena como al quitar la pausa).
+      alSeguir: () => {
+        if (tiempo && tiempo.velocidad === 0) tiempo.alternarPausa();
+      },
+      alCerrar: () => reproducir('cerrar'),
+    });
   }
   // Los controles del tiempo (tarea f11-t3): la partida empieza en pausa.
   const tiempo = partida
@@ -332,6 +405,8 @@ export function abrirPantallaMapa(
   });
   // Barra de secciones (ajuste f7-a2): Gobierno · Economía · Política · Mundo · Ejército · Más.
   const secciones = crearBarraSecciones();
+  // Informes › Efectos en curso (tarea f13-t2), con los de la partida (o un aviso sin ella).
+  ponerContenido('efectos', () => contenidoEfectosEnCurso(partida));
   const alTeclearSecciones = (evento: KeyboardEvent): void => {
     secciones.alTeclear(evento);
   };
@@ -724,6 +799,7 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alTeclearBuscador);
     document.removeEventListener('keydown', alTeclearTiempo);
     tiempo?.destruir();
+    if (avisoAbierto()) cerrarAviso();
     atenuarMusica(false);
     if (animacion !== null) cancelAnimationFrame(animacion);
     motor?.enviar({ tipo: 'terminar' });
@@ -731,6 +807,7 @@ export function abrirPantallaMapa(
     buscador.cerrar(false);
     barraPartida?.destruir();
     secciones.destruir();
+    ponerContenido('efectos', null);
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

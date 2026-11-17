@@ -10,8 +10,17 @@
  *   en lugar de dar saltos) y da los pasos de la simulación a los sistemas.
  */
 import { crearAzar, type Azar } from './azar';
+import { crearEfecto, revisarEfectos, type DefinicionEfecto, type Efecto } from './efectos';
 import { avanzarPartida, type Partida } from './partida';
-import { horasQueTocan, msPorHora, VELOCIDADES, type Paso, type Velocidad } from './reloj';
+import {
+  horaAbsoluta,
+  horasQueTocan,
+  msPorHora,
+  VELOCIDADES,
+  type Paso,
+  type Velocidad,
+} from './reloj';
+import { horasHastaSiguiente, programar, type Suceso } from './sucesos';
 
 /** Órdenes que la pantalla manda al motor. */
 export type OrdenMotor =
@@ -23,19 +32,39 @@ export type OrdenMotor =
        * comprobar que la pantalla no se bloquea aunque el motor vaya cargado.
        */
       cargaPruebaMs?: number;
+      /** Pausa automática ante sucesos importantes (tarea f13-t3); activada por defecto. */
+      pausaAutomatica?: boolean;
     }
   | { tipo: 'velocidad'; velocidad: Velocidad }
+  /** Añade un efecto (tarea f13-t1): lo usarán leyes, tecnologías, eventos y edificios. */
+  | { tipo: 'efecto'; definicion: DefinicionEfecto }
+  /** Programa un suceso en la agenda (tarea f13-t3). */
+  | { tipo: 'programar'; suceso: Omit<Suceso, 'id'> }
+  /** Cambia la pausa automática a mitad de partida. */
+  | { tipo: 'ajustes'; pausaAutomatica: boolean }
   | { tipo: 'terminar' };
 
-/** Lo que el motor cuenta a la pantalla. */
-export type MensajeMotor = {
+/** El estado de la partida que necesita la pantalla. */
+export interface EstadoMotor {
   tipo: 'estado';
   fecha: string;
   hora: number;
   /** Parte de la hora en curso que ya ha pasado (0 a 1), para mover el reloj sin saltos. */
   fraccion: number;
   velocidad: Velocidad;
-};
+  /** Efectos en curso o por empezar (tarea f13-t1). */
+  efectos: Efecto[];
+}
+
+/** Ha llegado un suceso; `pausado` si el motor ha parado el tiempo por él (tarea f13-t3). */
+export interface SucesoMotor {
+  tipo: 'suceso';
+  suceso: Suceso;
+  pausado: boolean;
+}
+
+/** Lo que el motor cuenta a la pantalla. */
+export type MensajeMotor = EstadoMotor | SucesoMotor;
 
 /**
  * Un sistema de la simulación: recibe los pasos de cada avance y el azar de la partida (tarea
@@ -66,16 +95,47 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
   let velocidad: Velocidad = 0;
   let fraccion = 0;
   let cargaPruebaMs = 0;
+  let pausaAutomatica = true;
+  let contadorSucesos = 0;
   /**
    * Azar de la partida (tarea f12-t2): se siembra con la semilla de la partida, distinta en cada
    * una. Al cargar una partida guardada (Fase 14) se sembrará con una semilla nueva.
    */
   let azar: Azar | null = null;
 
-  const estado = (): MensajeMotor[] =>
+  /** Para dar a cada efecto un identificador propio. */
+  let contadorEfectos = 0;
+
+  const estado = (): EstadoMotor[] =>
     partida
-      ? [{ tipo: 'estado', fecha: partida.fecha, hora: partida.hora, fraccion, velocidad }]
+      ? [
+          {
+            tipo: 'estado',
+            fecha: partida.fecha,
+            hora: partida.hora,
+            fraccion,
+            velocidad,
+            efectos: partida.efectos,
+          },
+        ]
       : [];
+
+  /** Avanza la partida unas horas y atiende los pasos de la simulación. */
+  const avanzarTramo = (horas: number): void => {
+    if (!partida || horas <= 0) return;
+    const { partida: nueva, pasos } = avanzarPartida(partida, horas);
+    partida = nueva;
+    // Cada día, los efectos que han terminado se quitan (tarea f13-t1).
+    for (const paso of pasos) {
+      if (paso.ritmo !== 'diario') continue;
+      const { quedan } = revisarEfectos(partida.efectos, paso.fecha);
+      if (quedan.length !== partida.efectos.length) partida = { ...partida, efectos: quedan };
+    }
+    for (const sistema of opciones.sistemas ?? []) sistema(pasos, partida, azar!);
+    if (cargaPruebaMs > 0) {
+      for (const paso of pasos) if (paso.ritmo === 'diario') ocupar(cargaPruebaMs);
+    }
+  };
 
   /** Cálculo inútil que ocupa el hilo (solo con la carga de prueba). */
   const ocupar = (ms: number): void => {
@@ -99,11 +159,30 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
         velocidad = 0;
         fraccion = 0;
         cargaPruebaMs = Math.min(CARGA_PRUEBA_MAXIMA, Math.max(0, orden.cargaPruebaMs ?? 0));
+        pausaAutomatica = orden.pausaAutomatica ?? true;
         return estado();
+      }
+      if (orden.tipo === 'ajustes') {
+        pausaAutomatica = orden.pausaAutomatica;
+        return [];
+      }
+      if (orden.tipo === 'programar') {
+        if (!partida) return [];
+        const suceso: Suceso = { ...orden.suceso, id: `s${++contadorSucesos}` };
+        // Uno que ya ha pasado no se programa.
+        if (horaAbsoluta(suceso) <= horaAbsoluta(partida)) return [];
+        partida = { ...partida, agenda: programar(partida.agenda, suceso) };
+        return [];
       }
       if (orden.tipo === 'velocidad') {
         if (!VELOCIDADES.includes(orden.velocidad)) return [];
         velocidad = orden.velocidad;
+        return estado();
+      }
+      if (orden.tipo === 'efecto') {
+        if (!partida) return [];
+        const efecto = crearEfecto(orden.definicion, partida.fecha, `e${++contadorEfectos}`);
+        partida = { ...partida, efectos: [...partida.efectos, efecto] };
         return estado();
       }
       partida = null;
@@ -117,13 +196,29 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
       const { horas, restoMs } = horasQueTocan(velocidad, ms, fraccion * porHora);
       fraccion = restoMs / porHora;
       if (horas === 0) return [];
-      const { partida: nueva, pasos } = avanzarPartida(partida, horas);
-      partida = nueva;
-      for (const sistema of opciones.sistemas ?? []) sistema(pasos, partida, azar!);
-      if (cargaPruebaMs > 0) {
-        for (const paso of pasos) if (paso.ritmo === 'diario') ocupar(cargaPruebaMs);
+      const mensajes: MensajeMotor[] = [];
+      let quedan = horas;
+      while (quedan > 0 && partida) {
+        // Hasta el siguiente suceso, si llega antes de acabar estas horas (tarea f13-t3).
+        const hastaSuceso = horasHastaSiguiente(partida.agenda, horaAbsoluta(partida));
+        const tramo = hastaSuceso !== null && hastaSuceso <= quedan ? hastaSuceso : quedan;
+        avanzarTramo(tramo);
+        quedan -= tramo;
+        if (tramo === hastaSuceso) {
+          const [suceso, ...resto] = partida.agenda;
+          partida = { ...partida, agenda: resto };
+          const pausado = suceso!.importante && pausaAutomatica;
+          if (pausado) {
+            // Se para justo a la hora del suceso: lo que sobra de este avance no cuenta.
+            velocidad = 0;
+            fraccion = 0;
+            quedan = 0;
+          }
+          mensajes.push(...estado(), { tipo: 'suceso', suceso: suceso!, pausado });
+        }
       }
-      return estado();
+      if (mensajes.length === 0 || mensajes.at(-1)!.tipo !== 'estado') mensajes.push(...estado());
+      return mensajes;
     },
   };
 }

@@ -27,10 +27,12 @@
     },
     "ajustes": {
       "titulo": "Ajustes",
-      "vacio": "El resto de ajustes (pausa automática, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
+      "vacio": "El resto de ajustes (gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
       "version": "Versión del juego",
       "medidorFps": "Mostrar el medidor de rendimiento",
       "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
+      "pausaSucesos": "Pausar ante sucesos importantes",
+      "pausaSucesosAyuda": "La partida se para sola ante una guerra, una moción de censura, un referéndum o una crisis, y te avisa de lo que ha pasado.",
       "silenciar": "Silenciar el sonido",
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
       "volumenEfectos": "Volumen de los efectos",
@@ -944,6 +946,15 @@
           "indicadores": "Tensión territorial y nivel de autonomía",
           "acciones": "competencias, financiación regional y diálogo"
         }
+      },
+      "efectos": {
+        "titulo": "Efectos en curso",
+        "pestanas": {
+          "curso": {
+            "titulo": "Efectos en curso",
+            "texto": "Lo que está cambiando los datos de tu país (leyes, tecnologías, eventos…), desde cuándo y hasta cuándo."
+          }
+        }
       }
     },
     "buscador": {
@@ -1071,6 +1082,43 @@
         "velocidad": "Velocidad ×{n} (tecla {tecla})",
         "enPausa": "En pausa",
         "aVelocidad": "Velocidad ×{n}"
+      }
+    },
+    "efectos": {
+      "intro": "Lo que está cambiando los datos de tu país (leyes, tecnologías, eventos…), desde cuándo y hasta cuándo. Al terminar, cada efecto desaparece solo.",
+      "ninguno": "No hay ningún efecto en curso. Llegarán con las leyes, la tecnología, los eventos y los edificios.",
+      "sinPartida": "Los efectos en curso se ven durante una partida.",
+      "enCurso": "En curso",
+      "empieza": "Empieza el {fecha}",
+      "desdeHasta": "Del {desde} al {hasta}",
+      "desdePermanente": "Desde el {desde}, sin fecha de fin",
+      "hasta": "hasta el {fecha}",
+      "permanente": "sin fecha de fin",
+      "enDato": "Efectos en curso",
+      "prueba": "prueba",
+      "origenes": {
+        "ley": "Ley",
+        "tecnologia": "Tecnología",
+        "evento": "Evento",
+        "edificio": "Edificio",
+        "prueba": "Prueba"
+      },
+      "campos": {
+        "popularidad": "Popularidad",
+        "tesoreria": "Tesorería"
+      },
+      "puntos": "{valor} puntos"
+    },
+    "sucesos": {
+      "aviso": "Pausa automática",
+      "seguir": "Seguir",
+      "cerrar": "Quedarse en pausa",
+      "cuando": "{fecha}, {hora}",
+      "ayuda": "Intro sigue la partida; Escape la deja en pausa. Puedes desactivar la pausa automática en Ajustes.",
+      "prueba": {
+        "titulo": "Suceso de prueba",
+        "texto": "Así te avisará el juego de un suceso importante, como una declaración de guerra o una moción de censura: la partida se para sola justo en ese momento. Es solo una prueba («?prueba» en la dirección).",
+        "efecto": "Efecto de prueba"
       }
     }
   },
@@ -1217,7 +1265,8 @@
       "popularidad": "Popularidad",
       "salir": "Salir",
       "pausa": "Pausa",
-      "seguir": "Seguir"
+      "seguir": "Seguir",
+      "efectos": "Efectos en curso"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1254,7 +1303,18 @@
       "comenzar": "Empezar una partida",
       "pausa": "Pausar el tiempo",
       "seguir": "Seguir el tiempo",
-      "velocidad": "Cambiar la velocidad del tiempo"
+      "velocidad": "Cambiar la velocidad del tiempo",
+      "aviso": "Aviso de un suceso importante"
+    },
+    "aviso": {
+      "titulo": "Aviso de la pausa automática",
+      "nota": "Cuando llega un suceso importante, la partida se para sola y lo cuenta en una ventana en el centro, con una campanada. Pulsa para verlo con un suceso de ejemplo.",
+      "ver": "Ver el aviso",
+      "ejemploTitulo": "Ejemplo: moción de censura",
+      "ejemploTexto": "La oposición presenta una moción de censura contra el Gobierno. Es solo un ejemplo para ver cómo es el aviso; en la partida, los sucesos llegarán con sus sistemas.",
+      "nada": "Aún no has abierto el aviso.",
+      "seguido": "Has elegido «Seguir»: la partida volvería a la velocidad que llevaba.",
+      "enPausa": "Has elegido «Quedarse en pausa»: la partida seguiría parada."
     },
     "musica": {
       "titulo": "Música ambiental",

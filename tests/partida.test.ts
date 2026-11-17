@@ -44,6 +44,8 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
         jugador: { paisId: id, rol: 'gobierno' },
         opciones: { dificultad: 'normal', eventosHistoricos: true },
         paises: partida.paises,
+        efectos: [],
+        agenda: [],
       });
       expect(partida.paises[id]).toBeDefined();
     }

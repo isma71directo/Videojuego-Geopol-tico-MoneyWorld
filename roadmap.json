@@ -1,16 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.13.0",
-  "actualizado": "2026-11-17T07:14:41Z",
-  "faseActiva": "fase-13",
+  "versionActual": "0.14.0",
+  "actualizado": "2026-11-17T07:50:10Z",
+  "faseActiva": "fase-14",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 12 cerrada como v0.13.0: motor de la partida en un Web Worker, azar distinto en cada partida y música ambiental (doce piezas tranquilas y ocho tensas, compuestas con código). PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.13.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 13 (efectos y pausa automática).",
+    "resumen": "Fase 13 cerrada como v0.14.0: motor de efectos (cambios en los datos con retraso y duración, que caducan solos), efectos en curso en la explicación de cada dato y en Informes › Efectos en curso, pausa automática ante sucesos importantes con su aviso en el centro y su campanada, opción en Ajustes y modo de prueba «?prueba». PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.14.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 14 (guardar y cargar partidas).",
     "pendienteDelJugador": [
-      "Probar la v0.13.0 en el PC: tras el primer clic en el inicio suena la música; en Ajustes, su volumen; en una partida, jugar a ×64 y comprobar que el mapa y los menús responden al instante, y que en pausa la música baja; en la galería, escuchar las piezas tranquilas y tensas y el cambio de ambiente",
-      "Opcional: abrir el juego con «?carga=200» al final de la dirección para ver que, aunque el motor vaya muy cargado, la pantalla no se bloquea (el tiempo va más despacio)",
-      "Fusionar el PR de la Fase 12"
+      "Probar la v0.14.0 en el PC con «?prueba» al final de la dirección: empezar una partida, ver el efecto de prueba (+3 de popularidad) en la explicación de la popularidad y en Informes › Efectos en curso, dejar correr el tiempo y comprobar que el 3 de enero a las 08:00 la partida se para sola con su aviso y su campanada; «Seguir» (o Intro) continúa y «Quedarse en pausa» (o Escape) la deja parada",
+      "Desactivar «Pausar ante sucesos importantes» en Ajustes y comprobar que con «?prueba» la partida ya no se para",
+      "En la galería: «Aviso de la pausa automática» y la campanada en «Sonidos de la interfaz»",
+      "Fusionar el PR de la Fase 13"
     ]
   },
   "etapas": [
@@ -862,29 +863,36 @@
       "objetivo": "Una forma común de aplicar consecuencias y de avisar de lo importante",
       "dependeDe": ["fase-12"],
       "hechoCuando": "Los efectos se aplican y caducan solos, y la pausa automática funciona",
-      "pruebaJugador": "Activar y desactivar la pausa automática en Ajustes",
-      "estado": "pendiente",
+      "pruebaJugador": "Abrir el juego con «?prueba» al final de la dirección y empezar una partida: ver el efecto de prueba en la explicación de la popularidad y en Informes › Efectos en curso, dejar correr el tiempo y comprobar que el 3 de enero la partida se para sola con su aviso; después, desactivar «Pausar ante sucesos importantes» en Ajustes y comprobar que ya no se para.",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f13-t1",
-          "titulo": "Sistema genérico de efectos y modificadores (sección 8)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Motor de efectos (sección 8): modificadores con variable, operación (sumar, multiplicar o fijar), valor, retraso y duración, que se aplican y caducan solos en el motor",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/32ac6d0"
         },
         {
           "id": "f13-t2",
-          "titulo": "Pausa automática configurable ante eventos importantes",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Ver los efectos en curso: en la explicación de cada dato (qué lo cambia y hasta cuándo) y en la ventana «Efectos en curso» de Informes (decisión del jugador)",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/9286677"
         },
         {
           "id": "f13-t3",
-          "titulo": "Audiovisual: aviso visual y sonoro de la pausa automática",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Pausa automática ante sucesos importantes, con su opción en Ajustes; el motor se para en el momento exacto; modo de prueba «?prueba» con un efecto y un suceso de prueba",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/fbb3185"
+        },
+        {
+          "id": "f13-t4",
+          "titulo": "Audiovisual: aviso de la pausa automática en una ventana en el centro (decisión del jugador) con su sonido, también en la galería",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6015dbf"
         }
       ]
     },
@@ -4621,6 +4629,16 @@
         "Azar propio de la partida, distinto en cada una (decisión del jugador): base de la economía, la IA y los eventos de las próximas fases",
         "Música ambiental compuesta con código: doce piezas tranquilas (media hora) en el menú y en la partida, con su volumen en Ajustes y más baja en pausa",
         "Ocho piezas tensas para crisis, guerras y elecciones, cambio de ambiente con fundido y sección «Música ambiental» en la galería"
+      ]
+    },
+    {
+      "version": "0.14.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Motor de efectos: cambios en los datos de un país (sumar, multiplicar o fijar) con retraso y duración, que se aplican y caducan solos; son la base de las leyes, tecnologías y eventos de las próximas fases",
+        "Efectos en curso a la vista: en la explicación de la tesorería y la popularidad, y en la ventana nueva Informes › Efectos en curso (decisión del jugador)",
+        "Pausa automática ante sucesos importantes (decisión del jugador): la partida se para justo a su hora y lo cuenta en una ventana en el centro con «Seguir» y «Quedarse en pausa»; opción en Ajustes, activada por defecto",
+        "Aviso con campanada propia y latido, también en la galería; modo de prueba «?prueba» con un efecto y un suceso de prueba"
       ]
     }
   ]

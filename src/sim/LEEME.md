@@ -21,3 +21,6 @@ Lo que hay ya:
 - `azar.ts` (Fase 12): el azar de la partida, sembrado distinto en cada una (y de nuevo al
   cargar); los sistemas lo reciben del motor. Con la misma semilla da la misma serie, solo para los
   tests y para reproducir fallos.
+- `efectos.ts` (Fase 13): efectos y modificadores (sección 8 del GDD): cambian un dato de un país
+  sumando, multiplicando o fijando un valor desde una fecha hasta otra; el motor los añade con la
+  orden «efecto» y los quita al terminar. Los usarán leyes, tecnologías, eventos y edificios.

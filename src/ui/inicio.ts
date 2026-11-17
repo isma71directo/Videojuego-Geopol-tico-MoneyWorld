@@ -187,10 +187,28 @@ function casillaNocheMapa(): HTMLElement {
   );
 }
 
+/** Pausa automática ante sucesos importantes (tarea f13-t3). */
+function casillaPausaSucesos(): HTMLElement {
+  const casilla = el('input', { type: 'checkbox', checked: leerAjuste('pausaSucesos') });
+  casilla.addEventListener('change', () => guardarAjuste('pausaSucesos', casilla.checked));
+  return el(
+    'label',
+    { class: 'ajuste' },
+    casilla,
+    el(
+      'span',
+      {},
+      el('strong', {}, t('juego.ajustes.pausaSucesos')),
+      el('small', {}, t('juego.ajustes.pausaSucesosAyuda')),
+    ),
+  );
+}
+
 function abrirAjustes(): void {
   abrirHoja(
     t('juego.ajustes.titulo'),
     casillaMedidorFps(),
+    casillaPausaSucesos(),
     ...ajustesSonido(),
     deslizadorTerreno(),
     casillaBrilloAgua(),

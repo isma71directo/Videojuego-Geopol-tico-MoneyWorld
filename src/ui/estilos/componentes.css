@@ -763,3 +763,16 @@
   gap: 8px;
   margin-top: 18px;
 }
+
+/* Apartados y listas dentro de la información (tarea f13-t2: efectos en curso de un dato). */
+.info__apartado {
+  display: block;
+  margin-top: 6px;
+  color: var(--texto);
+  font-size: 12px;
+}
+
+.info__lista {
+  margin: 2px 0 0;
+  padding-left: 16px;
+}

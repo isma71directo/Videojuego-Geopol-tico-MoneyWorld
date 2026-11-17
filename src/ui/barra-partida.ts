@@ -9,12 +9,14 @@ import { icono, type NombreIcono } from '../av/iconos';
 import { formatearFechaLarga } from '../compartido/fechas';
 import { dolares, enteros } from '../compartido/formato';
 import { t } from '../i18n';
+import { datoEfectivo, type CampoEstado } from '../sim/efectos';
 import type { Partida } from '../sim/partida';
 import { etiquetaHuso, textoHora } from '../sim/reloj';
 import { pedirConfirmacion } from './componentes/confirmacion';
 import { conInformacion } from './componentes/info';
 import { crearRelojAnalogico } from './reloj-analogico';
-import { el } from './dom';
+import { lineasEfectosDato } from './efectos-en-curso';
+import { el, type Hijo } from './dom';
 
 /** Popularidad por debajo de la cual se avisa en rojo, y por encima de la cual va en verde. */
 export const POPULARIDAD_BAJA = 35;
@@ -72,6 +74,8 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
   const { partida } = opciones;
   const id = partida.jugador.paisId;
   let capital: string = id;
+  /** La partida tal como está ahora (para las explicaciones con los efectos en curso). */
+  let actual = partida;
   const nombre = el('strong', { class: 'partida-barra__nombre' }, id);
   const pais = el(
     'button',
@@ -98,7 +102,7 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
     clase: string,
     nombreIcono: NombreIcono,
     titulo: string,
-    ayuda: string | (() => string),
+    ayuda: string | (() => string | Hijo[]),
     ...valor: HTMLElement[]
   ): HTMLElement => {
     const caja = el(
@@ -112,7 +116,10 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
       conInformacion(caja, () => [
         el('strong', {}, titulo),
         el('br'),
-        typeof ayuda === 'string' ? ayuda : ayuda(),
+        ...(() => {
+          const texto = typeof ayuda === 'string' ? ayuda : ayuda();
+          return typeof texto === 'string' ? [texto] : texto;
+        })(),
       ]),
     );
     return caja;
@@ -153,14 +160,15 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
       'tesoreria',
       'hacienda',
       t('juego.partida.tesoreria'),
-      t('juego.partida.tesoreriaAyuda'),
+      // Con los efectos que la están cambiando (tarea f13-t2).
+      () => [t('juego.partida.tesoreriaAyuda'), ...lineasEfectosDato(actual, 'tesoreria')],
       tesoreria,
     ),
     dato(
       'popularidad',
       'popularidad',
       t('juego.partida.popularidad'),
-      t('juego.partida.popularidadAyuda'),
+      () => [t('juego.partida.popularidadAyuda'), ...lineasEfectosDato(actual, 'popularidad')],
       popularidad,
       medidor,
     ),
@@ -173,6 +181,7 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
   );
 
   const actualizar = (estado: Partida): void => {
+    actual = estado;
     fecha.setAttribute('datetime', `${estado.fecha}T${textoHora(estado.hora)}`);
     fecha.textContent = formatearFechaLarga(estado.fecha);
     textoDeHora.textContent = textoHora(estado.hora);
@@ -180,12 +189,16 @@ export function crearBarraPartida(opciones: OpcionesBarraPartida): BarraPartida 
       horaActual = estado.hora;
       reloj.poner(horaActual, 0, true);
     }
-    const propio = estado.paises[estado.jugador.paisId];
-    tesoreria.textContent = propio ? dolares(propio.tesoreria) : '—';
-    if (propio) {
-      popularidad.textContent = `${enteros(propio.popularidad)} %`;
-      relleno.style.width = `${Math.max(0, Math.min(100, propio.popularidad))}%`;
-      medidor.dataset.nivel = nivelPopularidad(propio.popularidad);
+    const base = estado.paises[estado.jugador.paisId];
+    // Con los efectos en curso aplicados (tarea f13-t1).
+    const dato = (campo: CampoEstado): number =>
+      datoEfectivo(base!, estado.efectos ?? [], estado.jugador.paisId, campo, estado.fecha);
+    tesoreria.textContent = base ? dolares(dato('tesoreria')) : '—';
+    if (base) {
+      const valor = Math.round(dato('popularidad'));
+      popularidad.textContent = `${enteros(valor)} %`;
+      relleno.style.width = `${Math.max(0, Math.min(100, valor))}%`;
+      medidor.dataset.nivel = nivelPopularidad(valor);
     } else {
       popularidad.textContent = '—';
       relleno.style.width = '0%';
