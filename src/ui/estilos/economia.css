@@ -1,0 +1,101 @@
+/* La economía en vivo (tarea f15-t3): en la ficha de cada país y en Economía › Economía. */
+.economia {
+  display: grid;
+  gap: 12px;
+}
+
+.economia__cabecera {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.economia__cabecera strong {
+  color: var(--en-curso);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.economia__baja {
+  color: var(--peligro);
+}
+
+.economia__nota {
+  margin: 0;
+}
+
+.economia__vacio {
+  margin: 0;
+  color: var(--texto-suave);
+}
+
+.economia-ventana {
+  display: grid;
+  gap: 8px;
+}
+
+.economia-ventana__titulo {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Separación entre la economía en vivo y los datos de 2010 en la ficha. */
+.panel-pais__apartado {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--borde);
+  color: var(--texto-suave);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Iconos de los indicadores (tarea f15-t4). */
+.economia__termino {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.economia__termino .icono {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--acento);
+}
+
+/* Filas del bloque: las mismas que las de la ficha, para que se vean igual en la galería. */
+.economia .panel-pais__datos {
+  margin: 0;
+}
+
+.economia .panel-pais__fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 6%);
+  font-size: 14px;
+}
+
+.economia .panel-pais__fila dt {
+  color: var(--texto-suave);
+  cursor: help;
+}
+
+.economia .panel-pais__fila dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.economia .panel-pais__fila dd.es-estimado {
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+.economia .panel-pais__pie {
+  color: var(--texto-suave);
+  font-size: 12px;
+}

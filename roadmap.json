@@ -1,16 +1,17 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.15.1",
-  "actualizado": "2026-11-17T11:22:18Z",
-  "faseActiva": "fase-15",
+  "versionActual": "0.16.0",
+  "actualizado": "2026-11-17T13:07:37Z",
+  "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Versión 0.15.1 publicada (PR abierto) con los ajustes de la Fase 14: nombre opcional en los guardados manuales (f14-a1) y el almacenamiento persistente pedido al guardar a mano por primera vez (f14-a2). Plan de la Fase 15 presentado al jugador.",
-    "siguientePaso": "Con las respuestas del jugador, anotar el plan de la Fase 15 en el GDD y en la hoja de ruta y empezar f15-t1.",
+    "resumen": "Fase 15 cerrada como v0.16.0: datos de 2010 por sector y demanda de la ONU (siete sectores reales), economía de cada país mes a mes sin azar (producción por sector, inversión que acumula capital, convergencia de la productividad, arranque con el crecimiento real de 2010), confianza de consumidores y empresas y ahorro, y la economía en vivo en la ficha de cada país y en Economía › Economía, con iconos y gráfico animado del PIB. PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.16.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 16 (economía: inflación y paro).",
     "pendienteDelJugador": [
-      "Probar la v0.15.1: en la partida, Menú › Guardar en…, escribir un nombre y elegir una ranura; el nombre sale en la ranura, en Cargar partida y en Continuar; Ctrl+S lo conserva",
-      "Fusionar el PR de la v0.15.1",
-      "Responder las preguntas del plan de la Fase 15"
+      "Probar la v0.16.0 en el PC: empezar una partida, abrir la ficha de tu país (pestaña Economía) y Economía › Economía, avanzar un año a ×8 o más y ver cambiar el PIB, el crecimiento, la confianza y los sectores, con el gráfico; mirar también la ficha de otros países (China crece mucho, Grecia cae en 2010–2012)",
+      "Cargar una partida guardada con la v0.15 y comprobar que tiene economía",
+      "En la galería: «Economía de un país» con «Avanzar un año» y los iconos nuevos",
+      "Fusionar el PR de la Fase 15"
     ]
   },
   "etapas": [
@@ -964,29 +965,36 @@
       "objetivo": "Cada país produce, consume e invierte mes a mes",
       "dependeDe": ["fase-14"],
       "hechoCuando": "El PIB de todos los países evoluciona mes a mes",
-      "pruebaJugador": "Avanzar un año y ver cambiar el PIB en la ficha de varios países",
-      "estado": "pendiente",
+      "pruebaJugador": "Avanzar un año y ver cambiar el PIB y sus sectores en la ficha de varios países y en Economía › Economía",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f15-t1",
-          "titulo": "Modelo de producción y demanda (6.1)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Datos de 2010 por país (script con fuente ONU y Banco Mundial): valor añadido de siete ramas, consumo de los hogares, gasto público, inversión, exportaciones e importaciones; lo que falte, estimado y marcado",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/137759a"
         },
         {
           "id": "f15-t2",
-          "titulo": "Consumo, inversión, ahorro y confianza de consumidores y empresas",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Estado económico de cada país en la partida (formato 3 con migración) y modelo mensual de producción por sector y demanda, sin azar (decisión del jugador), que arranca con el crecimiento real de 2010 y converge al potencial",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/7aa25f7"
         },
         {
           "id": "f15-t3",
-          "titulo": "Audiovisual: iconos de los indicadores macroeconómicos que falten",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Ahorro y confianza de consumidores y empresas, con su efecto en el consumo y la inversión; valores en vivo en la ficha de cada país y en Economía › Economía (decisión del jugador)",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/83fe600"
+        },
+        {
+          "id": "f15-t4",
+          "titulo": "Audiovisual: iconos de los indicadores macroeconómicos y de los sectores que falten, y gráfico animado de la evolución del PIB desde 2010",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3877fbc"
         }
       ]
     },
@@ -4683,6 +4691,16 @@
       "cambios": [
         "Los guardados manuales pueden llevar un nombre (opcional, hasta 60 caracteres), que se ve en las ranuras, en «Cargar partida» y en «Continuar»; Ctrl+S conserva el de la ranura (ajuste f14-a1, petición del jugador)",
         "El juego pide al navegador que no borre las partidas al guardar a mano por primera vez, y no al abrirse (en Firefox salía un aviso nada más entrar; ajuste f14-a2)"
+      ]
+    },
+    {
+      "version": "0.16.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Datos de 2010 de la ONU: peso de siete sectores en la economía de cada país y reparto de la demanda (consumo, gasto público, inversión, exportaciones e importaciones)",
+        "Economía de cada país mes a mes, sin azar (decisión del jugador): cada sector produce con su capital, su trabajo y su productividad; la inversión acumula capital; la productividad converge hacia la de los países más avanzados; y cada país arranca con su crecimiento real de 2010",
+        "Confianza de consumidores y empresas, que sube o baja según el crecimiento y mueve el consumo, la inversión y el PIB; ahorro nacional",
+        "La economía en vivo en la ficha de cada país y en Economía › Economía, con iconos nuevos y gráfico animado del PIB desde 2010; sección «Economía de un país» en la galería"
       ]
     }
   ]

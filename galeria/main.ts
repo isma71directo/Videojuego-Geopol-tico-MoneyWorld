@@ -31,6 +31,8 @@ import { muestrario } from './muestrario';
 import { mostrarAvisoSuceso } from '../src/ui/aviso-suceso';
 import { filaGuardado, etiquetaGuardado } from '../src/ui/guardar-cargar';
 import { crearIndicadorGuardado } from '../src/ui/indicador-guardado';
+import { bloqueEconomia } from '../src/ui/economia-en-vivo';
+import { avanzarMes, economiaInicial, type EconomiaPais } from '../src/sim/economia';
 import { almacenEnMemoria } from '../src/ui/almacen-partidas';
 import type { ResumenGuardado } from '../src/sim/guardado';
 import { FORMATO_PARTIDA } from '../src/sim/partida';
@@ -323,6 +325,69 @@ function guardarCargar(conjunto: ConjuntoPaises): HTMLElement {
   );
 }
 
+/**
+ * La economía de un país (tarea f15-t4): el bloque que se ve en la ficha y en Economía ›
+ * Economía, con los datos reales de 2010 de cuatro países, para verlo crecer año a año.
+ */
+function economia(conjunto: ConjuntoPaises): HTMLElement {
+  const PAISES = ['ESP', 'CHN', 'GRC', 'USA'];
+  let paisId = PAISES[0]!;
+  let actual: EconomiaPais | null = null;
+  let fecha = '2010-01-01';
+  const empezar = (): void => {
+    const pais = conjunto.paises[paisId];
+    actual = pais ? economiaInicial(pais.datos, pais.nivelRenta) : null;
+    fecha = '2010-01-01';
+  };
+  empezar();
+  let bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
+  const contenedor = el('div', { class: 'galeria__economia' }, bloque.elemento);
+  /** Rehace el bloque (con su gráfico animado) al cambiar de país o volver a 2010. */
+  const rehacer = (): void => {
+    bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
+    contenedor.replaceChildren(bloque.elemento);
+  };
+  const boton = (texto: string, hacer: () => void): HTMLButtonElement => {
+    const b = el('button', { class: 'boton', type: 'button' }, texto);
+    b.addEventListener('click', () => {
+      sonido.activar();
+      sonido.reproducir('boton');
+      hacer();
+    });
+    return b;
+  };
+  return seccion(
+    t('galeria.economia.titulo'),
+    t('galeria.economia.nota'),
+    el(
+      'div',
+      { class: 'galeria__botones' },
+      ...PAISES.map((id) =>
+        boton(conjunto.paises[id]?.nombre ?? id, () => {
+          paisId = id;
+          empezar();
+          rehacer();
+        }),
+      ),
+    ),
+    el(
+      'div',
+      { class: 'galeria__botones' },
+      boton(t('galeria.economia.avanzar'), () => {
+        if (!actual) return;
+        for (let mes = 0; mes < 12; mes++) avanzarMes(actual);
+        fecha = `${Number(fecha.slice(0, 4)) + 1}-01-01`;
+        bloque.actualizar();
+      }),
+      boton(t('galeria.economia.reiniciar'), () => {
+        empezar();
+        rehacer();
+      }),
+    ),
+    contenedor,
+  );
+}
+
 /** Colores de referencia de la tabla de colores representativos (ajuste f7-a3). */
 function referencias(): HTMLElement {
   return seccion(
@@ -609,6 +674,7 @@ async function iniciar(): Promise<void> {
       musicaAmbiental(),
       avisoPausa(),
       guardarCargar(conjunto),
+      economia(conjunto),
       retratos(gobiernos, conjunto),
       ...muestrario(conjunto, seccion),
       ...banderas(conjunto),

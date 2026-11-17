@@ -8,6 +8,7 @@ import { abrirHoja, type Hoja } from './hoja';
 import { masReciente } from '../sim/guardado';
 import type { Partida } from '../sim/partida';
 import { almacenPartidas } from './almacen-partidas';
+import { cargarDatosPaises } from './datos-paises';
 import {
   abrirCargarPartida,
   cargarGuardado,
@@ -252,11 +253,7 @@ export interface OpcionesInicio {
 /** Nombres de los países (de los datos de 2010), para contar cada guardado. */
 let nombres: Promise<Map<string, string>> | null = null;
 function nombresDePaises(): Promise<Map<string, string>> {
-  nombres ??= fetch('./data/paises-2010.json')
-    .then((respuesta) => {
-      if (!respuesta.ok) throw new Error(String(respuesta.status));
-      return respuesta.json() as Promise<{ paises: Record<string, { nombre: string }> }>;
-    })
+  nombres ??= cargarDatosPaises()
     .then((datos) => new Map(Object.entries(datos.paises).map(([id, p]) => [id, p.nombre])))
     .catch(() => {
       // Sin los datos, los guardados se cuentan con el código del país (y se reintenta).

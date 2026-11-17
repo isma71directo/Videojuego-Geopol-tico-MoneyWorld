@@ -70,6 +70,14 @@ import ajustes from './iconos/ajustes.svg?raw';
 import exportar from './iconos/exportar.svg?raw';
 import importar from './iconos/importar.svg?raw';
 import hecho from './iconos/hecho.svg?raw';
+import consumo from './iconos/consumo.svg?raw';
+import inversion from './iconos/inversion.svg?raw';
+import ahorro from './iconos/ahorro.svg?raw';
+import confianza from './iconos/confianza.svg?raw';
+import empresas from './iconos/empresas.svg?raw';
+import construccion from './iconos/construccion.svg?raw';
+import servicios from './iconos/servicios.svg?raw';
+import potencial from './iconos/potencial.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -173,6 +181,15 @@ const ICONOS = {
   importar,
   // Indicador de guardado (tarea f14-t4).
   hecho,
+  // Economía: indicadores y sectores (tarea f15-t4).
+  consumo,
+  inversion,
+  ahorro,
+  confianza,
+  empresas,
+  construccion,
+  servicios,
+  potencial,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

@@ -10,6 +10,7 @@ import { icono } from '../av/iconos';
 import { formatearFechaHora, formatearFechaLarga } from '../compartido/fechas';
 import { t } from '../i18n';
 import { semillaNueva } from '../sim/azar';
+import { completarEconomia, faltaEconomia } from '../sim/economia';
 import {
   ErrorGuardado,
   LONGITUD_NOMBRE,
@@ -23,6 +24,7 @@ import type { Partida } from '../sim/partida';
 import { textoHora } from '../sim/reloj';
 import { cargarPartida, type AlmacenPartidas } from './almacen-partidas';
 import { elegirArchivo, leerArchivo } from './archivos-partida';
+import { cargarDatosPaises } from './datos-paises';
 import { animar } from './componentes/animacion';
 import { pedirConfirmacion, pedirEleccion } from './componentes/confirmacion';
 import { abrirVentana, type Ventana } from './componentes/ventana';
@@ -344,7 +346,17 @@ export async function cambiarDePartida(
       return false;
     }
   }
-  opciones.alCargar(paraSeguir(archivo, semillaNueva()), ranura);
+  const partida = paraSeguir(archivo, semillaNueva());
+  if (faltaEconomia(partida)) {
+    // Guardada antes de la Fase 15: su economía empieza con los datos de 2010 (tarea f15-t2).
+    // Sin los datos (sin conexión), se carga igual y se completará la próxima vez.
+    try {
+      completarEconomia(partida, (await cargarDatosPaises()).paises);
+    } catch {
+      // Se sigue sin economía.
+    }
+  }
+  opciones.alCargar(partida, ranura);
   return true;
 }
 

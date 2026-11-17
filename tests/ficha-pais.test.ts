@@ -120,7 +120,9 @@ describe('ficha de país (tarea f8-t2)', () => {
     expect(textoOrigen(undefined, conjunto)).toBe('Sin dato');
   });
 
-  it('todos los países tienen ficha sin errores', () => {
+  // Recorre los 223 países con sus cuatro pestañas: tarda unos 5 s, así que tiene un límite propio
+  // más amplio (con el ordenador cargado se pasaba de los 5 s por defecto).
+  it('todos los países tienen ficha sin errores', { timeout: 30_000 }, () => {
     for (const id of Object.keys(conjunto.paises)) {
       const f = ficha(id);
       for (const titulo of ['Economía', 'Sociedad', 'Fuentes']) abrir(f, titulo);

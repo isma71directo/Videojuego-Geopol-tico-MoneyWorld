@@ -22,6 +22,7 @@ import { icono } from '../av/iconos';
 import { rasgosDe, svgRetrato, tono } from '../av/retratos';
 import { barraDePartes } from './componentes/graficos';
 import { conInformacion } from './componentes/info';
+import { bloqueEconomia, type FuenteEconomia } from './economia-en-vivo';
 import { crearPestanas } from './componentes/pestanas';
 import { nombreCapa, textoValorCapa } from './leyenda';
 
@@ -181,6 +182,8 @@ export interface OpcionesFicha {
   /** Pestaña que se abre (la última que miró el jugador). */
   pestana?: string;
   alCambiarPestana?: (id: string) => void;
+  /** En una partida, su economía en vivo (tarea f15-t3): va arriba de la pestaña Economía. */
+  economiaEnVivo?: FuenteEconomia;
 }
 
 /** Fila «nombre: valor» de un dato, con su explicación al pasar el ratón o con el foco. */
@@ -513,7 +516,17 @@ export function contenidoPanel(
       {
         id: 'economia',
         titulo: t('juego.mapa.pais.pestanas.economia'),
-        contenido: () => conNota(pestanaEconomia(pais, conjunto, estimados)),
+        contenido: () =>
+          conNota([
+            ...(opciones.economiaEnVivo
+              ? [
+                  // En la ficha, estrecha, el gráfico se dibuja más estrecho para que se lea.
+                  bloqueEconomia(opciones.economiaEnVivo, { anchoGrafico: 340 }).elemento,
+                  el('h3', { class: 'panel-pais__apartado' }, t('juego.economia.datos2010')),
+                ]
+              : []),
+            ...pestanaEconomia(pais, conjunto, estimados),
+          ]),
       },
       {
         id: 'sociedad',

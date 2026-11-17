@@ -158,6 +158,9 @@ export const MIGRACIONES: Record<number, (partida: Datos) => Datos> = {
     efectos: Array.isArray(partida.efectos) ? partida.efectos : [],
     agenda: Array.isArray(partida.agenda) ? partida.agenda : [],
   }),
+  // 2 → 3 (Fase 15): llega la economía de cada país. Se crea al cargar, con los datos de 2010
+  // (completarEconomia), porque la migración no tiene los datos de los países.
+  2: (partida) => ({ ...partida, formato: 3 }),
 };
 
 /** Lleva una partida de cualquier formato anterior al actual. */

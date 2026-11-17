@@ -165,7 +165,7 @@
             "type": "object",
             "additionalProperties": {
               "type": "string",
-              "pattern": "^((BM|FMI|OWID|WD):\\d{4}|OWID:ausente|DER|EST:[a-z0-9-]+)$"
+              "pattern": "^((BM|FMI|ONU|OWID|WD):\\d{4}|OWID:ausente|DER|EST:[a-z0-9-]+)$"
             }
           },
           "datosEstimados": {

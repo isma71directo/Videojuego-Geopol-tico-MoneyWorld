@@ -92,7 +92,8 @@ function buscar(
 }
 
 function codigoEn(pais: PaisBase, archivo: Archivo): string | null {
-  if (archivo === 'bm') return pais.codigos.bm;
+  // La ONU se cruza con los códigos ISO3 del Banco Mundial (25-onu-cuentas.ts).
+  if (archivo === 'bm' || archivo === 'onu') return pais.codigos.bm;
   if (archivo === 'fmi' || archivo === 'fiscal') return pais.codigos.fmi;
   return pais.codigos.owid;
 }
