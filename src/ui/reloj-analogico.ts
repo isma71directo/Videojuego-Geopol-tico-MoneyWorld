@@ -4,10 +4,11 @@
  * demasiado deprisa (parecería ir hacia atrás), así que se queda en las doce y solo se mueve la
  * aguja de las horas. De noche (de las 20:00 a las 7:00) la esfera se oscurece.
  */
+import { AMANECER, ANOCHECER } from '../map/noche';
 
-/** Horas de la noche en la esfera: desde las 20:00 hasta antes de las 7:00. */
+/** Horas de la noche en la esfera: desde las 20:00 hasta antes de las 7:00, como en el mapa. */
 export function esDeNoche(hora: number): boolean {
-  return hora >= 20 || hora < 7;
+  return hora >= ANOCHECER || hora < AMANECER;
 }
 
 /** Ángulos (grados, desde las doce y en el sentido del reloj) de las dos agujas. */

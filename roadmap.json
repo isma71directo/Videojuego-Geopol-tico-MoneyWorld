@@ -1,16 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.12.0",
-  "actualizado": "2026-11-16T23:54:45Z",
+  "actualizado": "2026-11-17T00:12:18Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
-    "fecha": "2026-11-16",
-    "resumen": "Fase 11 cerrada como v0.12.0: reloj por horas con la hora de la capital del jugador, pausa y velocidades ×1 a ×8 (ratón y teclado), reloj de manecillas, noche y día en el mapa y sonidos del tiempo. Atiende la issue n.º 3. PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.12.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
-    "pendienteDelJugador": [
-      "Probar la v0.12.0 en el PC: empezar una partida (empieza en pausa a medianoche), ponerla en marcha con la barra espaciadora o el botón, cambiar entre ×1, ×2, ×4 y ×8 (también con las teclas 1 a 4), ver avanzar la fecha y la hora de tu capital, el reloj de manecillas y la noche moviéndose sobre el mapa (aléjate para ver el mundo entero), pausar y comprobar que el tiempo se para; probar a quitar la noche en Ajustes",
-      "Fusionar el PR de la Fase 11"
-    ]
+    "fecha": "2026-11-17",
+    "resumen": "f11-a1 hecho: la noche del mapa ya no sigue al Sol real. Un «Sol del juego» sin estaciones hace que en la capital del jugador anochezca a las 20:00 y amanezca a las 7:00 todo el año (con un crepúsculo de unos 20 minutos); el resto del mundo se oscurece según su longitud. La esfera del reloj usa el mismo horario. El reloj no tendrá horario de verano ni diferencias horarias entre países (decisión del jugador).",
+    "siguientePaso": "Publicar la v0.12.1 y abrir su PR.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -762,6 +759,17 @@
           "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f9268a9"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f11-a1",
+          "titulo": "Noche en el mapa de las 20:00 a las 7:00 (hora de la capital del jugador) todo el año, en lugar de seguir al Sol real (en enero anochecía hacia las 18:00); el reloj se queda como está: sin horario de verano ni diferencias horarias entre países, que no son parte del juego",
+          "version": "0.12.1",
+          "origen": "Mensaje del jugador tras probar la v0.12.0",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": ""
         }
       ]
     },
