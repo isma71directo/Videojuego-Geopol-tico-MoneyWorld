@@ -1256,6 +1256,20 @@
       "seguir": "Seguir el tiempo",
       "velocidad": "Cambiar la velocidad del tiempo"
     },
+    "musica": {
+      "titulo": "Música ambiental",
+      "nota": "Compuesta con código y sintetizada al momento, sin archivos de audio. Piezas fijas pero abundantes: media hora de música tranquila (la del menú y la partida) y un cuarto de hora de música tensa, que sonará con las crisis, guerras y elecciones. Se reparten sin repetirse hasta que suenan todas. Pulsa una pieza para escucharla o cambia de ambiente para oír el fundido.",
+      "tranquilas": "Piezas tranquilas",
+      "tensas": "Piezas tensas",
+      "tranquila": "tranquila",
+      "tensa": "tensa",
+      "escuchar": "Escuchar «{titulo}»",
+      "aTranquila": "Ambiente tranquilo",
+      "aTensa": "Ambiente tenso",
+      "parar": "Parar la música",
+      "nada": "No suena nada.",
+      "sonando": "Suena «{titulo}» (música {ambiente})."
+    },
     "paleta": {
       "titulo": "Colores de referencia",
       "nota": "Los nombres de color que usa la tabla de colores representativos (src/map/config/colores-pais.json). Cada país lleva un tono cercano al suyo: más claro, más oscuro o algo girado, para que no se parezca a los de su alrededor."

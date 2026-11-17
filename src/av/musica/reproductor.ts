@@ -104,16 +104,34 @@ export class ReproductorMusica {
     if (ambiente === this.ambiente || !this.listas[ambiente]) return;
     this.ambiente = ambiente;
     const salida = this.obtenerSalida();
-    const actual = this.sonando;
-    if (actual && salida) {
+    if (this.sonando && salida) {
       const ahora = salida.contexto.currentTime;
-      actual.ganancia.gain.cancelScheduledValues(ahora);
-      actual.ganancia.gain.setValueAtTime(actual.ganancia.gain.value, ahora);
-      actual.ganancia.gain.linearRampToValueAtTime(0, ahora + FUNDIDO);
-      setTimeout(() => actual.ganancia.disconnect(), (FUNDIDO + 4) * 1000);
+      this.apagar(this.sonando, ahora, FUNDIDO);
       // La nueva entra mientras la otra se apaga.
       this.sonando = this.nuevaPieza(salida, ahora + FUNDIDO * 0.6);
     }
+  }
+
+  /** Toca ya una pieza concreta (la galería); después sigue la lista de su ambiente. */
+  reproducirPieza(plan: PlanPieza): void {
+    this.empezar();
+    const salida = this.obtenerSalida();
+    if (!salida || !this.mezcla) return;
+    this.ambiente = plan.ambiente;
+    const ahora = salida.contexto.currentTime;
+    if (this.sonando) this.apagar(this.sonando, ahora, 1.2);
+    const ganancia = salida.contexto.createGain();
+    ganancia.connect(this.mezcla);
+    this.sonando = { partitura: this.partitura(plan), comienzo: ahora + 0.4, indice: 0, ganancia };
+    this.programar();
+  }
+
+  /** Apaga una pieza con un fundido de `segundos` y la desconecta después. */
+  private apagar(pieza: PiezaSonando, ahora: number, segundos: number): void {
+    pieza.ganancia.gain.cancelScheduledValues(ahora);
+    pieza.ganancia.gain.setValueAtTime(pieza.ganancia.gain.value, ahora);
+    pieza.ganancia.gain.linearRampToValueAtTime(0, ahora + segundos);
+    setTimeout(() => pieza.ganancia.disconnect(), (segundos + 4) * 1000);
   }
 
   /** En pausa, la música baja un poco. */

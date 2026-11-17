@@ -2,6 +2,7 @@
  * Sonido del juego (tarea f4-t4): una sola instancia del motor, con los ajustes guardados del
  * jugador. Se activa con el primer clic o la primera tecla (GDD 7.1).
  */
+import { PIEZAS_TENSAS } from '../av/musica/piezas-tensas';
 import { PIEZAS_TRANQUILAS } from '../av/musica/piezas-tranquilas';
 import { ReproductorMusica } from '../av/musica/reproductor';
 import { MotorSonido, type Efecto } from '../av/sonido';
@@ -14,11 +15,13 @@ export const sonido = new MotorSonido({
 });
 
 /**
- * Música ambiental (tarea f12-t3, decisión del jugador): piezas fijas que se reparten sin
- * repetirse, en el menú y en la partida.
+ * Música ambiental (tareas f12-t3 y f12-t4, decisiones del jugador): piezas fijas que se reparten
+ * sin repetirse, en el menú y en la partida. Suena la tranquila; la tensa está lista para las
+ * crisis, guerras y elecciones de las próximas fases (`musica.ponerAmbiente('tensa')`).
  */
-export const musica = new ReproductorMusica({ tranquila: PIEZAS_TRANQUILAS, tensa: [] }, () =>
-  sonido.salidaMusica(),
+export const musica = new ReproductorMusica(
+  { tranquila: PIEZAS_TRANQUILAS, tensa: PIEZAS_TENSAS },
+  () => sonido.salidaMusica(),
 );
 
 /** Escucha el primer clic o tecla del jugador para poner en marcha el sonido y la música. */

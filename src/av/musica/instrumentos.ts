@@ -13,9 +13,9 @@ const NIVEL: Record<NotaMusical['instrumento'], number> = {
   piano: 0.07,
   cuerdas: 0.07,
   campana: 0.05,
-  dron: 0.09,
-  pulso: 0.05,
-  golpe: 0.22,
+  dron: 0.16,
+  pulso: 0.1,
+  golpe: 0.3,
 };
 
 /** Un oscilador con su forma, frecuencia y desafinación (en cents). */

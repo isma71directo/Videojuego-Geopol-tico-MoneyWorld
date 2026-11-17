@@ -3,8 +3,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { arreglar, RANGOS, type PlanPieza } from '../src/av/musica/arreglista';
 import { ListaPiezas } from '../src/av/musica/lista';
+import { PIEZAS_TENSAS } from '../src/av/musica/piezas-tensas';
 import { PIEZAS_TRANQUILAS } from '../src/av/musica/piezas-tranquilas';
 import {
+  FUNDIDO,
   notasEntre,
   ReproductorMusica,
   VOLUMEN_EN_PAUSA,
@@ -243,5 +245,80 @@ describe('reproductor de la música (tarea f12-t3)', () => {
       expect(plan.titulo.length).toBeGreaterThan(4);
       expect(plan.titulo[0]).toBe(plan.titulo[0]!.toUpperCase());
     }
+  });
+});
+
+/** ¿El acorde de tres notas es aumentado (dos terceras mayores)? */
+const aumentado = (acorde: number[]) =>
+  acorde[1]! - acorde[0]! === 4 && acorde[2]! - acorde[1]! === 4;
+
+describe('piezas tensas (tarea f12-t4)', () => {
+  const partituras = PIEZAS_TENSAS.map(arreglar);
+
+  it('ocho piezas distintas: más de un cuarto de hora de música tensa', () => {
+    expect(PIEZAS_TENSAS).toHaveLength(8);
+    const todas = [...PIEZAS_TRANQUILAS, ...PIEZAS_TENSAS];
+    expect(new Set(todas.map((p) => p.id)).size).toBe(todas.length);
+    expect(new Set(todas.map((p) => p.titulo)).size).toBe(todas.length);
+    for (const plan of PIEZAS_TENSAS) expect(plan.ambiente).toBe('tensa');
+    for (const p of partituras) {
+      expect(p.duracion, p.id).toBeGreaterThan(90);
+      expect(p.duracion, p.id).toBeLessThan(210);
+    }
+    const minutos = partituras.reduce((s, p) => s + p.duracion, 0) / 60;
+    expect(minutos).toBeGreaterThanOrEqual(15);
+  });
+
+  it('suenan oscuras: drones, pulsos y timbales, en modos menores', () => {
+    const instrumentos = new Set(partituras.flatMap((p) => p.notas.map((n) => n.instrumento)));
+    for (const instrumento of ['dron', 'pulso', 'golpe'] as const) {
+      expect(instrumentos.has(instrumento)).toBe(true);
+    }
+    for (const plan of PIEZAS_TENSAS) {
+      expect(['menor', 'frigio', 'menorArmonica']).toContain(plan.modo);
+      for (const seccion of plan.secciones) {
+        for (const grado of seccion.progresion) {
+          const acorde = acordeDeGrado(plan.tonica, plan.modo, grado);
+          expect(disminuido(acorde) || aumentado(acorde), `${plan.id} ${grado}`).toBe(false);
+        }
+      }
+      expect(plan.secciones.at(-1)!.progresion.at(-1), plan.id).toBe(1);
+    }
+    for (const [i, p] of partituras.entries()) {
+      const plan = PIEZAS_TENSAS[i]!;
+      const clases = new Set(escala(plan.tonica, plan.modo));
+      for (const nota of p.notas) expect(clases.has(clase(nota.midi)), p.id).toBe(true);
+    }
+  });
+
+  it('al cambiar de ambiente, la pieza que suena se apaga con un fundido y entra otra', () => {
+    vi.useFakeTimers();
+    const falso = contextoFalso();
+    const reproductor = new ReproductorMusica(
+      { tranquila: PIEZAS_TRANQUILAS, tensa: PIEZAS_TENSAS },
+      () => ({ contexto: falso.contexto, salida: falso.salida }) as unknown as SalidaMusica,
+    );
+    reproductor.empezar();
+    const tranquila = reproductor.tituloActual;
+    expect(PIEZAS_TRANQUILAS.map((p) => p.titulo)).toContain(tranquila);
+    reproductor.ponerAmbiente('tensa');
+    expect(reproductor.ambienteActual).toBe('tensa');
+    expect(PIEZAS_TENSAS.map((p) => p.titulo)).toContain(reproductor.tituloActual);
+    expect(FUNDIDO).toBeGreaterThanOrEqual(2);
+    // Y de vuelta.
+    reproductor.ponerAmbiente('tranquila');
+    expect(PIEZAS_TRANQUILAS.map((p) => p.titulo)).toContain(reproductor.tituloActual);
+    // La galería puede tocar una pieza concreta.
+    reproductor.reproducirPieza(PIEZAS_TENSAS[3]!);
+    expect(reproductor.tituloActual).toBe(PIEZAS_TENSAS[3]!.titulo);
+    expect(reproductor.ambienteActual).toBe('tensa');
+    reproductor.parar();
+  });
+
+  it('la galería tiene su sección de música con nombre', () => {
+    expect(t('galeria.musica.titulo')).toBe('Música ambiental');
+    expect(t('galeria.musica.sonando', { titulo: 'Ultimátum', ambiente: 'tensa' })).toBe(
+      'Suena «Ultimátum» (música tensa).',
+    );
   });
 });

@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.12.4",
-  "actualizado": "2026-11-17T07:08:57Z",
+  "actualizado": "2026-11-17T07:13:44Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f12-t3 hecha: música ambiental compuesta con código (src/av/musica). Doce piezas tranquilas fijas de 2 a 3,5 min (media hora sin repetir), cada una con su tonalidad, modo, tempo, compás y acordes; un arreglista determinista las convierte en notas (colchón de acordes, bajo, arpegios, melodía y campanas) y unos instrumentos sintetizados con reverberación las tocan. Suenan desde el primer clic en el menú y siguen en la partida, en orden al azar sin repetir hasta que suenan todas; en pausa baja un poco; volumen propio en Ajustes. Niveles comprobados al reproducirlas sin conexión (sin saturar ni silencios).",
-    "siguientePaso": "f12-t4: piezas tensas, cambio de ambiente con fundido y muestrario de la música en la galería; después, cerrar la Fase 12 como v0.13.0.",
+    "resumen": "f12-t4 hecha: ocho piezas tensas fijas (más de un cuarto de hora: drones, pulsos y timbales en modos menor, frigio y menor armónica) para las crisis, guerras y elecciones de las próximas fases; cambio de ambiente con fundido (musica.ponerAmbiente); sección «Música ambiental» en la galería para escuchar cada pieza y el fundido. Niveles igualados entre piezas tranquilas y tensas.",
+    "siguientePaso": "Cerrar la Fase 12 como v0.13.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -839,12 +839,12 @@
           "titulo": "Audiovisual: motor de música con piezas fijas compuestas con código y las piezas tranquilas, en el menú y en la partida, con su volumen; en pausa baja un poco",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2383eb7"
         },
         {
           "id": "f12-t4",
           "titulo": "Audiovisual: piezas tensas (crisis, guerras y elecciones) y cambio de ambiente con fundido; reparto sin repetir hasta que suenan todas; muestrario de la música en la galería",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

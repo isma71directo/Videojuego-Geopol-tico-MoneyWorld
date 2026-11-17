@@ -9,6 +9,10 @@ import './estilos.css';
 import { urlBandera } from '../src/av/banderas';
 import { NOMBRES_ICONOS, icono } from '../src/av/iconos';
 import { EFECTOS, MotorSonido, type Efecto } from '../src/av/sonido';
+import { PIEZAS_TENSAS } from '../src/av/musica/piezas-tensas';
+import { PIEZAS_TRANQUILAS } from '../src/av/musica/piezas-tranquilas';
+import { ReproductorMusica } from '../src/av/musica/reproductor';
+import type { PlanPieza } from '../src/av/musica/arreglista';
 import { capaPorId, COLOR_SIN_RESERVAS } from '../src/map/capas';
 import { etiquetaCapa, opcionesCapas, POLITICA } from '../src/ui/selector-capas';
 import { preferenciasDeColor } from '../src/map/colores';
@@ -106,6 +110,85 @@ function sonidos(): HTMLElement {
         return el('li', {}, boton);
       }),
     ),
+  );
+}
+
+/** Música ambiental (tareas f12-t3 y f12-t4): cada pieza, y el cambio de ambiente con fundido. */
+const musica = new ReproductorMusica({ tranquila: PIEZAS_TRANQUILAS, tensa: PIEZAS_TENSAS }, () =>
+  sonido.salidaMusica(),
+);
+
+function duracionDe(plan: PlanPieza): string {
+  const segundos = Math.round(musica.partitura(plan).duracion);
+  return `${Math.floor(segundos / 60)}:${String(segundos % 60).padStart(2, '0')}`;
+}
+
+function musicaAmbiental(): HTMLElement {
+  const sonando = el('p', { class: 'galeria__nota', role: 'status' }, t('galeria.musica.nada'));
+  const decir = (): void => {
+    sonando.textContent = musica.tituloActual
+      ? t('galeria.musica.sonando', {
+          titulo: musica.tituloActual,
+          ambiente: t(`galeria.musica.${musica.ambienteActual}`),
+        })
+      : t('galeria.musica.nada');
+  };
+  const lista = (piezas: readonly PlanPieza[], titulo: string): HTMLElement =>
+    el(
+      'div',
+      {},
+      el('h3', {}, titulo),
+      el(
+        'ul',
+        { class: 'galeria__sonidos' },
+        ...piezas.map((plan) => {
+          const boton = el(
+            'button',
+            {
+              class: 'boton',
+              type: 'button',
+              'aria-label': t('galeria.musica.escuchar', { titulo: plan.titulo }),
+            },
+            icono('sonido'),
+            `${plan.titulo} · ${duracionDe(plan)}`,
+          );
+          boton.addEventListener('click', () => {
+            sonido.activar();
+            musica.reproducirPieza(plan);
+            decir();
+          });
+          return el('li', {}, boton);
+        }),
+      ),
+    );
+  const accion = (texto: string, hacer: () => void): HTMLButtonElement => {
+    const boton = el('button', { class: 'boton', type: 'button' }, texto);
+    boton.addEventListener('click', () => {
+      sonido.activar();
+      hacer();
+      decir();
+    });
+    return boton;
+  };
+  return seccion(
+    t('galeria.musica.titulo'),
+    t('galeria.musica.nota'),
+    el(
+      'div',
+      { class: 'galeria__botones' },
+      accion(t('galeria.musica.aTranquila'), () => {
+        musica.empezar();
+        musica.ponerAmbiente('tranquila');
+      }),
+      accion(t('galeria.musica.aTensa'), () => {
+        musica.empezar();
+        musica.ponerAmbiente('tensa');
+      }),
+      accion(t('galeria.musica.parar'), () => musica.parar()),
+    ),
+    sonando,
+    lista(PIEZAS_TRANQUILAS, t('galeria.musica.tranquilas')),
+    lista(PIEZAS_TENSAS, t('galeria.musica.tensas')),
   );
 }
 
@@ -392,6 +475,7 @@ async function iniciar(): Promise<void> {
       iconos(),
       recursos(),
       sonidos(),
+      musicaAmbiental(),
       retratos(gobiernos, conjunto),
       ...muestrario(conjunto, seccion),
       ...banderas(conjunto),

@@ -475,3 +475,11 @@
 .galeria__recurso--industriales {
   background: #8fcfb0;
 }
+
+/* Música ambiental (tarea f12-t4): botones de ambiente. */
+.galeria__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
