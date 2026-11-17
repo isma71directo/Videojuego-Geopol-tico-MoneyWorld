@@ -1,19 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.16.1",
-  "actualizado": "2026-11-17T18:22:50Z",
+  "actualizado": "2026-11-17T18:36:08Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "v0.16.1 publicada (PR abierto). f15-a1 (nada mejora solo): la productividad solo converge con base (alfabetización, electricidad, internet y educación; sin ella apenas crece); los desequilibrios de 2010 (deuda, déficit, déficit exterior y paro) fuerzan, a los seis meses, un ajuste que recorta el gasto público, cierra el crédito y hunde la confianza hasta cerrar el déficit; dureza según la dificultad (realista 100 %, normal 75 %, fácil 50 %; dura lo mismo). Sin intervención, Grecia cae cuatro años (−8 %, −7 %, −4 %, −2 %) y en diez no recupera su PIB de 2010; Portugal, España, Islandia y Letonia también encogen; EE. UU., Japón y Alemania no. Fila «Ajuste forzoso» en la ficha. Formato de partida 4 con migración.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.16.1: apuntar sus ajustes o presentar el plan de la Fase 16 (economía: inflación y paro), seguida de las Fases 17 (presupuesto) y 18 (deuda).",
-    "pendienteDelJugador": [
-      "Probar la v0.16.1 en el PC: empezar una partida en «realista», abrir la ficha de Grecia (pestaña Economía) y avanzar dos o tres años a ×64: el PIB cae varios años seguidos, la confianza baja y la fila «Ajuste forzoso» muestra lo que falta por recortar",
-      "Comparar con una partida en «fácil»: Grecia cae menos (el ajuste dura lo mismo)",
-      "Mirar Portugal, España o Islandia (también encogen) y Estados Unidos, Alemania o China (no tienen ese ajuste o es leve)",
-      "Cargar una partida guardada con la v0.16.0 y comprobar que la carga y que Grecia tiene su ajuste forzoso",
-      "Fusionar el PR de la v0.16.1"
-    ]
+    "resumen": "El jugador fusionó la v0.16.1 (todo funciona). Plan de la Fase 16 (inflación y paro) aprobado: paro con la ley de Okun e histéresis; inflación persistente sin ancla hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad aún no cambia); alertas económicas del país del jugador con aviso y sonido. La fase pasa a 4 tareas.",
+    "siguientePaso": "f16-t1: paro con la ley de Okun, paro estructural de 2010 e histéresis; los ocupados producen y el paro baja la confianza y el consumo; tests de «si se hace mal, empeora».",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -1019,25 +1013,32 @@
       "dependeDe": ["fase-15"],
       "hechoCuando": "Pasa el test de credibilidad",
       "pruebaJugador": "Jugar un año y revisar el paro y la inflación de España",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f16-t1",
-          "titulo": "Inflación, paro (ley de Okun), productividad y crecimiento potencial",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Paro: ley de Okun, paro estructural e histéresis; los ocupados producen y el paro baja la confianza y el consumo",
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f16-t2",
-          "titulo": "Test de credibilidad: 5 años sin intervención en los 20 mayores países",
+          "titulo": "Inflación persistente (expectativas y brecha de producción) y PIB nominal; la inflación alta baja la inversión y la deflación, el consumo",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f16-t3",
-          "titulo": "Audiovisual: sonidos de las alertas económicas",
+          "titulo": "Paro, inflación y PIB nominal en vivo (ficha y Economía › Economía) con su gráfico; test de credibilidad: 5 años sin intervención en los 20 mayores países",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f16-t4",
+          "titulo": "Audiovisual: alertas económicas del país del jugador con aviso, iconos y un sonido propio de cada una",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
