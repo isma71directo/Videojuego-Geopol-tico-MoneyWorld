@@ -1,20 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T19:13:27Z",
+  "actualizado": "2026-11-17T19:59:28Z",
   "faseActiva": "fase-17",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 16 cerrada como v0.17.0: paro con la ley de Okun, adaptación del mercado de trabajo e histéresis (los parados dejan de producir y gastan menos); inflación persistente sin ancla hasta el banco central, con PIB nominal (la alta resta inversión y la deflación, consumo); paro, inflación y PIB nominal en la ficha y en Economía › Economía con su gráfico; test de credibilidad del GDD en verde; alertas económicas del país del jugador con aviso, iconos y sonido propio. PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.17.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 17 (presupuesto: ingresos y gastos).",
-    "pendienteDelJugador": [
-      "Probar la v0.17.0 en el PC: jugar un año con España (o Grecia) a ×64 y revisar en la ficha (pestaña Economía) el paro, que sube, y la inflación, que baja, con su gráfico",
-      "Esperar las alertas: con Grecia, la recesión para la partida en septiembre de 2010 (aviso del centro con su sonido); después, la tarjeta de «El paro se dispara» arriba a la derecha",
-      "Comparar con Alemania o China, donde el paro y la inflación apenas cambian y no hay alertas",
-      "En la galería: «Alertas económicas» (ver y oír cada una), los sonidos nuevos y la «Economía de un país» con «Avanzar un año»",
-      "Cargar una partida guardada con la v0.16.1 y comprobar que tiene paro e inflación",
-      "Fusionar el PR de la Fase 16"
-    ]
+    "resumen": "El jugador fusionó la v0.17.0. Plan de la Fase 17 (presupuesto) aprobado: cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI, lo demás estimado y marcado; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto. La fase pasa a 4 tareas.",
+    "siguientePaso": "f17-t1: script de datos del Banco Mundial con la composición de ingresos y gastos de 2010 (impuestos por tipo, cotizaciones, sueldos, compras, intereses, transferencias, inversión, sanidad pública) y la deuda; integrarlo en paises-2010.json.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -1061,25 +1054,32 @@
       "dependeDe": ["fase-16"],
       "hechoCuando": "Todos los países tienen su presupuesto de 2010",
       "pruebaJugador": "Ver el presupuesto inicial de España y compararlo con el de Alemania",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f17-t1",
-          "titulo": "Estructura de ingresos y gastos por partida y ministerio (6.2)",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "Datos de 2010 (Banco Mundial): ingresos por tipo, gasto por tipo y función (sanidad, educación, defensa, intereses) y deuda real; lo que falte, estimado y marcado",
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f17-t2",
-          "titulo": "Datos iniciales de 2010: gasto por función y deuda real",
+          "titulo": "El presupuesto en el motor: ingresos por tipo y gastos por ministerio con sus partidas internas (personal, inversión, mantenimiento, programas), pensiones, prestaciones e intereses; cuadra con el FMI; deuda y tesorería",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f17-t3",
-          "titulo": "Audiovisual: gráfico de ingresos y gastos",
+          "titulo": "Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora»",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f17-t4",
+          "titulo": "Audiovisual: gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""

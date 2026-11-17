@@ -264,6 +264,20 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 **Pantalla:** tabla de ingresos y gastos con deslizadores por partida, previsión a 12 meses y comparación con el año anterior.
 
+**Decisiones del jugador (17/11/2026, plan de la Fase 17):**
+- **Cada ministerio por dentro:** los ingresos, por tipo (impuestos sobre la renta de las personas y de las sociedades, IVA y consumos, cotizaciones sociales, aranceles y otros: recursos naturales, empresas públicas y ayudas recibidas). Los gastos, por ministerio (los 20 del juego), cada uno con sus partidas internas: personal, inversión, mantenimiento (compras de bienes y servicios) y programas (transferencias y subvenciones). Aparte van las pensiones, las prestaciones por desempleo y los intereses de la deuda.
+- **Datos:** Banco Mundial (composición real de los ingresos y del gasto por tipo, con sanidad, educación y defensa reales) y FMI (totales de ingresos, gasto, saldo y deuda de 2010). Lo que no tiene dato real (el reparto del resto de ministerios y sus partidas internas) se estima por nivel de renta y se marca.
+- **Responde a la economía** hasta que el jugador pueda decidir (Pantalla de Presupuesto, Fase 23), con estabilizadores automáticos:
+  - la recaudación sigue al PIB nominal y cae en una recesión;
+  - las prestaciones por desempleo suben con el paro;
+  - las pensiones suben con la inflación;
+  - los intereses dependen de la deuda;
+  - los recortes del ajuste forzoso (f15-a1) salen del presupuesto.
+
+  Nada se arregla solo: un déficit que no se corrige acumula deuda e intereses.
+- **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda automáticamente, al tipo medio que pagaba en 2010. La deuda empieza en su dato real de 2010 y sus intereses entran en el gasto (bola de nieve). En la Fase 18, el precio lo ponen los mercados (prima de riesgo y rating).
+- **Dónde se ve:** en la pestaña Economía de la ficha de cada país y en Gobierno › Presupuesto (solo lectura hasta la Fase 23), con un gráfico de ingresos y gastos.
+
 ### 6.3 Impuestos
 
 | Impuesto | Parámetros |
@@ -961,10 +975,11 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 17 — v0.18.0 · Presupuesto: ingresos y gastos
 **Objetivo:** el Estado tiene ingresos y gastos por partida. (Adelantada el 17/11/2026, decisión del jugador: el presupuesto y la deuda son la palanca principal y la causa más habitual de que la economía vaya mal; antes eran las Fases 21 y 22.)
-**Tareas**
-1. Estructura de ingresos y gastos por partida y ministerio (6.2).
-2. Datos iniciales de 2010: gasto por función y deuda real.
-3. **Audiovisual:** gráfico de ingresos y gastos.
+**Tareas** (concretadas con el jugador el 17/11/2026: cada ministerio por dentro; datos del Banco Mundial y el FMI; responde a la economía; déficit → deuda; la fase pasa a 4 tareas)
+1. Datos de 2010 (Banco Mundial, con su script): ingresos por tipo, gasto por tipo y función (sanidad, educación, defensa e intereses) y deuda real; lo que falte, estimado y marcado.
+2. El presupuesto en el motor: ingresos por tipo y gastos por ministerio con sus partidas internas (personal, inversión, mantenimiento y programas), pensiones, prestaciones e intereses; cuadra con los totales del FMI; deuda y tesorería.
+3. Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora».
+4. **Audiovisual:** gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas.
 
 **Tests:** la suma de las partidas es el total y el saldo coincide con el déficit.
 **Prueba en el PC:** ver el presupuesto inicial de España y compararlo con el de Alemania.
@@ -2185,6 +2200,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Fase 15 concretada con el jugador: siete sectores con datos reales de la ONU; sin azar en la economía (cambia por las decisiones: inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010; evolución en la ficha y en Economía › Economía; la fase pasa a 4 tareas | Plan de la Fase 15 aprobado por el jugador | 6.1, 9, 13 |
 | 17/11/2026 | Nada mejora solo y nada es gratis: sin decisiones, cada país sigue sus datos (con desequilibrios, cae en crisis si no se corrigen); cada palanca tiene su coste; dureza según la dificultad. Ajuste f15-a1 (v0.16.1): productividad que solo converge con base, desequilibrios de 2010 que fuerzan un ajuste. Presupuesto y deuda adelantados a las Fases 17 y 18 (la pantalla de Economía, el banco central, la moneda y los bancos pasan a las 19 a 22). Regla 20: tests de «si se hace mal, empeora» | Consulta del jugador tras la v0.16.0 («la economía no siempre va a crecer») | 1, 6.1, 9, 11, 13 |
 | 17/11/2026 | Fase 16 concretada con el jugador: paro con la ley de Okun e histéresis; inflación persistente (sin ancla hasta el banco central); el paro baja el consumo y la inflación alta, la inversión (la popularidad aún no cambia); alertas económicas del país del jugador con aviso y sonido; la fase pasa a 4 tareas | Plan de la Fase 16 aprobado por el jugador | 6.1, 9, 13 |
+| 17/11/2026 | Fase 17 concretada con el jugador: presupuesto con cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto; la fase pasa a 4 tareas | Plan de la Fase 17 aprobado por el jugador | 6.2, 9, 13 |
 
 ---
 
@@ -2213,6 +2229,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Economía: sectores y azar | 3 sectores / uno / más sectores; variaciones al azar / sin azar; arranque real de 2010 / crecimiento normal | **Decidido por el jugador (17/11/2026):** siete sectores con datos reales de la ONU (sección 6.1); sin azar en la economía, que cambia por las decisiones del jugador y de la IA (inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010, que converge al potencial; se ve en la ficha de cada país y en Economía › Economía |
 | Economía sin intervención y dureza | Según sus datos / casi quieta; corregir ya / en la Fase 16; adelantar presupuesto y deuda / mantener el orden; dureza según la dificultad / siempre realista / manejable | **Decidido por el jugador (17/11/2026):** sin intervención, cada país sigue sus datos (nada mejora solo; con desequilibrios cae en crisis); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda pasan a las Fases 17 y 18; la dureza depende de la dificultad («realista», como la realidad) |
 | Inflación y paro | Paro: Okun con histéresis / Okun simple; inflación: persistente / converge al 2 % / la de 2010 más la brecha; efectos: consumo, inversión, popularidad; alertas: mi país con aviso y sonido / también los grandes / solo en Informes | **Decidido por el jugador (17/11/2026):** Okun con histéresis; inflación persistente hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad, todavía no); alertas del país del jugador con aviso y sonido (las graves pausan) |
+| Presupuesto | Detalle: ministerios y partidas / grandes bloques / cada ministerio por dentro; datos: Banco Mundial + FMI / COFOG; evolución: responde a la economía / fijo en % del PIB; tesorería: déficit → deuda / tesorería sin deuda | **Decidido por el jugador (17/11/2026):** cada ministerio por dentro; Banco Mundial + FMI (lo demás, estimado y marcado); responde a la economía (estabilizadores automáticos); el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
