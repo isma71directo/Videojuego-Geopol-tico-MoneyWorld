@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.16.1",
-  "actualizado": "2026-11-17T18:44:11Z",
+  "actualizado": "2026-11-17T18:48:24Z",
   "faseActiva": "fase-16",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 16 en curso. f16-t1 hecha: paro de cada país desde el de 2010 con la ley de Okun sobre la brecha de producción (sensibilidad estimada por nivel de renta y rigidez), adaptación lenta del mercado de trabajo e histéresis (el estructural sube y no baja solo; esos parados dejan de producir); el paro resta consumo y confianza. Grecia: 12,7 % → 24 % en cuatro años → 19 %; España 19,9 % → 25 %. Formato de partida 5 con migración. Aún no se ve en pantalla (llega en f16-t3).",
-    "siguientePaso": "f16-t2: inflación persistente (expectativas y brecha de producción, sin ancla hasta el banco central) y PIB nominal; la inflación alta baja la inversión y la deflación frena el consumo; tests.",
+    "resumen": "Fase 16 en curso. f16-t1 hecha (paro con Okun, adaptación del mercado de trabajo e histéresis; Grecia 12,7 % → 24 % → 19 %). f16-t2 hecha: inflación persistente con expectativas y curva de Phillips sobre el paro cíclico, sin ancla (Venezuela sigue alta, Japón en deflación, Grecia baja a casi 0 %); PIB nominal; la inflación de más del 10 % resta inversión y confianza de las empresas y la deflación, consumo; gastar de más baja el paro y sube la inflación. Aún no se ve en pantalla (llega en f16-t3).",
+    "siguientePaso": "f16-t3: paro, inflación y PIB nominal en vivo en la ficha y en Economía › Economía, con su gráfico; test de credibilidad del GDD (5 años, 20 mayores: crecimiento entre −10 % y +15 %, inflación entre −5 % y +30 %).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1020,20 +1020,20 @@
           "titulo": "Paro: ley de Okun, paro estructural e histéresis; los ocupados producen y el paro baja la confianza y el consumo",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d63badd"
         },
         {
           "id": "f16-t2",
           "titulo": "Inflación persistente (expectativas y brecha de producción) y PIB nominal; la inflación alta baja la inversión y la deflación, el consumo",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f16-t3",
           "titulo": "Paro, inflación y PIB nominal en vivo (ficha y Economía › Economía) con su gráfico; test de credibilidad: 5 años sin intervención en los 20 mayores países",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         },
         {

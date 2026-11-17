@@ -236,6 +236,12 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Consecuencias: cada punto de paro por encima del estructural resta medio punto al consumo y un punto a la confianza de los consumidores; cada punto que sube en un año, dos puntos más de confianza.
 - Sin intervención, Grecia pasa del 12,7 % de paro al 24 % en cuatro años y baja hacia el 19 % (real: 27,5 % en 2013 y 17 % en 2019); España, del 19,9 % al 25 %; Portugal, del 10,8 % al 15 % y vuelve al 11 %. Alemania, China o México apenas cambian. Estados Unidos sube al 10,6 % (real: bajó al 5 % con la ayuda de la Reserva Federal; llegará con el banco central, Fase 20).
 
+**Modelo de la inflación (tarea f16-t2; parámetros en `src/sim/config/economia.json`, «inflacion»):**
+- Cada mes, la inflación (tasa anual) es la esperada menos 0,15 × el paro por encima del estructural (curva de Phillips: con paro de más, los salarios y los precios suben menos; con paro de menos, más). La esperada se acerca a la real, a la mitad cada 12 meses. Empieza en la de 2010 (Banco Mundial; un 3 % si no hay dato), entre −10 % y +100 %. No hay ancla hasta el banco central (Fase 20).
+- PIB nominal: el real por el nivel de los precios (1 en enero de 2010), en dólares corrientes.
+- Consecuencias: cada punto de inflación por encima del 10 % resta un 1 % a la inversión (hasta la mitad) y un punto a la confianza de las empresas; cada punto de deflación resta un 1 % al consumo. La demanda de 2010 ya trae el daño de la inflación de ese año: solo cuentan los cambios.
+- Sin intervención: Venezuela sigue en torno al 26-28 %, la India en el 12 %, Japón en deflación (−1 %) y Alemania en el 1,1 %; Grecia baja del 4,7 % a casi el 0 % en cinco años y a −0,8 % en diez (real: −1,4 % en 2014) y España, del 1,8 % al −1 %. Gastar de más recalienta: baja el paro, pero sube la inflación.
+
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
 ### 6.2 Presupuesto y deuda

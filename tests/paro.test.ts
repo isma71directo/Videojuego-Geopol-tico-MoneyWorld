@@ -147,7 +147,7 @@ describe('cómo evoluciona (tarea f16-t1)', () => {
 });
 
 describe('en la partida (tarea f16-t1)', () => {
-  it('una partida de la v0.16.1 (formato 4) se migra y recibe el paro de 2010', () => {
+  it('una partida de la v0.16.1 (formato 4) se migra y recibe el paro y la inflación de 2010', () => {
     const partida = crearPartida(
       { paisId: 'ESP', dificultad: 'normal', eventosHistoricos: true, semilla: 5 },
       paises.paises,
@@ -165,9 +165,15 @@ describe('en la partida (tarea f16-t1)', () => {
         'sensibilidadParo',
         'brechaAsumida',
         'serieParo',
+        'inflacion',
+        'inflacionEsperada',
+        'nivelPrecios',
+        'serieInflacion',
       ]) {
         delete estado.economia[campo];
       }
+      // En la v0.16.1, la demanda de base era la de los datos (sin quitar el daño de la inflación).
+      estado.economia.demandaBase = { ...(estado.economia.demandaReferencia as object) };
     }
     const cargada = desempaquetar({
       juego: JUEGO,

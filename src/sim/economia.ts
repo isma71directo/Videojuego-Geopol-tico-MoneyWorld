@@ -30,6 +30,11 @@
  * debajo de su potencial, el paro sube por encima del estructural (el de 2010); si se queda alto
  * mucho tiempo, parte se vuelve estructural, ya no baja solo y esos parados dejan de producir. Los
  * parados consumen menos y el paro hunde la confianza de los consumidores.
+ *
+ * Inflación (tarea f16-t2; persistente, decisión del jugador): cada país arrastra la suya (las
+ * expectativas); baja si el paro está por encima del estructural y sube si está por debajo (curva
+ * de Phillips), sin un ancla que la arregle sola hasta el banco central (Fase 20). Una inflación
+ * alta resta inversión y confianza de las empresas; la deflación frena el consumo.
  */
 import config from './config/economia.json';
 import type { Sistema } from './motor';
@@ -141,6 +146,14 @@ export interface EconomiaPais {
   brechaAsumida: number;
   /** Paro de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
   serieParo: number[];
+  /** Inflación: subida anual de los precios al ritmo de este mes (tanto por uno; tarea f16-t2). */
+  inflacion: number;
+  /** La inflación que se espera (las expectativas), que sigue a la de verdad con retraso. */
+  inflacionEsperada: number;
+  /** Nivel de los precios (1 = enero de 2010): el PIB nominal es el real por él. */
+  nivelPrecios: number;
+  /** Inflación de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
+  serieInflacion: number[];
 }
 
 /** Lo que hace falta de los datos de un país (paises-2010.json, campo «datos»). */
@@ -293,6 +306,65 @@ function avanzarParo(economia: EconomiaPais): void {
   economia.serieParo.push(redondearParo(economia.paro));
 }
 
+const inf = config.inflacion;
+
+/** La inflación de 2010 de un país (tanto por uno; «sinDato» si no hay). */
+function inflacionDe(datos: DatosEconomia): number {
+  const valor = dato(datos, 'inflacion');
+  return recortar(valor === null ? inf.sinDato : valor / 100, [inf.minimo, inf.maximo]);
+}
+
+/** Lo que se redondea la inflación en su serie mensual. */
+const redondearInflacion = (inflacion: number): number => Math.round(inflacion * 1e5) / 1e5;
+
+/** Lo que queda de la inversión con una inflación alta (1 = nada perdido). */
+function inversionConInflacion(inflacion: number): number {
+  const exceso = Math.max(0, inflacion - inf.umbralInversion) * 100;
+  return 1 - Math.min(inf.inversionMaxima, inf.inversionPorPunto * exceso);
+}
+
+/** Lo que queda del consumo con deflación (1 = nada perdido). */
+function consumoConDeflacion(inflacion: number): number {
+  return 1 - inf.consumoPorPuntoDeflacion * Math.max(0, -inflacion) * 100;
+}
+
+/** Puntos de confianza que quita a las empresas una inflación alta. */
+function golpeDeLaInflacion(inflacion: number): number {
+  return inf.confianzaEmpresasPorPunto * Math.max(0, inflacion - inf.umbralInversion) * 100;
+}
+
+/** PIB nominal: el real a los precios de ahora (dólares corrientes; tarea f16-t2). */
+export function pibNominal(economia: Pick<EconomiaPais, 'pib' | 'nivelPrecios'>): number {
+  return economia.pib * economia.nivelPrecios;
+}
+
+/**
+ * Un mes de la inflación (tarea f16-t2): la esperada menos la pendiente × el paro por encima del
+ * estructural (curva de Phillips); la esperada la sigue con retraso, sin ancla.
+ */
+function avanzarInflacion(economia: EconomiaPais): void {
+  economia.inflacion = recortar(
+    economia.inflacionEsperada - inf.pendiente * paroCiclico(economia),
+    [inf.minimo, inf.maximo],
+  );
+  const seguir = 1 - Math.pow(0.5, 1 / inf.mesesExpectativas);
+  economia.inflacionEsperada += (economia.inflacion - economia.inflacionEsperada) * seguir;
+  economia.nivelPrecios *= Math.pow(1 + economia.inflacion, 1 / 12);
+  economia.serieInflacion.push(redondearInflacion(economia.inflacion));
+}
+
+/**
+ * La demanda de 2010 ya trae el daño de la inflación de ese año: la de base es la que habría sin él
+ * (con la inflación de 2010, la demanda es la de los datos; tarea f16-t2).
+ */
+function sinElDanoDeLaInflacion(base: DemandaEconomia, inflacion: number): DemandaEconomia {
+  return {
+    ...base,
+    consumo: base.consumo / consumoConDeflacion(inflacion),
+    inversion: base.inversion / inversionConInflacion(inflacion),
+  };
+}
+
 /** Cuánto pesan el ajuste forzoso y la caída de la confianza según la dificultad. */
 export function durezaDe(dificultad: string | undefined): number {
   return config.dureza[dificultad as keyof typeof config.dureza] ?? config.dureza.normal;
@@ -400,7 +472,7 @@ export function economiaInicial(
     pib,
     confianzaConsumidores: 100,
     confianzaEmpresas: 100,
-    demandaBase: { ...demanda },
+    demandaBase: sinElDanoDeLaInflacion(demanda, inflacionDe(datos)),
     demandaReferencia: { ...demanda },
     desequilibrio: desequilibrioInicial(datos, demanda.consumoPublico),
     brechaDemanda: 0,
@@ -412,6 +484,10 @@ export function economiaInicial(
     impulsoInicial: 0,
     meses: 0,
     serie: [Math.round(pib)],
+    inflacion: inflacionDe(datos),
+    inflacionEsperada: inflacionDe(datos),
+    nivelPrecios: 1,
+    serieInflacion: [redondearInflacion(inflacionDe(datos))],
     paro,
     paroEstructural: paro,
     sensibilidadParo: sensibilidadDelParo(nivel, paro),
@@ -427,7 +503,10 @@ export function economiaInicial(
   // La confianza de partida (estimada: no hay datos de todos los países), la que corresponde a
   // lo que creció en 2010 frente a su potencial; y con ella, el consumo y la inversión.
   economia.confianzaConsumidores = objetivoConfianza(economia.impulsoInicial, 'consumidores');
-  economia.confianzaEmpresas = objetivoConfianza(economia.impulsoInicial, 'empresas');
+  economia.confianzaEmpresas = Math.max(
+    confianza.minimo,
+    objetivoConfianza(economia.impulsoInicial, 'empresas') - golpeDeLaInflacion(economia.inflacion),
+  );
   economia.demanda = demandaConConfianza(economia);
   // El PIB de 2010 ya es el de esa demanda: la brecha empieza ahí (sin salto el primer mes).
   economia.brechaDemanda = brechaDe(economia);
@@ -470,16 +549,20 @@ export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
   const base = economia.demandaBase;
   // Sin crédito se invierte menos (ajuste f15-a1).
   const inversionBase = Math.max(0, base.inversion - economia.desequilibrio.creditoPerdido);
-  // Los parados (por encima del estructural) gastan menos (tarea f16-t1).
+  // Los parados (por encima del estructural) gastan menos (tarea f16-t1); con deflación se
+  // espera a que bajen los precios, y con mucha inflación se invierte menos (tarea f16-t2).
   const conParo = 1 - (p.consumoPorPunto * paroCiclico(economia) * 100) / 100;
   return {
     ...base,
     consumo:
       base.consumo *
       conParo *
+      consumoConDeflacion(economia.inflacion) *
       (1 + (confianza.efectoConsumo * (economia.confianzaConsumidores - 100)) / 100),
     inversion:
-      inversionBase * (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
+      inversionBase *
+      inversionConInflacion(economia.inflacion) *
+      (1 + (confianza.efectoInversion * (economia.confianzaEmpresas - 100)) / 100),
   };
 }
 
@@ -577,7 +660,9 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
     economia.confianzaEmpresas,
     Math.max(
       confianza.minimo,
-      objetivoConfianza(diferencia, 'empresas') - d.confianzaPorPuntoEmpresas * enAjuste,
+      objetivoConfianza(diferencia, 'empresas') -
+        d.confianzaPorPuntoEmpresas * enAjuste -
+        golpeDeLaInflacion(economia.inflacion),
     ),
   );
   // Con la confianza cambian el consumo y la inversión; la demanda mueve el PIB.
@@ -600,6 +685,7 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   economia.meses += 1;
   economia.serie.push(Math.round(economia.pib));
   avanzarParo(economia);
+  avanzarInflacion(economia);
 }
 
 /** Crecimiento del PIB en los últimos 12 meses (tanto por uno), o null si aún no hay un año. */
@@ -642,10 +728,14 @@ export function completarEconomia(
       continue;
     }
     if (!estado.economia || !pais) continue;
-    // Guardada con la v0.16.1 o antes (formato 4): le falta el paro (tarea f16-t1).
-    if (estado.economia.paro === undefined) completarParo(estado.economia, pais.datos);
+    // (En orden: los desequilibrios toman la demanda de base de los datos, antes de que la
+    // inflación le quite su daño.)
     // Guardada con la v0.16.0 (formato 3): le faltan los desequilibrios (ajuste f15-a1).
     if (!estado.economia.desequilibrio) completarAjuste(estado.economia, pais.datos);
+    // Guardada con la v0.16.1 o antes (formato 4): le falta el paro (tarea f16-t1)…
+    if (estado.economia.paro === undefined) completarParo(estado.economia, pais.datos);
+    // … y la inflación (tarea f16-t2).
+    if (estado.economia.inflacion === undefined) completarInflacion(estado.economia, pais.datos);
   }
   return partida;
 }
@@ -660,6 +750,17 @@ function completarParo(economia: EconomiaPais, datos: DatosEconomia): void {
   economia.brechaAsumida = brechaProduccion(economia);
   // (No se sabe cómo fue antes: los meses ya jugados se rellenan con el de 2010.)
   economia.serieParo = economia.serie.map(() => redondearParo(paro));
+}
+
+/** Lo que la tarea f16-t2 añadió a la economía: la inflación, desde la de 2010. */
+function completarInflacion(economia: EconomiaPais, datos: DatosEconomia): void {
+  const inflacion = inflacionDe(datos);
+  economia.inflacion = inflacion;
+  economia.inflacionEsperada = inflacion;
+  // (Los meses ya jugados, con la de 2010.)
+  economia.nivelPrecios = Math.pow(1 + inflacion, economia.meses / 12);
+  economia.serieInflacion = economia.serie.map(() => redondearInflacion(inflacion));
+  economia.demandaBase = sinElDanoDeLaInflacion(economia.demandaBase, inflacion);
 }
 
 /** Lo que el ajuste f15-a1 añadió a la economía de las partidas de la v0.16.0. */
@@ -686,6 +787,8 @@ export function faltaEconomia(partida: Pick<Partida, 'paises'>): boolean {
     (estado) =>
       estado.economia === undefined ||
       (estado.economia !== null &&
-        (!estado.economia.desequilibrio || estado.economia.paro === undefined)),
+        (!estado.economia.desequilibrio ||
+          estado.economia.paro === undefined ||
+          estado.economia.inflacion === undefined)),
   );
 }
