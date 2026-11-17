@@ -22,6 +22,8 @@ export interface Ajustes {
   brilloAgua: boolean;
   /** Sombra de la noche sobre el mapa en la partida (tarea f11-t4, decisión del jugador). */
   nocheMapa: boolean;
+  /** Pausa automática ante sucesos importantes (tarea f13-t3, decisión del jugador). */
+  pausaSucesos: boolean;
 }
 
 const POR_DEFECTO: Ajustes = {
@@ -33,6 +35,7 @@ const POR_DEFECTO: Ajustes = {
   intensidadTerreno: 0.7,
   brilloAgua: true,
   nocheMapa: true,
+  pausaSucesos: true,
 };
 
 export function leerAjuste<K extends keyof Ajustes>(clave: K): Ajustes[K] {

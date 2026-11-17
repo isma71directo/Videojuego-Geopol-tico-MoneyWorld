@@ -27,10 +27,12 @@
     },
     "ajustes": {
       "titulo": "Ajustes",
-      "vacio": "El resto de ajustes (pausa automática, gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
+      "vacio": "El resto de ajustes (gráficos, accesibilidad e idioma) llegarán con las versiones jugables.",
       "version": "Versión del juego",
       "medidorFps": "Mostrar el medidor de rendimiento",
       "medidorFpsAyuda": "Fotogramas por segundo arriba a la derecha del mapa. También se activa con la tecla F en el mapa.",
+      "pausaSucesos": "Pausar ante sucesos importantes",
+      "pausaSucesosAyuda": "La partida se para sola ante una guerra, una moción de censura, un referéndum o una crisis, y te avisa de lo que ha pasado.",
       "silenciar": "Silenciar el sonido",
       "silenciarAyuda": "También con el botón del altavoz o la tecla M en el mapa. El sonido empieza con el primer clic o la primera tecla.",
       "volumenEfectos": "Volumen de los efectos",
@@ -1106,6 +1108,19 @@
         "tesoreria": "Tesorería"
       },
       "puntos": "{valor} puntos"
+    },
+    "sucesos": {
+      "aviso": "Pausa automática",
+      "seguir": "Seguir",
+      "cerrar": "Quedarse en pausa",
+      "ver": "Ver",
+      "cuando": "{fecha}, {hora}",
+      "ayuda": "Intro sigue la partida; Escape la deja en pausa. Puedes desactivar la pausa automática en Ajustes.",
+      "prueba": {
+        "titulo": "Suceso de prueba",
+        "texto": "Así te avisará el juego de un suceso importante, como una declaración de guerra o una moción de censura: la partida se para sola justo en ese momento. Es solo una prueba («?prueba» en la dirección).",
+        "efecto": "Efecto de prueba"
+      }
     }
   },
   "hojaDeRuta": {

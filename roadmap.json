@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.13.0",
-  "actualizado": "2026-11-17T07:34:16Z",
+  "actualizado": "2026-11-17T07:43:27Z",
   "faseActiva": "fase-13",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f13-t2 hecha: los efectos en curso se ven en la explicación de la tesorería y de la popularidad (qué los cambia y hasta cuándo) y en la ventana nueva Informes › Efectos en curso (con su icono), con lo que cambia cada uno, su origen, sus fechas y si ya actúa o cuándo empieza; se repinta sola al cambiar el día o los efectos. La barra de secciones admite ya contenido de verdad en lugar del hueco «llega en la fase N».",
-    "siguientePaso": "f13-t3: pausa automática ante sucesos importantes con su opción en Ajustes y el modo de prueba «?prueba».",
+    "resumen": "f13-t3 hecha: la partida se para sola justo a la hora de un suceso importante (aunque vaya a ×64) y lo cuenta en una ventana en el centro con «Seguir» y «Quedarse en pausa» (Intro sigue; Escape se queda; las teclas del mapa no actúan detrás). La opción «Pausar ante sucesos importantes» está en Ajustes, activada por defecto; desactivada, la partida no se para. Con «?prueba» en la dirección, la partida empieza con un efecto de prueba (+3 de popularidad del 2 al 12 de enero) y un suceso de prueba el 3 de enero a las 08:00.",
+    "siguientePaso": "f13-t4: sonido del aviso de la pausa automática, animación pulida y el aviso en la galería; después, cerrar la Fase 13 como v0.14.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -873,20 +873,20 @@
           "titulo": "Ver los efectos en curso: en la explicación de cada dato (qué lo cambia y hasta cuándo) y en la ventana «Efectos en curso» de Informes (decisión del jugador)",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/9286677"
         },
         {
           "id": "f13-t3",
           "titulo": "Pausa automática ante sucesos importantes, con su opción en Ajustes; el motor se para en el momento exacto; modo de prueba «?prueba» con un efecto y un suceso de prueba",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         },
         {
           "id": "f13-t4",
           "titulo": "Audiovisual: aviso de la pausa automática en una ventana en el centro (decisión del jugador) con su sonido, también en la galería",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
           "enlace": ""
         }
       ]

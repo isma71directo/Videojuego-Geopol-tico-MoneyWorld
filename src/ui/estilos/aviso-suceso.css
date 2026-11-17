@@ -1,0 +1,86 @@
+/* Aviso de la pausa automática (tareas f13-t3 y f13-t4): ventana en el centro. */
+.aviso-suceso {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--capa-menu) + 4);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.aviso-suceso__fondo {
+  position: absolute;
+  inset: 0;
+  background: rgb(4 8 16 / 45%);
+}
+
+.aviso-suceso__caja {
+  position: relative;
+  width: min(480px, 100%);
+  padding: 18px 22px 16px;
+  border: 1px solid rgb(242 184 75 / 55%);
+  border-radius: var(--radio);
+  background: var(--superficie-flotante);
+  box-shadow:
+    var(--sombra-flotante),
+    0 0 0 4px rgb(242 184 75 / 10%);
+}
+
+.aviso-suceso__etiqueta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  color: var(--en-curso);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.aviso-suceso__etiqueta .icono {
+  width: 16px;
+  height: 16px;
+}
+
+.aviso-suceso__prueba {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgb(242 184 75 / 18%);
+  letter-spacing: 0;
+}
+
+.aviso-suceso__titulo {
+  margin: 0;
+  font-size: 22px;
+}
+
+.aviso-suceso__cuando {
+  margin: 4px 0 10px;
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+
+.aviso-suceso__texto {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.aviso-suceso__botones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.aviso-suceso__seguir .icono {
+  width: 16px;
+  height: 16px;
+}
+
+.aviso-suceso__ayuda {
+  margin: 10px 0 0;
+  color: var(--pendiente);
+  font-size: 12px;
+}

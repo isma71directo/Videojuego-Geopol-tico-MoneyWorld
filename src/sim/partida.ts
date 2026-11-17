@@ -6,6 +6,7 @@
  * (con migraciones si cambia el formato).
  */
 import type { Efecto } from './efectos';
+import type { Suceso } from './sucesos';
 import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
   valoresIniciales,
@@ -52,6 +53,8 @@ export interface Partida {
   paises: Record<string, EstadoPais>;
   /** Efectos en curso o por empezar (tarea f13-t1): cambian los datos de los países. */
   efectos: Efecto[];
+  /** Sucesos programados, por orden (tarea f13-t3). */
+  agenda: Suceso[];
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */
@@ -110,6 +113,7 @@ export function crearPartida(
     jugador: { paisId: opciones.paisId, rol: 'gobierno' },
     opciones: { dificultad: opciones.dificultad, eventosHistoricos: opciones.eventosHistoricos },
     efectos: [],
+    agenda: [],
     paises: Object.fromEntries(
       paisesJugables(paises).map((id) => [
         id,

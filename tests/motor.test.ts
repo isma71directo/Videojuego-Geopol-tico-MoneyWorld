@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
 import config from '../src/sim/config/tiempo.json';
 import { arrancarBucle, INTERVALO_BUCLE_MS } from '../src/sim/bucle';
-import { crearMotor, type MensajeMotor } from '../src/sim/motor';
+import { crearMotor, type EstadoMotor, type MensajeMotor } from '../src/sim/motor';
 import { crearPartida, type Partida } from '../src/sim/partida';
 import { msPorHora, type Paso } from '../src/sim/reloj';
 import { conectarMotor } from '../src/ui/conexion-motor';
@@ -127,7 +127,7 @@ describe('bucle del motor (tarea f12-t1)', () => {
     expect(bucle.enMarcha).toBe(true);
     // A ×8 una hora son 250 ms: en un segundo, cuatro horas.
     correr(1008);
-    const ultimo = enviar.mock.calls.at(-1)![0] as MensajeMotor;
+    const ultimo = enviar.mock.calls.at(-1)![0] as EstadoMotor;
     expect(ultimo.hora).toBe(4);
     bucle.atender({ tipo: 'velocidad', velocidad: 0 });
     expect(bucle.enMarcha).toBe(false);

@@ -15,7 +15,7 @@ import {
   type DefinicionEfecto,
   type Efecto,
 } from '../src/sim/efectos';
-import { crearMotor, type MensajeMotor } from '../src/sim/motor';
+import { crearMotor, type EstadoMotor } from '../src/sim/motor';
 import { crearPartida } from '../src/sim/partida';
 
 const paises = JSON.parse(
@@ -125,16 +125,16 @@ describe('el motor aplica y quita los efectos solos (tarea f13-t1)', () => {
       tipo: 'efecto',
       definicion: definicion({ retrasoDias: 2, duracionDias: 3 }),
     });
-    expect(respuesta[0]!.efectos).toHaveLength(1);
-    expect(respuesta[0]!.efectos[0]).toMatchObject({ desde: '2010-01-03', hasta: '2010-01-06' });
+    const estado = respuesta[0] as EstadoMotor;
+    expect(estado.efectos).toHaveLength(1);
+    expect(estado.efectos[0]).toMatchObject({ desde: '2010-01-03', hasta: '2010-01-06' });
     const base = motor.partida!.paises.ESP!.popularidad;
     motor.atender({ tipo: 'velocidad', velocidad: 64 });
     /** Avanza hasta el día dado y devuelve la popularidad con efectos. */
     const popularidadEl = (dia: string): number => {
-      let ultimo: MensajeMotor | null = null;
+      let ultimo: EstadoMotor | null = null;
       while (motor.partida!.fecha < dia) {
-        const mensajes = motor.avanzar(10);
-        if (mensajes.length) ultimo = mensajes.at(-1)!;
+        for (const m of motor.avanzar(10)) if (m.tipo === 'estado') ultimo = m;
       }
       const p = motor.partida!;
       return datoEfectivo(
