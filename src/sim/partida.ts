@@ -29,7 +29,10 @@ export interface OpcionesPartida {
   dificultad: Dificultad;
   /** Eventos históricos opcionales (GDD, sección 3): activados por defecto. */
   eventosHistoricos: boolean;
-  /** Semilla del azar: la misma semilla y las mismas decisiones dan la misma partida. */
+  /**
+   * Semilla del azar de esta partida: distinta en cada una y sin elegir (ajuste f11-a5, decisión
+   * del jugador); se anota solo para poder reproducir un fallo.
+   */
   semilla: number;
 }
 
@@ -70,30 +73,12 @@ export function paisesJugables(paises: Record<string, PaisParaPartida>): string[
     .map(([id]) => id);
 }
 
-/** Semilla nueva al azar: un entero de 1 a 999 999 999 (fácil de leer y de copiar). */
+/**
+ * Semilla nueva al azar para cada partida (ajuste f11-a5, decisión del jugador: cada partida es
+ * distinta y no se elige). Se anota en la partida solo para poder reproducir un fallo.
+ */
 export function semillaAlAzar(azar: () => number = Math.random): number {
   return 1 + Math.floor(azar() * 999_999_999);
-}
-
-/**
- * Semilla a partir de lo que escribe el jugador: un número tal cual (entero positivo) o, si es
- * una palabra, un número calculado a partir de ella («España» da siempre la misma semilla).
- * null si no hay nada escrito.
- */
-export function semillaDeTexto(texto: string): number | null {
-  const limpio = texto.trim();
-  if (limpio === '') return null;
-  if (/^\d{1,15}$/.test(limpio)) {
-    const numero = Number(limpio);
-    return numero > 0 && Number.isSafeInteger(numero) ? numero : null;
-  }
-  // FNV-1a de 32 bits, sin el 0.
-  let h = 2166136261;
-  for (const caracter of limpio) {
-    h ^= caracter.codePointAt(0)!;
-    h = Math.imul(h, 16777619) >>> 0;
-  }
-  return h === 0 ? 1 : h;
 }
 
 /** Huso de un país; sin el dato (si no se ha podido cargar), UTC. */

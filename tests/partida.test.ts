@@ -11,7 +11,6 @@ import {
   FORMATO_PARTIDA,
   paisesJugables,
   semillaAlAzar,
-  semillaDeTexto,
   type Partida,
 } from '../src/sim/partida';
 import {
@@ -65,20 +64,16 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
     expect(() => crear('ESP', { dificultad: 'imposible' })).toThrow(/Dificultad/);
   });
 
-  it('semillas: al azar, un número tal cual o una palabra (siempre la misma)', () => {
+  it('cada partida, su propio azar: una semilla nueva que no se elige (ajuste f11-a5)', () => {
+    const semillas = new Set<number>();
     for (let i = 0; i < 50; i++) {
       const s = semillaAlAzar();
       expect(Number.isInteger(s) && s >= 1 && s <= 999_999_999).toBe(true);
+      semillas.add(s);
     }
+    // Cincuenta partidas, cincuenta azares distintos.
+    expect(semillas.size).toBe(50);
     expect(semillaAlAzar(() => 0)).toBe(1);
-    expect(semillaDeTexto('12345')).toBe(12345);
-    expect(semillaDeTexto(' 42 ')).toBe(42);
-    expect(semillaDeTexto('España')).toBe(semillaDeTexto('España'));
-    expect(semillaDeTexto('España')).not.toBe(semillaDeTexto('Francia'));
-    expect(semillaDeTexto('España')).toBeGreaterThan(0);
-    expect(semillaDeTexto('')).toBeNull();
-    expect(semillaDeTexto('   ')).toBeNull();
-    expect(semillaDeTexto('0')).toBeNull();
   });
 });
 
@@ -164,9 +159,8 @@ describe('pantalla «Nueva partida» (tarea f10-t1)', () => {
       '.nueva-partida__opcion--casilla input',
     )!;
     eventos.click();
-    const semilla = document.querySelector<HTMLInputElement>('.nueva-partida__semilla')!;
-    semilla.value = '2010';
-    semilla.dispatchEvent(new Event('input'));
+    // Sin campo de semilla (ajuste f11-a5): cada partida tiene su propio azar.
+    expect(document.querySelector('.nueva-partida__semilla')).toBeNull();
     // Al empezar, la transición (tarea f10-t4) cubre la pantalla y la partida se abre debajo.
     vi.useFakeTimers();
     boton().click();
@@ -183,7 +177,7 @@ describe('pantalla «Nueva partida» (tarea f10-t1)', () => {
     expect(document.querySelector('.transicion:not(.retirandose)')).toBeNull();
     expect(alEmpezar).toHaveBeenCalledWith(
       expect.objectContaining({
-        semilla: 2010,
+        semilla: expect.any(Number),
         jugador: { paisId: 'ESP', rol: 'gobierno' },
         opciones: { dificultad: 'realista', eventosHistoricos: false },
       }),
@@ -200,19 +194,6 @@ describe('pantalla «Nueva partida» (tarea f10-t1)', () => {
       'no se puede elegir',
     );
     expect(boton().disabled).toBe(true);
-  });
-
-  it('sin semilla válida no se puede empezar; el dado pone otra', () => {
-    const { pantalla } = abrir();
-    pantalla.elegir('JPN');
-    const semilla = document.querySelector<HTMLInputElement>('.nueva-partida__semilla')!;
-    semilla.value = '';
-    semilla.dispatchEvent(new Event('input'));
-    expect(boton().disabled).toBe(true);
-    expect(document.querySelector<HTMLElement>('.nueva-partida__error')!.hidden).toBe(false);
-    document.querySelector<HTMLButtonElement>('.nueva-partida__dado')!.click();
-    expect(semilla.value).toMatch(/^\d+$/);
-    expect(boton().disabled).toBe(false);
   });
 
   it('filtro, orden y teclado en la lista', () => {

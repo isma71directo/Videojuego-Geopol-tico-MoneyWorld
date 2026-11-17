@@ -83,14 +83,17 @@ describe('calendario del reloj (tarea f11-t1)', () => {
 });
 
 describe('velocidades (ajuste f11-a2, decisión del jugador: ×1 = una hora cada 2 s)', () => {
-  it('pausa, ×1, ×2, ×4 y ×8; a ×1 un día dura 48 s y a ×8 un año, unos 36 min', () => {
-    expect(VELOCIDADES).toEqual([0, 1, 2, 4, 8, 16]);
-    // ×16 (ajuste f11-a3): un día en 3 s y un año en unos 18 min.
-    expect(msPorHora(16) * 24).toBe(3_000);
+  it('pausa, ×1, ×2, ×8, ×16, ×32 y ×64; a ×1 un día dura 48 s y a ×64, 0,75 s', () => {
+    // Ajuste f11-a4 (decisión del jugador): sin ×4, con ×32 y ×64.
+    expect(VELOCIDADES).toEqual([0, 1, 2, 8, 16, 32, 64]);
     expect(msPorHora(1)).toBe(2000);
     expect(msPorHora(1) * 24).toBe(48_000);
-    expect(msPorHora(4) * 24 * 7).toBe(84_000);
+    expect(msPorHora(8) * 24 * 7).toBe(42_000);
     expect((msPorHora(8) * 24 * 365) / 60_000).toBeCloseTo(36.5, 1);
+    expect(msPorHora(16) * 24).toBe(3_000);
+    expect((msPorHora(32) * 24 * 365) / 60_000).toBeCloseTo(9.1, 1);
+    expect(msPorHora(64) * 24).toBe(750);
+    expect((msPorHora(64) * 24 * 365) / 60_000).toBeCloseTo(4.6, 1);
     expect(msPorHora(0)).toBe(Infinity);
     expect(EMPIEZA_EN_PAUSA).toBe(true);
   });
@@ -119,9 +122,10 @@ describe('velocidades (ajuste f11-a2, decisión del jugador: ×1 = una hora cada
 
   it('las teclas suben y bajan de velocidad sin salirse', () => {
     expect(velocidadVecina(0, 1)).toBe(1);
-    expect(velocidadVecina(4, 1)).toBe(8);
+    expect(velocidadVecina(2, 1)).toBe(8);
     expect(velocidadVecina(8, 1)).toBe(16);
-    expect(velocidadVecina(16, 1)).toBe(16);
+    expect(velocidadVecina(32, 1)).toBe(64);
+    expect(velocidadVecina(64, 1)).toBe(64);
     expect(velocidadVecina(1, -1)).toBe(0);
     expect(velocidadVecina(0, -1)).toBe(0);
   });

@@ -1035,11 +1035,7 @@
         },
         "dificultadAviso": "Sus efectos llegan con la revisión final del juego (Fase 103).",
         "eventos": "Eventos históricos",
-        "eventosDescripcion": "Rescate de Grecia, Primavera Árabe, Fukushima… pueden ocurrir si la situación lo permite, sin guion fijo.",
-        "semilla": "Semilla",
-        "semillaDescripcion": "La misma semilla y las mismas decisiones dan la misma partida. Puede ser un número o una palabra.",
-        "semillaOtra": "Otra semilla al azar",
-        "semillaNoValida": "Escribe un número o una palabra."
+        "eventosDescripcion": "Rescate de Grecia, Primavera Árabe, Fukushima… pueden ocurrir si la situación lo permite, sin guion fijo."
       },
       "empezar": "Empezar con {pais}",
       "empezarSin": "Elige un país para empezar"

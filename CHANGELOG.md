@@ -7,6 +7,23 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.12.4 - 2026-11-17
+
+Ajustes pedidos por el jugador al probar la v0.12.3 y al comentar el plan de la Fase 12.
+
+### Cambiado
+
+- **Velocidades ×1, ×2, ×8, ×16, ×32 y ×64** (ajuste f11-a4): se quita ×4 y se añaden ×32 (un
+  día en 1,5 s, un año en unos 9 min) y ×64 (un día en 0,75 s, un año en unos 4,6 min). Las
+  teclas 1 a 6 eligen cada una, en orden. El minutero del reloj se mueve a ×1 y ×2.
+
+### Quitado
+
+- **Semilla de «Nueva partida»** (ajuste f11-a5): cada partida tiene su propio azar, que no se
+  elige; por dentro se anota solo para poder reproducir un fallo. La Fase 12 ya no busca partidas
+  repetibles: la IA de los otros países no repetirá sus decisiones ni las del jugador tendrán
+  siempre la misma consecuencia (decisión del jugador, anotada en el GDD).
+
 ## 0.12.3 - 2026-11-17
 
 Último ajuste de la Fase 11, pedido por el jugador al probar la v0.12.2.

@@ -1,6 +1,6 @@
 /**
  * Reloj de manecillas de la barra de la partida (tarea f11-t4): marca la hora de la capital del
- * jugador y se mueve sin saltos mientras corre el tiempo. A ×8 el minutero daría vueltas
+ * jugador y se mueve sin saltos mientras corre el tiempo. De ×8 en adelante el minutero daría vueltas
  * demasiado deprisa (parecería ir hacia atrás), así que se queda en las doce y solo se mueve la
  * aguja de las horas. De noche (de las 20:00 a las 7:00) la esfera se oscurece.
  */

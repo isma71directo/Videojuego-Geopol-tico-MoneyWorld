@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.3",
-  "actualizado": "2026-11-17T05:56:13Z",
+  "versionActual": "0.12.4",
+  "actualizado": "2026-11-17T06:42:26Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "v0.12.3 publicada con el ajuste f11-a3 (velocidad ×16). Con ella el jugador da por terminada la Fase 11. PR abierto.",
-    "siguientePaso": "Cuando el jugador fusione la v0.12.3: presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
+    "resumen": "v0.12.4 publicada: velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (f11-a4) y «Nueva partida» sin semilla (f11-a5). Decisión del jugador sobre el azar anotada en el GDD y en el plan de la Fase 12. PR abierto.",
+    "siguientePaso": "Cuando el jugador fusione la v0.12.4: presentar el plan de la Fase 12 (motor en un Web Worker, azar distinto en cada partida y primera música ambiental) y preguntarle por el estilo de la música.",
     "pendienteDelJugador": [
-      "Probar la v0.12.3 en el PC: en una partida, pulsar ×16 (o la tecla 5) y ver pasar los días",
-      "Fusionar el PR de la v0.12.3"
+      "Probar la v0.12.4 en el PC: «Nueva partida» ya no tiene semilla; en la partida, las velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (teclas 1 a 6)",
+      "Fusionar el PR de la v0.12.4"
     ]
   },
   "etapas": [
@@ -791,6 +791,24 @@
           "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/66583f1"
+        },
+        {
+          "id": "f11-a4",
+          "titulo": "Velocidades ×1, ×2, ×8, ×16, ×32 y ×64: se quita ×4 y se añaden ×32 (un día en 1,5 s) y ×64 (un día en 0,75 s), con las teclas 1 a 6",
+          "version": "0.12.4",
+          "origen": "Petición del jugador tras probar la v0.12.3",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b9d4f2d"
+        },
+        {
+          "id": "f11-a5",
+          "titulo": "Quitar la semilla de «Nueva partida» (cambia lo que entregó la Fase 10): cada partida tiene su propio azar, que no se elige (se anota por dentro solo para reproducir fallos)",
+          "version": "0.12.4",
+          "origen": "Decisión del jugador al comentar el plan de la Fase 12",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b9d4f2d"
         }
       ]
     },
@@ -799,10 +817,10 @@
       "etapa": "B",
       "version": "0.13.0",
       "nombre": "Motor en segundo plano",
-      "objetivo": "La simulación calcula sin bloquear la pantalla y de forma repetible",
+      "objetivo": "La simulación calcula sin bloquear la pantalla, con un azar distinto en cada partida",
       "dependeDe": ["fase-11"],
       "hechoCuando": "El tiempo avanza sin bloquear la interfaz",
-      "pruebaJugador": "Jugar a ×8 y comprobar que los menús siguen respondiendo al instante",
+      "pruebaJugador": "Jugar a ×64 y comprobar que los menús siguen respondiendo al instante; empezar dos partidas con el mismo país y ver que no se desarrollan igual",
       "estado": "pendiente",
       "tareas": [
         {
@@ -814,7 +832,7 @@
         },
         {
           "id": "f12-t2",
-          "titulo": "Generador aleatorio determinista con semilla guardada",
+          "titulo": "Azar de la partida (decisión del jugador): distinto en cada partida, sin semilla que elegir; la IA no repite decisiones ni las del jugador tienen siempre la misma consecuencia; generador propio con su semilla anotada por dentro solo para reproducir fallos y para los tests",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -4577,6 +4595,14 @@
       "fecha": "2026-11-17",
       "cambios": [
         "Velocidad ×16 (un día en 3 s, un año en unos 18 min), con su botón en la barra superior y la tecla 5"
+      ]
+    },
+    {
+      "version": "0.12.4",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Velocidades ×1, ×2, ×8, ×16, ×32 y ×64 (sin ×4), con las teclas 1 a 6; a ×64, un día en 0,75 s",
+        "«Nueva partida» sin semilla: cada partida tiene su propio azar, que no se elige"
       ]
     }
   ]

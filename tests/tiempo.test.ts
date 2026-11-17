@@ -75,16 +75,16 @@ describe('controles del tiempo (tarea f11-t3)', () => {
 
   it('la pausa para el tiempo y al seguir vuelve a la última velocidad, sin contar lo parado', () => {
     const { tiempo, reloj, horas } = crear();
-    tiempo.ponerVelocidad(4);
-    reloj.correr(1000);
+    tiempo.ponerVelocidad(8);
+    reloj.correr(500);
     expect(horas()).toBe(2);
     tiempo.alternarPausa();
     expect(reloj.pendientes).toBe(0);
     reloj.correr(10_000);
     expect(horas()).toBe(2);
     tiempo.alternarPausa();
-    expect(tiempo.velocidad).toBe(4);
-    reloj.correr(500);
+    expect(tiempo.velocidad).toBe(8);
+    reloj.correr(250);
     expect(horas()).toBe(3);
   });
 
@@ -95,13 +95,15 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     boton(2).click();
     expect(tiempo.velocidad).toBe(2);
     expect(boton(2).getAttribute('aria-pressed')).toBe('true');
-    expect(boton(4).getAttribute('aria-pressed')).toBe('false');
+    expect(boton(8).getAttribute('aria-pressed')).toBe('false');
+    // Sin ×4 (ajuste f11-a4).
+    expect(tiempo.elemento.querySelector('[data-velocidad="4"]')).toBeNull();
     expect(boton(2).getAttribute('aria-label')).toBe('Velocidad ×2 (tecla 2)');
     tiempo.elemento.querySelector<HTMLButtonElement>('.tiempo__pausa')!.click();
     expect(tiempo.velocidad).toBe(0);
   });
 
-  it('teclado: espacio pausa o sigue; 1 a 5 eligen ×1, ×2, ×4, ×8 y ×16', () => {
+  it('teclado: espacio pausa o sigue; 1 a 6 eligen ×1, ×2, ×8, ×16, ×32 y ×64', () => {
     const { tiempo } = crear();
     const pulsar = (key: string, destino: EventTarget = document.body, extra = {}) => {
       const evento = tecla(key, extra);
@@ -110,16 +112,18 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     };
     expect(pulsar(' ')).toBe(true);
     expect(tiempo.velocidad).toBe(1);
-    pulsar('4');
+    pulsar('3');
     expect(tiempo.velocidad).toBe(8);
     pulsar('2');
     expect(tiempo.velocidad).toBe(2);
-    pulsar('3');
-    expect(tiempo.velocidad).toBe(4);
-    pulsar('5');
+    pulsar('4');
     expect(tiempo.velocidad).toBe(16);
-    expect(tiempo.elemento.querySelector('[data-velocidad="16"]')!.getAttribute('aria-label')).toBe(
-      'Velocidad ×16 (tecla 5)',
+    pulsar('5');
+    expect(tiempo.velocidad).toBe(32);
+    pulsar('6');
+    expect(tiempo.velocidad).toBe(64);
+    expect(tiempo.elemento.querySelector('[data-velocidad="64"]')!.getAttribute('aria-label')).toBe(
+      'Velocidad ×64 (tecla 6)',
     );
     pulsar(' ');
     expect(tiempo.velocidad).toBe(0);
@@ -134,7 +138,7 @@ describe('controles del tiempo (tarea f11-t3)', () => {
     const boton = document.createElement('button');
     document.body.appendChild(boton);
     expect(pulsar(' ', boton)).toBe(false);
-    expect(pulsar('6')).toBe(false);
+    expect(pulsar('7')).toBe(false);
     expect(pulsar('0')).toBe(false);
     expect(tiempo.velocidad).toBe(0);
   });
