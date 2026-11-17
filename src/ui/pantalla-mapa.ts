@@ -25,7 +25,7 @@ import { crearBarraSecciones } from './secciones';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
 import { avanzarPartida } from '../sim/partida';
-import { instanteUTC } from '../sim/reloj';
+import { solDelJuego } from '../map/noche';
 import { crearBuscador } from './buscador';
 import { crearMapaDelJuego } from './mapa-del-juego';
 import type { EntradaBusqueda } from './busqueda';
@@ -216,12 +216,22 @@ export function abrirPantallaMapa(
         },
       })
     : null;
-  /** La sombra de la noche, en el instante de la partida (si el jugador la quiere ver). */
+  /** Capital del jugador (para la noche): llega con las ciudades del mapa. */
+  let capitalPropia: { lat: number; lon: number } | null = null;
+  /**
+   * La sombra de la noche a la hora de la partida (si el jugador la quiere ver): en su capital,
+   * de las 20:00 a las 7:00 todo el año (ajuste f11-a1).
+   */
   const moverNoche = (fraccion = 0): void => {
     if (!partida || !leerAjuste('nocheMapa')) return;
-    mapa.instanteNoche =
-      instanteUTC({ fecha: partida.fecha, hora: partida.hora }, partida.huso) +
-      fraccion * 3_600_000;
+    capitalPropia ??=
+      mapa.listaCiudades.find(
+        (c) => c.pais === partida.jugador.paisId && c.capital && c.capitalDe === null,
+      ) ??
+      mapa.listaCiudades.find((c) => c.pais === partida.jugador.paisId && c.capital) ??
+      null;
+    if (!capitalPropia) return;
+    mapa.solDelJuego = solDelJuego(partida.hora + fraccion, capitalPropia);
   };
   const alTeclearTiempo = (evento: KeyboardEvent): void => {
     tiempo?.alTeclear(evento);
@@ -568,6 +578,8 @@ export function abrirPantallaMapa(
       pintarCapa();
       // En una partida, el mapa va al país del jugador y abre su ficha.
       if (partida) mapa.irA({ tipo: 'pais', id: partida.jugador.paisId });
+      // Con las ciudades ya cargadas se sabe dónde está la capital: la noche, en su sitio.
+      moverNoche(tiempo?.fraccionHora ?? 0);
     })
     .catch(() => {
       estado.textContent = t('juego.mapa.error');

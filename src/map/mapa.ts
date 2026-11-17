@@ -27,7 +27,7 @@ import { mezclarHex } from './rampas';
 import { coloresDelMapa } from './colores';
 import { cajasSeCruzan, prepararFiguras, type Figura, type TopologiaMapa } from './geometria';
 import { ALTO_MUNDO, ANCHO_MUNDO, crearProyeccion } from './proyeccion';
-import { pintarNoche, posicionDelSol } from './noche';
+import { pintarNoche, type SolDelJuego } from './noche';
 import { paisEnPunto, UMBRAL_PEQUENO_PX } from './seleccion';
 import { Relieve } from './relieve';
 import {
@@ -223,7 +223,12 @@ export class MapaMundo {
    * Sombra de la noche (tarea f11-t4): imagen del mundo para el Sol sobre el meridiano 0, que se
    * desplaza con la longitud del Sol; se rehace solo cuando cambia la declinación.
    */
-  private noche: { imagen: HTMLCanvasElement; declinacion: number; longitud: number } | null = null;
+  private noche: {
+    imagen: HTMLCanvasElement;
+    declinacion: number;
+    umbral: number;
+    longitud: number;
+  } | null = null;
   private readonly proyeccion = crearProyeccion();
   /** Capa de datos activa (Fase 6); null es la capa política, con un color por país. */
   private coloreado: Coloreado | null = null;
@@ -668,32 +673,32 @@ export class MapaMundo {
   }
 
   /**
-   * Instante real (ms, UTC) para la noche y el día sobre el mapa (tarea f11-t4), o null para no
-   * enseñarlos. El mapa solo se vuelve a dibujar si la sombra se ha movido de verdad.
+   * Sol del juego para la noche y el día sobre el mapa (tarea f11-t4 y ajuste f11-a1), o null
+   * para no enseñarlos. La imagen de la sombra se hace una vez (el Sol del juego no tiene
+   * estaciones); después solo se desplaza, y el mapa solo se redibuja si se ha movido de verdad.
    */
-  set instanteNoche(instante: number | null) {
-    if (instante === null) {
+  set solDelJuego(sol: SolDelJuego | null) {
+    if (sol === null) {
       if (this.noche) {
         this.noche = null;
         this.pedirDibujo();
       }
       return;
     }
-    const sol = posicionDelSol(instante);
     let noche = this.noche;
-    if (!noche || Math.abs(noche.declinacion - sol.declinacion) > 0.05) {
+    if (!noche || noche.declinacion !== sol.declinacion || noche.umbral !== sol.umbral) {
       const imagen = noche?.imagen ?? document.createElement('canvas');
       imagen.width = ANCHO_IMAGEN_NOCHE;
       imagen.height = Math.round((ANCHO_IMAGEN_NOCHE * ALTO_MUNDO) / ANCHO_MUNDO);
       const pincel = imagen.getContext('2d');
       if (!pincel) return;
       const datos = pincel.createImageData(imagen.width, imagen.height);
-      pintarNoche(datos.data, imagen.width, imagen.height, sol.declinacion, (fila) => {
+      pintarNoche(datos.data, imagen.width, imagen.height, sol, (fila) => {
         const y = ((fila + 0.5) / imagen.height) * ALTO_MUNDO;
         return this.proyeccion.invert?.([ANCHO_MUNDO / 2, y])?.[1] ?? 0;
       });
       pincel.putImageData(datos, 0, 0);
-      noche = { imagen, declinacion: sol.declinacion, longitud: Number.NaN };
+      noche = { imagen, declinacion: sol.declinacion, umbral: sol.umbral, longitud: Number.NaN };
       this.noche = noche;
     }
     // Un grado de longitud son menos de 3 px del mundo a escala 1: por debajo, no se redibuja.

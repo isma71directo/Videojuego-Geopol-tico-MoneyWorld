@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-/** Audiovisual de la Fase 11: noche y día, reloj de manecillas y sonidos (tarea f11-t4). */
+/** Audiovisual de la Fase 11: noche y día (tarea f11-t4 y ajuste f11-a1), reloj y sonidos. */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -8,8 +8,11 @@ import type { ConjuntoPaises } from '../src/datos/paises';
 import { t } from '../src/i18n';
 import {
   alturaDelSol,
+  AMANECER,
+  ANOCHECER,
+  CREPUSCULO,
   pintarNoche,
-  posicionDelSol,
+  solDelJuego,
   SOMBRA_NOCHE,
   sombraPara,
 } from '../src/map/noche';
@@ -20,64 +23,81 @@ import { angulosAgujas, crearRelojAnalogico, esDeNoche } from '../src/ui/reloj-a
 
 afterEach(() => document.body.replaceChildren());
 
-describe('posición del Sol (tarea f11-t4)', () => {
-  it('1 de enero de 2010 a mediodía UTC: el Sol a −23° y casi sobre Greenwich', () => {
-    const sol = posicionDelSol(Date.UTC(2010, 0, 1, 12));
-    expect(sol.declinacion).toBeCloseTo(-23.0, 0);
-    // La ecuación del tiempo es de unos −3,5 min: el Sol pasa por Greenwich a las 12:03.
-    expect(sol.longitud).toBeGreaterThan(0.5);
-    expect(sol.longitud).toBeLessThan(1.2);
+/** Sombra que lleva un punto a una hora local de la capital. */
+const sombraEn = (hora: number, punto: { lat: number; lon: number }, capital = punto) => {
+  const sol = solDelJuego(hora, capital);
+  return sombraPara(alturaDelSol(punto.lat, punto.lon, sol), sol.umbral);
+};
+const MADRID = { lat: 40.4, lon: -3.7 };
+
+describe('noche de las 20:00 a las 7:00 en la capital del jugador (ajuste f11-a1)', () => {
+  it('en Madrid: anochece a las 20:00 y amanece a las 7:00, todo el año', () => {
+    expect([AMANECER, ANOCHECER]).toEqual([7, 20]);
+    expect(sombraEn(20, MADRID)).toBeCloseTo(SOMBRA_NOCHE / 2, 6);
+    expect(sombraEn(7, MADRID)).toBeCloseTo(SOMBRA_NOCHE / 2, 6);
+    // A las 18:00 (lo que pedía el jugador) todavía es de día; a las 2:00, noche cerrada.
+    expect(sombraEn(18, MADRID)).toBe(0);
+    expect(sombraEn(13.5, MADRID)).toBe(0);
+    expect(sombraEn(2, MADRID)).toBe(SOMBRA_NOCHE);
+    expect(sombraEn(23, MADRID)).toBe(SOMBRA_NOCHE);
+    // El crepúsculo dura poco: a las 19:30 casi de día y a las 20:30 casi de noche.
+    expect(sombraEn(19.5, MADRID)).toBeLessThan(0.05);
+    expect(sombraEn(20.5, MADRID)).toBeGreaterThan(SOMBRA_NOCHE - 0.05);
+    // Sin estaciones: el Sol del juego no tiene declinación.
+    expect(solDelJuego(12, MADRID).declinacion).toBe(0);
   });
 
-  it('equinoccio y solsticio de 2010; a medianoche UTC, el Sol sobre el Pacífico', () => {
-    expect(Math.abs(posicionDelSol(Date.UTC(2010, 2, 20, 17, 32)).declinacion)).toBeLessThan(0.1);
-    expect(posicionDelSol(Date.UTC(2010, 5, 21, 11, 28)).declinacion).toBeCloseTo(23.44, 1);
-    expect(Math.abs(posicionDelSol(Date.UTC(2010, 0, 1, 0)).longitud)).toBeGreaterThan(178);
-    // Cada hora, el Sol avanza 15° hacia el oeste.
-    const a = posicionDelSol(Date.UTC(2010, 0, 1, 12)).longitud;
-    const b = posicionDelSol(Date.UTC(2010, 0, 1, 13)).longitud;
-    expect(a - b).toBeCloseTo(15, 1);
+  it('también en capitales muy al norte, en el ecuador y en el sur', () => {
+    for (const capital of [
+      { lat: 64.1, lon: -21.9 }, // Reikiavik
+      { lat: -0.2, lon: -78.5 }, // Quito
+      { lat: -34.6, lon: -58.4 }, // Buenos Aires
+      { lat: 35.7, lon: 139.7 }, // Tokio
+    ]) {
+      expect(sombraEn(20, capital), JSON.stringify(capital)).toBeCloseTo(SOMBRA_NOCHE / 2, 6);
+      expect(sombraEn(7, capital)).toBeCloseTo(SOMBRA_NOCHE / 2, 6);
+      expect(sombraEn(14, capital)).toBe(0);
+      expect(sombraEn(1, capital)).toBe(SOMBRA_NOCHE);
+    }
   });
 
-  it('altura del Sol: 90° bajo él, −90° en las antípodas; noche polar en enero', () => {
-    const sol = posicionDelSol(Date.UTC(2010, 0, 1, 12));
-    expect(alturaDelSol(sol.declinacion, sol.longitud, sol)).toBeCloseTo(90, 3);
-    expect(alturaDelSol(-sol.declinacion, sol.longitud + 180, sol)).toBeCloseTo(-90, 3);
-    // Mediodía en Tromsø (69,6° N): el Sol no sale.
-    expect(alturaDelSol(69.6, 18.9, sol)).toBeLessThan(0);
-    // Mediodía en Madrid: el Sol a 90 − 40,4 − 23,0 = 26,6°.
-    const madrid = alturaDelSol(40.4, -3.7, posicionDelSol(Date.UTC(2010, 0, 1, 12, 15)));
-    expect(madrid).toBeCloseTo(26.6, 0);
+  it('el Sol avanza 15° por hora hacia el oeste: al este anochece antes', () => {
+    const a = solDelJuego(12, MADRID).longitud;
+    const b = solDelJuego(13, MADRID).longitud;
+    expect(a - b).toBeCloseTo(15, 6);
+    // A las 20:00 de Madrid, Moscú (37,6° E) ya es de noche y Nueva York (74° O), de día.
+    expect(sombraEn(20, { lat: 55.8, lon: 37.6 }, MADRID)).toBe(SOMBRA_NOCHE);
+    expect(sombraEn(20, { lat: 40.7, lon: -74 }, MADRID)).toBe(0);
   });
 });
 
 describe('sombra de la noche (tarea f11-t4)', () => {
   it('ninguna de día, entera de noche y un degradado suave en el crepúsculo', () => {
-    expect(sombraPara(30)).toBe(0);
-    expect(sombraPara(-30)).toBe(SOMBRA_NOCHE);
+    const umbral = -5;
+    expect(sombraPara(30, umbral)).toBe(0);
+    expect(sombraPara(-30, umbral)).toBe(SOMBRA_NOCHE);
     let anterior = 0;
-    for (let altura = 1; altura >= -12; altura -= 0.5) {
-      const sombra = sombraPara(altura);
+    for (let altura = umbral + CREPUSCULO; altura >= umbral - CREPUSCULO; altura -= 0.5) {
+      const sombra = sombraPara(altura, umbral);
       expect(sombra).toBeGreaterThanOrEqual(anterior);
       anterior = sombra;
     }
-    expect(sombraPara(-6)).toBeGreaterThan(0.1);
-    expect(sombraPara(-6)).toBeLessThan(SOMBRA_NOCHE);
+    expect(sombraPara(umbral, umbral)).toBeCloseTo(SOMBRA_NOCHE / 2, 6);
   });
 
-  it('la imagen: de día en el meridiano 0, de noche en el 180 y en el Ártico en enero', () => {
+  it('la imagen: de día en el meridiano del Sol y de noche en el opuesto', () => {
     const ancho = 36;
     const alto = 18;
     const datos = new Uint8ClampedArray(ancho * alto * 4);
+    const sol = solDelJuego(13.5, { lat: 40, lon: 0 });
     // Filas de 85° N a 85° S, para la prueba (el mapa usa su proyección).
-    pintarNoche(datos, ancho, alto, -23, (fila) => 85 - (fila + 0.5) * (170 / alto));
+    pintarNoche(datos, ancho, alto, sol, (fila) => 85 - (fila + 0.5) * (170 / alto));
     const alfa = (x: number, y: number) => datos[(y * ancho + x) * 4 + 3]!;
     const ecuador = Math.floor(alto / 2);
     expect(alfa(ancho / 2, ecuador)).toBe(0);
     expect(alfa(0, ecuador)).toBe(Math.round(SOMBRA_NOCHE * 255));
-    expect(alfa(ancho / 2, 0)).toBe(Math.round(SOMBRA_NOCHE * 255));
-    // En el sur es verano: a 80° S tampoco anochece a medianoche.
-    expect(alfa(0, alto - 1)).toBeLessThan(Math.round(SOMBRA_NOCHE * 255));
+    // Sin estaciones, el norte y el sur se ven igual.
+    expect(alfa(0, 1)).toBe(alfa(0, alto - 2));
   });
 
   it('se puede quitar en Ajustes (por defecto, se ve)', () => {

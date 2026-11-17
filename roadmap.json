@@ -1,15 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.12.0",
-  "actualizado": "2026-11-16T23:54:45Z",
+  "versionActual": "0.12.1",
+  "actualizado": "2026-11-17T00:13:01Z",
   "faseActiva": "fase-12",
   "ultimaSesion": {
-    "fecha": "2026-11-16",
-    "resumen": "Fase 11 cerrada como v0.12.0: reloj por horas con la hora de la capital del jugador, pausa y velocidades ×1 a ×8 (ratón y teclado), reloj de manecillas, noche y día en el mapa y sonidos del tiempo. Atiende la issue n.º 3. PR abierto para que el jugador la pruebe.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.12.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
+    "fecha": "2026-11-17",
+    "resumen": "v0.12.1 publicada con el ajuste f11-a1: noche de las 20:00 a las 7:00 en la capital del jugador todo el año. PR abierto para que el jugador la pruebe.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.12.1: presentar el plan de la Fase 12 (motor en segundo plano: Web Worker, azar con semilla y primera música ambiental).",
     "pendienteDelJugador": [
-      "Probar la v0.12.0 en el PC: empezar una partida (empieza en pausa a medianoche), ponerla en marcha con la barra espaciadora o el botón, cambiar entre ×1, ×2, ×4 y ×8 (también con las teclas 1 a 4), ver avanzar la fecha y la hora de tu capital, el reloj de manecillas y la noche moviéndose sobre el mapa (aléjate para ver el mundo entero), pausar y comprobar que el tiempo se para; probar a quitar la noche en Ajustes",
-      "Fusionar el PR de la Fase 11"
+      "Probar la v0.12.1 en el PC: en una partida, dejar correr el tiempo y comprobar que en tu país anochece hacia las 20:00 y amanece hacia las 7:00",
+      "Fusionar el PR de la v0.12.1"
     ]
   },
   "etapas": [
@@ -762,6 +762,17 @@
           "estado": "hecha",
           "fecha": "2026-11-16",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/f9268a9"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f11-a1",
+          "titulo": "Noche en el mapa de las 20:00 a las 7:00 (hora de la capital del jugador) todo el año, en lugar de seguir al Sol real (en enero anochecía hacia las 18:00); el reloj se queda como está: sin horario de verano ni diferencias horarias entre países, que no son parte del juego",
+          "version": "0.12.1",
+          "origen": "Mensaje del jugador tras probar la v0.12.0",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/172640e"
         }
       ]
     },
@@ -4527,6 +4538,13 @@
         "Pausa y velocidades ×1 (una hora cada 0,5 s), ×2, ×4 y ×8 en la barra superior, con el ratón, la barra espaciadora y las teclas 1 a 4",
         "El reloj marca la hora local de la capital del jugador, con su huso horario de 2010 (base de datos IANA)",
         "Reloj de manecillas, noche y día sobre el mapa con la posición real del Sol (se puede quitar en Ajustes) y sonidos de pausa, seguir y cambio de velocidad"
+      ]
+    },
+    {
+      "version": "0.12.1",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Noche en el mapa de las 20:00 a las 7:00 en la capital del jugador todo el año (antes seguía al Sol real y en enero anochecía hacia las 18:00); el resto del mundo se oscurece según su longitud"
       ]
     }
   ]

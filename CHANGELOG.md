@@ -7,6 +7,19 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.12.1 - 2026-11-17
+
+Ajuste de la Fase 11 pedido por el jugador al probar la v0.12.0.
+
+### Cambiado
+
+- **Noche de las 20:00 a las 7:00** (ajuste f11-a1): la sombra de la noche ya no sigue al Sol real
+  (en enero anochecía hacia las 18:00). En la capital del jugador anochece a las 20:00 y amanece a
+  las 7:00 todo el año, con un crepúsculo de unos 20 minutos; el resto del mundo se oscurece según
+  su longitud. La esfera del reloj usa el mismo horario.
+- El reloj se queda como está: sin horario de verano ni diferencias horarias entre países, que no
+  son parte del juego (decisión del jugador).
+
 ## 0.12.0 - 2026-11-16
 
 Fase 11: reloj del juego. Atiende la idea de la issue n.º 3 (que el juego corra por horas, como en
