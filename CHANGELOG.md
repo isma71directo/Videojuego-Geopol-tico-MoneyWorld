@@ -7,6 +7,38 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.14.0 - 2026-11-17
+
+Fase 13: efectos y pausa automática.
+
+### Añadido
+
+- **Motor de efectos** (sección 8 del GDD):
+  - Un efecto cambia un dato de un país (de momento, la tesorería o la popularidad): suma, multiplica
+    o fija un valor, con un retraso antes de empezar y una duración.
+  - Se aplican y caducan solos en el motor; se combinan en orden (fijar, multiplicar, sumar) y
+    respetan los límites de cada dato (la popularidad, entre 0 y 100).
+  - Son la base de las leyes, tecnologías y eventos de las próximas fases. Todavía no hay efectos
+    de verdad: la luna de miel de la popularidad espera a la opinión pública (Fase 56), por
+    decisión del jugador.
+- **Efectos en curso a la vista** (decisión del jugador: en los dos sitios):
+  - En la explicación de la tesorería y de la popularidad de la barra superior: qué los cambia y
+    hasta cuándo. El valor que se ve ya lleva los efectos.
+  - Ventana nueva **Informes › Efectos en curso**, con su icono: qué cambia cada efecto, su origen,
+    sus fechas y si ya actúa o cuándo empieza. Se repinta sola al cambiar el día.
+- **Pausa automática ante sucesos importantes** (decisión del jugador):
+  - La partida se para sola justo a la hora de un suceso importante (una guerra, una moción de
+    censura, un referéndum, una crisis…), aunque vaya a ×64.
+  - El aviso es una ventana en el centro con qué ha pasado y cuándo, «Seguir» (Intro) y «Quedarse
+    en pausa» (Escape); las teclas del mapa no actúan detrás de ella.
+  - Opción «Pausar ante sucesos importantes» en Ajustes, activada por defecto.
+- **Aviso visual y sonoro**: una campanada propia (más aguda que la de la pausa), el fondo
+  oscurecido y dos latidos de un anillo dorado. En la galería, la sección «Aviso de la pausa
+  automática» y la campanada en «Sonidos de la interfaz».
+- **Modo de prueba «?prueba»** al final de la dirección: la partida empieza con un efecto de prueba
+  (+3 de popularidad del 2 al 12 de enero) y un suceso de prueba el 3 de enero a las 08:00,
+  marcados como «prueba».
+
 ## 0.13.0 - 2026-11-17
 
 Fase 12: motor en segundo plano, azar de la partida y música.
