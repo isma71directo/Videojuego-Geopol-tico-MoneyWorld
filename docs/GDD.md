@@ -202,6 +202,12 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Moneda:** tipo de cambio flotante, fijo o unión monetaria. Puede devaluarse.
 - **Ciclos y crisis:** burbujas (vivienda, bolsa), crisis bancarias, de deuda o de divisas, con contagio entre países con mucho comercio o deuda cruzada.
 
+**Decisiones del jugador (17/11/2026, plan de la Fase 15):**
+- **Sectores:** siete ramas de actividad, con los datos reales de 2010 de la ONU (UNSD, *National Accounts – Analysis of Main Aggregates*): agricultura, ganadería y pesca; minería y energía; industria manufacturera; construcción; comercio, hostelería y turismo; transporte y comunicaciones; y otros servicios (finanzas, inmobiliaria, administración, educación, sanidad…). Cada una con su productividad, trabajo y capital.
+- **Sin azar en la economía:** no hay variaciones al azar mes a mes; la economía cambia por las decisiones que se toman (del jugador y de la IA): inversión, gasto, impuestos, servicios… Mientras esas decisiones no existan (presupuesto e impuestos, Fases 21 a 25), evoluciona según el modelo. El azar de la partida está en las decisiones de la IA y en los sucesos, no en el PIB.
+- **Arranque:** cada país empieza creciendo como creció de verdad en 2010 (muchos salían de la crisis de 2009) y el modelo lo lleva poco a poco a su crecimiento potencial.
+- **Dónde se ve:** en la pestaña Economía de la ficha de cada país (valores en vivo y gráfico desde el 1 de enero de 2010) y, para el país del jugador, en la ventana Economía › Economía (la pantalla completa de Economía llega en la Fase 17).
+
 **Acciones del jugador:** fijar tipos (sin banco central independiente), devaluar o revaluar, controles de capital, rescatar bancos, planes de estímulo, cambiar el régimen de moneda, solicitar ayuda al FMI.
 
 ### 6.2 Presupuesto y deuda
@@ -890,13 +896,14 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 15 — v0.16.0 · Economía: producción y demanda
 **Objetivo:** cada país produce, consume e invierte mes a mes.
-**Tareas**
-1. Modelo de producción y demanda (6.1).
-2. Consumo, inversión, ahorro y confianza de consumidores y empresas.
-3. **Audiovisual:** iconos de los indicadores macroeconómicos que falten.
+**Tareas** (concretadas con el jugador el 17/11/2026: siete sectores con datos reales de la ONU, sin azar en la economía, arranque con el crecimiento real de 2010 y evolución visible en la ficha y en Economía › Economía)
+1. Datos de 2010 por país (script en /scripts, fuente ONU y Banco Mundial): valor añadido de las siete ramas, consumo de los hogares, gasto público, inversión, exportaciones e importaciones; lo que falte, estimado y marcado.
+2. Estado económico de cada país en la partida (PIB real y nominal, por sectores, y su demanda), con el formato de la partida 3 y su migración; modelo mensual de producción (productividad × trabajo × capital por sector) y demanda (consumo + inversión + gasto público + exportaciones netas), sin azar, que arranca con el crecimiento real de 2010 y converge al potencial. Parámetros en /src/sim/config.
+3. Ahorro y confianza de consumidores y empresas, y su efecto en el consumo y la inversión; la ficha de cada país y la ventana Economía › Economía muestran los valores en vivo.
+4. **Audiovisual:** iconos de los indicadores macroeconómicos y de los sectores que falten, y gráfico animado de la evolución del PIB desde 2010.
 
-**Tests:** sin intervención, el PIB de los 20 mayores países evoluciona en rangos creíbles durante 5 años.
-**Prueba en el PC:** avanzar un año y ver cambiar el PIB en la ficha de varios países.
+**Tests:** sin intervención, el PIB de los 20 mayores países evoluciona en rangos creíbles durante 5 años; sin azar, la misma partida da la misma economía; una partida del formato 2 se migra.
+**Prueba en el PC:** avanzar un año y ver cambiar el PIB y sus sectores en la ficha de varios países y en Economía › Economía.
 **Hecho cuando:** el PIB de todos los países evoluciona mes a mes.
 
 #### Fase 16 — v0.17.0 · Economía: inflación y paro
@@ -2130,6 +2137,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | La pausa automática y su aviso valen para cualquier suceso importante (elecciones, golpes de Estado, catástrofes, tratados, escándalos…), no solo guerras, crisis o manifestaciones | Recordatorio del jugador al probar la v0.14.0 | 5, 13 |
 | 17/11/2026 | Fase 14 concretada con el jugador: cinco ranuras manuales; guardado automático mensual (se conservan los tres últimos) y uno por año; menú de la partida con Guardar, Cargar, Ajustes y Salir, y Ctrl+S; «Continuar» y «Cargar partida» en el inicio; la fase pasa a 4 tareas | Plan de la Fase 14 aprobado por el jugador | 9, 13 |
 | 17/11/2026 | Los guardados manuales pueden llevar un nombre (opcional, hasta 60 caracteres), que se ve en las ranuras, en «Cargar partida» y en «Continuar»; Ctrl+S conserva el de la ranura. El almacenamiento persistente se pide al guardar por primera vez | Petición y duda del jugador tras probar la v0.15.0 (ajustes f14-a1 y f14-a2) | 13 |
+| 17/11/2026 | Fase 15 concretada con el jugador: siete sectores con datos reales de la ONU; sin azar en la economía (cambia por las decisiones: inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010; evolución en la ficha y en Economía › Economía; la fase pasa a 4 tareas | Plan de la Fase 15 aprobado por el jugador | 6.1, 9, 13 |
 
 ---
 
@@ -2155,6 +2163,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Música ambiental | Una pieza / tranquila / tensa / las dos según la situación; generativa / piezas fijas; solo en la partida / también en el menú | **Decidido por el jugador (17/11/2026):** las dos según la situación (la tensa, con crisis, guerras y elecciones); piezas fijas compuestas con código pero abundantes, para que no se repitan en poco tiempo; en el menú y en la partida |
 | Pausa automática | Sucesos importantes / fin de efectos / cada mes / cada año; ventana central / franja bajo la barra | **Decidido por el jugador (17/11/2026):** una opción, «Sucesos importantes» (cualquier suceso importante: elecciones, guerras, golpes de Estado, catástrofes, tratados, crisis…), con aviso en una ventana en el centro y sonido. Los efectos en curso se ven en la explicación de cada dato y en la ventana «Efectos en curso» de Informes. La luna de miel de la popularidad no caduca todavía: espera a la opinión pública (Fase 56) |
 | Guardar y cargar | Ranuras: 3 / 5 / sin límite; automáticos: el último / los 3 últimos / los 3 últimos y uno por año; botones en la barra / menú de la partida; en el inicio, «Continuar» y «Cargar» / solo «Cargar» | **Decidido por el jugador (17/11/2026):** cinco ranuras manuales (pregunta antes de sobrescribir); guardado automático al empezar cada mes, del que se conservan los tres últimos, más el del 1 de enero de cada año; se guarda y se carga desde el menú de la partida (botón «Menú»: Guardar, Cargar, Ajustes y Salir, que pregunta si guardar antes) y con Ctrl+S; en el inicio, «Continuar» (la partida más reciente) y «Cargar partida». Los guardados manuales pueden llevar un nombre (ajuste f14-a1, petición del jugador). Las partidas del navegador se conservan mientras no se borren los datos del sitio; para llevarlas a otro navegador u ordenador, o como copia de seguridad, se exportan a un archivo .json |
+| Economía: sectores y azar | 3 sectores / uno / más sectores; variaciones al azar / sin azar; arranque real de 2010 / crecimiento normal | **Decidido por el jugador (17/11/2026):** siete sectores con datos reales de la ONU (sección 6.1); sin azar en la economía, que cambia por las decisiones del jugador y de la IA (inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010, que converge al potencial; se ve en la ficha de cada país y en Economía › Economía |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
