@@ -27,10 +27,10 @@ import {
   DIFICULTADES,
   FECHA_INICIO,
   OPCIONES_POR_DEFECTO,
-  semillaAlAzar,
   type Dificultad,
   type Partida,
 } from '../sim/partida';
+import { semillaNueva } from '../sim/azar';
 import { etiquetaHuso } from '../sim/reloj';
 import { popularidadInicial, tesoreriaInicial } from '../sim/valores-iniciales';
 import { normalizarBusqueda } from './busqueda';
@@ -213,7 +213,7 @@ export function abrirPantallaNuevaPartida(
     if (!conjunto || !elegido || empezada) return;
     const partida = crearPartida(
       // Cada partida, su propio azar (ajuste f11-a5): la semilla no se elige ni se ve.
-      { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla: semillaAlAzar() },
+      { paisId: elegido, dificultad, eventosHistoricos: eventos, semilla: semillaNueva() },
       conjunto.paises,
       gobiernos?.paises ?? {},
       husos?.paises ?? {},

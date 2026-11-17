@@ -18,3 +18,6 @@ Lo que hay ya:
   órdenes de la pantalla; el bucle lo hace avanzar mientras el tiempo corre, y el Web Worker los
   ejecuta en otro hilo para que la pantalla nunca se bloquee. La pantalla habla con él desde
   `src/ui/conexion-motor.ts`.
+- `azar.ts` (Fase 12): el azar de la partida, sembrado distinto en cada una (y de nuevo al
+  cargar); los sistemas lo reciben del motor. Con la misma semilla da la misma serie, solo para los
+  tests y para reproducir fallos.

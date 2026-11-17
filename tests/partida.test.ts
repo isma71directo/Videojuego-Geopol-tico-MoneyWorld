@@ -10,9 +10,9 @@ import {
   FECHA_INICIO,
   FORMATO_PARTIDA,
   paisesJugables,
-  semillaAlAzar,
   type Partida,
 } from '../src/sim/partida';
+import { semillaNueva } from '../src/sim/azar';
 import {
   abrirPantallaNuevaPartida,
   datoDeLista,
@@ -67,13 +67,12 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
   it('cada partida, su propio azar: una semilla nueva que no se elige (ajuste f11-a5)', () => {
     const semillas = new Set<number>();
     for (let i = 0; i < 50; i++) {
-      const s = semillaAlAzar();
-      expect(Number.isInteger(s) && s >= 1 && s <= 999_999_999).toBe(true);
+      const s = semillaNueva();
+      expect(Number.isSafeInteger(s) && s >= 1 && s < 2 ** 32).toBe(true);
       semillas.add(s);
     }
     // Cincuenta partidas, cincuenta azares distintos.
     expect(semillas.size).toBe(50);
-    expect(semillaAlAzar(() => 0)).toBe(1);
   });
 });
 

@@ -9,6 +9,7 @@
  *   cada fotograma del reloj: si un paso tarda en calcularse, el tiempo del juego va más despacio
  *   en lugar de dar saltos) y da los pasos de la simulación a los sistemas.
  */
+import { crearAzar, type Azar } from './azar';
 import { avanzarPartida, type Partida } from './partida';
 import { horasQueTocan, msPorHora, VELOCIDADES, type Paso, type Velocidad } from './reloj';
 
@@ -36,8 +37,11 @@ export type MensajeMotor = {
   velocidad: Velocidad;
 };
 
-/** Un sistema de la simulación: recibe los pasos de cada avance y cambia la partida. */
-export type Sistema = (pasos: readonly Paso[], partida: Partida) => void;
+/**
+ * Un sistema de la simulación: recibe los pasos de cada avance y el azar de la partida (tarea
+ * f12-t2), y cambia la partida.
+ */
+export type Sistema = (pasos: readonly Paso[], partida: Partida, azar: Azar) => void;
 
 export interface Motor {
   readonly partida: Partida | null;
@@ -62,6 +66,11 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
   let velocidad: Velocidad = 0;
   let fraccion = 0;
   let cargaPruebaMs = 0;
+  /**
+   * Azar de la partida (tarea f12-t2): se siembra con la semilla de la partida, distinta en cada
+   * una. Al cargar una partida guardada (Fase 14) se sembrará con una semilla nueva.
+   */
+  let azar: Azar | null = null;
 
   const estado = (): MensajeMotor[] =>
     partida
@@ -86,6 +95,7 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
     atender(orden) {
       if (orden.tipo === 'empezar') {
         partida = orden.partida;
+        azar = crearAzar(orden.partida.semilla);
         velocidad = 0;
         fraccion = 0;
         cargaPruebaMs = Math.min(CARGA_PRUEBA_MAXIMA, Math.max(0, orden.cargaPruebaMs ?? 0));
@@ -97,6 +107,7 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
         return estado();
       }
       partida = null;
+      azar = null;
       velocidad = 0;
       return [];
     },
@@ -108,7 +119,7 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
       if (horas === 0) return [];
       const { partida: nueva, pasos } = avanzarPartida(partida, horas);
       partida = nueva;
-      for (const sistema of opciones.sistemas ?? []) sistema(pasos, partida);
+      for (const sistema of opciones.sistemas ?? []) sistema(pasos, partida, azar!);
       if (cargaPruebaMs > 0) {
         for (const paso of pasos) if (paso.ritmo === 'diario') ocupar(cargaPruebaMs);
       }
