@@ -7,12 +7,13 @@
 import { icono, type NombreIcono } from '../av/iconos';
 import type { Efecto } from '../av/sonido';
 import { formatearFechaLarga } from '../compartido/fechas';
-import { porcentaje } from '../compartido/formato';
+import { porcentaje, puntos } from '../compartido/formato';
 import { t } from '../i18n';
 import type { TipoAlerta } from '../sim/alertas';
 import type { Suceso } from '../sim/sucesos';
 import { animar, retirar } from './componentes/animacion';
 import { el } from './dom';
+import { textoRating } from './rating';
 import './estilos/alerta-economica.css';
 
 /** El icono de cada alerta. */
@@ -22,6 +23,9 @@ export const ICONO_ALERTA: Record<TipoAlerta, NombreIcono> = {
   inflacion: 'inflacion',
   inflacionGrave: 'inflacion',
   deflacion: 'deflacion',
+  crisisDeuda: 'deuda',
+  ratingBaja: 'rating',
+  ratingSube: 'rating',
 };
 
 /** El sonido propio de cada alerta. */
@@ -31,7 +35,13 @@ export const SONIDO_ALERTA: Record<TipoAlerta, Efecto> = {
   inflacion: 'alertaInflacion',
   inflacionGrave: 'alertaInflacionGrave',
   deflacion: 'alertaDeflacion',
+  crisisDeuda: 'alertaCrisisDeuda',
+  ratingBaja: 'alertaRatingBaja',
+  ratingSube: 'alertaRatingSube',
 };
+
+/** Las alertas cuyo dato es la prima de riesgo (puntos), no un tanto por uno. */
+const EN_PUNTOS: ReadonlySet<TipoAlerta> = new Set(['crisisDeuda', 'ratingBaja', 'ratingSube']);
 
 /** Cuánto se queda a la vista una tarjeta (ms). */
 export const DURACION_ALERTA = 9000;
@@ -45,7 +55,11 @@ export function traducirSuceso(suceso: Suceso): Suceso {
   return {
     ...suceso,
     titulo: t(`juego.alertas.${alerta.tipo}.titulo`),
-    texto: t(`juego.alertas.${alerta.tipo}.texto`, { valor: porcentaje(alerta.valor * 100) }),
+    texto: t(`juego.alertas.${alerta.tipo}.texto`, {
+      // (Las de la deuda traen la prima de riesgo, en puntos, y las del rating, la nota nueva.)
+      valor: EN_PUNTOS.has(alerta.tipo) ? puntos(alerta.valor) : porcentaje(alerta.valor * 100),
+      rating: alerta.rating ? textoRating(alerta.rating) : '',
+    }),
   };
 }
 

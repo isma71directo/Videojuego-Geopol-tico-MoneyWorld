@@ -8,6 +8,7 @@
 import type { Efecto } from './efectos';
 import { economiaInicial, nivelDe, type EconomiaPais } from './economia';
 import { presupuestoInicial, type PresupuestoPais } from './presupuesto';
+import { mercadoInicial, type MercadoDeuda } from './deuda';
 import type { Suceso } from './sucesos';
 import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
@@ -25,9 +26,10 @@ import {
  *  - 3: v0.16.0: la economía de cada país (f15-t2).
  *  - 4: v0.16.1: los desequilibrios de 2010 en la economía (ajuste f15-a1).
  *  - 5: v0.17.0: el paro y la inflación en la economía (Fase 16).
- *  - 6: v0.18.0 en adelante: el presupuesto de cada país (Fase 17).
+ *  - 6: v0.18.0: el presupuesto de cada país (Fase 17).
+ *  - 7: v0.19.0 en adelante: el mercado de la deuda de cada país (Fase 18).
  */
-export const FORMATO_PARTIDA = 6;
+export const FORMATO_PARTIDA = 7;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
@@ -71,6 +73,8 @@ export interface Partida {
   efectos: Efecto[];
   /** Sucesos programados, por orden (tarea f13-t3). */
   agenda: Suceso[];
+  /** Lo que ha decidido el jugador y aún no ha usado ningún sistema (tarea f18-t3). */
+  decisiones?: Record<string, string>;
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */
@@ -79,18 +83,26 @@ export interface EstadoPais extends ValoresIniciales {
   economia: EconomiaPais | null;
   /** Su presupuesto (Fase 17); null si no hay datos para crearlo. */
   presupuesto: PresupuestoPais | null;
+  /** El mercado de su deuda: prima de riesgo y rating (Fase 18); null sin presupuesto. */
+  mercado: MercadoDeuda | null;
 }
 
 /** Cómo empieza un país el 1 de enero de 2010: valores iniciales, economía y presupuesto. */
 function estadoInicial(
+  id: string,
   pais: PaisParaPartida,
   gobierno: Parameters<typeof valoresIniciales>[1],
 ): EstadoPais {
   const economia = economiaInicial(pais.datos, pais.nivelRenta);
+  const presupuesto = presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), economia);
   return {
     ...valoresIniciales(pais.datos, gobierno, FECHA_INICIO),
     economia,
-    presupuesto: presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), economia),
+    presupuesto,
+    mercado:
+      economia && presupuesto
+        ? mercadoInicial(id, pais.datos, pais.region, economia, presupuesto)
+        : null,
   };
 }
 
@@ -101,6 +113,8 @@ export interface PaisParaPartida {
   datos: DatosParaInicio;
   /** Nivel de renta de 2010 (para el crecimiento de su economía). */
   nivelRenta?: string | null;
+  /** Región del Banco Mundial (para el contagio de las crisis de deuda, Fase 18). */
+  region?: string | null;
 }
 
 export const OPCIONES_POR_DEFECTO: Omit<OpcionesPartida, 'paisId' | 'semilla'> = {
@@ -157,7 +171,7 @@ export function crearPartida(
     efectos: [],
     agenda: [],
     paises: Object.fromEntries(
-      paisesJugables(paises).map((id) => [id, estadoInicial(paises[id]!, gobiernos[id])]),
+      paisesJugables(paises).map((id) => [id, estadoInicial(id, paises[id]!, gobiernos[id])]),
     ),
   };
 }

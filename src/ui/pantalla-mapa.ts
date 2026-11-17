@@ -477,6 +477,10 @@ export function abrirPantallaMapa(
     atenuarMusica(true);
     // La campanada del aviso (tarea f13-t4), o el sonido de la alerta, en lugar del de la pausa.
     reproducir(alerta ? SONIDO_ALERTA[alerta.tipo] : 'aviso');
+    if (suceso.decision) {
+      void decidir(suceso, suceso.decision);
+      return;
+    }
     mostrarAvisoSuceso({
       suceso,
       // «Seguir»: a la velocidad que llevaba (suena como al quitar la pausa).
@@ -485,6 +489,29 @@ export function abrirPantallaMapa(
       },
       alCerrar: () => reproducir('cerrar'),
     });
+  }
+  /**
+   * Una decisión del jugador (tarea f18-t3; p. ej., ante una crisis de deuda, el rescate del FMI o
+   * el impago). La partida está parada; con lo elegido, el motor lo aplica en el paso siguiente y
+   * la partida sigue a la velocidad que llevaba. Si se cierra sin elegir, se queda en pausa y el
+   * motor lo vuelve a preguntar el mes siguiente.
+   */
+  async function decidir(suceso: Suceso, decision: NonNullable<Suceso['decision']>): Promise<void> {
+    const opcion = await pedirEleccion({
+      titulo: suceso.titulo,
+      texto: `${suceso.texto}
+
+${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
+      // La primera es la prudente (en azul); las demás, arriesgadas (en rojo).
+      respuestas: decision.opciones.map((id, indice) => ({
+        id,
+        texto: t(`juego.decisiones.${decision.clave}.${id}`),
+        estilo: indice === 0 ? ('principal' as const) : ('peligro' as const),
+      })),
+    });
+    if (opcion === null || !motor) return;
+    motor.enviar({ tipo: 'decidir', clave: decision.clave, opcion });
+    if (tiempo && tiempo.velocidad === 0) tiempo.alternarPausa();
   }
   // Los controles del tiempo (tarea f11-t3): la partida empieza en pausa.
   const tiempo = partida
@@ -587,6 +614,7 @@ export function abrirPantallaMapa(
       economia: estado?.economia ?? null,
       tesoreria: estado?.tesoreria ?? 0,
       fecha: partida.fecha,
+      mercado: estado?.mercado ?? null,
     };
   };
   // Economía › Economía (tarea f15-t3): la del país del jugador, en vivo.

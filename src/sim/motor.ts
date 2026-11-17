@@ -52,6 +52,8 @@ export type OrdenMotor =
   | { tipo: 'ajustes'; pausaAutomatica: boolean }
   /** Pide una copia de la partida para guardarla (tarea f14-t2); `peticion` vuelve con ella. */
   | { tipo: 'instantanea'; peticion: number }
+  /** Lo que decide el jugador ante un suceso (p. ej. una crisis de deuda, tarea f18-t3). */
+  | { tipo: 'decidir'; clave: string; opcion: string }
   | { tipo: 'terminar' };
 
 /** El estado de la partida que necesita la pantalla. */
@@ -204,6 +206,15 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
           },
         ];
       }
+      if (orden.tipo === 'decidir') {
+        if (!partida) return [];
+        // Los sistemas la leen en el siguiente paso (y la quitan al usarla).
+        partida = {
+          ...partida,
+          decisiones: { ...partida.decisiones, [orden.clave]: orden.opcion },
+        };
+        return [];
+      }
       if (orden.tipo === 'programar') {
         if (!partida) return [];
         const suceso: Suceso = { ...orden.suceso, id: `s${++contadorSucesos}` };
@@ -251,7 +262,8 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
         if (tramo === hastaSuceso) {
           const [suceso, ...resto] = partida.agenda;
           partida = { ...partida, agenda: resto };
-          const pausado = suceso!.importante && pausaAutomatica;
+          // Los que piden una decisión del jugador paran siempre (tarea f18-t3).
+          const pausado = (suceso!.importante && pausaAutomatica) || Boolean(suceso!.decision);
           if (pausado) {
             // Se para justo a la hora del suceso: lo que sobra de este avance no cuenta.
             velocidad = 0;

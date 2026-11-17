@@ -17,6 +17,7 @@ import {
 } from '../src/sim/economia';
 import { desempaquetar, JUEGO } from '../src/sim/guardado';
 import { crearPartida, FORMATO_PARTIDA } from '../src/sim/partida';
+import { paisCompleto } from './ayudas/pais-completo';
 
 const paises = JSON.parse(
   readFileSync(resolve('public/data/paises-2010.json'), 'utf8'),
@@ -57,14 +58,16 @@ describe('el paro de 2010 (tarea f16-t1)', () => {
 describe('cómo evoluciona (tarea f16-t1)', () => {
   it('ley de Okun: con el PIB por debajo de su potencial, sube el paro (Grecia y España, 2010–2013)', () => {
     // Real: Grecia, del 12,7 % al 27,5 % en 2013; España, del 19,9 % al 26,1 %.
-    const grecia = economiaDe('GRC');
-    const espana = economiaDe('ESP');
-    meses(grecia, 36);
-    meses(espana, 36);
-    expect(brechaProduccion(grecia)).toBeLessThan(-0.05);
-    expect(grecia.paro).toBeGreaterThan(0.2);
-    expect(espana.paro).toBeGreaterThan(0.23);
-    expect(subidaDelParo(grecia)).toBeGreaterThan(0);
+    // (Con su presupuesto y el mercado de su deuda: Fase 18.)
+    const grecia = paisCompleto(paises, 'GRC');
+    const espana = paisCompleto(paises, 'ESP');
+    grecia.avanzar(36);
+    espana.avanzar(36);
+    expect(brechaProduccion(grecia.economia)).toBeLessThan(-0.05);
+    expect(grecia.economia.paro).toBeGreaterThan(0.2);
+    // (España, sola: sin el contagio de Grecia, algo menos.)
+    expect(espana.economia.paro).toBeGreaterThan(0.215);
+    expect(subidaDelParo(grecia.economia)).toBeGreaterThan(0);
   });
 
   it('un país que crece en su potencial apenas cambia su paro', () => {
@@ -111,14 +114,14 @@ describe('cómo evoluciona (tarea f16-t1)', () => {
   });
 
   it('el mercado de trabajo asume la brecha poco a poco: el paro de Grecia baja aunque el PIB no se recupere', () => {
-    const grecia = economiaDe('GRC');
+    const grecia = paisCompleto(paises, 'GRC');
     let maximo = 0;
     for (let m = 0; m < 120; m++) {
-      avanzarMes(grecia);
-      maximo = Math.max(maximo, grecia.paro);
+      grecia.avanzar(1);
+      maximo = Math.max(maximo, grecia.economia.paro);
     }
-    expect(grecia.paro).toBeLessThan(maximo - 0.03);
-    expect(grecia.pib).toBeLessThan(paises.paises.GRC!.datos.pib!);
+    expect(grecia.economia.paro).toBeLessThan(maximo - 0.03);
+    expect(grecia.economia.pib).toBeLessThan(paises.paises.GRC!.datos.pib!);
   });
 
   it('el paro hunde el consumo y la confianza de los consumidores', () => {

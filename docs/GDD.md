@@ -151,6 +151,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | FMI, Fiscal Monitor (vía DataMapper) | Ingresos y gasto de las administraciones públicas de 2010 (% del PIB) | Tesorería inicial provisional (Fase 10) y, más adelante, presupuesto |
 | Banco Mundial (API WDI y, si su servidor no responde, la descarga en CSV de cada indicador), a partir de las estadísticas de finanzas públicas del FMI | De qué se nutren los ingresos (renta, IVA y consumos, cotizaciones, aranceles, otros) y en qué se va el gasto (sueldos, compras, intereses, transferencias, inversión pública) de 2010, gasto sanitario público y población de 65 años o más (`scripts/datos/26-bm-presupuesto.ts`) | Presupuesto (Fase 17): las partes se reparten sobre los totales del FMI; lo que falta se estima con la mediana de la región y el nivel de renta |
+| OCDE (Financial market, SDMX) y Banco Mundial (Worldwide Governance Indicators) | Tipo de interés del bono público a 10 años de 2010 (40 países) y estabilidad política y ausencia de violencia (`scripts/datos/27-riesgo-pais.ts`) | Deuda, prima de riesgo y rating (Fase 18): calibran la fórmula de la prima; esos 40 países empiezan con su tipo real |
 | DOSE (sectores) | Peso de la agricultura, la industria y los servicios en la economía de cada región en 2010 | Actividad económica principal en la ficha de región (Fase 9); donde no hay dato, se dice |
 | USGS, «Major Mineral Deposits of the World» (Open-File Report 2005-1294, dominio público) y Wikidata (CC0) | Grandes yacimientos minerales con su ubicación (USGS) y campos de petróleo, gas y carbón con coordenadas (Wikidata), asignados a la región en la que están | Recursos de cada región en la ficha de región (Fase 9); no es un inventario completo: solo los yacimientos registrados |
 | Wikidata (CC0) | Jefes de Estado y de Gobierno el 1 de enero de 2010 (cargos con fechas) y forma de gobierno, con correcciones a mano anotadas donde el régimen cambió desde 2010 (`scripts/datos/20-gobiernos.ts`) | Ficha de país (Fase 8) |
@@ -220,7 +221,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 **Ajuste f15-a1 (v0.16.1; decisiones del jugador del 17/11/2026: nada mejora solo, se corrige ya, dureza según la dificultad):**
 - **El crecimiento deja de estar garantizado.** La productividad solo se acerca a la de los países más avanzados si el país tiene base para ello (alfabetización, acceso a la electricidad, uso de internet y gasto en educación de 2010); sin esa base, apenas crece. Cuando lleguen la educación, las infraestructuras y la energía, serán ellas las que la muevan, también hacia abajo.
-- **Desequilibrios de 2010 (provisional hasta la deuda de la Fase 18).** Un país con deuda y déficit públicos altos, que además depende de financiarse fuera (déficit exterior), o con mucho paro, sufre un ajuste forzoso si nadie actúa: los mercados le cierran el crédito (baja la inversión) y tiene que recortar el gasto público hasta cerrar su déficit. Eso hunde la demanda, el PIB y la confianza durante años (Grecia, Portugal, Irlanda o España en 2010–2013). Pesa menos si el país se financia en casa (Japón) y casi nada si no tiene desequilibrios. Empieza a los seis meses (los mercados tardaron en reaccionar: con Grecia, en mayo de 2010). Cuando termina el ajuste, el crédito vuelve poco a poco; el gasto público queda más bajo, y parte de lo perdido no se recupera, porque con menos inversión hay menos capital (sin intervención, Grecia cae cuatro años seguidos y en diez no vuelve a su PIB de 2010).
+- **Desequilibrios de 2010 (provisional: desde la Fase 18 lo sustituyen el mercado de la deuda y la crisis de deuda, sección 6.2; queda solo como diagnóstico).** Un país con deuda y déficit públicos altos, que además depende de financiarse fuera (déficit exterior), o con mucho paro, sufre un ajuste forzoso si nadie actúa: los mercados le cierran el crédito (baja la inversión) y tiene que recortar el gasto público hasta cerrar su déficit. Eso hunde la demanda, el PIB y la confianza durante años (Grecia, Portugal, Irlanda o España en 2010–2013). Pesa menos si el país se financia en casa (Japón) y casi nada si no tiene desequilibrios. Empieza a los seis meses (los mercados tardaron en reaccionar: con Grecia, en mayo de 2010). Cuando termina el ajuste, el crédito vuelve poco a poco; el gasto público queda más bajo, y parte de lo perdido no se recupera, porque con menos inversión hay menos capital (sin intervención, Grecia cae cuatro años seguidos y en diez no vuelve a su PIB de 2010).
 - **Dureza según la dificultad:** los recortes, el crédito perdido y la caída de la confianza pesan por completo en «realista», un 75 % en «normal» y la mitad en «fácil»; el ajuste dura lo mismo.
 
 **Decisiones del jugador (17/11/2026, plan de la Fase 16: inflación y paro):**
@@ -273,7 +274,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - las prestaciones por desempleo suben con el paro;
   - las pensiones suben con la inflación;
   - los intereses dependen de la deuda;
-  - los recortes del ajuste forzoso (f15-a1) salen del presupuesto.
+  - los recortes del ajuste forzoso (f15-a1) salen del presupuesto (hasta la v0.18.0; desde la Fase 18, los recortes llegan con la crisis de deuda).
 
   Nada se arregla solo: un déficit que no se corrige acumula deuda e intereses.
 - **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda automáticamente, al tipo medio que pagaba en 2010. La deuda empieza en su dato real de 2010 y sus intereses entran en el gasto (bola de nieve). En la Fase 18, el precio lo ponen los mercados (prima de riesgo y rating).
@@ -305,7 +306,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Aranceles: las importaciones.
   - El resto: el PIB nominal.
 - **Gastos:**
-  - Ministerios: crecen con el PIB potencial nominal, así que pesan lo mismo con la economía en su potencial y más si cae por debajo (estabilizador automático). Pierden los recortes del ajuste forzoso (f15-a1).
+  - Ministerios: crecen con el PIB potencial nominal, así que pesan lo mismo con la economía en su potencial y más si cae por debajo (estabilizador automático). Pierden los recortes de una crisis de deuda (Fase 18; hasta la v0.18.0, los del ajuste forzoso f15-a1).
   - Pensiones: suben con los precios y con el envejecimiento (2 % real al año en los países de renta media-alta y alta).
   - Desempleo: sigue al paro.
   - Intereses: la deuda por su tipo.
@@ -328,6 +329,72 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Iconos nuevos: renta, IVA, personal, mantenimiento, programas y pensiones.
 - La tesorería de la barra superior ya se mueve con el presupuesto.
 
+**Decisiones del jugador (17/11/2026, plan de la Fase 18: deuda, prima de riesgo y rating):**
+- **Rating y prima de 2010:** con una fórmula pública que tiene en cuenta la deuda, el déficit, la renta por habitante, la inflación, el crecimiento y la estabilidad política. Se calibra con los tipos reales del bono a 10 años de 2010 de la OCDE (40 países: Grecia 9,1 %, Letonia 10,3 %, Irlanda 5,7 %, Portugal 5,4 %, España 4,25 %, Alemania 2,7 %, Japón 1,1 %…). Esos 40 empiezan con su tipo real; los demás, estimados y marcados.
+- **La prima encarece la deuda poco a poco:** cada país tiene una vida media de su deuda (unos 6-7 años). Cada mes vence una parte y se renueva al tipo de ahora, igual que la deuda nueva por el déficit.
+- **Crisis de deuda (mercados cerrados): el país elige** entre dos opciones:
+  - rescate del FMI: préstamo barato a cambio de un programa de ajuste de 3 años (recortes y subidas de impuestos, con recesión);
+  - impago: se borra cerca de la mitad de la deuda, pero los mercados cierran 3-5 años (solo se gasta lo que se recauda), con rating D, recesión y caída de la confianza.
+
+  Los países de la IA eligen según su situación.
+- **Consecuencias de una prima alta:**
+  - el crédito se encarece para bancos, empresas y familias: se invierte menos y cae la confianza de las empresas (sustituye al cierre del crédito del ajuste forzoso f15-a1);
+  - contagio: cuando un país entra en crisis, sube la prima de los que se le parecen (misma región o moneda y deuda alta).
+  - La huida de capitales queda para la moneda (Fase 21).
+- **Sustituye al ajuste forzoso provisional** de la v0.16.1: los recortes ya no son automáticos. Llegan con el rescate del FMI, y el jugador los decidirá con la Pantalla de Presupuesto (Fase 23).
+
+**La fórmula (tarea f18-t1; parámetros en `src/sim/config/deuda.json`):**
+- **Tipo de mercado** = tipo base (2,5 %, provisional hasta el banco central de la Fase 20) + la mitad de lo que la inflación esperada pase del 2 % + la prima de riesgo.
+- **Prima de riesgo** = e elevado al riesgo. El riesgo:
+  - baja con la renta por habitante (por debajo de 12 000 $ pesa mucho menos), la estabilidad política (WGI del Banco Mundial) y el crecimiento;
+  - sube con la inflación, la deuda por encima del 60 % del PIB, el déficit, el déficit exterior y lo que se lleven los intereses de los ingresos por encima del 15 %;
+  - sin moneda propia (los 16 del euro de 2010 y las monedas atadas a él; provisional hasta la Fase 21), la deuda, el déficit y el déficit exterior pesan mucho más.
+- **Calibración:** por mínimos cuadrados con los 40 tipos reales de la OCDE de 2010, con la deuda, el déficit y el déficit exterior obligados a sumar riesgo. Error medio: 0,8 puntos (Grecia 9,2 % frente al 9,1 % real; España 4,1 % frente al 4,25 %; EE. UU. 3,3 % frente al 3,2 %).
+- **Rating:** según la prima, de AAA (hasta 0,8 puntos) a CC (hasta 22). Por encima, C (los mercados no prestan); D, el impago.
+- **En 2010:**
+  - los 40 países de la OCDE, con su tipo real: Alemania AAA, EE. UU. AA+, España A+, Portugal BBB+, Irlanda BBB, Grecia BB+;
+  - los demás, con la fórmula: China BBB+, India BB−, Rusia BBB, Sudáfrica BBB+, Pakistán B.
+  - **Límite:** no hay una fuente abierta del historial de impagos, así que Argentina (A−) o Zimbabue (BBB) salen mejor de lo que estaban.
+
+**El mercado cada mes (tarea f18-t2):**
+- **Prima:** se acerca un 30 % al mes a la que pide la fórmula, más el contagio. Los 40 países de la OCDE empiezan con su tipo real; su diferencia con la fórmula se apaga a la mitad cada 2 años.
+- **Renovación de la deuda:** cada mes vence la deuda de 1 / (12 × 6,5 años) y se renueva al tipo de mercado, igual que la deuda nueva por el déficit. El tipo medio que paga el país se acerca así poco a poco al de mercado.
+- **Rating:** se revisa cada trimestre y se mueve como mucho dos escalones. Con la prima por encima de 15 puntos, los mercados dejan de prestar (crisis de deuda, tarea f18-t3).
+- **Crédito más caro:** por cada punto que la prima pasa de la de 2010, la inversión baja un 5 % (como mucho, hasta el 40 % de la que sería) y la confianza de las empresas y de los consumidores, 3 y 1,5 puntos. Lo que pesa depende de la dificultad. Sustituye al cierre del crédito y a la caída de la confianza del ajuste forzoso; sus recortes del gasto desaparecen con la crisis de deuda (f18-t3).
+- **Contagio:** un país con la prima por encima de 8 puntos presiona a los que se le parecen: 0,6 si ninguno tiene moneda propia (el euro) y 0,3 si están en la misma región. Les sube el riesgo según lo vulnerables que sean (deuda por encima del 90 % del PIB y déficit por encima del 3 %).
+- **Sin intervención:** Grecia entra en crisis de deuda en 2012 (prima de casi 50 puntos, rating C) y Portugal e Irlanda la siguen, con el contagio, en 2013. España baja a B+; Alemania, EE. UU., Japón y China siguen fuertes. (Antes de la crisis de deuda de la tarea f18-t3; con ella, ver abajo.)
+
+**La crisis de deuda (tarea f18-t3; parámetros en `src/sim/config/deuda.json`):**
+- **Mercados cerrados:** con la prima por encima de 15 puntos, nadie presta al país y hay que elegir una salida.
+  - **El jugador** elige en una ventana: la partida se para siempre, aunque la pausa automática esté desactivada, y suena la alerta «Crisis de deuda». Si cierra sin elegir, se le vuelve a preguntar el mes siguiente; mientras, los mercados siguen cerrados.
+  - **La IA** deja de pagar si su deuda es impagable (más del 150 % del PIB y los intereses se llevan más del 25 % de los ingresos); si no, pide el rescate.
+- **Rescate del FMI:**
+  - durante 3 años, la deuda que vence y la nueva se pagan al 3,5 % en lugar del tipo de mercado;
+  - a cambio, un ajuste que cada mes cierra el 4 % de lo que el déficit pase del 3 % del PIB (al menos 4 puntos al año; menos en las dificultades fáciles): dos tercios en recortes de los ministerios y un tercio en subidas de impuestos;
+  - los recortes quitan su gasto a la demanda: el personal y el mantenimiento, al consumo público; la inversión, a la inversión; los programas, en parte, al consumo de los hogares. Los impuestos también restan consumo. Hay recesión.
+  - Si al acabar los mercados siguen cerrados, se vuelve a elegir: otro rescate o el impago (como Grecia en 2012).
+  - Hace de cortafuegos: un país rescatado no contagia.
+- **Impago:**
+  - se borra la mitad de la deuda y, durante 4 años, no se pagan intereses (moratoria). Al acabar, la deuda que queda vuelve a pagar su tipo de antes;
+  - el rating cae a D, los mercados se cierran y la confianza se hunde de golpe (30 puntos la de las empresas y 20 la de los consumidores);
+  - el crédito de la economía, como con una prima de 12 puntos;
+  - solo se puede gastar lo que se recauda: cada mes se recorta una cuarta parte del déficit que quede, en los ministerios y en las pensiones. Mientras, lo que falta se debe a proveedores y cuenta como deuda;
+  - al volver a los mercados, la prima lleva un recargo de 4 puntos que se apaga a la mitad cada 3 años;
+  - contagia a los que se le parecen, como una prima de al menos 12 puntos.
+- **Si se hace mal, empeora:** con una deuda impagable, el rescate no basta. Grecia con el FMI acaba en 2015 con casi el triple de deuda y más paro que con el impago, y los mercados siguen cerrados.
+- **Sin intervención (2010–2018):** Grecia deja de pagar en agosto de 2011, con una caída del PIB del 26 % y un paro del 27 % en 2013 (real: −23 % y 27,5 %), y vuelve a los mercados en 2015. Con el contagio, Irlanda deja de pagar en 2012 y Portugal en 2013, y España pide el rescate en 2014. Lo real fue más suave, porque esos países recortaron por su cuenta (los recortes de la IA llegan en fases posteriores).
+- **Límite:** Irlanda empieza con el déficit de 2010 (32 % del PIB), que incluye el rescate de sus bancos, de una sola vez. El modelo lo trata como un gasto que se repite, así que su crisis es peor de lo que fue.
+
+**En pantalla (tarea f18-t4):**
+- En la ficha de cada país (pestaña Economía) y en Gobierno › Presupuesto:
+  - el rating de la deuda con un distintivo del color de su escalón: verde de AAA a AA−, verde azulado la A, amarillo la BBB, naranja de BB a B (especulativo), rojo de CCC a C y rojo oscuro la D (impago). Cuando cambia, salta con una flecha hacia arriba o hacia abajo;
+  - la prima de riesgo, con el tipo del bono a 10 años;
+  - si la hay, la crisis de deuda: rescate del FMI o impago, con los meses que quedan.
+- En Gobierno › Presupuesto, además, el gráfico de la prima desde 2010 con la línea discontinua del cierre de los mercados (15 puntos).
+- Alertas del país del jugador, cada una con su icono y su sonido:
+  - «Bajan el rating» y «Suben el rating»: con la nota nueva y la prima; no paran la partida;
+  - «Crisis de deuda»: para la partida y abre la ventana de la decisión.
+- Iconos nuevos: rating y prima. En la galería, la escala de notas y un distintivo de ejemplo que sube y baja con su sonido.
 
 
 
@@ -1040,12 +1107,13 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 18 — v0.19.0 · Deuda, prima de riesgo y rating
 **Objetivo:** el déficit se convierte en deuda y los mercados reaccionan.
-**Tareas**
-1. Déficit, emisión de bonos, intereses, prima de riesgo y rating.
-2. Impago y petición de ayuda al FMI.
-3. **Audiovisual:** distintivo animado del rating.
+**Tareas** (concretadas con el jugador el 17/11/2026: fórmula calibrada con los tipos reales de la OCDE; la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago; crédito más caro y contagio; la fase pasa a 4 tareas)
+1. Datos de 2010: tipos reales a 10 años de la OCDE (40 países) y fórmula de rating y prima calibrada con ellos (los demás países, estimados y marcados).
+2. El mercado de deuda en el motor: rating (AAA → D) revisado cada trimestre, prima de riesgo sobre un tipo base provisional, renovación de la deuda con su vida media, crédito más caro y contagio; sustituye al ajuste forzoso provisional (f15-a1).
+3. Crisis de deuda: mercados cerrados, rescate del FMI (programa de ajuste) o impago (quita y mercados cerrados), para el jugador y para la IA.
+4. **Audiovisual:** distintivo animado del rating, gráfico de la prima y alertas de rating y de crisis con su sonido.
 
-**Notas:** hasta el banco central (Fase 20), el tipo de interés de base de cada país es provisional. Sustituye al desequilibrio provisional del ajuste f15-a1 (la deuda, el déficit y el déficit exterior de 2010 pasan a ser los de verdad, que cambian con el presupuesto).
+**Notas:** hasta el banco central (Fase 20), el tipo de interés de base de cada país es provisional. La crisis de deuda (tarea 3) se concretó en la sección 6.2: moratoria de intereses y recortes también de las pensiones en el impago, ajuste del FMI proporcional al déficit, nueva elección al acabar un rescate, y contagio del impago (el rescate hace de cortafuegos). Sustituye al desequilibrio provisional del ajuste f15-a1 (la deuda, el déficit y el déficit exterior de 2010 pasan a ser los de verdad, que cambian con el presupuesto).
 
 **Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo; sin intervención, Grecia entra en crisis de deuda en 2010–2012.
 **Prueba en el PC:** ver la prima de riesgo de Grecia durante 2010.
@@ -2254,6 +2322,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Nada mejora solo y nada es gratis: sin decisiones, cada país sigue sus datos (con desequilibrios, cae en crisis si no se corrigen); cada palanca tiene su coste; dureza según la dificultad. Ajuste f15-a1 (v0.16.1): productividad que solo converge con base, desequilibrios de 2010 que fuerzan un ajuste. Presupuesto y deuda adelantados a las Fases 17 y 18 (la pantalla de Economía, el banco central, la moneda y los bancos pasan a las 19 a 22). Regla 20: tests de «si se hace mal, empeora» | Consulta del jugador tras la v0.16.0 («la economía no siempre va a crecer») | 1, 6.1, 9, 11, 13 |
 | 17/11/2026 | Fase 16 concretada con el jugador: paro con la ley de Okun e histéresis; inflación persistente (sin ancla hasta el banco central); el paro baja el consumo y la inflación alta, la inversión (la popularidad aún no cambia); alertas económicas del país del jugador con aviso y sonido; la fase pasa a 4 tareas | Plan de la Fase 16 aprobado por el jugador | 6.1, 9, 13 |
 | 17/11/2026 | Fase 17 concretada con el jugador: presupuesto con cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto; la fase pasa a 4 tareas | Plan de la Fase 17 aprobado por el jugador | 6.2, 9, 13 |
+| 17/11/2026 | Fase 18 concretada con el jugador: rating y prima con fórmula calibrada con los tipos reales de 2010 de la OCDE; la prima encarece la deuda poco a poco (vida media); en una crisis de deuda se elige entre el rescate del FMI y el impago; una prima alta encarece el crédito y se contagia; sustituye al ajuste forzoso provisional; la fase pasa a 4 tareas | Plan de la Fase 18 aprobado por el jugador | 6.2, 9, 13 |
+| 17/11/2026 | Crisis de deuda concretada al programarla (tarea f18-t3): en el impago, moratoria de intereses durante 4 años y recortes también de las pensiones hasta cerrar el déficit; el ajuste del FMI es proporcional al déficit que sobra; si un rescate acaba con los mercados cerrados, se vuelve a elegir; el impago contagia y el rescate hace de cortafuegos; si el jugador cierra la ventana sin elegir, se le pregunta el mes siguiente; desaparece la fila «Ajuste forzoso» de la ficha | Calibración de la tarea f18-t3 (con el diseño aprobado por el jugador) | 6.2, 9 |
 
 ---
 
@@ -2283,6 +2353,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Economía sin intervención y dureza | Según sus datos / casi quieta; corregir ya / en la Fase 16; adelantar presupuesto y deuda / mantener el orden; dureza según la dificultad / siempre realista / manejable | **Decidido por el jugador (17/11/2026):** sin intervención, cada país sigue sus datos (nada mejora solo; con desequilibrios cae en crisis); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda pasan a las Fases 17 y 18; la dureza depende de la dificultad («realista», como la realidad) |
 | Inflación y paro | Paro: Okun con histéresis / Okun simple; inflación: persistente / converge al 2 % / la de 2010 más la brecha; efectos: consumo, inversión, popularidad; alertas: mi país con aviso y sonido / también los grandes / solo en Informes | **Decidido por el jugador (17/11/2026):** Okun con histéresis; inflación persistente hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad, todavía no); alertas del país del jugador con aviso y sonido (las graves pausan) |
 | Presupuesto | Detalle: ministerios y partidas / grandes bloques / cada ministerio por dentro; datos: Banco Mundial + FMI / COFOG; evolución: responde a la economía / fijo en % del PIB; tesorería: déficit → deuda / tesorería sin deuda | **Decidido por el jugador (17/11/2026):** cada ministerio por dentro; Banco Mundial + FMI (lo demás, estimado y marcado); responde a la economía (estabilizadores automáticos); el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto |
+| Deuda, prima y rating | Datos: fórmula + tipos reales / solo fórmula / ratings a mano; intereses: poco a poco / al momento; crisis: elegir FMI o impago / siempre FMI / siempre impago; efectos: crédito más caro, contagio, huida de capitales | **Decidido por el jugador (17/11/2026):** fórmula calibrada con los tipos reales de 2010 de la OCDE (40 países); la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago (la IA, según su situación); crédito más caro y contagio |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |

@@ -1,0 +1,65 @@
+/* Distintivo del rating de la deuda (tarea f18-t4): el color dice el escalón. */
+.rating {
+  --rating-color: var(--acento);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border: 1px solid color-mix(in srgb, var(--rating-color) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--rating-color) 16%, transparent);
+  color: var(--texto);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.rating[data-nivel='excelente'] {
+  --rating-color: var(--hecha);
+}
+
+.rating[data-nivel='alto'] {
+  --rating-color: #58c4b8;
+}
+
+.rating[data-nivel='medio'] {
+  --rating-color: var(--en-curso);
+}
+
+.rating[data-nivel='especulativo'] {
+  --rating-color: #f08a4b;
+}
+
+.rating[data-nivel='riesgo'] {
+  --rating-color: var(--peligro);
+}
+
+.rating[data-nivel='impago'] {
+  --rating-color: #b3261e;
+  background: color-mix(in srgb, #b3261e 35%, transparent);
+}
+
+.rating__flecha {
+  font-size: 10px;
+}
+
+.rating[data-cambio='sube'] .rating__flecha {
+  color: var(--hecha);
+}
+
+.rating[data-cambio='baja'] .rating__flecha {
+  color: var(--peligro);
+}
+
+/* La escala completa (en la galería). */
+.rating-escala {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

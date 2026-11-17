@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
+import { paisCompleto } from './ayudas/pais-completo';
 import {
   avanzarMes,
   demandaConConfianza,
@@ -61,11 +62,12 @@ describe('cómo evoluciona (tarea f16-t2)', () => {
   });
 
   it('curva de Phillips: con mucho paro, la inflación baja (Grecia, 2010–2014)', () => {
-    // Real: del 4,7 % en 2010 al −1,4 % en 2014.
-    const grecia = economiaDe('GRC');
-    meses(grecia, 48);
-    expect(grecia.inflacion).toBeLessThan(0.02);
-    expect(grecia.inflacionEsperada).toBeLessThan(0.047);
+    // Real: del 4,7 % en 2010 al −1,4 % en 2014. (Con su presupuesto y el mercado de su deuda: el
+    // crédito caro y el impago hunden la economía; Fase 18.)
+    const grecia = paisCompleto(paises, 'GRC');
+    grecia.avanzar(48);
+    expect(grecia.economia.inflacion).toBeLessThan(0.02);
+    expect(grecia.economia.inflacionEsperada).toBeLessThan(0.047);
   });
 
   it('gastar de más recalienta: baja el paro, pero sube la inflación (nada es gratis)', () => {

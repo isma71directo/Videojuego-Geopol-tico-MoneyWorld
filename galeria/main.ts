@@ -35,6 +35,14 @@ import { filaGuardado, etiquetaGuardado } from '../src/ui/guardar-cargar';
 import { crearIndicadorGuardado } from '../src/ui/indicador-guardado';
 import { bloqueEconomia } from '../src/ui/economia-en-vivo';
 import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
+import { distintivoRating } from '../src/ui/rating';
+import {
+  avanzarMercado,
+  gestionarCrisis,
+  mercadoInicial,
+  RATINGS,
+  type MercadoDeuda,
+} from '../src/sim/deuda';
 import {
   avanzarPresupuesto,
   presupuestoInicial,
@@ -256,7 +264,13 @@ const EJEMPLO_ALERTA: Record<TipoAlerta, number> = {
   inflacion: 0.124,
   inflacionGrave: 0.27,
   deflacion: -0.008,
+  // (La prima de riesgo, en puntos.)
+  crisisDeuda: 16.4,
+  ratingBaja: 6.3,
+  ratingSube: 2.1,
 };
+/** La nota de ejemplo de las alertas del rating. */
+const EJEMPLO_RATING: Partial<Record<TipoAlerta, string>> = { ratingBaja: 'BB-', ratingSube: 'A' };
 
 /** Alertas económicas (tarea f16-t4): cada una con su icono, su sonido y su tarjeta. */
 function alertasEconomicas(): HTMLElement {
@@ -284,12 +298,54 @@ function alertasEconomicas(): HTMLElement {
             hora: 1,
             importante: ALERTAS_GRAVES.has(tipo),
             origen: 'economia',
-            alerta: { tipo, valor: EJEMPLO_ALERTA[tipo] },
+            alerta: { tipo, valor: EJEMPLO_ALERTA[tipo], rating: EJEMPLO_RATING[tipo] },
           });
         });
         return el('li', {}, boton);
       }),
     ),
+  );
+}
+
+/**
+ * El rating de la deuda (tarea f18-t4): todas las notas con el color de su escalón y un
+ * distintivo de ejemplo que salta al bajar o subir, con el sonido de su alerta.
+ */
+function ratingDeuda(): HTMLElement {
+  // (De AAA a D: la lista ya acaba en C y D.)
+  const notas: string[] = [...RATINGS];
+  let indice = notas.indexOf('BBB');
+  const ejemplo = el('div', { class: 'galeria__rating' }, distintivoRating(notas[indice]!));
+  const probar = (texto: string, hacer: () => void): HTMLButtonElement => {
+    const boton = el('button', { class: 'boton', type: 'button' }, texto);
+    boton.addEventListener('click', hacer);
+    return boton;
+  };
+  const mover = (paso: 1 | -1): void => {
+    const nuevo = Math.min(notas.length - 1, Math.max(0, indice + paso));
+    if (nuevo === indice) return;
+    const antes = notas[indice]!;
+    indice = nuevo;
+    sonido.activar();
+    sonido.reproducir(paso > 0 ? 'alertaRatingBaja' : 'alertaRatingSube');
+    ejemplo.replaceChildren(distintivoRating(notas[indice]!, antes));
+  };
+  return seccion(
+    t('galeria.rating.titulo'),
+    t('galeria.rating.nota'),
+    el('p', { class: 'galeria__nota' }, t('galeria.rating.escala')),
+    el(
+      'ul',
+      { class: 'rating-escala' },
+      ...notas.map((nota) => el('li', {}, distintivoRating(nota))),
+    ),
+    el(
+      'div',
+      { class: 'galeria__botones' },
+      probar(t('galeria.rating.bajar'), () => mover(1)),
+      probar(t('galeria.rating.subir'), () => mover(-1)),
+    ),
+    ejemplo,
   );
 }
 
@@ -385,8 +441,10 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   const PAISES = ['ESP', 'CHN', 'GRC', 'USA'];
   let paisId = PAISES[0]!;
   let actual: EconomiaPais | null = null;
-  // Y su presupuesto (tarea f17-t4), con la tesorería: un mes de ingresos, como en la partida.
+  // Y su presupuesto (tarea f17-t4), con la tesorería: un mes de ingresos, como en la partida, y
+  // el mercado de su deuda (tarea f18-t4), con su crisis si llega (como la IA).
   let presupuesto: PresupuestoPais | null = null;
+  let mercado: MercadoDeuda | null = null;
   const estado = { tesoreria: 0 };
   let fecha = '2010-01-01';
   const empezar = (): void => {
@@ -396,6 +454,10 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
     estado.tesoreria = presupuesto
       ? Object.values(presupuesto.ingresos).reduce((a, b) => a + b, 0) / 12
       : 0;
+    mercado =
+      pais && actual && presupuesto
+        ? mercadoInicial(paisId, pais.datos as never, pais.region, actual, presupuesto)
+        : null;
     fecha = '2010-01-01';
   };
   empezar();
@@ -404,6 +466,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
     economia: actual,
     tesoreria: estado.tesoreria,
     fecha,
+    mercado,
   });
   let bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
   let bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
@@ -445,6 +508,10 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
         for (let mes = 0; mes < 12; mes++) {
           avanzarMes(actual);
           if (presupuesto) avanzarPresupuesto(presupuesto, actual, estado);
+          if (presupuesto && mercado) {
+            avanzarMercado(paisId, mercado, actual, presupuesto, 0);
+            gestionarCrisis(mercado, actual, presupuesto, { esJugador: false });
+          }
         }
         fecha = `${Number(fecha.slice(0, 4)) + 1}-01-01`;
         bloque.actualizar();
@@ -745,6 +812,7 @@ async function iniciar(): Promise<void> {
       musicaAmbiental(),
       avisoPausa(),
       alertasEconomicas(),
+      ratingDeuda(),
       guardarCargar(conjunto),
       economia(conjunto),
       retratos(gobiernos, conjunto),

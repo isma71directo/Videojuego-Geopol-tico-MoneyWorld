@@ -170,6 +170,9 @@ export const MIGRACIONES: Record<number, (partida: Datos) => Datos> = {
   // 5 → 6 (Fase 17): el presupuesto de cada país. Se completa al cargar con los datos de los
   // países (completarPresupuesto).
   5: (partida) => ({ ...partida, formato: 6 }),
+  // 6 → 7 (Fase 18): el mercado de la deuda. Se completa al cargar con los datos de los países
+  // (completarMercado).
+  6: (partida) => ({ ...partida, formato: 7 }),
 };
 
 /** Lleva una partida de cualquier formato anterior al actual. */

@@ -85,14 +85,15 @@ export interface DemandaEconomia {
   importaciones: number;
 }
 
-/** El desequilibrio de 2010 y el ajuste que fuerza (ajuste f15-a1, provisional hasta la Fase 18). */
+/**
+ * El diagnóstico de los desequilibrios de 2010 (ajuste f15-a1). Desde la Fase 18 ya no fuerza
+ * ningún ajuste: de eso se ocupa el mercado de la deuda (prima, crédito y crisis de deuda).
+ */
 export interface DesequilibrioEconomia {
   /** Intensidad (0 = ninguno; Grecia, en torno a 2). */
   intensidad: number;
-  /** Gasto público que falta por recortar para cerrar el déficit (tanto por uno del PIB). */
+  /** Déficit de 2010 por encima del seguro (tanto por uno del PIB; como mucho, la mitad del gasto). */
   ajustePendiente: number;
-  /** Inversión perdida por el cierre del crédito (tanto por uno del PIB). */
-  creditoPerdido: number;
 }
 
 export interface EconomiaPais {
@@ -111,7 +112,7 @@ export interface EconomiaPais {
    * con ella y se va adaptando a la nueva poco a poco (ajuste f15-a1).
    */
   demandaReferencia: DemandaEconomia;
-  /** Desequilibrio de 2010 y ajuste forzoso (ajuste f15-a1). */
+  /** Diagnóstico de los desequilibrios de 2010 (ajuste f15-a1). */
   desequilibrio: DesequilibrioEconomia;
   /** Cuánto se aparta el PIB del camino de su producción por la demanda (tanto por uno). */
   brechaDemanda: number;
@@ -155,6 +156,12 @@ export interface EconomiaPais {
   nivelPrecios: number;
   /** Inflación de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
   serieInflacion: number[];
+  /**
+   * La prima de riesgo del país (puntos) tal como pesa en el crédito, y la de 2010 (tarea
+   * f18-t2): si pasa de la de 2010, el crédito se encarece. La pone el mercado de deuda.
+   */
+  primaRiesgo: number;
+  primaReferencia: number;
   /**
    * Alertas en que está ahora (tarea f16-t4; solo las del país del jugador). Sin ellas, aún no
    * se ha mirado: la primera vez se anotan sin avisar.
@@ -236,7 +243,6 @@ export function desequilibrioInicial(
     intensidad,
     // Como mucho, la mitad del gasto público.
     ajustePendiente: Math.min(Math.max(0, deficit - d.deficitSeguro) / 100, consumoPublico / 2),
-    creditoPerdido: 0,
   };
 }
 
@@ -371,7 +377,10 @@ function sinElDanoDeLaInflacion(base: DemandaEconomia, inflacion: number): Deman
   };
 }
 
-/** Cuánto pesan el ajuste forzoso y la caída de la confianza según la dificultad. */
+/**
+ * Cuánto pesa la deuda según la dificultad (Fase 18): la prima en el crédito y el programa de
+ * ajuste del FMI.
+ */
 export function durezaDe(dificultad: string | undefined): number {
   return config.dureza[dificultad as keyof typeof config.dureza] ?? config.dureza.normal;
 }
@@ -490,6 +499,8 @@ export function economiaInicial(
     impulsoInicial: 0,
     meses: 0,
     serie: [Math.round(pib)],
+    primaRiesgo: 0,
+    primaReferencia: 0,
     inflacion: inflacionDe(datos),
     inflacionEsperada: inflacionDe(datos),
     nivelPrecios: 1,
@@ -540,6 +551,7 @@ function brechaDe(economia: Pick<EconomiaPais, 'demanda' | 'demandaReferencia'>)
 }
 
 const confianza = config.confianza;
+const credito = config.credito;
 
 /** La confianza a la que tiende un país que crece `diferencia` por encima de su potencial. */
 export function objetivoConfianza(diferencia: number, quien: 'consumidores' | 'empresas'): number {
@@ -551,10 +563,26 @@ export function objetivoConfianza(diferencia: number, quien: 'consumidores' | 'e
 }
 
 /** El reparto de la demanda con la confianza de ahora: más confianza, más consumo e inversión. */
+/** Puntos que la prima de riesgo pasa de la de 2010 (lo que se encarece el crédito). */
+function primaDeMas(economia: Pick<EconomiaPais, 'primaRiesgo' | 'primaReferencia'>): number {
+  return Math.max(0, (economia.primaRiesgo ?? 0) - (economia.primaReferencia ?? 0));
+}
+
+/** Lo que queda de la inversión con el crédito más caro (tarea f18-t2). */
+function inversionConCredito(
+  economia: Pick<EconomiaPais, 'primaRiesgo' | 'primaReferencia'>,
+): number {
+  const diferencia = (economia.primaRiesgo ?? 0) - (economia.primaReferencia ?? 0);
+  return recortar(1 - credito.inversionPorPunto * diferencia, [
+    credito.inversionMinima,
+    credito.inversionMaxima,
+  ]);
+}
+
 export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
   const base = economia.demandaBase;
-  // Sin crédito se invierte menos (ajuste f15-a1).
-  const inversionBase = Math.max(0, base.inversion - economia.desequilibrio.creditoPerdido);
+  // Con la prima de riesgo más alta que en 2010, el crédito se encarece (tarea f18-t2).
+  const inversionBase = base.inversion * inversionConCredito(economia);
   // Los parados (por encima del estructural) gastan menos (tarea f16-t1); con deflación se
   // espera a que bajen los precios, y con mucha inflación se invierte menos (tarea f16-t2).
   const conParo = 1 - (p.consumoPorPunto * paroCiclico(economia) * 100) / 100;
@@ -572,34 +600,6 @@ export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
   };
 }
 
-/**
- * Un mes del ajuste forzoso por los desequilibrios de 2010 (ajuste f15-a1): mientras quede
- * déficit por cerrar, el Estado recorta su gasto y el crédito se cierra; al cerrarlo, el crédito
- * vuelve poco a poco. Devuelve cuánta confianza resta este mes (en puntos por cada «intensidad»).
- */
-function ajusteForzoso(economia: EconomiaPais, dureza: number): number {
-  const des = economia.desequilibrio;
-  // Los mercados tardan unos meses en reaccionar (en 2010, a partir de mayo con Grecia).
-  const enAjuste = economia.meses >= d.mesesEspera && des.ajustePendiente > 0 && des.intensidad > 0;
-  // La dureza no alarga el ajuste: lo suaviza (se recorta y se pierde menos).
-  const intensidad = enAjuste ? des.intensidad * dureza : 0;
-  if (enAjuste) {
-    const avance = Math.min(des.ajustePendiente, (d.recorteAnual * des.intensidad) / 12);
-    des.ajustePendiente -= avance;
-    economia.demandaBase.consumoPublico = Math.max(
-      0,
-      economia.demandaBase.consumoPublico - avance * dureza,
-    );
-  }
-  // El crédito perdido va hacia su objetivo: se cierra mientras dura el ajuste y vuelve al
-  // terminarlo, poco a poco en los dos casos.
-  const objetivo =
-    Math.min(d.creditoMaximo, d.creditoPorPunto * intensidad) * economia.demandaBase.inversion;
-  const paso = 1 - Math.pow(0.5, 1 / (enAjuste ? d.mesesCierreCredito : d.mesesCredito));
-  des.creditoPerdido += (objetivo - des.creditoPerdido) * paso;
-  return intensidad;
-}
-
 /** Ahorro nacional en tanto por uno del PIB: lo que no consumen los hogares ni el Estado. */
 export function ahorroNacional(economia: Pick<EconomiaPais, 'demanda'>): number {
   return 1 - economia.demanda.consumo - economia.demanda.consumoPublico;
@@ -614,10 +614,10 @@ export function impulsoEnMes(
 }
 
 /**
- * Avanza un mes la economía de un país (sin azar: siempre igual con lo mismo). `dureza` es
- * cuánto pesan el ajuste forzoso y la caída de la confianza (según la dificultad).
+ * Avanza un mes la economía de un país (sin azar: siempre igual con lo mismo). La dificultad
+ * pesa a través del mercado de la deuda (el crédito y la crisis de deuda, Fase 18).
  */
-export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
+export function avanzarMes(economia: EconomiaPais): void {
   const { sectores, nivelRenta } = economia;
   const potencialAntes = SECTORES.reduce((suma, s) => suma + produccion(sectores[s]), 0);
   const capitalTotal = SECTORES.reduce((suma, s) => suma + sectores[s].capital, 0);
@@ -645,10 +645,9 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   const pibAntes = economia.pib;
   economia.pib *= (potencialAhora / potencialAntes) * (1 + Math.min(0, impulso));
   economia.pibPotencial = potencialAhora;
-  // … el ajuste forzoso de los desequilibrios de 2010 (recortes y crédito cerrado) …
-  const enAjuste = ajusteForzoso(economia, dureza);
   // … y la confianza se mueve hacia la que corresponde a ese crecimiento frente al potencial,
-  // más baja mientras dura el ajuste (y, la de los consumidores, con el paro).
+  // más baja con la prima de riesgo alta (Fase 18), con el paro (la de los consumidores) y con la
+  // inflación (la de las empresas).
   const crecimientoMes = Math.pow(economia.pib / pibAntes, 12) - 1;
   const diferencia = crecimientoMes - crecimientoPotencial(economia);
   const acercar = (actual: number, objetivo: number): number =>
@@ -658,7 +657,7 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
     Math.max(
       confianza.minimo,
       objetivoConfianza(diferencia, 'consumidores') -
-        d.confianzaPorPuntoConsumidores * enAjuste -
+        credito.confianzaConsumidoresPorPunto * primaDeMas(economia) -
         golpeDelParo(economia),
     ),
   );
@@ -667,7 +666,7 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
     Math.max(
       confianza.minimo,
       objetivoConfianza(diferencia, 'empresas') -
-        d.confianzaPorPuntoEmpresas * enAjuste -
+        credito.confianzaEmpresasPorPunto * primaDeMas(economia) -
         golpeDeLaInflacion(economia.inflacion),
     ),
   );
@@ -704,11 +703,10 @@ export function crecimientoInteranual(economia: Pick<EconomiaPais, 'serie'>): nu
 
 /** Sistema de la economía (tarea f15-t2): avanza un mes cada país en cada paso mensual. */
 export const sistemaEconomia: Sistema = (pasos, partida) => {
-  const dureza = durezaDe(partida.opciones.dificultad);
   for (const paso of pasos) {
     if (paso.ritmo !== 'mensual') continue;
     for (const estado of Object.values(partida.paises)) {
-      if (estado.economia) avanzarMes(estado.economia, dureza);
+      if (estado.economia) avanzarMes(estado.economia);
     }
   }
 };
@@ -742,6 +740,11 @@ export function completarEconomia(
     if (estado.economia.paro === undefined) completarParo(estado.economia, pais.datos);
     // … y la inflación (tarea f16-t2).
     if (estado.economia.inflacion === undefined) completarInflacion(estado.economia, pais.datos);
+    // Guardada con la v0.18.0 o antes: sin prima (la pone el mercado al completarlo, Fase 18).
+    if (estado.economia.primaRiesgo === undefined) {
+      estado.economia.primaRiesgo = 0;
+      estado.economia.primaReferencia = 0;
+    }
   }
   return partida;
 }

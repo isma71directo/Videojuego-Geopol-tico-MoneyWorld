@@ -84,7 +84,7 @@
     "minimo": 0.05,
     "maximo": 0.6
   },
-  "$comentarioDesequilibrio": "Desequilibrios de 2010 (ajuste f15-a1, provisional hasta la deuda de la Fase 18). Intensidad = riesgo fiscal × («baseExterna» + dependencia exterior) + paro. Riesgo fiscal: deuda pública por encima de «deudaSegura» (por cada 100 puntos) más déficit por encima de «deficitSeguro» (por cada 10 puntos); dependencia exterior: déficit por cuenta corriente (por cada 10 puntos); paro: lo que pasa de «paroSeguro» (por cada 10 puntos) × «pesoParo»; como mucho, «intensidadMaxima». El ajuste empieza a los «mesesEspera» meses (los mercados tardan en reaccionar: en 2010, a partir de mayo con Grecia). Mientras quede déficit por cerrar (el que pasa de «deficitSeguro»), el Estado cierra «recorteAnual» puntos del PIB al año de ese déficit por cada punto de intensidad, recortando su gasto (en las dificultades fáciles, menos: lo que diga «dureza»), el crédito se cierra (la inversión baja hasta «creditoMaximo» de la suya, «creditoPorPunto» por cada punto de intensidad, a la mitad del camino cada «mesesCierreCredito» meses) y la confianza cae («confianzaPorPunto» por punto). Al cerrar el déficit, el crédito vuelve (a la mitad cada «mesesCredito» meses). La economía se adapta al nuevo nivel de demanda a la mitad cada «mesesAdaptacion» meses.",
+  "$comentarioDesequilibrio": "Diagnóstico de los desequilibrios de 2010 (ajuste f15-a1). Desde la Fase 18 no fuerza ningún ajuste: lo hace el mercado de la deuda (src/sim/config/deuda.json). Intensidad = riesgo fiscal × («baseExterna» + dependencia exterior) + paro. Riesgo fiscal: deuda pública por encima de «deudaSegura» (por cada 100 puntos) más déficit por encima de «deficitSeguro» (por cada 10 puntos); dependencia exterior: déficit por cuenta corriente (por cada 10 puntos); paro: lo que pasa de «paroSeguro» (por cada 10 puntos) × «pesoParo»; como mucho, «intensidadMaxima». La economía se adapta al nuevo nivel de demanda a la mitad cada «mesesAdaptacion» meses.",
   "desequilibrio": {
     "deudaSegura": 60,
     "deficitSeguro": 3,
@@ -92,17 +92,9 @@
     "paroSeguro": 10,
     "pesoParo": 0.5,
     "intensidadMaxima": 3,
-    "mesesEspera": 6,
-    "recorteAnual": 0.01,
-    "creditoPorPunto": 0.3,
-    "creditoMaximo": 0.6,
-    "mesesCierreCredito": 12,
-    "mesesCredito": 36,
-    "confianzaPorPuntoConsumidores": 10,
-    "confianzaPorPuntoEmpresas": 15,
     "mesesAdaptacion": 60
   },
-  "$comentarioDureza": "Dureza según la dificultad (decisión del jugador): cuánto se recorta, cuánto crédito se pierde y cuánto cae la confianza en el ajuste forzoso (no cambia lo que dura).",
+  "$comentarioDureza": "Dureza según la dificultad (decisión del jugador): cuánto pesa la prima de riesgo en el crédito y lo duro que es el programa de ajuste del FMI (Fase 18).",
   "dureza": {
     "facil": 0.5,
     "normal": 0.75,
@@ -152,5 +144,13 @@
     "deflacionSalida": 0.005,
     "subidaParo": 0.02,
     "subidaParoSalida": 0.01
+  },
+  "$comentarioCredito": "Crédito más caro (tarea f18-t2; decisión del jugador): cuando la prima de riesgo del país pasa de la de 2010, el crédito se encarece para bancos, empresas y familias: la inversión baja «inversionPorPunto» por cada punto (entre «inversionMinima» y «inversionMaxima» de la que sería), y la confianza de las empresas y de los consumidores, «confianzaEmpresasPorPunto» y «confianzaConsumidoresPorPunto» puntos. Sustituye al cierre del crédito del ajuste forzoso f15-a1. Lo que pesa depende de la dificultad (la dureza).",
+  "credito": {
+    "inversionPorPunto": 0.05,
+    "inversionMinima": 0.4,
+    "inversionMaxima": 1.15,
+    "confianzaEmpresasPorPunto": 3,
+    "confianzaConsumidoresPorPunto": 1.5
   }
 }

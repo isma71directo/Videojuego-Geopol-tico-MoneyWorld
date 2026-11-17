@@ -7,6 +7,48 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.19.0 - 2026-11-17
+
+Fase 18: deuda, prima de riesgo y rating.
+
+### Añadido
+
+- **Tipos reales de 2010** (OCDE: bono a 10 años de 40 países; script
+  `scripts/datos/27-riesgo-pais.ts`, con la estabilidad política del Banco Mundial) y una
+  **fórmula pública de la prima de riesgo y el rating** calibrada con ellos (decisión del
+  jugador). Tiene en cuenta la deuda, el déficit, el déficit exterior, la renta, la inflación, el
+  crecimiento, la estabilidad y si el país tiene moneda propia. Error medio: 0,8 puntos. Los
+  demás países, estimados y marcados.
+- **Mercado de la deuda cada mes:**
+  - la prima va hacia la que pide la fórmula;
+  - la deuda que vence y la nueva se pagan al tipo de ahora, así que el tipo medio sube poco a
+    poco (vida media de 6,5 años; decisión del jugador);
+  - rating de AAA a D, revisado cada trimestre;
+  - una prima alta encarece el crédito: se invierte menos y cae la confianza;
+  - contagio a los países que se parecen (misma moneda o región y deuda alta).
+- **Crisis de deuda** (decisión del jugador: elegir entre el FMI y el impago):
+  - con la prima por encima de 15 puntos, los mercados se cierran;
+  - el jugador elige en una ventana (la partida se para) y la IA según su situación;
+  - **rescate del FMI:** deuda al 3,5 % durante 3 años a cambio de un ajuste proporcional al
+    déficit (recortes y subidas de impuestos). Hace de cortafuegos del contagio;
+  - **impago:** quita del 50 %, rating D, 4 años sin mercados ni intereses, recortes de
+    ministerios y pensiones hasta cerrar el déficit, confianza hundida y un recargo en la prima al
+    volver. Contagia.
+  - Sin intervención, Grecia deja de pagar en 2011 (PIB −26 % y paro del 27 % en 2013), e
+    Irlanda, Portugal y España la siguen entre 2012 y 2014.
+- **En pantalla** (ficha de cada país y Gobierno › Presupuesto):
+  - el rating con un distintivo animado del color de su escalón;
+  - la prima de riesgo y la crisis de deuda;
+  - el gráfico de la prima con la línea del cierre de los mercados.
+- **Alertas** «Crisis de deuda», «Bajan el rating» y «Suben el rating», con su icono y su sonido.
+  Iconos nuevos de rating y prima, y sección del rating en la galería.
+
+### Cambiado
+
+- Desaparece el **ajuste forzoso provisional** de la v0.16.1 (y su fila en la ficha). Sin
+  decisiones, los recortes ya no son automáticos: llegan con el rescate del FMI o con el impago.
+- Formato de partida 7: las partidas guardadas reciben el mercado de su deuda al cargarlas.
+
 ## 0.18.0 - 2026-11-17
 
 Fase 17: presupuesto, ingresos y gastos.

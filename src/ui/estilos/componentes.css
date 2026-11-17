@@ -593,6 +593,19 @@
   stroke-width: 1;
 }
 
+/* Líneas de referencia (p. ej. el cierre de los mercados en el gráfico de la prima). */
+.grafico__referencia-linea {
+  stroke: var(--peligro);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 4;
+  opacity: 0.8;
+}
+
+.grafico__referencia-texto {
+  fill: var(--peligro);
+  font-size: 11px;
+}
+
 .grafico__guia {
   stroke: rgb(255 255 255 / 35%);
   stroke-width: 1;
@@ -759,6 +772,8 @@
   color: var(--texto-suave);
   font-size: 14px;
   line-height: 1.5;
+  /* Los saltos de línea del texto separan párrafos (p. ej., las opciones de una decisión). */
+  white-space: pre-line;
 }
 
 .confirmacion__botones {

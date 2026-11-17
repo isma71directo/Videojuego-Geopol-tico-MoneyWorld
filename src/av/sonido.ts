@@ -39,7 +39,10 @@ export type Efecto =
   | 'alertaParo'
   | 'alertaInflacion'
   | 'alertaInflacionGrave'
-  | 'alertaDeflacion';
+  | 'alertaDeflacion'
+  | 'alertaCrisisDeuda'
+  | 'alertaRatingBaja'
+  | 'alertaRatingSube';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -218,6 +221,31 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'square', inicio: 0.1, duracion: 0.05, frecuencia: 987.8, volumen: 0.06 },
     { forma: 'triangle', inicio: 0.15, duracion: 0.3, frecuencia: 1046.5, volumen: 0.12 },
     { forma: 'triangle', inicio: 0.15, duracion: 0.3, frecuencia: 1480, volumen: 0.07 },
+  ],
+  // Crisis de deuda (tarea f18-t3): un golpe seco y dos campanadas graves y disonantes (la contra
+  // si bemol, y sol sostenido contra la), como una alarma que suena en el banco.
+  alertaCrisisDeuda: [
+    { forma: 'ruido', inicio: 0, duracion: 0.05, frecuencia: 300, volumen: 0.08 },
+    { forma: 'triangle', inicio: 0, duracion: 0.3, frecuencia: 220, volumen: 0.16 },
+    { forma: 'triangle', inicio: 0, duracion: 0.3, frecuencia: 233.1, volumen: 0.08 },
+    { forma: 'ruido', inicio: 0.32, duracion: 0.05, frecuencia: 260, volumen: 0.08 },
+    { forma: 'triangle', inicio: 0.32, duracion: 0.5, frecuencia: 207.7, volumen: 0.16 },
+    { forma: 'triangle', inicio: 0.32, duracion: 0.5, frecuencia: 220, volumen: 0.07 },
+    { forma: 'sine', inicio: 0.32, duracion: 0.5, frecuencia: 103.8, volumen: 0.08 },
+  ],
+  // Rating rebajado (tarea f18-t4): un sello que golpea y dos notas que bajan un tono (mi y re).
+  alertaRatingBaja: [
+    { forma: 'ruido', inicio: 0, duracion: 0.04, frecuencia: 900, volumen: 0.07 },
+    { forma: 'triangle', inicio: 0.02, duracion: 0.16, frecuencia: 659.3, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0.18, duracion: 0.32, frecuencia: 587.3, volumen: 0.12 },
+    { forma: 'sine', inicio: 0.18, duracion: 0.32, frecuencia: 293.7, volumen: 0.06 },
+  ],
+  // Rating mejorado: el mismo sello y dos notas claras que suben una cuarta (sol y do).
+  alertaRatingSube: [
+    { forma: 'ruido', inicio: 0, duracion: 0.04, frecuencia: 1200, volumen: 0.06 },
+    { forma: 'sine', inicio: 0.02, duracion: 0.14, frecuencia: 784, volumen: 0.12 },
+    { forma: 'sine', inicio: 0.16, duracion: 0.3, frecuencia: 1046.5, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0.16, duracion: 0.3, frecuencia: 523.3, volumen: 0.05 },
   ],
   // Deflación: un tono suave que se desinfla, bajando una octava.
   alertaDeflacion: [

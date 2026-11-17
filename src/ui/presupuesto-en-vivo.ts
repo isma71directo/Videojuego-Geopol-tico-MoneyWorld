@@ -3,14 +3,17 @@
  * de cada país y, para el del jugador, en Gobierno › Presupuesto, en solo lectura hasta la
  * Pantalla de Presupuesto de la Fase 23). Ingresos, gastos, saldo, deuda, intereses y tesorería;
  * de qué se nutren los ingresos y en qué se va el gasto, con iconos; el gráfico de ingresos y
- * gastos desde enero de 2010; y, en la ventana, la deuda y los 20 ministerios por dentro.
+ * gastos desde enero de 2010; y, en la ventana, la deuda y los 20 ministerios por dentro. Con la
+ * Fase 18, también el mercado de la deuda (tarea f18-t4): el rating con su distintivo animado, la
+ * prima de riesgo, la crisis de deuda si la hay y, en la ventana, el gráfico de la prima.
  *
  * Como la economía en vivo, los bloques a la vista se ponen al día solos cada mes.
  */
 import { icono, type NombreIcono } from '../av/iconos';
 import { formatearFechaLarga } from '../compartido/fechas';
-import { dolares, porcentaje } from '../compartido/formato';
+import { dolares, porcentaje, puntos } from '../compartido/formato';
 import { t } from '../i18n';
+import { UMBRAL_CIERRE, type MercadoDeuda, type Rating } from '../sim/deuda';
 import { pibNominal, type EconomiaPais } from '../sim/economia';
 import {
   gastoMinisterio,
@@ -30,6 +33,7 @@ import { conInformacion } from './componentes/info';
 import secciones from './config/secciones.json';
 import { el } from './dom';
 import { marcasMeses, textoMes } from './economia-en-vivo';
+import { distintivoRating } from './rating';
 import './estilos/presupuesto.css';
 
 /** Lo que enseña un bloque: el presupuesto, la economía y la tesorería de un país, y la fecha. */
@@ -38,6 +42,8 @@ export type FuentePresupuesto = () => {
   economia: EconomiaPais | null;
   tesoreria: number;
   fecha: string;
+  /** El mercado de su deuda (Fase 18), si lo tiene. */
+  mercado?: MercadoDeuda | null;
 } | null;
 
 export interface BloquePresupuesto {
@@ -109,7 +115,7 @@ export function refrescarPresupuestoEnVivo(): void {
 function fila(
   nombreIcono: NombreIcono,
   nombre: string,
-  valor: string,
+  valor: string | Node,
   ayuda: string,
   clase?: string,
 ): HTMLElement {
@@ -128,14 +134,53 @@ export interface OpcionesPresupuesto {
   anchoGrafico?: number;
 }
 
-function contenido(
-  presupuesto: PresupuestoPais,
-  economia: EconomiaPais | null,
-  tesoreria: number,
-  fecha: string,
-  opciones: OpcionesPresupuesto,
-  primera: boolean,
-): HTMLElement[] {
+/** Lo que enseña cada bloque, con el rating del mes anterior (para animar si cambia). */
+interface Vista {
+  presupuesto: PresupuestoPais;
+  economia: EconomiaPais | null;
+  tesoreria: number;
+  fecha: string;
+  mercado: MercadoDeuda | null;
+  ratingAntes: Rating | undefined;
+}
+
+/** Las filas del mercado de la deuda (tarea f18-t4): rating, prima y crisis, si la hay. */
+function filasMercado(mercado: MercadoDeuda, antes: Rating | undefined): HTMLElement[] {
+  const filas = [
+    fila(
+      'rating',
+      t('juego.presupuesto.rating'),
+      distintivoRating(mercado.rating, antes),
+      t('juego.presupuesto.ratingAyuda'),
+    ),
+    fila(
+      'prima',
+      t('juego.presupuesto.prima'),
+      t('juego.presupuesto.primaValor', {
+        puntos: puntos(mercado.prima),
+        tipo: porcentaje(mercado.tipoMercado),
+      }),
+      t('juego.presupuesto.primaAyuda', { umbral: puntos(UMBRAL_CIERRE) }),
+      mercado.prima > UMBRAL_CIERRE ? 'economia__baja' : undefined,
+    ),
+  ];
+  const programa = mercado.programa;
+  if (programa) {
+    filas.push(
+      fila(
+        'deuda',
+        t('juego.presupuesto.crisis'),
+        t(`juego.presupuesto.crisisEstado.${programa.tipo}`, { meses: programa.meses }),
+        t('juego.presupuesto.crisisAyuda'),
+        'economia__baja',
+      ),
+    );
+  }
+  return filas;
+}
+
+function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean): HTMLElement[] {
+  const { presupuesto, economia, tesoreria, fecha, mercado } = vista;
   const pib = economia ? pibNominal(economia) : totalGastos(presupuesto);
   const resultado = saldo(presupuesto);
   const ancho = opciones.anchoGrafico ?? 520;
@@ -189,6 +234,7 @@ function contenido(
       dolares(Math.max(0, tesoreria)),
       t('juego.presupuesto.tesoreriaAyuda'),
     ),
+    ...(mercado ? filasMercado(mercado, vista.ratingAntes) : []),
   );
   const ingresos = barraDePartes({
     titulo: t('juego.presupuesto.ingresosTitulo'),
@@ -272,8 +318,29 @@ function contenido(
         formatoY: (v) => porcentaje(v),
         ...ejeX,
       }),
-      tablaMinisterios(presupuesto, pib),
     );
+    if (mercado && mercado.serie.length > 1) {
+      // La prima desde 2010, con la línea a la que se cierran los mercados (tarea f18-t4).
+      partes.push(
+        graficoLineas({
+          titulo: t('juego.presupuesto.graficoPrimaTitulo'),
+          series: [
+            {
+              nombre: t('juego.presupuesto.primaCorta'),
+              puntos: mercado.serie.map((v, mes) => [mes, v] as const),
+            },
+          ],
+          ancho,
+          alto,
+          animado: primera,
+          latido: !primera,
+          formatoY: (v) => puntos(v),
+          referencias: [{ valor: UMBRAL_CIERRE, etiqueta: t('juego.presupuesto.cierreMercados') }],
+          ...ejeX,
+        }),
+      );
+    }
+    partes.push(tablaMinisterios(presupuesto, pib));
   }
   partes.push(el('p', { class: 'panel-pais__pie economia__nota' }, t('juego.presupuesto.nota')));
   return partes;
@@ -334,6 +401,8 @@ export function bloquePresupuesto(
     'aria-label': t('juego.presupuesto.titulo'),
   });
   let primera = true;
+  // El rating que se vio la última vez: si cambia, el distintivo salta (tarea f18-t4).
+  let ratingVisto: Rating | undefined;
   const bloque: BloquePresupuesto = {
     elemento,
     actualizar() {
@@ -342,18 +411,24 @@ export function bloquePresupuesto(
         elemento.replaceChildren();
         return;
       }
+      const mercado = actual.mercado ?? null;
       elemento.replaceChildren(
         ...(actual.presupuesto
           ? contenido(
-              actual.presupuesto,
-              actual.economia,
-              actual.tesoreria,
-              actual.fecha,
+              {
+                presupuesto: actual.presupuesto,
+                economia: actual.economia,
+                tesoreria: actual.tesoreria,
+                fecha: actual.fecha,
+                mercado,
+                ratingAntes: ratingVisto,
+              },
               opciones,
               primera,
             )
           : [el('p', { class: 'economia__vacio' }, t('juego.presupuesto.sinDatos'))]),
       );
+      ratingVisto = mercado?.rating;
       primera = false;
     },
   };

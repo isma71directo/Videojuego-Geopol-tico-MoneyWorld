@@ -137,6 +137,11 @@ export interface OpcionesLineas {
    * cambios pequeños (p. ej. el PIB mes a mes, tarea f15-t3).
    */
   desdeCero?: boolean;
+  /**
+   * Líneas horizontales de referencia, discontinuas y con su nombre (p. ej. la prima a la que
+   * se cierran los mercados, tarea f18-t4). El eje vertical llega siempre hasta ellas.
+   */
+  referencias?: readonly { valor: number; etiqueta: string }[];
 }
 
 export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
@@ -146,7 +151,11 @@ export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
   const formatoX = opciones.formatoX ?? ((x: number) => String(x));
   const formatoY = opciones.formatoY ?? formatoPorDefecto;
   const xs = [...new Set(series.flatMap((s) => s.puntos.map(([x]) => x)))].sort((a, b) => a - b);
-  const ys = series.flatMap((s) => s.puntos.map(([, y]) => y));
+  const referencias = opciones.referencias ?? [];
+  const ys = [
+    ...series.flatMap((s) => s.puntos.map(([, y]) => y)),
+    ...referencias.map((r) => r.valor),
+  ];
   const [minimoY, maximoY] = [Math.min(...ys), Math.max(...ys)];
   // Ajustado a los valores, con un poco de aire (y algo de alto si todos son iguales).
   const aire = Math.max((maximoY - minimoY) * 0.15, Math.abs(maximoY) * 0.01, 1e-9);
@@ -181,6 +190,29 @@ export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
           'dominant-baseline': 'middle',
         },
         etiquetaEje(m),
+      ),
+    ),
+  );
+  const lineasReferencia = referencias.map((r) =>
+    svg(
+      'g',
+      { class: 'grafico__referencia' },
+      svg('line', {
+        class: 'grafico__referencia-linea',
+        x1: margen.izq,
+        x2: ancho - margen.der,
+        y1: y(r.valor),
+        y2: y(r.valor),
+      }),
+      svg(
+        'text',
+        {
+          class: 'grafico__referencia-texto',
+          x: ancho - margen.der - 4,
+          y: y(r.valor) - 5,
+          'text-anchor': 'end',
+        },
+        r.etiqueta,
       ),
     ),
   );
@@ -263,6 +295,7 @@ export function graficoLineas(opciones: OpcionesLineas): HTMLElement {
     },
     ...rejilla,
     ...ejeX,
+    ...lineasReferencia,
     guia,
     ...lineas,
     ...extremos,

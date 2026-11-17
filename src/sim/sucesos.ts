@@ -24,6 +24,11 @@ export interface Suceso {
   origen: OrigenSuceso;
   /** Si es una alerta económica (tarea f16-t4): la pantalla pone el título y el texto. */
   alerta?: AlertaEconomica;
+  /**
+   * Si pide una decisión al jugador (tarea f18-t3): la partida se para siempre y la pantalla le
+   * pregunta; lo que elija vuelve al motor con la orden «decidir» y esta `clave`.
+   */
+  decision?: { clave: string; opciones: string[] };
 }
 
 /** Hora absoluta de un suceso (para ordenarlos y compararlos con el reloj). */
