@@ -152,5 +152,13 @@
     "deflacionSalida": 0.005,
     "subidaParo": 0.02,
     "subidaParoSalida": 0.01
+  },
+  "$comentarioCredito": "Crédito más caro (tarea f18-t2; decisión del jugador): cuando la prima de riesgo del país pasa de la de 2010, el crédito se encarece para bancos, empresas y familias: la inversión baja «inversionPorPunto» por cada punto (entre «inversionMinima» y «inversionMaxima» de la que sería), y la confianza de las empresas y de los consumidores, «confianzaEmpresasPorPunto» y «confianzaConsumidoresPorPunto» puntos. Sustituye al cierre del crédito del ajuste forzoso f15-a1. Lo que pesa depende de la dificultad (la dureza).",
+  "credito": {
+    "inversionPorPunto": 0.05,
+    "inversionMinima": 0.4,
+    "inversionMaxima": 1.15,
+    "confianzaEmpresasPorPunto": 3,
+    "confianzaConsumidoresPorPunto": 1.5
   }
 }

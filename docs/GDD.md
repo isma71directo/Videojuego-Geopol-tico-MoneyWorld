@@ -356,6 +356,15 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - los demás, con la fórmula: China BBB+, India BB−, Rusia BBB, Sudáfrica BBB+, Pakistán B.
   - **Límite:** no hay una fuente abierta del historial de impagos, así que Argentina (A−) o Zimbabue (BBB) salen mejor de lo que estaban.
 
+**El mercado cada mes (tarea f18-t2):**
+- **Prima:** se acerca un 30 % al mes a la que pide la fórmula, más el contagio. Los 40 países de la OCDE empiezan con su tipo real; su diferencia con la fórmula se apaga a la mitad cada 2 años.
+- **Renovación de la deuda:** cada mes vence la deuda de 1 / (12 × 6,5 años) y se renueva al tipo de mercado, igual que la deuda nueva por el déficit. El tipo medio que paga el país se acerca así poco a poco al de mercado.
+- **Rating:** se revisa cada trimestre y se mueve como mucho dos escalones. Con la prima por encima de 15 puntos, los mercados dejan de prestar (crisis de deuda, tarea f18-t3).
+- **Crédito más caro:** por cada punto que la prima pasa de la de 2010, la inversión baja un 5 % (como mucho, hasta el 40 % de la que sería) y la confianza de las empresas y de los consumidores, 3 y 1,5 puntos. Lo que pesa depende de la dificultad. Sustituye al cierre del crédito y a la caída de la confianza del ajuste forzoso; sus recortes del gasto siguen hasta el rescate del FMI (f18-t3).
+- **Contagio:** un país con la prima por encima de 8 puntos presiona a los que se le parecen: 0,6 si ninguno tiene moneda propia (el euro) y 0,3 si están en la misma región. Les sube el riesgo según lo vulnerables que sean (deuda por encima del 90 % del PIB y déficit por encima del 3 %).
+- **Sin intervención:** Grecia entra en crisis de deuda en 2012 (prima de casi 50 puntos, rating C) y Portugal e Irlanda la siguen, con el contagio, en 2013. España baja a B+; Alemania, EE. UU., Japón y China siguen fuertes.
+
+
 
 ### 6.3 Impuestos
 

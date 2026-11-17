@@ -9,6 +9,7 @@ import { crearMotor, type MensajeMotor, type OrdenMotor } from '../sim/motor';
 import { sistemaAlertas } from '../sim/alertas';
 import { sistemaEconomia } from '../sim/economia';
 import { sistemaPresupuesto } from '../sim/presupuesto';
+import { sistemaMercado } from '../sim/deuda';
 
 export interface ConexionMotor {
   enviar(orden: OrdenMotor): void;
@@ -61,7 +62,7 @@ export function conectarMotor(opciones: OpcionesConexion = {}): ConexionMotor {
     enOtroHilo: false,
   };
   const bucle = arrancarBucle(
-    crearMotor({ sistemas: [sistemaEconomia, sistemaPresupuesto, sistemaAlertas] }),
+    crearMotor({ sistemas: [sistemaEconomia, sistemaPresupuesto, sistemaMercado, sistemaAlertas] }),
     {
       // Como con un worker, el mensaje llega después, no en mitad de la orden.
       enviar: (mensaje) =>

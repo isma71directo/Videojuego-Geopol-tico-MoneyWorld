@@ -156,6 +156,12 @@ export interface EconomiaPais {
   /** Inflación de cada mes desde el 1 de enero de 2010 (tanto por uno, para los gráficos). */
   serieInflacion: number[];
   /**
+   * La prima de riesgo del país (puntos) tal como pesa en el crédito, y la de 2010 (tarea
+   * f18-t2): si pasa de la de 2010, el crédito se encarece. La pone el mercado de deuda.
+   */
+  primaRiesgo: number;
+  primaReferencia: number;
+  /**
    * Alertas en que está ahora (tarea f16-t4; solo las del país del jugador). Sin ellas, aún no
    * se ha mirado: la primera vez se anotan sin avisar.
    */
@@ -490,6 +496,8 @@ export function economiaInicial(
     impulsoInicial: 0,
     meses: 0,
     serie: [Math.round(pib)],
+    primaRiesgo: 0,
+    primaReferencia: 0,
     inflacion: inflacionDe(datos),
     inflacionEsperada: inflacionDe(datos),
     nivelPrecios: 1,
@@ -540,6 +548,7 @@ function brechaDe(economia: Pick<EconomiaPais, 'demanda' | 'demandaReferencia'>)
 }
 
 const confianza = config.confianza;
+const credito = config.credito;
 
 /** La confianza a la que tiende un país que crece `diferencia` por encima de su potencial. */
 export function objetivoConfianza(diferencia: number, quien: 'consumidores' | 'empresas'): number {
@@ -551,10 +560,26 @@ export function objetivoConfianza(diferencia: number, quien: 'consumidores' | 'e
 }
 
 /** El reparto de la demanda con la confianza de ahora: más confianza, más consumo e inversión. */
+/** Puntos que la prima de riesgo pasa de la de 2010 (lo que se encarece el crédito). */
+function primaDeMas(economia: Pick<EconomiaPais, 'primaRiesgo' | 'primaReferencia'>): number {
+  return Math.max(0, (economia.primaRiesgo ?? 0) - (economia.primaReferencia ?? 0));
+}
+
+/** Lo que queda de la inversión con el crédito más caro (tarea f18-t2). */
+function inversionConCredito(
+  economia: Pick<EconomiaPais, 'primaRiesgo' | 'primaReferencia'>,
+): number {
+  const diferencia = (economia.primaRiesgo ?? 0) - (economia.primaReferencia ?? 0);
+  return recortar(1 - credito.inversionPorPunto * diferencia, [
+    credito.inversionMinima,
+    credito.inversionMaxima,
+  ]);
+}
+
 export function demandaConConfianza(economia: EconomiaPais): DemandaEconomia {
   const base = economia.demandaBase;
-  // Sin crédito se invierte menos (ajuste f15-a1).
-  const inversionBase = Math.max(0, base.inversion - economia.desequilibrio.creditoPerdido);
+  // Con la prima de riesgo más alta que en 2010, el crédito se encarece (tarea f18-t2).
+  const inversionBase = base.inversion * inversionConCredito(economia);
   // Los parados (por encima del estructural) gastan menos (tarea f16-t1); con deflación se
   // espera a que bajen los precios, y con mucha inflación se invierte menos (tarea f16-t2).
   const conParo = 1 - (p.consumoPorPunto * paroCiclico(economia) * 100) / 100;
@@ -591,12 +616,9 @@ function ajusteForzoso(economia: EconomiaPais, dureza: number): number {
       economia.demandaBase.consumoPublico - avance * dureza,
     );
   }
-  // El crédito perdido va hacia su objetivo: se cierra mientras dura el ajuste y vuelve al
-  // terminarlo, poco a poco en los dos casos.
-  const objetivo =
-    Math.min(d.creditoMaximo, d.creditoPorPunto * intensidad) * economia.demandaBase.inversion;
-  const paso = 1 - Math.pow(0.5, 1 / (enAjuste ? d.mesesCierreCredito : d.mesesCredito));
-  des.creditoPerdido += (objetivo - des.creditoPerdido) * paso;
+  // (El cierre del crédito y la caída de la confianza ya no son de este ajuste: los trae la
+  // prima de riesgo del mercado de deuda, tarea f18-t2.)
+  des.creditoPerdido = 0;
   return intensidad;
 }
 
@@ -646,7 +668,7 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
   economia.pib *= (potencialAhora / potencialAntes) * (1 + Math.min(0, impulso));
   economia.pibPotencial = potencialAhora;
   // … el ajuste forzoso de los desequilibrios de 2010 (recortes y crédito cerrado) …
-  const enAjuste = ajusteForzoso(economia, dureza);
+  ajusteForzoso(economia, dureza);
   // … y la confianza se mueve hacia la que corresponde a ese crecimiento frente al potencial,
   // más baja mientras dura el ajuste (y, la de los consumidores, con el paro).
   const crecimientoMes = Math.pow(economia.pib / pibAntes, 12) - 1;
@@ -658,7 +680,7 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
     Math.max(
       confianza.minimo,
       objetivoConfianza(diferencia, 'consumidores') -
-        d.confianzaPorPuntoConsumidores * enAjuste -
+        credito.confianzaConsumidoresPorPunto * primaDeMas(economia) -
         golpeDelParo(economia),
     ),
   );
@@ -667,7 +689,7 @@ export function avanzarMes(economia: EconomiaPais, dureza = 1): void {
     Math.max(
       confianza.minimo,
       objetivoConfianza(diferencia, 'empresas') -
-        d.confianzaPorPuntoEmpresas * enAjuste -
+        credito.confianzaEmpresasPorPunto * primaDeMas(economia) -
         golpeDeLaInflacion(economia.inflacion),
     ),
   );
@@ -742,6 +764,11 @@ export function completarEconomia(
     if (estado.economia.paro === undefined) completarParo(estado.economia, pais.datos);
     // … y la inflación (tarea f16-t2).
     if (estado.economia.inflacion === undefined) completarInflacion(estado.economia, pais.datos);
+    // Guardada con la v0.18.0 o antes: sin prima (la pone el mercado al completarlo, Fase 18).
+    if (estado.economia.primaRiesgo === undefined) {
+      estado.economia.primaRiesgo = 0;
+      estado.economia.primaReferencia = 0;
+    }
   }
   return partida;
 }

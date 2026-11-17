@@ -4,7 +4,7 @@
   "pesoInflacion": 0.5,
   "inflacionReferencia": 2,
   "inflacionMinima": -2,
-  "$comentarioRiesgo": "Riesgo = «constante» + «renta» × ln(PIB por habitante / «rentaReferencia») (por debajo de «rentaCorte», «rentaBaja» por cada unidad de logaritmo: la renta pesa menos en los países pobres, que se financian sobre todo con ayudas y préstamos baratos) + «estabilidad» × (estabilidad política WGI / «escalaEstabilidad») + «inflacion» × inflación (tanto por uno, si es positiva) + «crecimiento» × crecimiento (tanto por uno: crecer hace más sostenible la deuda) + deuda por encima de «deudaSegura» (tanto por uno del PIB) × «deuda» + déficit (tanto por uno del PIB) × «deficit» + déficit exterior × «exterior» + la carga de los intereses sobre los ingresos por encima de «cargaSegura» × «carga». Sin moneda propia (euro o moneda atada a él), la deuda, el déficit y el déficit exterior pesan más («...SinMonedaPropia» se suma): no tienen banco central que pueda respaldarlos (así se castigó a Grecia, Irlanda o Portugal en 2010 y no a Japón). Error medio frente a los 40 tipos reales de la OCDE: 0,8 puntos. Sin historial de impagos (no hay fuente abierta reproducible): Argentina o Zimbabue salen mejor de lo que estaban.",
+  "$comentarioRiesgo": "Riesgo = «constante» + «renta» × ln(PIB por habitante / «rentaReferencia») (por debajo de «rentaCorte», «rentaBaja» por cada unidad de logaritmo: la renta pesa menos en los países pobres, que se financian sobre todo con ayudas y préstamos baratos) + «estabilidad» × (estabilidad política WGI / «escalaEstabilidad») + «inflacion» × inflación (tanto por uno, si es positiva) + «crecimiento» × crecimiento (tanto por uno: crecer hace más sostenible la deuda) + deuda por encima de «deudaSegura» (tanto por uno del PIB) × «deuda» + déficit (tanto por uno del PIB) × «deficit» + déficit exterior × «exterior» + la carga de los intereses sobre los ingresos por encima de «cargaSegura» × «carga» (con moneda propia, solo «cargaConMonedaPropia» de ese peso: se financia en casa y en su moneda, sin pánico). Sin moneda propia (euro o moneda atada a él), la deuda, el déficit y el déficit exterior pesan más («...SinMonedaPropia» se suma): no tienen banco central que pueda respaldarlos (así se castigó a Grecia, Irlanda o Portugal en 2010 y no a Japón). Error medio frente a los 40 tipos reales de la OCDE: 0,8 puntos. Sin historial de impagos (no hay fuente abierta reproducible): Argentina o Zimbabue salen mejor de lo que estaban.",
   "riesgo": {
     "constante": 0,
     "renta": -0.9,
@@ -23,7 +23,8 @@
     "exterior": 0.37,
     "exteriorSinMonedaPropia": 0.16,
     "cargaSegura": 0.15,
-    "carga": 2
+    "carga": 2,
+    "cargaConMonedaPropia": 0.3
   },
   "primaMaxima": 60,
   "$comentarioMonedaPropia": "Países sin moneda propia en 2010 (PROVISIONAL hasta la moneda, Fase 21): los 16 del euro y los de moneda atada al euro (Bulgaria, Estonia, Letonia y Lituania).",
@@ -69,5 +70,24 @@
     ["B-", 13],
     ["CCC", 17],
     ["CC", 22]
-  ]
+  ],
+  "$comentarioMercado": "El mercado cada mes (tarea f18-t2): la prima se acerca «reaccionMensual» a la que pide la fórmula (más el contagio); los 40 países con tipo real de 2010 empiezan con él, y esa diferencia con la fórmula se apaga a la mitad cada «mesesAjuste» meses. Cada mes vence la deuda de 1 / (12 × «vidaMedia») y se renueva al tipo de mercado, como la nueva. El rating se revisa cada «mesesRevision» meses y se mueve como mucho «pasosRating» escalones. Con la prima por encima de «umbralCierre», los mercados dejan de prestar (crisis de deuda: tarea f18-t3).",
+  "mercado": {
+    "reaccionMensual": 0.3,
+    "mesesAjuste": 24,
+    "vidaMedia": 6.5,
+    "mesesRevision": 3,
+    "pasosRating": 2,
+    "umbralCierre": 15
+  },
+  "$comentarioContagio": "Contagio (decisión del jugador): un país con la prima por encima de «umbral» presiona a los demás con (prima − umbral) / «escala» (como mucho 1), por «mismaMoneda» si ninguno de los dos tiene moneda propia (el euro) y por «mismaRegion» si están en la misma región; y eso sube el riesgo de cada uno según lo vulnerable que sea (deuda por encima de «deudaVulnerable» del PIB más 5 veces el déficit por encima de «deficitVulnerable», como mucho 1), hasta «maximo».",
+  "contagio": {
+    "umbral": 8,
+    "escala": 10,
+    "mismaMoneda": 0.6,
+    "mismaRegion": 0.3,
+    "maximo": 1,
+    "deudaVulnerable": 0.9,
+    "deficitVulnerable": 0.03
+  }
 }
