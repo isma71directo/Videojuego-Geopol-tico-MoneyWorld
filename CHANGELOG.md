@@ -7,6 +7,22 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.15.1 - 2026-11-17
+
+Ajustes de la Fase 14 tras probar la v0.15.0.
+
+### Añadido
+
+- **Nombre de los guardados manuales** (ajuste f14-a1, petición del jugador): campo «Nombre del
+  guardado (opcional)» en la ventana «Guardar partida», de hasta 60 caracteres. Se ve en las
+  ranuras («Ranura 2 · Antes de las elecciones»), en «Cargar partida» y en «Continuar». Empieza
+  con el nombre de la ranura de la partida; Ctrl+S lo conserva y dejarlo vacío lo quita.
+
+### Cambiado
+
+- El juego pide al navegador que no borre las partidas la primera vez que se guarda a mano, y no
+  al abrirse: en Firefox salía un aviso de permiso nada más entrar (ajuste f14-a2).
+
 ## 0.15.0 - 2026-11-17
 
 Fase 14: guardar y cargar partidas.
