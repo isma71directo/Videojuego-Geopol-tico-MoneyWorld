@@ -55,7 +55,7 @@ para el proyecto. Los retratos se dibujan con código: son interpretaciones, nun
 
 | Fuente | Qué aporta | Condiciones |
 | --- | --- | --- |
-| [Banco Mundial, World Development Indicators](https://data.worldbank.org) | Población, PIB, paro, inflación, gasto público, sociedad | CC BY 4.0 |
+| [Banco Mundial, World Development Indicators](https://data.worldbank.org) | Población, PIB, paro, inflación, gasto público, composición de los ingresos y del gasto públicos (a partir de las estadísticas de finanzas públicas del FMI), sociedad | CC BY 4.0 |
 | [FMI, Perspectivas de la economía mundial (WEO) y Monitor Fiscal](https://www.imf.org/external/datamapper) | Deuda, saldo fiscal, cuenta corriente, ingresos y gasto públicos y datos de respaldo | Reutilización con atribución, según las condiciones del FMI |
 | [ONU, División de Estadística: National Accounts – Analysis of Main Aggregates](https://unstats.un.org/unsd/snaama/) y [códigos M49](https://unstats.un.org/unsd/methodology/m49/overview/) | Valor añadido de las siete ramas de actividad y reparto de la demanda (consumo, inversión, exportaciones e importaciones) | Uso libre citando la fuente, según las condiciones de UNdata |
 | [Our World in Data](https://ourworldindata.org) | Energía, emisiones, recursos y superficie terrestre (datos de Ember, Energy Institute, EIA, Global Carbon Project, USGS, BGS y FAO vía Banco Mundial) | CC BY 4.0 para lo elaborado por OWID; los datos de terceros, según las condiciones de cada productor |

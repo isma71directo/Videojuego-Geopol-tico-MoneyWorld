@@ -23,6 +23,7 @@ import { rasgosDe, svgRetrato, tono } from '../av/retratos';
 import { barraDePartes } from './componentes/graficos';
 import { conInformacion } from './componentes/info';
 import { bloqueEconomia, type FuenteEconomia } from './economia-en-vivo';
+import { bloquePresupuesto, type FuentePresupuesto } from './presupuesto-en-vivo';
 import { crearPestanas } from './componentes/pestanas';
 import { nombreCapa, textoValorCapa } from './leyenda';
 
@@ -184,6 +185,8 @@ export interface OpcionesFicha {
   alCambiarPestana?: (id: string) => void;
   /** En una partida, su economía en vivo (tarea f15-t3): va arriba de la pestaña Economía. */
   economiaEnVivo?: FuenteEconomia;
+  /** Y su presupuesto (tarea f17-t4), debajo de la economía. */
+  presupuestoEnVivo?: FuentePresupuesto;
 }
 
 /** Fila «nombre: valor» de un dato, con su explicación al pasar el ratón o con el foco. */
@@ -522,6 +525,12 @@ export function contenidoPanel(
               ? [
                   // En la ficha, estrecha, el gráfico se dibuja más estrecho para que se lea.
                   bloqueEconomia(opciones.economiaEnVivo, { anchoGrafico: 340 }).elemento,
+                  ...(opciones.presupuestoEnVivo
+                    ? [
+                        bloquePresupuesto(opciones.presupuestoEnVivo, { anchoGrafico: 340 })
+                          .elemento,
+                      ]
+                    : []),
                   el('h3', { class: 'panel-pais__apartado' }, t('juego.economia.datos2010')),
                 ]
               : []),

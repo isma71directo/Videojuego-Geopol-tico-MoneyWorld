@@ -6,7 +6,8 @@
  * migraciones (src/sim/guardado.ts) cada vez que cambia el formato.
  */
 import type { Efecto } from './efectos';
-import { economiaInicial, type EconomiaPais } from './economia';
+import { economiaInicial, nivelDe, type EconomiaPais } from './economia';
+import { presupuestoInicial, type PresupuestoPais } from './presupuesto';
 import type { Suceso } from './sucesos';
 import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
@@ -23,9 +24,10 @@ import {
  *  - 2: v0.14.0 y v0.15.x: efectos (f13-t1), agenda de sucesos (f13-t3) e identificador (f14-t1).
  *  - 3: v0.16.0: la economía de cada país (f15-t2).
  *  - 4: v0.16.1: los desequilibrios de 2010 en la economía (ajuste f15-a1).
- *  - 5: v0.17.0 en adelante: el paro y la inflación en la economía (Fase 16).
+ *  - 5: v0.17.0: el paro y la inflación en la economía (Fase 16).
+ *  - 6: v0.18.0 en adelante: el presupuesto de cada país (Fase 17).
  */
-export const FORMATO_PARTIDA = 5;
+export const FORMATO_PARTIDA = 6;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
@@ -75,6 +77,21 @@ export interface Partida {
 export interface EstadoPais extends ValoresIniciales {
   /** Su economía (tarea f15-t2); null si no hay datos para crearla. */
   economia: EconomiaPais | null;
+  /** Su presupuesto (Fase 17); null si no hay datos para crearlo. */
+  presupuesto: PresupuestoPais | null;
+}
+
+/** Cómo empieza un país el 1 de enero de 2010: valores iniciales, economía y presupuesto. */
+function estadoInicial(
+  pais: PaisParaPartida,
+  gobierno: Parameters<typeof valoresIniciales>[1],
+): EstadoPais {
+  const economia = economiaInicial(pais.datos, pais.nivelRenta);
+  return {
+    ...valoresIniciales(pais.datos, gobierno, FECHA_INICIO),
+    economia,
+    presupuesto: presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), economia),
+  };
 }
 
 /** Lo que el motor necesita saber de cada país para crear la partida. */
@@ -140,13 +157,7 @@ export function crearPartida(
     efectos: [],
     agenda: [],
     paises: Object.fromEntries(
-      paisesJugables(paises).map((id) => [
-        id,
-        {
-          ...valoresIniciales(paises[id]!.datos, gobiernos[id], FECHA_INICIO),
-          economia: economiaInicial(paises[id]!.datos, paises[id]!.nivelRenta),
-        },
-      ]),
+      paisesJugables(paises).map((id) => [id, estadoInicial(paises[id]!, gobiernos[id])]),
     ),
   };
 }

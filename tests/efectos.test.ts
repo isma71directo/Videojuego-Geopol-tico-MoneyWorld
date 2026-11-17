@@ -95,7 +95,7 @@ describe('valor con los efectos aplicados (tarea f13-t1)', () => {
     expect(efectosDe(efectos, 'ESP', 'popularidad', '2010-01-02')).toHaveLength(1);
     expect(
       datoEfectivo(
-        { popularidad: 32, tesoreria: 0, economia: null },
+        { popularidad: 32, tesoreria: 0, economia: null, presupuesto: null },
         efectos,
         'ESP',
         'popularidad',
@@ -104,7 +104,7 @@ describe('valor con los efectos aplicados (tarea f13-t1)', () => {
     ).toBe(35);
     expect(
       datoEfectivo(
-        { popularidad: 32, tesoreria: 0, economia: null },
+        { popularidad: 32, tesoreria: 0, economia: null, presupuesto: null },
         efectos,
         'ESP',
         'popularidad',

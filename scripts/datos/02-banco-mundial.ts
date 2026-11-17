@@ -8,17 +8,12 @@
  * Salida: fuentes/datos/banco-mundial.json
  * Uso:    node scripts/datos/02-banco-mundial.ts
  */
-import { descargarJson, escribirJsonCompacto } from './lib/comun.ts';
+import { descargarIndicadorBM, URL_BASE_BM, type IndicadorBM } from './lib/banco-mundial.ts';
+import { escribirJsonCompacto } from './lib/comun.ts';
 import { codigosBM, hoy, leerPaises } from './lib/paises.ts';
-import type { ArchivoFuente, SeriePorPais } from './lib/tipos.ts';
+import type { ArchivoFuente } from './lib/tipos.ts';
 
-interface Indicador {
-  codigo: string;
-  descripcion: string;
-  unidad: string;
-  /** Años que se descargan; por defecto 2008–2010. */
-  anios?: [number, number];
-}
+type Indicador = IndicadorBM;
 
 const AMPLIO: [number, number] = [2005, 2012];
 
@@ -119,52 +114,16 @@ export const INDICADORES_BM: Record<string, Indicador> = {
   },
 };
 
-interface FilaBM {
-  countryiso3code: string;
-  date: string;
-  value: number | null;
-}
-type RespuestaBM = [{ pages: number; lastupdated?: string }, FilaBM[] | null];
-
-const URL_BASE = 'https://api.worldbank.org/v2';
-
-async function descargarIndicador(
-  indicador: Indicador,
-  codigos: Set<string>,
-): Promise<{ valores: SeriePorPais; actualizadoFuente?: string }> {
-  const [desde, hasta] = indicador.anios ?? [2008, 2010];
-  const valores: SeriePorPais = {};
-  let actualizadoFuente: string | undefined;
-  for (let pagina = 1; ; pagina += 1) {
-    const url = `${URL_BASE}/country/all/indicator/${indicador.codigo}?format=json&date=${desde}:${hasta}&per_page=2000&page=${pagina}`;
-    const [meta, filas] = await descargarJson<RespuestaBM>(url);
-    actualizadoFuente = meta.lastupdated;
-    for (const fila of filas ?? []) {
-      if (fila.value === null || !codigos.has(fila.countryiso3code)) continue;
-      (valores[fila.countryiso3code] ??= {})[fila.date] = fila.value;
-    }
-    if (pagina >= meta.pages) break;
-  }
-  // Orden estable: países y años ordenados.
-  const ordenados: SeriePorPais = {};
-  for (const codigo of Object.keys(valores).sort()) {
-    ordenados[codigo] = Object.fromEntries(
-      Object.entries(valores[codigo]!).sort(([a], [b]) => a.localeCompare(b)),
-    );
-  }
-  return { valores: ordenados, actualizadoFuente };
-}
-
 const codigos = codigosBM(leerPaises());
 const salida: ArchivoFuente = {
   fuente: 'Banco Mundial, World Development Indicators (API v2)',
-  url: URL_BASE,
+  url: URL_BASE_BM,
   descargado: hoy(),
   indicadores: {},
 };
 
 for (const [clave, indicador] of Object.entries(INDICADORES_BM)) {
-  const { valores, actualizadoFuente } = await descargarIndicador(indicador, codigos);
+  const { valores, actualizadoFuente } = descargarIndicadorBM(indicador, codigos);
   salida.indicadores[clave] = {
     codigo: indicador.codigo,
     descripcion: indicador.descripcion,

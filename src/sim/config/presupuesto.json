@@ -1,0 +1,96 @@
+{
+  "$comentario": "Presupuesto de cada país (Fase 17; decisiones del jugador: cada ministerio por dentro, datos del Banco Mundial y el FMI, lo demás estimado y marcado). Los totales de ingresos y gasto de 2010 son los del FMI; las partes de los ingresos y del gasto por tipo, del Banco Mundial (gobierno central); la sanidad, la educación y la defensa, reales. Lo que no tiene dato (el reparto del resto de ministerios y sus partidas internas) está ESTIMADO con los pesos de abajo.",
+  "$comentarioRenta": "Parte de los impuestos sobre la renta que pagan las personas (el resto, las sociedades), por nivel de renta (estimado: el Banco Mundial no los separa).",
+  "rentaPersonas": {
+    "bajo": 0.35,
+    "medio-bajo": 0.4,
+    "medio-alto": 0.5,
+    "alto": 0.7
+  },
+  "$comentarioPensiones": "Pensiones en % del PIB = población de 65 años o más (%) × este factor, por nivel de renta (estimado; p. ej. España: 17 % × 0,6 ≈ 10 % del PIB, como en la realidad).",
+  "pensionesPorMayor": {
+    "bajo": 0.05,
+    "medio-bajo": 0.15,
+    "medio-alto": 0.35,
+    "alto": 0.6
+  },
+  "$comentarioDesempleo": "Prestaciones por desempleo en % del PIB = paro (%) × este factor, por nivel de renta (estimado: cobertura y cuantía; en los países pobres apenas hay).",
+  "desempleoPorParado": {
+    "bajo": 0,
+    "medio-bajo": 0.01,
+    "medio-alto": 0.04,
+    "alto": 0.15
+  },
+  "$comentarioLimites": "Las pensiones, el desempleo y los intereses no pasan de «maximoTransversal» del gasto; la sanidad, la educación y la defensa, de «maximoConDatos» de lo que queda para los ministerios; y los «programas» de cada país son al menos «minimoProgramas» del gasto de los ministerios. El tipo de interés implícito de 2010 (intereses / deuda) queda entre «tipoMinimo» y «tipoMaximo».",
+  "maximoTransversal": 0.7,
+  "maximoConDatos": 0.9,
+  "minimoProgramas": 0.05,
+  "tipoMinimo": 0.005,
+  "tipoMaximo": 0.15,
+  "$comentarioMinisterios": "Peso de cada ministerio en lo que queda del gasto tras la sanidad, la educación, la defensa, las pensiones, el desempleo y los intereses (ESTIMADO a partir de los pesos habituales de la clasificación por funciones COFOG; suman 1). Trabajo incluye las demás prestaciones sociales (familia, dependencia, exclusión); Exteriores, la ayuda exterior; Territorial, las transferencias a las regiones.",
+  "pesoMinisterios": {
+    "presidencia": 0.03,
+    "economia": 0.06,
+    "exteriores": 0.03,
+    "interior": 0.09,
+    "justicia": 0.04,
+    "ciencia": 0.03,
+    "trabajo": 0.22,
+    "industria": 0.04,
+    "energia": 0.04,
+    "transportes": 0.12,
+    "telecomunicaciones": 0.02,
+    "agricultura": 0.05,
+    "medioambiente": 0.05,
+    "vivienda": 0.05,
+    "cultura": 0.05,
+    "igualdad": 0.03,
+    "territorial": 0.05
+  },
+  "$comentarioPartidas": "Cómo se reparte, de partida, el gasto de cada ministerio entre personal, inversión, mantenimiento (compras) y programas (transferencias y subvenciones) (ESTIMADO). Después se ajusta para que, sumando todos los ministerios, cuadre con lo que el país gastó de verdad en sueldos, inversión pública, compras y transferencias.",
+  "perfilPartidas": {
+    "presidencia": [0.5, 0.05, 0.35, 0.1],
+    "economia": [0.45, 0.05, 0.3, 0.2],
+    "exteriores": [0.3, 0.03, 0.2, 0.47],
+    "defensa": [0.45, 0.2, 0.33, 0.02],
+    "interior": [0.7, 0.08, 0.2, 0.02],
+    "justicia": [0.65, 0.05, 0.25, 0.05],
+    "sanidad": [0.4, 0.07, 0.35, 0.18],
+    "educacion": [0.65, 0.08, 0.15, 0.12],
+    "ciencia": [0.35, 0.15, 0.2, 0.3],
+    "trabajo": [0.08, 0.01, 0.06, 0.85],
+    "industria": [0.1, 0.1, 0.1, 0.7],
+    "energia": [0.08, 0.35, 0.12, 0.45],
+    "transportes": [0.15, 0.55, 0.2, 0.1],
+    "telecomunicaciones": [0.15, 0.4, 0.2, 0.25],
+    "agricultura": [0.15, 0.1, 0.1, 0.65],
+    "medioambiente": [0.25, 0.35, 0.25, 0.15],
+    "vivienda": [0.08, 0.4, 0.12, 0.4],
+    "cultura": [0.35, 0.15, 0.2, 0.3],
+    "igualdad": [0.15, 0.02, 0.13, 0.7],
+    "territorial": [0.05, 0.15, 0.05, 0.75]
+  },
+  "vueltasAjuste": 30,
+  "$comentarioBases": "Sobre qué se paga cada ingreso (su base), para que la recaudación siga a la economía (Fase 17): la renta de las personas, sobre el PIB nominal, que cae «sensibilidadPersonas» veces lo que la brecha de producción; la de las sociedades (beneficios), «sensibilidadSociedades» veces (y nunca por debajo de «minimoSociedades» del PIB nominal); el IVA y los consumos, sobre el consumo; las cotizaciones, sobre el empleo (1 − paro); los aranceles, sobre las importaciones; los demás, sobre el PIB nominal. El tipo efectivo de cada uno es lo recaudado en 2010 entre su base de 2010.",
+  "bases": {
+    "sensibilidadPersonas": 0.5,
+    "sensibilidadSociedades": 2,
+    "minimoSociedades": 0.2
+  },
+  "$comentarioFuncionamiento": "Personal y mantenimiento suman el consumo público de todas las administraciones (ONU), como mucho «maximoFuncionamiento» de lo que queda para los ministerios, repartidos como los sueldos y las compras del gobierno central (si no hay dato, «parteSueldos» de personal). La inversión pública del gobierno central se multiplica por lo que le falta a ese gobierno para llegar al consumo público de todas las administraciones (entre 1 y «maximoDescentralizacion»).",
+  "maximoFuncionamiento": 0.85,
+  "parteSueldos": 0.6,
+  "maximoDescentralizacion": 4,
+  "$comentarioEvolucion": "Cada mes (tarea f17-t3; decisión del jugador: responde a la economía): los ingresos son su tipo efectivo por su base de ahora; los ministerios crecen con el PIB potencial nominal (pesan lo mismo con la economía en su potencial y más si cae por debajo; y pierden los recortes del ajuste forzoso); las pensiones, con los precios y el envejecimiento («envejecimiento», al año, por nivel de renta); el desempleo, con el paro; y los intereses son la deuda por su tipo. El saldo pasa por la tesorería: si baja de «colchonMeses» meses de gasto, el Estado emite deuda hasta tenerlos; si pasa de «maximoMeses», amortiza deuda hasta quedarse con «objetivoMeses».",
+  "evolucion": {
+    "envejecimiento": {
+      "bajo": 0.01,
+      "medio-bajo": 0.015,
+      "medio-alto": 0.02,
+      "alto": 0.02
+    },
+    "colchonMeses": 1,
+    "maximoMeses": 3,
+    "objetivoMeses": 2
+  }
+}

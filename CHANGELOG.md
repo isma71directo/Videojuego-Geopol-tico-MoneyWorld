@@ -7,6 +7,45 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.18.0 - 2026-11-17
+
+Fase 17: presupuesto, ingresos y gastos.
+
+### Añadido
+
+- **Datos del presupuesto de 2010** (Banco Mundial, a partir de las estadísticas de finanzas
+  públicas del FMI; script `scripts/datos/26-bm-presupuesto.ts`): de dónde salen los ingresos
+  (renta, IVA y consumos, cotizaciones, aranceles y otros) y en qué se va el gasto (sueldos,
+  compras, intereses, transferencias e inversión pública), gasto sanitario público y población
+  de 65 años o más. Lo que falta se estima con la mediana de la región y el nivel de renta.
+- **Presupuesto de cada país** (decisiones del jugador: cada ministerio por dentro; datos del
+  Banco Mundial y el FMI):
+  - Ingresos: 7 tipos (renta de las personas y de las sociedades, IVA y consumos, cotizaciones,
+    aranceles, otros impuestos y otros ingresos).
+  - Gastos: los 20 ministerios, cada uno con personal, inversión, mantenimiento y programas;
+    pensiones, desempleo e intereses de la deuda.
+  - Cuadra con los totales del FMI (España: ingresos 36,4 % del PIB, gastos 45,8 %, déficit
+    −9,5 %; pensiones 10,1 %, desempleo 3 %). Sanidad, educación y defensa, reales; el reparto
+    del resto de ministerios y sus partidas, estimado y marcado con un asterisco.
+- **Responde a la economía cada mes** (estabilizadores automáticos): la recaudación sigue a su
+  base (cae en una recesión), las prestaciones por desempleo siguen al paro, las pensiones suben
+  con los precios y el envejecimiento, y los intereses, con la deuda.
+- **El déficit se cubre con deuda:** el saldo de cada mes pasa por la tesorería; si baja de un
+  mes de gastos, el Estado emite deuda (al tipo de 2010; los mercados llegan en la Fase 18), y
+  con superávit la paga. Más deuda, más intereses: nada se arregla solo.
+- **En pantalla:** el «Presupuesto del Estado» en la pestaña Economía de la ficha de cada país
+  y en Gobierno › Presupuesto (solo para ver hasta la Fase 23), con barras de ingresos y gastos
+  con iconos, gráficos de ingresos, gastos y deuda desde 2010 y los ministerios desplegables.
+  La tesorería de la barra superior ya se mueve. **Iconos nuevos:** renta, IVA, personal,
+  mantenimiento, programas y pensiones. El presupuesto también en la galería.
+
+### Cambiado
+
+- Formato de la partida 6, con el presupuesto; las partidas guardadas antes lo reciben al
+  cargarse, con los datos de 2010 sobre su economía de ese momento.
+- La descarga del Banco Mundial usa `curl` con tiempo límite y, si su API no responde, la
+  descarga en CSV del mismo indicador.
+
 ## 0.17.0 - 2026-11-17
 
 Fase 16: economía, inflación y paro.

@@ -59,6 +59,8 @@ const pausa = (ms: number): Promise<void> => new Promise((resolver) => setTimeou
 export interface OpcionesDescarga {
   cabeceras?: Record<string, string>;
   intentos?: number;
+  /** Tiempo máximo de cada intento (ms); por defecto, un minuto. */
+  tiempoMaximoMs?: number;
 }
 
 /** Identificador genérico del cliente: sin datos personales ni del proyecto. */
@@ -73,6 +75,8 @@ export async function descargar(url: string, opciones: OpcionesDescarga = {}): P
       const respuesta = await fetch(url, {
         headers: { 'User-Agent': AGENTE, ...opciones.cabeceras },
         redirect: 'follow',
+        // Sin respuesta en un minuto, se reintenta (algunos servidores dejan la petición colgada).
+        signal: AbortSignal.timeout(opciones.tiempoMaximoMs ?? 60_000),
       });
       if (respuesta.ok) return respuesta;
       ultimoError = new Error(`HTTP ${respuesta.status} en ${url}`);

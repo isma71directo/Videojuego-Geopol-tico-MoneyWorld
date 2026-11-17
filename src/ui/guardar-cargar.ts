@@ -11,6 +11,7 @@ import { formatearFechaHora, formatearFechaLarga } from '../compartido/fechas';
 import { t } from '../i18n';
 import { semillaNueva } from '../sim/azar';
 import { completarEconomia, faltaEconomia } from '../sim/economia';
+import { completarPresupuesto, faltaPresupuesto } from '../sim/presupuesto';
 import {
   ErrorGuardado,
   LONGITUD_NOMBRE,
@@ -347,13 +348,16 @@ export async function cambiarDePartida(
     }
   }
   const partida = paraSeguir(archivo, semillaNueva());
-  if (faltaEconomia(partida)) {
-    // Guardada antes de la Fase 15: su economía empieza con los datos de 2010 (tarea f15-t2).
-    // Sin los datos (sin conexión), se carga igual y se completará la próxima vez.
+  if (faltaEconomia(partida) || faltaPresupuesto(partida)) {
+    // Guardada antes de la Fase 15 o de la 17: su economía y su presupuesto empiezan con los datos
+    // de 2010 (tarea f15-t2 y Fase 17). Sin los datos (sin conexión), se carga igual y se
+    // completará la próxima vez.
     try {
-      completarEconomia(partida, (await cargarDatosPaises()).paises);
+      const { paises } = await cargarDatosPaises();
+      completarEconomia(partida, paises);
+      completarPresupuesto(partida, paises);
     } catch {
-      // Se sigue sin economía.
+      // Se sigue sin economía o sin presupuesto.
     }
   }
   opciones.alCargar(partida, ranura);

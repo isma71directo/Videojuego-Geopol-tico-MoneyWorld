@@ -7,7 +7,15 @@ import type { GrupoCampo } from '../../../src/datos/paises.ts';
 
 /** Archivo intermedio de fuentes/datos/ del que sale un indicador. */
 export type Archivo =
-  'bm' | 'fmi' | 'fiscal' | 'onu' | 'energia' | 'emisiones' | 'recursos' | 'superficie';
+  | 'bm'
+  | 'fmi'
+  | 'fiscal'
+  | 'onu'
+  | 'presupuesto'
+  | 'energia'
+  | 'emisiones'
+  | 'recursos'
+  | 'superficie';
 
 /** Sigla de cada archivo en el campo «origen». */
 export const SIGLA: Record<Archivo, string> = {
@@ -15,6 +23,7 @@ export const SIGLA: Record<Archivo, string> = {
   fmi: 'FMI',
   fiscal: 'FMI',
   onu: 'ONU',
+  presupuesto: 'BM',
   energia: 'OWID',
   emisiones: 'OWID',
   recursos: 'OWID',
@@ -97,6 +106,26 @@ function demanda(
     habitual,
   };
 }
+const presupuesto = (indicador: string) => ({ archivo: 'presupuesto' as const, indicador });
+
+/** Una parte de los ingresos o del gasto públicos (tarea f17-t1), en % del total. */
+function partePresupuesto(clave: string, nombre: string, unidad: string): Campo {
+  return {
+    clave,
+    nombre,
+    unidad,
+    grupo: 'estado',
+    fuentes: [presupuesto(clave)],
+    anios: ANIOS_AMPLIOS,
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    // Puede ser algo negativa: devoluciones mayores que lo recaudado (Ghana, Hungría, Rusia). El
+    // motor la toma como 0.
+    limites: [-20, 100],
+    habitual: [0, 100],
+  };
+}
+
 const fmi = (indicador: string, factor?: number) => ({
   archivo: 'fmi' as const,
   indicador,
@@ -360,6 +389,56 @@ export const CAMPOS: Campo[] = [
     respaldo: 'mediana',
     limites: [0, 40],
     habitual: [0, 10],
+  },
+  // Fase 17: de qué se nutren los ingresos y en qué se va el gasto (Banco Mundial, a partir de
+  // las estadísticas de finanzas públicas del FMI; 26-bm-presupuesto.ts).
+  partePresupuesto(
+    'ingresosRenta',
+    'Impuestos sobre la renta y los beneficios',
+    '% de los ingresos',
+  ),
+  partePresupuesto('ingresosConsumo', 'Impuestos sobre bienes y servicios', '% de los ingresos'),
+  partePresupuesto('ingresosCotizaciones', 'Cotizaciones sociales', '% de los ingresos'),
+  partePresupuesto('ingresosComercio', 'Aranceles e impuestos al comercio', '% de los ingresos'),
+  partePresupuesto('ingresosOtrosImpuestos', 'Otros impuestos', '% de los ingresos'),
+  partePresupuesto('ingresosOtros', 'Ayudas recibidas y otros ingresos', '% de los ingresos'),
+  partePresupuesto('gastoSueldos', 'Sueldos públicos', '% del gasto'),
+  partePresupuesto('gastoCompras', 'Compras de bienes y servicios', '% del gasto'),
+  partePresupuesto('gastoIntereses', 'Intereses de la deuda', '% del gasto'),
+  partePresupuesto('gastoTransferencias', 'Subvenciones y transferencias', '% del gasto'),
+  partePresupuesto('gastoOtros', 'Otros gastos', '% del gasto'),
+  {
+    clave: 'inversionPublicaPib',
+    nombre: 'Inversión pública',
+    unidad: '% del PIB',
+    grupo: 'estado',
+    fuentes: [presupuesto('inversionPublicaPib')],
+    anios: ANIOS_AMPLIOS,
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    // Neta: puede ser negativa si el Estado vende más activos de los que compra.
+    limites: [-20, 40],
+    habitual: [-1, 15],
+  },
+  {
+    clave: 'gastoSanidadPublicoPib',
+    nombre: 'Gasto sanitario público',
+    unidad: '% del PIB',
+    grupo: 'estado',
+    fuentes: [presupuesto('gastoSanidadPublicoPib')],
+    agregacion: 'media-pib',
+    respaldo: 'mediana',
+    limites: [0, 30],
+  },
+  {
+    clave: 'poblacionMayor65',
+    nombre: 'Población de 65 años o más',
+    unidad: '% de la población',
+    grupo: 'demografia',
+    fuentes: [presupuesto('poblacionMayor65')],
+    agregacion: 'media-poblacion',
+    respaldo: 'mediana',
+    limites: [0, 50],
   },
   {
     clave: 'efectivosMilitares',

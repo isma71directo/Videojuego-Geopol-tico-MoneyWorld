@@ -1,19 +1,20 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T19:13:27Z",
-  "faseActiva": "fase-17",
+  "versionActual": "0.18.0",
+  "actualizado": "2026-11-17T20:56:33Z",
+  "faseActiva": "fase-18",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 16 cerrada como v0.17.0: paro con la ley de Okun, adaptación del mercado de trabajo e histéresis (los parados dejan de producir y gastan menos); inflación persistente sin ancla hasta el banco central, con PIB nominal (la alta resta inversión y la deflación, consumo); paro, inflación y PIB nominal en la ficha y en Economía › Economía con su gráfico; test de credibilidad del GDD en verde; alertas económicas del país del jugador con aviso, iconos y sonido propio. PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.17.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 17 (presupuesto: ingresos y gastos).",
+    "resumen": "Fase 17 cerrada como v0.18.0: presupuesto de cada país con los datos de 2010 (FMI y Banco Mundial; lo demás, estimado y marcado): 7 ingresos por tipo, 20 ministerios con personal, inversión, mantenimiento y programas, pensiones, desempleo e intereses; responde a la economía cada mes (estabilizadores automáticos) y el déficit se cubre con deuda por la tesorería; en la ficha y en Gobierno › Presupuesto con gráficos e iconos nuevos. PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.18.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 18 (deuda, prima de riesgo y rating), que sustituye al ajuste forzoso provisional de la v0.16.1.",
     "pendienteDelJugador": [
-      "Probar la v0.17.0 en el PC: jugar un año con España (o Grecia) a ×64 y revisar en la ficha (pestaña Economía) el paro, que sube, y la inflación, que baja, con su gráfico",
-      "Esperar las alertas: con Grecia, la recesión para la partida en septiembre de 2010 (aviso del centro con su sonido); después, la tarjeta de «El paro se dispara» arriba a la derecha",
-      "Comparar con Alemania o China, donde el paro y la inflación apenas cambian y no hay alertas",
-      "En la galería: «Alertas económicas» (ver y oír cada una), los sonidos nuevos y la «Economía de un país» con «Avanzar un año»",
-      "Cargar una partida guardada con la v0.16.1 y comprobar que tiene paro e inflación",
-      "Fusionar el PR de la Fase 16"
+      "Probar la v0.18.0 en el PC: empezar con España y abrir su ficha (pestaña Economía): debajo de la economía, el «Presupuesto del Estado» con ingresos (36,4 % del PIB), gastos (45,8 %), déficit (−9,5 %), deuda y tesorería",
+      "Abrir Gobierno › Presupuesto: el gráfico de la deuda y los 20 ministerios; desplegar Educación o Transportes para ver sus partidas",
+      "Comparar con el presupuesto de Alemania (prueba del GDD): más pensiones y menos déficit y paro",
+      "Avanzar un año a ×64 y ver cómo suben la deuda y los intereses y se mueve la tesorería de la barra de arriba",
+      "En la galería, «Economía de un país» con Grecia y «Avanzar un año»: su deuda se dispara sin intervención",
+      "Cargar una partida guardada con la v0.17.0 y comprobar que tiene presupuesto",
+      "Fusionar el PR de la Fase 17"
     ]
   },
   "etapas": [
@@ -1061,28 +1062,35 @@
       "dependeDe": ["fase-16"],
       "hechoCuando": "Todos los países tienen su presupuesto de 2010",
       "pruebaJugador": "Ver el presupuesto inicial de España y compararlo con el de Alemania",
-      "estado": "pendiente",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f17-t1",
-          "titulo": "Estructura de ingresos y gastos por partida y ministerio (6.2)",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Datos de 2010 (Banco Mundial): ingresos por tipo, gasto por tipo y función (sanidad, educación, defensa, intereses) y deuda real; lo que falte, estimado y marcado",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/49652dc"
         },
         {
           "id": "f17-t2",
-          "titulo": "Datos iniciales de 2010: gasto por función y deuda real",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "El presupuesto en el motor: ingresos por tipo y gastos por ministerio con sus partidas internas (personal, inversión, mantenimiento, programas), pensiones, prestaciones e intereses; cuadra con el FMI; deuda y tesorería",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/949a8e3"
         },
         {
           "id": "f17-t3",
-          "titulo": "Audiovisual: gráfico de ingresos y gastos",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora»",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3e3cf1d"
+        },
+        {
+          "id": "f17-t4",
+          "titulo": "Audiovisual: gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas",
+          "estado": "hecha",
+          "fecha": "2026-11-17",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/1c9873c"
         }
       ]
     },
@@ -4741,6 +4749,16 @@
         "Inflación persistente desde la de 2010: baja con mucho paro y sube cuando falta, sin ancla hasta el banco central; por encima del 10 % resta inversión y la deflación frena el consumo; PIB nominal",
         "Paro, inflación y PIB nominal en la ficha de cada país y en Economía › Economía, con un gráfico del paro y la inflación; test de credibilidad del GDD (5 años sin intervención en los 20 mayores países)",
         "Alertas económicas de tu país (recesión, paro que se dispara, inflación alta o desbocada y deflación) con su icono y un sonido propio; las graves paran la partida si la pausa automática está activada; sección en la galería"
+      ]
+    },
+    {
+      "version": "0.18.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Presupuesto de cada país con los datos de 2010: totales del FMI y partes del Banco Mundial (de dónde salen los ingresos y en qué se gasta); sanidad, educación y defensa reales; lo demás, estimado y marcado",
+        "Cada ministerio por dentro (decisión del jugador): los 20 ministerios con personal, inversión, mantenimiento y programas, más pensiones, desempleo e intereses de la deuda; 7 tipos de ingresos",
+        "El presupuesto responde a la economía cada mes (en una recesión se recauda menos y se paga más paro; las pensiones suben con los precios y el envejecimiento) y el déficit se cubre con deuda: más deuda, más intereses (decisión del jugador); la tesorería de la barra superior ya se mueve",
+        "El presupuesto en la ficha de cada país y en Gobierno › Presupuesto, con gráficos de ingresos, gastos y deuda, barras con iconos y seis iconos nuevos; también en la galería"
       ]
     }
   ]

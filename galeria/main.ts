@@ -34,7 +34,13 @@ import { ALERTAS_GRAVES, TIPOS_ALERTA, type TipoAlerta } from '../src/sim/alerta
 import { filaGuardado, etiquetaGuardado } from '../src/ui/guardar-cargar';
 import { crearIndicadorGuardado } from '../src/ui/indicador-guardado';
 import { bloqueEconomia } from '../src/ui/economia-en-vivo';
-import { avanzarMes, economiaInicial, type EconomiaPais } from '../src/sim/economia';
+import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
+import {
+  avanzarPresupuesto,
+  presupuestoInicial,
+  type PresupuestoPais,
+} from '../src/sim/presupuesto';
+import { avanzarMes, economiaInicial, nivelDe, type EconomiaPais } from '../src/sim/economia';
 import { almacenEnMemoria } from '../src/ui/almacen-partidas';
 import type { ResumenGuardado } from '../src/sim/guardado';
 import { FORMATO_PARTIDA } from '../src/sim/partida';
@@ -379,19 +385,34 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   const PAISES = ['ESP', 'CHN', 'GRC', 'USA'];
   let paisId = PAISES[0]!;
   let actual: EconomiaPais | null = null;
+  // Y su presupuesto (tarea f17-t4), con la tesorería: un mes de ingresos, como en la partida.
+  let presupuesto: PresupuestoPais | null = null;
+  const estado = { tesoreria: 0 };
   let fecha = '2010-01-01';
   const empezar = (): void => {
     const pais = conjunto.paises[paisId];
     actual = pais ? economiaInicial(pais.datos, pais.nivelRenta) : null;
+    presupuesto = pais ? presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), actual) : null;
+    estado.tesoreria = presupuesto
+      ? Object.values(presupuesto.ingresos).reduce((a, b) => a + b, 0) / 12
+      : 0;
     fecha = '2010-01-01';
   };
   empezar();
+  const fuentePresupuesto = () => ({
+    presupuesto,
+    economia: actual,
+    tesoreria: estado.tesoreria,
+    fecha,
+  });
   let bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
-  const contenedor = el('div', { class: 'galeria__economia' }, bloque.elemento);
-  /** Rehace el bloque (con su gráfico animado) al cambiar de país o volver a 2010. */
+  let bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
+  const contenedor = el('div', { class: 'galeria__economia' }, bloque.elemento, bloqueP.elemento);
+  /** Rehace los bloques (con sus gráficos animados) al cambiar de país o volver a 2010. */
   const rehacer = (): void => {
     bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
-    contenedor.replaceChildren(bloque.elemento);
+    bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
+    contenedor.replaceChildren(bloque.elemento, bloqueP.elemento);
   };
   const boton = (texto: string, hacer: () => void): HTMLButtonElement => {
     const b = el('button', { class: 'boton', type: 'button' }, texto);
@@ -421,9 +442,13 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
       { class: 'galeria__botones' },
       boton(t('galeria.economia.avanzar'), () => {
         if (!actual) return;
-        for (let mes = 0; mes < 12; mes++) avanzarMes(actual);
+        for (let mes = 0; mes < 12; mes++) {
+          avanzarMes(actual);
+          if (presupuesto) avanzarPresupuesto(presupuesto, actual, estado);
+        }
         fecha = `${Number(fecha.slice(0, 4)) + 1}-01-01`;
         bloque.actualizar();
+        bloqueP.actualizar();
       }),
       boton(t('galeria.economia.reiniciar'), () => {
         empezar();

@@ -150,6 +150,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 | FAO, vía Banco Mundial (servida por Our World in Data) | Superficie terrestre de cada país (la API del Banco Mundial no responde desde el entorno de trabajo; es el mismo indicador). Los territorios sin dato usan la superficie medida en el mapa, marcada como estimada | Densidad de población (Fase 6) |
 | DOSE (Wenz y otros, Zenodo, CC BY 4.0) y Wikidata | PIB y población de 2010 por regiones | Datos de cada región (Fase 5); donde falten, se reparten los del país y se marcan como estimados |
 | FMI, Fiscal Monitor (vía DataMapper) | Ingresos y gasto de las administraciones públicas de 2010 (% del PIB) | Tesorería inicial provisional (Fase 10) y, más adelante, presupuesto |
+| Banco Mundial (API WDI y, si su servidor no responde, la descarga en CSV de cada indicador), a partir de las estadísticas de finanzas públicas del FMI | De qué se nutren los ingresos (renta, IVA y consumos, cotizaciones, aranceles, otros) y en qué se va el gasto (sueldos, compras, intereses, transferencias, inversión pública) de 2010, gasto sanitario público y población de 65 años o más (`scripts/datos/26-bm-presupuesto.ts`) | Presupuesto (Fase 17): las partes se reparten sobre los totales del FMI; lo que falta se estima con la mediana de la región y el nivel de renta |
 | DOSE (sectores) | Peso de la agricultura, la industria y los servicios en la economía de cada región en 2010 | Actividad económica principal en la ficha de región (Fase 9); donde no hay dato, se dice |
 | USGS, «Major Mineral Deposits of the World» (Open-File Report 2005-1294, dominio público) y Wikidata (CC0) | Grandes yacimientos minerales con su ubicación (USGS) y campos de petróleo, gas y carbón con coordenadas (Wikidata), asignados a la región en la que están | Recursos de cada región en la ficha de región (Fase 9); no es un inventario completo: solo los yacimientos registrados |
 | Wikidata (CC0) | Jefes de Estado y de Gobierno el 1 de enero de 2010 (cargos con fechas) y forma de gobierno, con correcciones a mano anotadas donde el régimen cambió desde 2010 (`scripts/datos/20-gobiernos.ts`) | Ficha de país (Fase 8) |
@@ -263,6 +264,72 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - El presupuesto se aprueba en el parlamento si el régimen lo exige. Si no se aprueba, se **prorroga** el anterior.
 
 **Pantalla:** tabla de ingresos y gastos con deslizadores por partida, previsión a 12 meses y comparación con el año anterior.
+
+**Decisiones del jugador (17/11/2026, plan de la Fase 17):**
+- **Cada ministerio por dentro:** los ingresos, por tipo (impuestos sobre la renta de las personas y de las sociedades, IVA y consumos, cotizaciones sociales, aranceles y otros: recursos naturales, empresas públicas y ayudas recibidas). Los gastos, por ministerio (los 20 del juego), cada uno con sus partidas internas: personal, inversión, mantenimiento (compras de bienes y servicios) y programas (transferencias y subvenciones). Aparte van las pensiones, las prestaciones por desempleo y los intereses de la deuda.
+- **Datos:** Banco Mundial (composición real de los ingresos y del gasto por tipo, con sanidad, educación y defensa reales) y FMI (totales de ingresos, gasto, saldo y deuda de 2010). Lo que no tiene dato real (el reparto del resto de ministerios y sus partidas internas) se estima por nivel de renta y se marca.
+- **Responde a la economía** hasta que el jugador pueda decidir (Pantalla de Presupuesto, Fase 23), con estabilizadores automáticos:
+  - la recaudación sigue al PIB nominal y cae en una recesión;
+  - las prestaciones por desempleo suben con el paro;
+  - las pensiones suben con la inflación;
+  - los intereses dependen de la deuda;
+  - los recortes del ajuste forzoso (f15-a1) salen del presupuesto.
+
+  Nada se arregla solo: un déficit que no se corrige acumula deuda e intereses.
+- **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda automáticamente, al tipo medio que pagaba en 2010. La deuda empieza en su dato real de 2010 y sus intereses entran en el gasto (bola de nieve). En la Fase 18, el precio lo ponen los mercados (prima de riesgo y rating).
+- **Dónde se ve:** en la pestaña Economía de la ficha de cada país y en Gobierno › Presupuesto (solo lectura hasta la Fase 23), con un gráfico de ingresos y gastos.
+
+**Modelo del presupuesto de 2010 (tarea f17-t2; parámetros en `src/sim/config/presupuesto.json`):**
+- **Totales:** los ingresos y el gasto de todas las administraciones del FMI (% del PIB de 2010). El saldo resultante es el déficit real; en unos pocos países no cuadra en la propia fuente.
+- **Ingresos:** las partes del Banco Mundial (gobierno central) se reparten sobre el total. La renta se divide entre personas y sociedades según el nivel de renta (estimado: 70 % personas en los países ricos, 35 % en los pobres).
+- **Fuera de los ministerios:**
+  - pensiones: población de 65 años o más × un factor según el nivel de renta (estimado; España sale en el 10 % del PIB, como en la realidad);
+  - desempleo: paro × un factor según el nivel de renta (estimado; España, el 3 %);
+  - intereses: la deuda real de 2010 por su tipo implícito (lo que se pagó entre la deuda; entre el 0,5 % y el 15 %).
+- **Ministerios:**
+  - sanidad (gasto sanitario público), educación y defensa, con sus datos reales;
+  - el resto, repartido entre los otros 17 con pesos estimados a partir de la clasificación por funciones COFOG (por ejemplo, Trabajo, con las demás prestaciones sociales, el 22 %; Transportes, el 12 %).
+- **Partidas de cada ministerio:**
+  - personal y mantenimiento suman el consumo público de todas las administraciones (ONU), repartido como los sueldos y las compras del gobierno central;
+  - la inversión pública del gobierno central se corrige por lo descentralizado que esté el país;
+  - los programas son el resto.
+  - Cada ministerio parte de un perfil estimado (Educación, sobre todo personal; Transportes, sobre todo inversión). Se ajusta para que, entre todos, cada partida sume lo del país y cada ministerio, lo suyo.
+- **Deuda:** la real de 2010 (FMI). La tesorería inicial sigue siendo un mes de ingresos.
+
+**Evolución mes a mes (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 23):**
+- **Ingresos:** cada uno es su tipo efectivo de 2010 por su base de ahora.
+  - Renta de las personas: el PIB nominal, que cae la mitad de lo que cae la brecha de producción.
+  - Renta de las sociedades (beneficios): cae el doble.
+  - IVA y consumos: el consumo.
+  - Cotizaciones: el empleo.
+  - Aranceles: las importaciones.
+  - El resto: el PIB nominal.
+- **Gastos:**
+  - Ministerios: crecen con el PIB potencial nominal, así que pesan lo mismo con la economía en su potencial y más si cae por debajo (estabilizador automático). Pierden los recortes del ajuste forzoso (f15-a1).
+  - Pensiones: suben con los precios y con el envejecimiento (2 % real al año en los países de renta media-alta y alta).
+  - Desempleo: sigue al paro.
+  - Intereses: la deuda por su tipo.
+- **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda hasta tenerlo; si pasa de tres, paga deuda hasta quedarse con dos.
+- **Sin intervención, en 10 años:**
+  - Grecia: del 148 % de deuda al 287 % en cinco años y al 367 % en diez (con su bola de nieve de intereses; en la Fase 18 llegará la crisis de deuda);
+  - España: del 60 % al 189 %;
+  - Japón: del 179 % al 245 % (real en 2019: 236 %);
+  - Italia: del 119 % al 132 % (real: 134 %);
+  - Alemania: del 81 % al 96 %; China, del 33 % al 13 %.
+  - Noruega y Arabia Saudí pagan su deuda y ahorran.
+  - Nada se arregla solo: los déficits que no se corrigen acumulan deuda e intereses.
+
+**En pantalla (tarea f17-t4):**
+- En la pestaña Economía de la ficha de cada país, debajo de la economía, va el bloque «Presupuesto del Estado»:
+  - ingresos, gastos, déficit o superávit, deuda, intereses y tesorería (en % del PIB y en dinero al pasar el ratón);
+  - de dónde salen los ingresos y en qué se gasta, en barras con iconos;
+  - y el gráfico de ingresos y gastos desde 2010.
+- En Gobierno › Presupuesto (el país del jugador, solo para ver hasta la Fase 23), lo mismo más el gráfico de la deuda y los 20 ministerios, cada uno desplegable con sus cuatro partidas; un asterisco marca lo estimado.
+- Iconos nuevos: renta, IVA, personal, mantenimiento, programas y pensiones.
+- La tesorería de la barra superior ya se mueve con el presupuesto.
+
+
+
 
 ### 6.3 Impuestos
 
@@ -961,10 +1028,11 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 17 — v0.18.0 · Presupuesto: ingresos y gastos
 **Objetivo:** el Estado tiene ingresos y gastos por partida. (Adelantada el 17/11/2026, decisión del jugador: el presupuesto y la deuda son la palanca principal y la causa más habitual de que la economía vaya mal; antes eran las Fases 21 y 22.)
-**Tareas**
-1. Estructura de ingresos y gastos por partida y ministerio (6.2).
-2. Datos iniciales de 2010: gasto por función y deuda real.
-3. **Audiovisual:** gráfico de ingresos y gastos.
+**Tareas** (concretadas con el jugador el 17/11/2026: cada ministerio por dentro; datos del Banco Mundial y el FMI; responde a la economía; déficit → deuda; la fase pasa a 4 tareas)
+1. Datos de 2010 (Banco Mundial, con su script): ingresos por tipo, gasto por tipo y función (sanidad, educación, defensa e intereses) y deuda real; lo que falte, estimado y marcado.
+2. El presupuesto en el motor: ingresos por tipo y gastos por ministerio con sus partidas internas (personal, inversión, mantenimiento y programas), pensiones, prestaciones e intereses; cuadra con los totales del FMI; deuda y tesorería.
+3. Evolución mes a mes sin decisiones: estabilizadores automáticos, déficit → deuda con sus intereses, recortes del ajuste forzoso; tests de «si se hace mal, empeora».
+4. **Audiovisual:** gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas.
 
 **Tests:** la suma de las partidas es el total y el saldo coincide con el déficit.
 **Prueba en el PC:** ver el presupuesto inicial de España y compararlo con el de Alemania.
@@ -2185,6 +2253,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Fase 15 concretada con el jugador: siete sectores con datos reales de la ONU; sin azar en la economía (cambia por las decisiones: inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010; evolución en la ficha y en Economía › Economía; la fase pasa a 4 tareas | Plan de la Fase 15 aprobado por el jugador | 6.1, 9, 13 |
 | 17/11/2026 | Nada mejora solo y nada es gratis: sin decisiones, cada país sigue sus datos (con desequilibrios, cae en crisis si no se corrigen); cada palanca tiene su coste; dureza según la dificultad. Ajuste f15-a1 (v0.16.1): productividad que solo converge con base, desequilibrios de 2010 que fuerzan un ajuste. Presupuesto y deuda adelantados a las Fases 17 y 18 (la pantalla de Economía, el banco central, la moneda y los bancos pasan a las 19 a 22). Regla 20: tests de «si se hace mal, empeora» | Consulta del jugador tras la v0.16.0 («la economía no siempre va a crecer») | 1, 6.1, 9, 11, 13 |
 | 17/11/2026 | Fase 16 concretada con el jugador: paro con la ley de Okun e histéresis; inflación persistente (sin ancla hasta el banco central); el paro baja el consumo y la inflación alta, la inversión (la popularidad aún no cambia); alertas económicas del país del jugador con aviso y sonido; la fase pasa a 4 tareas | Plan de la Fase 16 aprobado por el jugador | 6.1, 9, 13 |
+| 17/11/2026 | Fase 17 concretada con el jugador: presupuesto con cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto; la fase pasa a 4 tareas | Plan de la Fase 17 aprobado por el jugador | 6.2, 9, 13 |
 
 ---
 
@@ -2213,6 +2282,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Economía: sectores y azar | 3 sectores / uno / más sectores; variaciones al azar / sin azar; arranque real de 2010 / crecimiento normal | **Decidido por el jugador (17/11/2026):** siete sectores con datos reales de la ONU (sección 6.1); sin azar en la economía, que cambia por las decisiones del jugador y de la IA (inversión, gasto, impuestos, servicios…); arranque con el crecimiento real de 2010, que converge al potencial; se ve en la ficha de cada país y en Economía › Economía |
 | Economía sin intervención y dureza | Según sus datos / casi quieta; corregir ya / en la Fase 16; adelantar presupuesto y deuda / mantener el orden; dureza según la dificultad / siempre realista / manejable | **Decidido por el jugador (17/11/2026):** sin intervención, cada país sigue sus datos (nada mejora solo; con desequilibrios cae en crisis); se corrige ya en la v0.16.1 (ajuste f15-a1); el presupuesto y la deuda pasan a las Fases 17 y 18; la dureza depende de la dificultad («realista», como la realidad) |
 | Inflación y paro | Paro: Okun con histéresis / Okun simple; inflación: persistente / converge al 2 % / la de 2010 más la brecha; efectos: consumo, inversión, popularidad; alertas: mi país con aviso y sonido / también los grandes / solo en Informes | **Decidido por el jugador (17/11/2026):** Okun con histéresis; inflación persistente hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad, todavía no); alertas del país del jugador con aviso y sonido (las graves pausan) |
+| Presupuesto | Detalle: ministerios y partidas / grandes bloques / cada ministerio por dentro; datos: Banco Mundial + FMI / COFOG; evolución: responde a la economía / fijo en % del PIB; tesorería: déficit → deuda / tesorería sin deuda | **Decidido por el jugador (17/11/2026):** cada ministerio por dentro; Banco Mundial + FMI (lo demás, estimado y marcado); responde a la economía (estabilizadores automáticos); el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
