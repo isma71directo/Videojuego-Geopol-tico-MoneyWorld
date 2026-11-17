@@ -483,3 +483,18 @@
   gap: 8px;
   margin: 8px 0;
 }
+
+/* Guardar y cargar (tarea f14-t4): filas de ejemplo y el indicador, en su sitio. */
+.galeria__guardados {
+  max-width: 460px;
+}
+
+.galeria__indicador {
+  position: relative;
+  max-width: 460px;
+  height: 56px;
+}
+
+.galeria__indicador .indicador-guardado {
+  top: 8px;
+}

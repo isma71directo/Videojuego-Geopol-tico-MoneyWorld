@@ -33,7 +33,8 @@ export type Efecto =
   | 'pausa'
   | 'seguir'
   | 'velocidad'
-  | 'aviso';
+  | 'aviso'
+  | 'guardado';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -176,6 +177,13 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'sine', inicio: 0, duracion: 0.1, frecuencia: 2093, volumen: 0.04 },
     { forma: 'triangle', inicio: 0.11, duracion: 0.19, frecuencia: 784, volumen: 0.15 },
     { forma: 'sine', inicio: 0.11, duracion: 0.19, frecuencia: 392, volumen: 0.06 },
+  ],
+  // Partida guardada (tarea f14-t4): el «clic» de un cierre y dos notas que suben (re y sol),
+  // breves y suaves, porque se oye cada vez que el jugador guarda.
+  guardado: [
+    { forma: 'ruido', inicio: 0, duracion: 0.035, frecuencia: 2400, volumen: 0.05 },
+    { forma: 'triangle', inicio: 0.01, duracion: 0.07, frecuencia: 1174.7, volumen: 0.1 },
+    { forma: 'sine', inicio: 0.07, duracion: 0.17, frecuencia: 1568, volumen: 0.12 },
   ],
 };
 

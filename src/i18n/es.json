@@ -15,6 +15,9 @@
       "lema": "Dirige un país real a partir del 1 de enero de 2010.",
       "nuevaPartida": "Nueva partida",
       "nuevaPartidaAviso": "Elige un país y empieza el 1 de enero de 2010",
+      "continuar": "Continuar",
+      "cargar": "Cargar partida",
+      "cargarAviso": "Tus partidas guardadas, o una exportada a un archivo",
       "hojaDeRuta": "Hoja de ruta",
       "hojaDeRutaAviso": "Qué está hecho y qué viene después",
       "ajustes": "Ajustes",
@@ -1122,6 +1125,7 @@
       "importar": "Importar un archivo…",
       "importarAyuda": "Carga una partida exportada como archivo .json (de este u otro navegador).",
       "exportado": "Exportada: {nombre}",
+      "guardando": "Guardando…",
       "guardarTitulo": "Guardar partida",
       "guardarNota": "Elige una ranura. Después, Ctrl+S guarda al momento en la última que hayas usado.",
       "cargarTitulo": "Cargar partida",
@@ -1326,7 +1330,8 @@
       "cargar": "Cargar una partida",
       "ajustes": "Ajustes",
       "exportar": "Exportar a un archivo",
-      "importar": "Importar un archivo"
+      "importar": "Importar un archivo",
+      "hecho": "Hecho"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1364,7 +1369,15 @@
       "pausa": "Pausar el tiempo",
       "seguir": "Seguir el tiempo",
       "velocidad": "Cambiar la velocidad del tiempo",
-      "aviso": "Aviso de un suceso importante"
+      "aviso": "Aviso de un suceso importante",
+      "guardado": "Partida guardada"
+    },
+    "guardado": {
+      "titulo": "Guardar y cargar",
+      "nota": "Así se ve cada guardado en las ventanas «Guardar partida» y «Cargar partida» (con datos de ejemplo): bandera, país, fecha y hora de la partida y cuándo se guardó. Debajo, el indicador que aparece arriba al guardar; al guardar a mano suena, los automáticos no.",
+      "aMano": "Guardar a mano",
+      "automatico": "Guardado automático",
+      "error": "Error al guardar"
     },
     "aviso": {
       "titulo": "Aviso de la pausa automática",

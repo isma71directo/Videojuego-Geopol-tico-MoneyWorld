@@ -1258,31 +1258,3 @@
   font-size: 13px;
   white-space: nowrap;
 }
-
-/* Indicador de guardado (tarea f14-t2; la f14-t4 le da su animación y su sonido). */
-.mapa__guardado {
-  position: absolute;
-  top: 72px;
-  left: 50%;
-  z-index: var(--capa-menu);
-  margin: 0;
-  padding: 6px 14px;
-  border: 1px solid rgb(76 195 138 / 45%);
-  border-radius: 999px;
-  background: var(--superficie-flotante);
-  box-shadow: var(--sombra-flotante);
-  color: var(--hecha);
-  font-size: 13px;
-  font-weight: 600;
-  pointer-events: none;
-  transform: translateX(-50%);
-}
-
-.mapa__guardado--error {
-  border-color: rgb(255 138 128 / 55%);
-  color: var(--peligro);
-}
-
-.mapa__guardado[hidden] {
-  display: none;
-}

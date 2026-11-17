@@ -2,16 +2,28 @@
  * Ventanas «Guardar partida» y «Cargar partida» (tarea f14-t2; la tarea f14-t4 las usa también
  * en el inicio). Cada guardado se ve con la bandera y el nombre del país, la fecha y la hora de
  * la partida y cuándo se guardó (decisión del jugador). Guardar en una ranura ocupada pregunta
- * antes de sobrescribirla.
+ * antes de sobrescribirla. Cargar (de un guardado o de un archivo) pregunta si se pierde algo,
+ * avisa si no se puede y siembra el azar de nuevo (decisión del jugador, Fase 12).
  */
 import { urlBandera } from '../av/banderas';
 import { icono } from '../av/iconos';
 import { formatearFechaHora, formatearFechaLarga } from '../compartido/fechas';
 import { t } from '../i18n';
-import { ordenarResumenes, RANURAS_MANUALES, type ResumenGuardado } from '../sim/guardado';
+import { semillaNueva } from '../sim/azar';
+import {
+  ErrorGuardado,
+  ordenarResumenes,
+  paraSeguir,
+  RANURAS_MANUALES,
+  type ArchivoPartida,
+  type ResumenGuardado,
+} from '../sim/guardado';
+import type { Partida } from '../sim/partida';
 import { textoHora } from '../sim/reloj';
-import type { AlmacenPartidas } from './almacen-partidas';
-import { pedirConfirmacion } from './componentes/confirmacion';
+import { cargarPartida, type AlmacenPartidas } from './almacen-partidas';
+import { elegirArchivo, leerArchivo } from './archivos-partida';
+import { animar } from './componentes/animacion';
+import { pedirConfirmacion, pedirEleccion } from './componentes/confirmacion';
 import { abrirVentana, type Ventana } from './componentes/ventana';
 import { el } from './dom';
 import './estilos/guardar-cargar.css';
@@ -92,6 +104,21 @@ export function filaGuardado(
   return fila;
 }
 
+/** Las filas de la lista entran una tras otra, subiendo un poco (tarea f14-t4). */
+function entrarEscalonadas(cuerpo: HTMLElement): void {
+  cuerpo.querySelectorAll('.guardados__fila').forEach((fila, indice) => {
+    void animar(
+      fila,
+      [
+        { opacity: 0, translate: '0 6px', offset: 0 },
+        { opacity: 0, translate: '0 6px', offset: Math.min(0.6, indice * 0.08) },
+        { opacity: 1, translate: '0 0', offset: 1 },
+      ],
+      260 + indice * 30,
+    );
+  });
+}
+
 const avisoSoloMemoria = (almacen: AlmacenPartidas): HTMLElement | null =>
   almacen.persistente
     ? null
@@ -155,6 +182,7 @@ export async function abrirGuardar(
     avisoSoloMemoria(opciones.almacen) ?? '',
     el('ol', { class: 'guardados' }, ...filas),
   );
+  entrarEscalonadas(ventana.cuerpo);
   return ventana;
 }
 
@@ -230,5 +258,103 @@ export async function abrirCargar(
     importar,
     lista,
   );
+  entrarEscalonadas(ventana.cuerpo);
   return ventana;
+}
+
+export interface OpcionesCambiarPartida extends OpcionesGuardados {
+  /** ¿Se perdería algo al cambiar de partida? Si sí, se pregunta antes. */
+  hayCambios: () => boolean;
+  /** La partida elegida, lista para seguir; `ranura` si viene de una ranura manual. */
+  alCargar: (partida: Partida, ranura: number | null) => void;
+  /** No se ha cargado nada (se cerró la ventana, se canceló o no se pudo). */
+  alCancelar?: () => void;
+}
+
+/** No se ha podido cargar: se dice por qué. */
+async function avisarErrorCarga(error: unknown): Promise<void> {
+  const motivo = error instanceof ErrorGuardado ? error.motivo : 'otro';
+  await pedirEleccion({
+    titulo: t('juego.guardado.cargarTitulo'),
+    texto: t(`juego.guardado.errorCargar.${motivo}`),
+    respuestas: [{ id: 'vale', texto: t('juego.guardado.entendido'), estilo: 'principal' }],
+  });
+}
+
+/**
+ * Cambia a una partida leída de un guardado o de un archivo, preguntando antes si se pierde algo.
+ * Al cargar, el azar se vuelve a sembrar (decisión del jugador, Fase 12). Dice si ha cambiado.
+ */
+export async function cambiarDePartida(
+  leer: () => Promise<ArchivoPartida | null>,
+  ranura: number | null,
+  opciones: OpcionesCambiarPartida,
+): Promise<boolean> {
+  let archivo: ArchivoPartida | null;
+  try {
+    archivo = await leer();
+  } catch (error) {
+    await avisarErrorCarga(error);
+    opciones.alCancelar?.();
+    return false;
+  }
+  if (!archivo) {
+    opciones.alCancelar?.();
+    return false;
+  }
+  if (opciones.hayCambios()) {
+    const { partida } = archivo;
+    const si = await pedirConfirmacion({
+      titulo: t('juego.guardado.cargarAviso.titulo'),
+      texto: t('juego.guardado.cargarAviso.texto', {
+        partida: textoPartida({ ...partida, paisId: partida.jugador.paisId }, opciones.nombreDe),
+      }),
+      aceptar: t('juego.guardado.cargarAviso.aceptar'),
+      cancelar: t('juego.guardado.cargarAviso.cancelar'),
+    });
+    if (!si) {
+      opciones.alCancelar?.();
+      return false;
+    }
+  }
+  opciones.alCargar(paraSeguir(archivo, semillaNueva()), ranura);
+  return true;
+}
+
+/** Carga un guardado del almacén («Continuar» o una fila de «Cargar partida»). */
+export function cargarGuardado(
+  resumen: ResumenGuardado,
+  opciones: OpcionesCambiarPartida,
+): Promise<boolean> {
+  return cambiarDePartida(
+    async () => {
+      const archivo = await cargarPartida(opciones.almacen, resumen.id);
+      if (!archivo) throw new ErrorGuardado('danado', `No existe ${resumen.id}`);
+      return archivo;
+    },
+    resumen.tipo === 'manual' ? resumen.ranura : null,
+    opciones,
+  );
+}
+
+/** Importa un archivo .json (tarea f14-t3); no queda en ninguna ranura hasta guardarlo. */
+export function importarArchivo(opciones: OpcionesCambiarPartida): Promise<boolean> {
+  return cambiarDePartida(
+    async () => {
+      const archivo = await elegirArchivo();
+      return archivo ? leerArchivo(archivo) : null;
+    },
+    null,
+    opciones,
+  );
+}
+
+/** «Cargar partida» completa: la lista de guardados y «Importar un archivo…». */
+export function abrirCargarPartida(opciones: OpcionesCambiarPartida): Promise<Ventana> {
+  return abrirCargar({
+    ...opciones,
+    alElegir: (resumen) => void cargarGuardado(resumen, opciones),
+    alCerrar: opciones.alCancelar,
+    alImportar: () => void importarArchivo(opciones),
+  });
 }

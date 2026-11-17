@@ -5,6 +5,15 @@ import { t } from '../i18n';
 import { guardarAjuste, leerAjuste } from './ajustes';
 import { el } from './dom';
 import { abrirHoja, type Hoja } from './hoja';
+import { masReciente } from '../sim/guardado';
+import type { Partida } from '../sim/partida';
+import { almacenPartidas } from './almacen-partidas';
+import {
+  abrirCargarPartida,
+  cargarGuardado,
+  textoPartida,
+  type OpcionesCambiarPartida,
+} from './guardar-cargar';
 import {
   cambiarVolumenEfectos,
   cambiarVolumenMusica,
@@ -231,14 +240,97 @@ export interface PantallaInicio {
   acciones: HTMLElement;
   /** Muestra en qué fase está el desarrollo, según roadmap.json. */
   mostrarFaseActiva(roadmap: Roadmap): void;
+  /** Pone al día «Continuar» con la partida guardada más reciente (tarea f14-t4). */
+  actualizarGuardados(): Promise<void>;
 }
 
-export function crearPantallaInicio(): PantallaInicio {
+export interface OpcionesInicio {
+  /** Seguir una partida guardada o importada (tarea f14-t4). */
+  alCargarPartida?: (partida: Partida, ranura: number | null) => void;
+}
+
+/** Nombres de los países (de los datos de 2010), para contar cada guardado. */
+let nombres: Promise<Map<string, string>> | null = null;
+function nombresDePaises(): Promise<Map<string, string>> {
+  nombres ??= fetch('./data/paises-2010.json')
+    .then((respuesta) => {
+      if (!respuesta.ok) throw new Error(String(respuesta.status));
+      return respuesta.json() as Promise<{ paises: Record<string, { nombre: string }> }>;
+    })
+    .then((datos) => new Map(Object.entries(datos.paises).map(([id, p]) => [id, p.nombre])))
+    .catch(() => {
+      // Sin los datos, los guardados se cuentan con el código del país (y se reintenta).
+      nombres = null;
+      return new Map<string, string>();
+    });
+  return nombres;
+}
+
+export function crearPantallaInicio(opciones: OpcionesInicio = {}): PantallaInicio {
   const ajustes = el('button', { class: 'boton', type: 'button' }, t('juego.inicio.ajustes'));
   ajustes.addEventListener('click', abrirAjustes);
 
   const faseActiva = el('p', { class: 'inicio__fase', hidden: true });
   const acciones = el('div', { class: 'inicio__acciones' });
+
+  // Guardar y cargar (tarea f14-t4, decisión del jugador): «Continuar» abre la partida guardada
+  // más reciente y «Cargar partida», todas (y deja importar un archivo).
+  const resumenContinuar = el('small', {});
+  const continuar = el(
+    'button',
+    {
+      class: 'boton boton--principal boton--menu inicio__continuar',
+      type: 'button',
+      hidden: true,
+    },
+    el('span', {}, t('juego.inicio.continuar')),
+    resumenContinuar,
+  );
+  const nuevaPartida = el(
+    'a',
+    { class: 'boton boton--principal boton--menu', href: '#nueva-partida' },
+    el('span', {}, t('juego.inicio.nuevaPartida')),
+    el('small', {}, t('juego.inicio.nuevaPartidaAviso')),
+  );
+  const cargar = el(
+    'button',
+    { class: 'boton boton--menu inicio__cargar', type: 'button' },
+    el('span', {}, t('juego.inicio.cargar')),
+    el('small', {}, t('juego.inicio.cargarAviso')),
+  );
+  const opcionesCarga = async (): Promise<OpcionesCambiarPartida> => {
+    const conNombres = await nombresDePaises();
+    return {
+      almacen: almacenPartidas(),
+      nombreDe: (id) => conNombres.get(id) ?? id,
+      // En el inicio no hay partida que perder.
+      hayCambios: () => false,
+      alCargar: (partida, ranura) => opciones.alCargarPartida?.(partida, ranura),
+    };
+  };
+  let masNueva: Awaited<ReturnType<typeof masReciente>> = null;
+  continuar.addEventListener('click', () => {
+    if (!masNueva) return;
+    const resumen = masNueva;
+    void opcionesCarga().then((cargarCon) => cargarGuardado(resumen, cargarCon));
+  });
+  cargar.addEventListener('click', () => {
+    void opcionesCarga().then((cargarCon) => abrirCargarPartida(cargarCon));
+  });
+  const actualizarGuardados = async (): Promise<void> => {
+    try {
+      masNueva = masReciente(await almacenPartidas().listar());
+    } catch {
+      masNueva = null;
+    }
+    if (masNueva) {
+      const conNombres = await nombresDePaises();
+      resumenContinuar.textContent = textoPartida(masNueva, (id) => conNombres.get(id) ?? id);
+    }
+    continuar.hidden = masNueva === null;
+    // Con una partida que seguir, «Continuar» es el botón principal.
+    nuevaPartida.classList.toggle('boton--principal', masNueva === null);
+  };
 
   const elemento = el(
     'main',
@@ -259,12 +351,9 @@ export function crearPantallaInicio(): PantallaInicio {
     el(
       'nav',
       { class: 'inicio__menu', 'aria-label': t('juego.inicio.menu') },
-      el(
-        'a',
-        { class: 'boton boton--principal boton--menu', href: '#nueva-partida' },
-        el('span', {}, t('juego.inicio.nuevaPartida')),
-        el('small', {}, t('juego.inicio.nuevaPartidaAviso')),
-      ),
+      continuar,
+      nuevaPartida,
+      cargar,
       el(
         'a',
         { class: 'boton boton--menu', href: '#mapa' },
@@ -296,6 +385,7 @@ export function crearPantallaInicio(): PantallaInicio {
   return {
     elemento,
     acciones,
+    actualizarGuardados,
     mostrarFaseActiva(roadmap) {
       const fase = roadmap.fases.find((f) => f.id === roadmap.faseActiva);
       if (!fase) {

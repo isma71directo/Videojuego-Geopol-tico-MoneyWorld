@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.14.0",
-  "actualizado": "2026-11-17T10:55:16Z",
+  "actualizado": "2026-11-17T11:03:27Z",
   "faseActiva": "fase-14",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "f14-t3 hecha: «Exportar a un archivo» en el menú de la partida descarga la partida como .json (nombre con el país y la fecha, p. ej. geopolitica-2010-FRA-2010-01-04.json; lleva el juego, el formato y la versión). «Importar un archivo…» en Cargar partida la vuelve a cargar, de este u otro navegador, con la misma comprobación y migración que un guardado; lo que no es una partida de este juego, está dañado o es de una versión más nueva se rechaza con su aviso. Iconos nuevos de exportar e importar.",
-    "siguientePaso": "f14-t4: indicador de guardado animado y con sonido, «Continuar» y «Cargar partida» en el inicio; después, cerrar la Fase 14 como v0.15.0 y abrir su PR.",
+    "resumen": "f14-t4 hecha: indicador de guardado arriba en el centro («Guardando…» con el disquete latiendo, después una marca verde con lo guardado, o el error en rojo), con un sonido propio al guardar a mano o exportar (los automáticos no suenan). En el inicio, «Continuar» abre la partida guardada más reciente y dice cuál es (país, fecha y hora), y pasa a ser el botón principal; «Cargar partida» abre la lista con banderas e «Importar un archivo…». Las filas de las listas entran escalonadas. La galería tiene la sección «Guardar y cargar» con filas de ejemplo y el indicador; el sonido y los iconos nuevos salen en sus secciones. Al cerrar la pestaña, el navegador solo pregunta si hay algo sin guardar.",
+    "siguientePaso": "Cerrar la Fase 14 como v0.15.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -921,12 +921,12 @@
           "titulo": "Exportar e importar la partida como archivo .json, con número de versión y migraciones",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8ff5428"
         },
         {
           "id": "f14-t4",
           "titulo": "Audiovisual: indicador de guardado, pantalla de cargar partida con la bandera, el país, la fecha y la hora de cada ranura, y «Continuar» y «Cargar partida» en el inicio (decisión del jugador)",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": ""
         }

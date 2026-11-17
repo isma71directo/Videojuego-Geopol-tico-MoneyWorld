@@ -69,6 +69,7 @@ import cargar from './iconos/cargar.svg?raw';
 import ajustes from './iconos/ajustes.svg?raw';
 import exportar from './iconos/exportar.svg?raw';
 import importar from './iconos/importar.svg?raw';
+import hecho from './iconos/hecho.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -170,6 +171,8 @@ const ICONOS = {
   // Exportar e importar la partida (tarea f14-t3).
   exportar,
   importar,
+  // Indicador de guardado (tarea f14-t4).
+  hecho,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

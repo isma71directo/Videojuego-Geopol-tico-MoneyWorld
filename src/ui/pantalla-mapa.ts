@@ -28,19 +28,13 @@ import type { Suceso } from '../sim/sucesos';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
 import { horaAbsoluta, msPorHora } from '../sim/reloj';
-import { semillaNueva } from '../sim/azar';
-import {
-  archivoDe,
-  ErrorGuardado,
-  paraSeguir,
-  type ArchivoPartida,
-  type ResumenGuardado,
-} from '../sim/guardado';
-import { descargarArchivo, elegirArchivo, leerArchivo } from './archivos-partida';
+import { archivoDe } from '../sim/guardado';
+import { descargarArchivo } from './archivos-partida';
+import { crearIndicadorGuardado } from './indicador-guardado';
 import { VERSION } from '../compartido/version';
-import { almacenPartidas, cargarPartida, guardarPartida } from './almacen-partidas';
-import { abrirCargar, abrirGuardar, textoPartida } from './guardar-cargar';
-import { confirmacionAbierta, pedirConfirmacion, pedirEleccion } from './componentes/confirmacion';
+import { almacenPartidas, guardarPartida } from './almacen-partidas';
+import { abrirCargarPartida, abrirGuardar } from './guardar-cargar';
+import { confirmacionAbierta, pedirEleccion } from './componentes/confirmacion';
 import { abrirAjustes } from './inicio';
 import { conectarMotor, type ConexionMotor } from './conexion-motor';
 import { solDelJuego } from '../map/noche';
@@ -109,6 +103,8 @@ export interface PantallaMapa {
    * f11-t3); si se cancela, sigue a la velocidad que llevaba. En el mapa libre, sí sin más.
    */
   pedirSalida(): Promise<boolean>;
+  /** ¿Hay algo jugado sin guardar? (Para que el navegador pregunte al cerrar la pestaña.) */
+  hayCambios(): boolean;
   cerrar(): void;
 }
 
@@ -289,47 +285,36 @@ export function abrirPantallaMapa(
       esperando.set(peticion, resolver);
       motor?.enviar({ tipo: 'instantanea', peticion });
     });
-  /** Indicador de guardado (la tarea f14-t4 le pone su animación y su sonido). */
-  const avisoGuardado = el('p', { class: 'mapa__guardado', role: 'status', hidden: true });
-  let ocultarAvisoGuardado: number | null = null;
-  const avisarGuardado = (texto: string, error = false): void => {
-    avisoGuardado.textContent = texto;
-    avisoGuardado.classList.toggle('mapa__guardado--error', error);
-    avisoGuardado.hidden = false;
-    if (ocultarAvisoGuardado !== null) clearTimeout(ocultarAvisoGuardado);
-    ocultarAvisoGuardado = window.setTimeout(
-      () => {
-        avisoGuardado.hidden = true;
-        ocultarAvisoGuardado = null;
-      },
-      error ? 6000 : 2500,
-    );
-  };
+  /** Indicador de guardado (tarea f14-t4): «Guardando…», lo guardado (con sonido) o el error. */
+  const indicador = crearIndicadorGuardado({ alSonar: () => reproducir('guardado') });
   async function guardarAutomatico(copia: Partida): Promise<void> {
     if (!almacen) return;
+    indicador.guardando();
     try {
       await guardarPartida(almacen, copia, { tipo: 'automatico' }, VERSION);
       // El 1 de enero, además, el guardado de ese año, que no se borra solo.
       if (copia.fecha.endsWith('-01-01')) {
         await guardarPartida(almacen, copia, { tipo: 'anual' }, VERSION);
       }
-      avisarGuardado(t('juego.guardado.hechoAutomatico'));
+      // Los automáticos no suenan: llegan cada mes.
+      indicador.hecho(t('juego.guardado.hechoAutomatico'));
     } catch {
-      avisarGuardado(t('juego.guardado.error'), true);
+      indicador.error(t('juego.guardado.error'));
     }
   }
   /** Guarda en una ranura; dice si se ha podido. */
   const guardarEnRanura = async (ranura: number): Promise<boolean> => {
     if (!almacen || !motor) return false;
+    indicador.guardando();
     try {
       const copia = await pedirPartida();
       await guardarPartida(almacen, copia, { tipo: 'manual', ranura }, VERSION);
       ranuraActual = ranura;
       guardadaHasta = horaAbsoluta(copia);
-      avisarGuardado(t('juego.guardado.hecho', { n: ranura }));
+      indicador.hecho(t('juego.guardado.hecho', { n: ranura }), true);
       return true;
     } catch {
-      avisarGuardado(t('juego.guardado.error'), true);
+      indicador.error(t('juego.guardado.error'));
       return false;
     }
   };
@@ -370,91 +355,23 @@ export function abrirPantallaMapa(
     if (ranuraActual !== null) void guardarEnRanura(ranuraActual);
     else void elegirRanura();
   };
-  /** No se ha podido cargar: se dice por qué. */
-  const avisarErrorCarga = async (error: unknown): Promise<void> => {
-    const motivo = error instanceof ErrorGuardado ? error.motivo : 'otro';
-    await pedirEleccion({
-      titulo: t('juego.guardado.cargarTitulo'),
-      texto: t(`juego.guardado.errorCargar.${motivo}`),
-      respuestas: [{ id: 'vale', texto: t('juego.guardado.entendido'), estilo: 'principal' }],
-    });
-  };
-  /**
-   * Cambia a una partida guardada o importada, preguntando antes si se pierde algo. Al cargar, el
-   * azar se vuelve a sembrar (decisión del jugador, Fase 12). Si no se cambia, el tiempo sigue.
-   */
-  const cambiarA = async (
-    leer: () => Promise<ArchivoPartida | null>,
-    ranura: number | null,
-    seguir: () => void,
-  ): Promise<void> => {
-    let archivo: ArchivoPartida | null;
-    try {
-      archivo = await leer();
-    } catch (error) {
-      await avisarErrorCarga(error);
-      seguir();
-      return;
-    }
-    if (!archivo) {
-      seguir();
-      return;
-    }
-    if (hayCambios()) {
-      const { partida: otra } = archivo;
-      const si = await pedirConfirmacion({
-        titulo: t('juego.guardado.cargarAviso.titulo'),
-        texto: t('juego.guardado.cargarAviso.texto', {
-          partida: textoPartida({ ...otra, paisId: otra.jugador.paisId }, nombreDe),
-        }),
-        aceptar: t('juego.guardado.cargarAviso.aceptar'),
-        cancelar: t('juego.guardado.cargarAviso.cancelar'),
-      });
-      if (!si) {
-        seguir();
-        return;
-      }
-    }
-    opciones.alCargar?.(paraSeguir(archivo, semillaNueva()), ranura);
-  };
-  /** Carga un guardado del almacén. */
-  const cargarGuardado = (resumen: ResumenGuardado, seguir: () => void): Promise<void> =>
-    cambiarA(
-      async () => {
-        const archivo = almacen ? await cargarPartida(almacen, resumen.id) : null;
-        if (!archivo) throw new ErrorGuardado('danado', `No existe ${resumen.id}`);
-        return archivo;
-      },
-      resumen.tipo === 'manual' ? resumen.ranura : null,
-      seguir,
-    );
-  /** Importa un archivo .json (tarea f14-t3); no queda en ninguna ranura hasta guardarlo. */
-  const importarArchivo = (seguir: () => void): Promise<void> =>
-    cambiarA(
-      async () => {
-        const archivo = await elegirArchivo();
-        return archivo ? leerArchivo(archivo) : null;
-      },
-      null,
-      seguir,
-    );
   /** Exporta la partida tal y como está ahora a un archivo .json (tarea f14-t3). */
   const exportarArchivo = async (): Promise<void> => {
     if (!motor) return;
     const copia = await pedirPartida();
     const nombre = descargarArchivo(archivoDe(copia, VERSION, new Date()));
-    avisarGuardado(t('juego.guardado.exportado', { nombre }));
+    indicador.hecho(t('juego.guardado.exportado', { nombre }), true);
   };
-  /** «Cargar…»: la lista de guardados (con el tiempo parado). */
+  /** «Cargar…»: la lista de guardados e importar (con el tiempo parado). */
   const elegirCarga = (): void => {
     if (!almacen) return;
     const seguir = pausarMientras();
-    void abrirCargar({
+    void abrirCargarPartida({
       almacen,
       nombreDe,
-      alElegir: (resumen) => void cargarGuardado(resumen, seguir),
-      alCerrar: seguir,
-      alImportar: () => void importarArchivo(seguir),
+      hayCambios,
+      alCargar: (otra, ranura) => opciones.alCargar?.(otra, ranura),
+      alCancelar: seguir,
     });
   };
   /** Ctrl+S, en la fase de captura para que el navegador no abra «Guardar página». */
@@ -644,7 +561,7 @@ export function abrirPantallaMapa(
     filaHerramientas,
     estado,
     medidor,
-    avisoGuardado,
+    indicador.elemento,
     leyenda,
     secciones.elemento,
     recuadro,
@@ -1039,7 +956,7 @@ export function abrirPantallaMapa(
     if (avisoAbierto()) cerrarAviso();
     document.removeEventListener('keydown', alTeclearGuardar, true);
     dejarDeEscucharAjustes();
-    if (ocultarAvisoGuardado !== null) clearTimeout(ocultarAvisoGuardado);
+    indicador.destruir();
     esperando.clear();
     atenuarMusica(false);
     if (animacion !== null) cancelAnimationFrame(animacion);
@@ -1139,5 +1056,5 @@ export function abrirPantallaMapa(
     }
     abrirMenuPartida();
   });
-  return { elemento, mapa, partida, pedirSalida, cerrar };
+  return { elemento, mapa, partida, pedirSalida, hayCambios, cerrar };
 }

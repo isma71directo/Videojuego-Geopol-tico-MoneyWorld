@@ -19,7 +19,14 @@ const MINUTOS_REFRESCO = 5;
 const app = document.querySelector<HTMLElement>('#app')!;
 const avisoVersion = document.querySelector<HTMLElement>('#aviso-version')!;
 
-const inicio = crearPantallaInicio();
+const inicio = crearPantallaInicio({
+  // «Continuar» o «Cargar partida» en el inicio (tarea f14-t4): a jugarla.
+  alCargarPartida: (cargada, ranura) => {
+    partida = cargada;
+    ranuraDeLaPartida = ranura;
+    location.hash = '#partida';
+  },
+});
 inicio.acciones.appendChild(
   // Todavía no hay partidas: la fecha y el país se añadirán en la Fase 4.
   botonReportar(() => ({
@@ -81,6 +88,8 @@ function cambiarDePartida(cargada: Partida, ranura: number | null): void {
 
 function mostrarSegunDireccion(): void {
   const hash = location.hash;
+  // En el inicio, «Continuar» con la partida guardada más reciente (tarea f14-t4).
+  if (!['#mapa', '#nueva-partida', '#partida'].includes(hash)) void inicio.actualizarGuardados();
   // Sin partida empezada (al recargar), «#partida» lleva a elegir país.
   if (hash === '#partida' && !partida) {
     history.replaceState(null, '', '#nueva-partida');
@@ -135,9 +144,9 @@ window.addEventListener('hashchange', () => {
   }
   mostrarSegunDireccion();
 });
-// Recargar o cerrar la pestaña con una partida en marcha la perdería: el navegador pregunta.
+// Recargar o cerrar la pestaña con algo jugado sin guardar lo perdería: el navegador pregunta.
 window.addEventListener('beforeunload', (evento) => {
-  if (partida) evento.preventDefault();
+  if (partida && pantallaMapa?.hayCambios()) evento.preventDefault();
 });
 mostrarSegunDireccion();
 
