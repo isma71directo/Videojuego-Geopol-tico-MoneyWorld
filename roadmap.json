@@ -1,13 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.18.0",
-  "actualizado": "2026-11-17T23:44:39Z",
-  "faseActiva": "fase-18",
+  "versionActual": "0.19.0",
+  "actualizado": "2026-11-17T23:45:55Z",
+  "faseActiva": "fase-19",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 18 terminada (f18-t1 a f18-t4); falta cerrarla como v0.19.0. f18-t4: el rating con un distintivo animado del color de su escalón, la prima y la crisis de deuda en la ficha y en Gobierno › Presupuesto, el gráfico de la prima con la línea del cierre de los mercados, y alertas «Bajan el rating» y «Suben el rating» con su sonido; iconos de rating y prima; sección del rating en la galería. f18-t3: crisis de deuda con rescate del FMI o impago, para el jugador (ventana de decisión) y la IA.",
-    "siguientePaso": "Cerrar la Fase 18 como v0.19.0 (versión, CHANGELOG, historial) y abrir su PR; después, plan de la Fase 19 (Pantalla de Economía).",
-    "pendienteDelJugador": []
+    "resumen": "Fase 18 cerrada como v0.19.0 (deuda, prima de riesgo y rating): fórmula calibrada con los tipos reales de la OCDE, mercado de la deuda mensual, crisis de deuda con rescate del FMI o impago (decisión del jugador en una ventana; la IA según su situación), distintivo animado del rating, gráfico de la prima y alertas de crisis y de rating. PR abierto.",
+    "siguientePaso": "Cuando el jugador fusione el PR de la v0.19.0: presentar el plan de la Fase 19 (Pantalla de Economía) y preguntarle las decisiones de diseño.",
+    "pendienteDelJugador": ["Probar la v0.19.0 en el PC (ver el PR) y fusionarlo"]
   },
   "etapas": [
     {
@@ -1095,7 +1095,7 @@
       "dependeDe": ["fase-17"],
       "hechoCuando": "La deuda y el rating responden al déficit",
       "pruebaJugador": "Ver la prima de riesgo de Grecia durante 2010 (sin intervención, entra en crisis de deuda)",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f18-t1",
@@ -1123,7 +1123,7 @@
           "titulo": "Audiovisual: distintivo animado del rating, gráfico de la prima y alertas de rating y de crisis con su sonido",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ae48e27"
         }
       ]
     },
@@ -4758,6 +4758,16 @@
         "Cada ministerio por dentro (decisión del jugador): los 20 ministerios con personal, inversión, mantenimiento y programas, más pensiones, desempleo e intereses de la deuda; 7 tipos de ingresos",
         "El presupuesto responde a la economía cada mes (en una recesión se recauda menos y se paga más paro; las pensiones suben con los precios y el envejecimiento) y el déficit se cubre con deuda: más deuda, más intereses (decisión del jugador); la tesorería de la barra superior ya se mueve",
         "El presupuesto en la ficha de cada país y en Gobierno › Presupuesto, con gráficos de ingresos, gastos y deuda, barras con iconos y seis iconos nuevos; también en la galería"
+      ]
+    },
+    {
+      "version": "0.19.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Prima de riesgo y rating de cada país con una fórmula calibrada con los tipos reales de 2010 de la OCDE (40 países); los demás, estimados y marcados (decisión del jugador)",
+        "Mercado de la deuda cada mes: la deuda que vence se renueva al tipo de ahora (decisión del jugador: poco a poco), rating de AAA a D revisado cada trimestre, crédito más caro con una prima alta y contagio",
+        "Crisis de deuda: con los mercados cerrados, el jugador elige en una ventana entre el rescate del FMI (deuda barata a cambio de un ajuste) y el impago (quita, rating D y años sin mercados); la IA, según su situación. Sustituye al ajuste forzoso provisional",
+        "Distintivo animado del rating, prima y crisis en la ficha y en Gobierno › Presupuesto, gráfico de la prima con el cierre de los mercados, y alertas de crisis y de rating con su sonido"
       ]
     }
   ]
