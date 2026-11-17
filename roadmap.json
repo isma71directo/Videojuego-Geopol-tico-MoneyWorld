@@ -1,19 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.15.0",
-  "actualizado": "2026-11-17T11:04:42Z",
+  "actualizado": "2026-11-17T11:13:44Z",
   "faseActiva": "fase-15",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 14 cerrada como v0.15.0: guardar y cargar partidas en IndexedDB (cinco ranuras, un automático al empezar cada mes, del que se conservan los tres últimos, y uno por año), menú de la partida con Ctrl+S, «¿Guardar antes de salir?», exportar e importar la partida como .json con migraciones, indicador de guardado con su sonido, y «Continuar» y «Cargar partida» en el inicio. PR abierto.",
-    "siguientePaso": "Cuando el jugador pruebe la v0.15.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 15 (economía: producción y demanda).",
-    "pendienteDelJugador": [
-      "Probar la v0.15.0 en el PC: empezar una partida, jugar un año a ×8 (o más deprisa), guardar con el menú «Menú › Guardar» o con Ctrl+S en una ranura, cerrar el navegador, volver y pulsar «Continuar» en el inicio; la partida sigue donde se guardó",
-      "Comprobar en «Cargar partida» los guardados automáticos de los tres últimos meses y el del 1 de enero; salir con algo sin guardar y ver la pregunta «¿Guardar antes de salir?»",
-      "Exportar la partida a un archivo .json desde el menú e importarla en «Cargar partida › Importar un archivo…»",
-      "En la galería: la sección «Guardar y cargar», el sonido «Partida guardada» y los iconos nuevos",
-      "Fusionar el PR de la Fase 14"
-    ]
+    "resumen": "El jugador fusionó la v0.15.0. Ajustes de la Fase 14 apuntados para la v0.15.1: f14-a1, nombre opcional para los guardados manuales (petición del jugador), y f14-a2, pedir al navegador que no borre las partidas la primera vez que se guarda, no al abrir el juego (Firefox lo pregunta con un aviso). Después, presentar el plan de la Fase 15.",
+    "siguientePaso": "f14-a1: nombre opcional en los guardados manuales.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -935,6 +929,26 @@
           "estado": "hecha",
           "fecha": "2026-11-17",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/58f3c8d"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f14-a1",
+          "titulo": "Nombre opcional para los guardados manuales: se escribe en la ventana «Guardar partida» y se ve en las ranuras, en «Cargar partida» y en «Continuar»; Ctrl+S conserva el nombre de la ranura",
+          "version": "0.15.1",
+          "origen": "Mensaje del jugador tras probar la v0.15.0",
+          "estado": "en-curso",
+          "fecha": "2026-11-17",
+          "enlace": ""
+        },
+        {
+          "id": "f14-a2",
+          "titulo": "Pedir al navegador que no borre las partidas la primera vez que se guarda, y no al abrir el juego (Firefox lo pregunta con un aviso)",
+          "version": "0.15.1",
+          "origen": "Duda del jugador tras probar la v0.15.0 (¿se mantiene el guardado del navegador con el tiempo?)",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },
