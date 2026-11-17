@@ -1,13 +1,21 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.17.0",
-  "actualizado": "2026-11-17T20:55:27Z",
-  "faseActiva": "fase-17",
+  "versionActual": "0.18.0",
+  "actualizado": "2026-11-17T20:56:33Z",
+  "faseActiva": "fase-18",
   "ultimaSesion": {
     "fecha": "2026-11-17",
-    "resumen": "Fase 17: tareas t1 a t4 hechas. f17-t4: el presupuesto en la ficha de cada país (pestaña Economía) y en Gobierno › Presupuesto (con la deuda y los 20 ministerios por dentro), con barras de ingresos y gastos con iconos, gráficos que se dibujan y laten, seis iconos nuevos y la tesorería de la barra superior en movimiento; también en la galería («Economía de un país»). Probado a 1280 × 720, 1920 × 1080 y en el móvil (galería).",
-    "siguientePaso": "Cerrar la Fase 17 como v0.18.0 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 17 cerrada como v0.18.0: presupuesto de cada país con los datos de 2010 (FMI y Banco Mundial; lo demás, estimado y marcado): 7 ingresos por tipo, 20 ministerios con personal, inversión, mantenimiento y programas, pensiones, desempleo e intereses; responde a la economía cada mes (estabilizadores automáticos) y el déficit se cubre con deuda por la tesorería; en la ficha y en Gobierno › Presupuesto con gráficos e iconos nuevos. PR abierto.",
+    "siguientePaso": "Cuando el jugador pruebe la v0.18.0: apuntar sus ajustes (x.y.Z) o presentar el plan de la Fase 18 (deuda, prima de riesgo y rating), que sustituye al ajuste forzoso provisional de la v0.16.1.",
+    "pendienteDelJugador": [
+      "Probar la v0.18.0 en el PC: empezar con España y abrir su ficha (pestaña Economía): debajo de la economía, el «Presupuesto del Estado» con ingresos (36,4 % del PIB), gastos (45,8 %), déficit (−9,5 %), deuda y tesorería",
+      "Abrir Gobierno › Presupuesto: el gráfico de la deuda y los 20 ministerios; desplegar Educación o Transportes para ver sus partidas",
+      "Comparar con el presupuesto de Alemania (prueba del GDD): más pensiones y menos déficit y paro",
+      "Avanzar un año a ×64 y ver cómo suben la deuda y los intereses y se mueve la tesorería de la barra de arriba",
+      "En la galería, «Economía de un país» con Grecia y «Avanzar un año»: su deuda se dispara sin intervención",
+      "Cargar una partida guardada con la v0.17.0 y comprobar que tiene presupuesto",
+      "Fusionar el PR de la Fase 17"
+    ]
   },
   "etapas": [
     {
@@ -1054,7 +1062,7 @@
       "dependeDe": ["fase-16"],
       "hechoCuando": "Todos los países tienen su presupuesto de 2010",
       "pruebaJugador": "Ver el presupuesto inicial de España y compararlo con el de Alemania",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f17-t1",
@@ -1082,7 +1090,7 @@
           "titulo": "Audiovisual: gráfico de ingresos y gastos en la ficha y en Gobierno › Presupuesto, con iconos de las partidas",
           "estado": "hecha",
           "fecha": "2026-11-17",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/1c9873c"
         }
       ]
     },
@@ -4741,6 +4749,16 @@
         "Inflación persistente desde la de 2010: baja con mucho paro y sube cuando falta, sin ancla hasta el banco central; por encima del 10 % resta inversión y la deflación frena el consumo; PIB nominal",
         "Paro, inflación y PIB nominal en la ficha de cada país y en Economía › Economía, con un gráfico del paro y la inflación; test de credibilidad del GDD (5 años sin intervención en los 20 mayores países)",
         "Alertas económicas de tu país (recesión, paro que se dispara, inflación alta o desbocada y deflación) con su icono y un sonido propio; las graves paran la partida si la pausa automática está activada; sección en la galería"
+      ]
+    },
+    {
+      "version": "0.18.0",
+      "fecha": "2026-11-17",
+      "cambios": [
+        "Presupuesto de cada país con los datos de 2010: totales del FMI y partes del Banco Mundial (de dónde salen los ingresos y en qué se gasta); sanidad, educación y defensa reales; lo demás, estimado y marcado",
+        "Cada ministerio por dentro (decisión del jugador): los 20 ministerios con personal, inversión, mantenimiento y programas, más pensiones, desempleo e intereses de la deuda; 7 tipos de ingresos",
+        "El presupuesto responde a la economía cada mes (en una recesión se recauda menos y se paga más paro; las pensiones suben con los precios y el envejecimiento) y el déficit se cubre con deuda: más deuda, más intereses (decisión del jugador); la tesorería de la barra superior ya se mueve",
+        "El presupuesto en la ficha de cada país y en Gobierno › Presupuesto, con gráficos de ingresos, gastos y deuda, barras con iconos y seis iconos nuevos; también en la galería"
       ]
     }
   ]
