@@ -64,6 +64,12 @@ import salir from './iconos/salir.svg?raw';
 import pausa from './iconos/pausa.svg?raw';
 import seguir from './iconos/seguir.svg?raw';
 import efectos from './iconos/efectos.svg?raw';
+import guardar from './iconos/guardar.svg?raw';
+import cargar from './iconos/cargar.svg?raw';
+import ajustes from './iconos/ajustes.svg?raw';
+import exportar from './iconos/exportar.svg?raw';
+import importar from './iconos/importar.svg?raw';
+import hecho from './iconos/hecho.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -158,6 +164,15 @@ const ICONOS = {
   seguir,
   // Efectos en curso (tarea f13-t2).
   efectos,
+  // Menú de la partida (tarea f14-t2).
+  guardar,
+  cargar,
+  ajustes,
+  // Exportar e importar la partida (tarea f14-t3).
+  exportar,
+  importar,
+  // Indicador de guardado (tarea f14-t4).
+  hecho,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

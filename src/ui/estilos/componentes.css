@@ -744,6 +744,11 @@
   box-shadow: var(--sombra-flotante);
 }
 
+/* Con tres respuestas o más (tarea f14-t2), la caja es más ancha para que quepan en una fila. */
+.confirmacion__caja--ancha {
+  width: min(560px, 100%);
+}
+
 .confirmacion__titulo {
   margin: 0 0 8px;
   font-size: 18px;

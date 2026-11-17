@@ -8,9 +8,17 @@
  * - `avanzar(ms)`: han pasado `ms` milisegundos reales; avanza las horas que tocan (con el tope de
  *   cada fotograma del reloj: si un paso tarda en calcularse, el tiempo del juego va más despacio
  *   en lugar de dar saltos) y da los pasos de la simulación a los sistemas.
+ * - Guardar (tarea f14-t2): con la orden «instantanea» manda una copia de la partida, y al empezar
+ *   cada mes (el día 1 a las 00:00 en punto) manda otra para el guardado automático.
  */
 import { crearAzar, type Azar } from './azar';
-import { crearEfecto, revisarEfectos, type DefinicionEfecto, type Efecto } from './efectos';
+import {
+  crearEfecto,
+  revisarEfectos,
+  sumarMeses,
+  type DefinicionEfecto,
+  type Efecto,
+} from './efectos';
 import { avanzarPartida, type Partida } from './partida';
 import {
   horaAbsoluta,
@@ -42,6 +50,8 @@ export type OrdenMotor =
   | { tipo: 'programar'; suceso: Omit<Suceso, 'id'> }
   /** Cambia la pausa automática a mitad de partida. */
   | { tipo: 'ajustes'; pausaAutomatica: boolean }
+  /** Pide una copia de la partida para guardarla (tarea f14-t2); `peticion` vuelve con ella. */
+  | { tipo: 'instantanea'; peticion: number }
   | { tipo: 'terminar' };
 
 /** El estado de la partida que necesita la pantalla. */
@@ -63,8 +73,25 @@ export interface SucesoMotor {
   pausado: boolean;
 }
 
+/**
+ * Una copia de la partida (tarea f14-t2): la pedida con «instantanea» o la de cada mes, el día 1
+ * a las 00:00, para el guardado automático.
+ */
+export interface PartidaMotor {
+  tipo: 'partida';
+  partida: Partida;
+  motivo: 'peticion' | 'mes';
+  peticion?: number;
+}
+
 /** Lo que el motor cuenta a la pantalla. */
-export type MensajeMotor = EstadoMotor | SucesoMotor;
+export type MensajeMotor = EstadoMotor | SucesoMotor | PartidaMotor;
+
+/** Horas que faltan para que empiece el mes siguiente (el día 1 a las 00:00). */
+export function horasHastaElMesSiguiente(partida: Pick<Partida, 'fecha' | 'hora'>): number {
+  const siguiente = sumarMeses(`${partida.fecha.slice(0, 7)}-01`, 1);
+  return horaAbsoluta({ fecha: siguiente, hora: 0 }) - horaAbsoluta(partida);
+}
 
 /**
  * Un sistema de la simulación: recibe los pasos de cada avance y el azar de la partida (tarea
@@ -166,6 +193,17 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
         pausaAutomatica = orden.pausaAutomatica;
         return [];
       }
+      if (orden.tipo === 'instantanea') {
+        if (!partida) return [];
+        return [
+          {
+            tipo: 'partida',
+            partida: structuredClone(partida),
+            motivo: 'peticion',
+            peticion: orden.peticion,
+          },
+        ];
+      }
       if (orden.tipo === 'programar') {
         if (!partida) return [];
         const suceso: Suceso = { ...orden.suceso, id: `s${++contadorSucesos}` };
@@ -199,11 +237,17 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
       const mensajes: MensajeMotor[] = [];
       let quedan = horas;
       while (quedan > 0 && partida) {
-        // Hasta el siguiente suceso, si llega antes de acabar estas horas (tarea f13-t3).
+        // Hasta el siguiente suceso, si llega antes de acabar estas horas (tarea f13-t3), o hasta
+        // que empiece el mes, para guardarlo justo a las 00:00 del día 1 (tarea f14-t2).
         const hastaSuceso = horasHastaSiguiente(partida.agenda, horaAbsoluta(partida));
-        const tramo = hastaSuceso !== null && hastaSuceso <= quedan ? hastaSuceso : quedan;
+        const hastaMes = horasHastaElMesSiguiente(partida);
+        let tramo = hastaSuceso !== null && hastaSuceso <= quedan ? hastaSuceso : quedan;
+        if (hastaMes <= tramo) tramo = hastaMes;
         avanzarTramo(tramo);
         quedan -= tramo;
+        if (tramo === hastaMes) {
+          mensajes.push({ tipo: 'partida', partida: structuredClone(partida), motivo: 'mes' });
+        }
         if (tramo === hastaSuceso) {
           const [suceso, ...resto] = partida.agenda;
           partida = { ...partida, agenda: resto };

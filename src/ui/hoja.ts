@@ -10,6 +10,8 @@ let contador = 0;
 
 export interface Hoja {
   cerrar(): void;
+  /** Se cumple cuando la hoja se cierra (por cualquier camino). */
+  readonly cerrada: Promise<void>;
 }
 
 /** Abre una hoja con título y contenido. Se cierra con el botón, con Escape o tocando fuera. */
@@ -43,9 +45,17 @@ export function abrirHoja(titulo: string, ...contenido: Hijo[]): Hoja {
   dialogo.addEventListener('click', (evento) => {
     if (evento.target === dialogo) cerrar();
   });
-  dialogo.addEventListener('close', () => dialogo.remove());
+  // Lo que se teclea en la hoja no llega a los atajos de la pantalla de detrás (en la partida,
+  // el espacio pararía el tiempo; tarea f14-t2).
+  dialogo.addEventListener('keydown', (evento) => evento.stopPropagation());
+  const cerrada = new Promise<void>((resolver) => {
+    dialogo.addEventListener('close', () => {
+      dialogo.remove();
+      resolver();
+    });
+  });
 
   document.body.appendChild(dialogo);
   dialogo.showModal();
-  return { cerrar };
+  return { cerrar, cerrada };
 }

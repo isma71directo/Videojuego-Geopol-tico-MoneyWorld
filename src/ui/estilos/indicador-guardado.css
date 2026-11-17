@@ -1,0 +1,56 @@
+/* Indicador de guardado (tarea f14-t4): píldora arriba en el centro. */
+.indicador-guardado {
+  position: absolute;
+  top: 72px;
+  left: 50%;
+  z-index: var(--capa-menu);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  background: var(--superficie-flotante);
+  box-shadow: var(--sombra-flotante);
+  color: var(--texto);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  translate: -50% 0;
+}
+
+.indicador-guardado[hidden] {
+  display: none;
+}
+
+.indicador-guardado .icono {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.indicador-guardado[data-estado='guardando'] .icono {
+  color: var(--acento);
+  animation: indicador-latido 0.9s ease-in-out infinite;
+}
+
+.indicador-guardado[data-estado='hecho'] {
+  border-color: rgb(76 195 138 / 45%);
+}
+
+.indicador-guardado[data-estado='hecho'] .icono {
+  color: var(--hecha);
+}
+
+.indicador-guardado[data-estado='error'] {
+  border-color: rgb(255 138 128 / 55%);
+  color: var(--peligro);
+}
+
+@keyframes indicador-latido {
+  50% {
+    opacity: 0.35;
+  }
+}

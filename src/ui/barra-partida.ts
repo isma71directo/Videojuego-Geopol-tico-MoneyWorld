@@ -30,8 +30,9 @@ export function nivelPopularidad(popularidad: number): NivelPopularidad {
 }
 
 /**
- * Pregunta antes de salir de la partida, que aún no se puede guardar (llega en la Fase 14).
- * Se usa con el botón «Menú» y con el botón «atrás» del navegador.
+ * Pregunta antes de salir de una partida que ya está guardada (si hay algo sin guardar, la
+ * pantalla pregunta antes «¿Guardar antes de salir?», tarea f14-t2). Se usa con «Salir al menú»
+ * y con el botón «atrás» del navegador.
  */
 export function confirmarSalidaDePartida(): Promise<boolean> {
   return pedirConfirmacion({

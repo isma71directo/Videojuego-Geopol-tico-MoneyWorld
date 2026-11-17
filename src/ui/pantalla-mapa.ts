@@ -5,9 +5,9 @@ import type { ConjuntoEconomiaRegiones } from '../datos/regiones-economia';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
 import type { MapaMundo, Objetivo, RegionSenalada } from '../map/mapa';
-import type { Partida } from '../sim/partida';
+import { FECHA_INICIO, HORA_INICIO, type Partida } from '../sim/partida';
 import { conectarGestos } from '../map/gestos';
-import { guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
+import { alCambiarAjuste, guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
 import { el, reemplazar } from './dom';
 import { contenidoPanelCiudad, contenidoRecuadroCiudad } from './ficha-ciudad';
 import {
@@ -27,7 +27,15 @@ import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from './aviso-suceso';
 import type { Suceso } from '../sim/sucesos';
 import { confirmarSalidaDePartida, crearBarraPartida } from './barra-partida';
 import { crearControlTiempo } from './tiempo';
-import { msPorHora } from '../sim/reloj';
+import { horaAbsoluta, msPorHora } from '../sim/reloj';
+import { archivoDe } from '../sim/guardado';
+import { descargarArchivo } from './archivos-partida';
+import { crearIndicadorGuardado } from './indicador-guardado';
+import { VERSION } from '../compartido/version';
+import { almacenPartidas, guardarPartida } from './almacen-partidas';
+import { abrirCargarPartida, abrirGuardar } from './guardar-cargar';
+import { confirmacionAbierta, pedirEleccion } from './componentes/confirmacion';
+import { abrirAjustes } from './inicio';
 import { conectarMotor, type ConexionMotor } from './conexion-motor';
 import { solDelJuego } from '../map/noche';
 import { crearBuscador } from './buscador';
@@ -95,12 +103,18 @@ export interface PantallaMapa {
    * f11-t3); si se cancela, sigue a la velocidad que llevaba. En el mapa libre, sí sin más.
    */
   pedirSalida(): Promise<boolean>;
+  /** ¿Hay algo jugado sin guardar? (Para que el navegador pregunte al cerrar la pestaña.) */
+  hayCambios(): boolean;
   cerrar(): void;
 }
 
 export interface OpcionesPantallaMapa {
   /** Partida empezada (tarea f10-t1): el mapa abre en el país del jugador. */
   partida?: Partida | null;
+  /** Ranura de la que viene la partida: Ctrl+S guarda en ella (tarea f14-t2). */
+  ranura?: number | null;
+  /** Cargar otra partida desde el menú (tarea f14-t2): main.ts cambia de partida. */
+  alCargar?: (partida: Partida, ranura: number | null) => void;
 }
 
 export function abrirPantallaMapa(
@@ -108,7 +122,8 @@ export function abrirPantallaMapa(
   opciones: OpcionesPantallaMapa = {},
 ): PantallaMapa {
   const partida = opciones.partida ?? null;
-  // En una partida, «Menú» sale al inicio después de confirmarlo (tarea f10-t3).
+  // En una partida, «Menú» abre el menú de la partida: Guardar, Cargar, Ajustes y Salir (tarea
+  // f14-t2, decisión del jugador).
   const volver = partida
     ? el(
         'button',
@@ -252,6 +267,121 @@ export function abrirPantallaMapa(
   let recibidoEn = 0;
   let velocidadMotor = 0;
   let animacion: number | null = null;
+  // Guardar y cargar (tarea f14-t2, decisiones del jugador): menú de la partida con Guardar,
+  // Cargar, Ajustes y Salir; Ctrl+S; guardado automático al empezar cada mes (y el de cada año).
+  const almacen = partida ? almacenPartidas() : null;
+  /** Ranura en la que guarda Ctrl+S: la de la que se cargó la partida o la última usada. */
+  let ranuraActual = opciones.ranura ?? null;
+  /** Momento de la partida que está a salvo (al empezar o al cargar, aún no se ha perdido nada). */
+  let guardadaHasta = partida ? horaAbsoluta(partida) : 0;
+  const hayCambios = (): boolean => partida !== null && horaAbsoluta(partida) !== guardadaHasta;
+  const nombreDe = (id: string): string => conjunto?.paises[id]?.nombre ?? id;
+  /** Copias de la partida pedidas al motor para guardarlas. */
+  let peticiones = 0;
+  const esperando = new Map<number, (copia: Partida) => void>();
+  const pedirPartida = (): Promise<Partida> =>
+    new Promise((resolver) => {
+      const peticion = ++peticiones;
+      esperando.set(peticion, resolver);
+      motor?.enviar({ tipo: 'instantanea', peticion });
+    });
+  /** Indicador de guardado (tarea f14-t4): «Guardando…», lo guardado (con sonido) o el error. */
+  const indicador = crearIndicadorGuardado({ alSonar: () => reproducir('guardado') });
+  async function guardarAutomatico(copia: Partida): Promise<void> {
+    if (!almacen) return;
+    indicador.guardando();
+    try {
+      await guardarPartida(almacen, copia, { tipo: 'automatico' }, VERSION);
+      // El 1 de enero, además, el guardado de ese año, que no se borra solo.
+      if (copia.fecha.endsWith('-01-01')) {
+        await guardarPartida(almacen, copia, { tipo: 'anual' }, VERSION);
+      }
+      // Los automáticos no suenan: llegan cada mes.
+      indicador.hecho(t('juego.guardado.hechoAutomatico'));
+    } catch {
+      indicador.error(t('juego.guardado.error'));
+    }
+  }
+  /** Guarda en una ranura; dice si se ha podido. */
+  const guardarEnRanura = async (ranura: number): Promise<boolean> => {
+    if (!almacen || !motor) return false;
+    indicador.guardando();
+    try {
+      const copia = await pedirPartida();
+      await guardarPartida(almacen, copia, { tipo: 'manual', ranura }, VERSION);
+      ranuraActual = ranura;
+      guardadaHasta = horaAbsoluta(copia);
+      indicador.hecho(t('juego.guardado.hecho', { n: ranura }), true);
+      return true;
+    } catch {
+      indicador.error(t('juego.guardado.error'));
+      return false;
+    }
+  };
+  /** Para el tiempo mientras hay una ventana del menú abierta; devuelve cómo seguir después. */
+  const pausarMientras = (): (() => void) => {
+    const antes = tiempo?.velocidad ?? 0;
+    if (antes === 0) return () => undefined;
+    tiempo?.ponerVelocidad(0);
+    return () => {
+      if (tiempo?.velocidad === 0) tiempo.ponerVelocidad(antes);
+    };
+  };
+  /** «Guardar en…»: elegir una ranura (con el tiempo parado). Dice si se ha guardado. */
+  const elegirRanura = (seguirDespues = true): Promise<boolean> =>
+    new Promise((resolver) => {
+      if (!almacen) {
+        resolver(false);
+        return;
+      }
+      const seguir = seguirDespues ? pausarMientras() : () => undefined;
+      void abrirGuardar({
+        almacen,
+        nombreDe,
+        alElegir: (ranura) => {
+          void guardarEnRanura(ranura).then((hecho) => {
+            seguir();
+            resolver(hecho);
+          });
+        },
+        alCerrar: () => {
+          seguir();
+          resolver(false);
+        },
+      });
+    });
+  /** Ctrl+S y «Guardar»: en la ranura de la partida o, si aún no tiene, eligiendo una. */
+  const guardarRapido = (): void => {
+    if (ranuraActual !== null) void guardarEnRanura(ranuraActual);
+    else void elegirRanura();
+  };
+  /** Exporta la partida tal y como está ahora a un archivo .json (tarea f14-t3). */
+  const exportarArchivo = async (): Promise<void> => {
+    if (!motor) return;
+    const copia = await pedirPartida();
+    const nombre = descargarArchivo(archivoDe(copia, VERSION, new Date()));
+    indicador.hecho(t('juego.guardado.exportado', { nombre }), true);
+  };
+  /** «Cargar…»: la lista de guardados e importar (con el tiempo parado). */
+  const elegirCarga = (): void => {
+    if (!almacen) return;
+    const seguir = pausarMientras();
+    void abrirCargarPartida({
+      almacen,
+      nombreDe,
+      hayCambios,
+      alCargar: (otra, ranura) => opciones.alCargar?.(otra, ranura),
+      alCancelar: seguir,
+    });
+  };
+  /** Ctrl+S, en la fase de captura para que el navegador no abra «Guardar página». */
+  const alTeclearGuardar = (evento: KeyboardEvent): void => {
+    if (!(evento.ctrlKey || evento.metaKey) || evento.altKey) return;
+    if (evento.key.toLowerCase() !== 's') return;
+    evento.preventDefault();
+    if (!confirmacionAbierta() && !avisoAbierto()) guardarRapido();
+  };
+  if (partida) document.addEventListener('keydown', alTeclearGuardar, true);
   /** Parte de la hora en curso ahora mismo, contando desde el último mensaje del motor. */
   const fraccionActual = (): number =>
     velocidadMotor > 0
@@ -272,6 +402,15 @@ export function abrirPantallaMapa(
     motor.alRecibir = (mensaje) => {
       if (mensaje.tipo === 'suceso') {
         atenderSuceso(mensaje.suceso, mensaje.pausado);
+        return;
+      }
+      if (mensaje.tipo === 'partida') {
+        // Al empezar cada mes, el guardado automático; o la partida pedida para guardarla.
+        if (mensaje.motivo === 'mes') void guardarAutomatico(mensaje.partida);
+        else if (mensaje.peticion !== undefined) {
+          esperando.get(mensaje.peticion)?.(mensaje.partida);
+          esperando.delete(mensaje.peticion);
+        }
         return;
       }
       // Un día nuevo o efectos distintos cambian lo que dice «Efectos en curso» (tarea f13-t2).
@@ -295,7 +434,9 @@ export function abrirPantallaMapa(
       // Pausa automática ante sucesos importantes (tarea f13-t3, opción de Ajustes).
       pausaAutomatica: leerAjuste('pausaSucesos'),
     });
-    if (modoPrueba()) programarPrueba(motor, partida);
+    // El modo de prueba, solo en una partida que empieza (no al cargar una guardada).
+    const empieza = partida.fecha === FECHA_INICIO && partida.hora === HORA_INICIO;
+    if (modoPrueba() && empieza) programarPrueba(motor, partida);
   }
   /** Un suceso: si ha parado la partida, se avisa en una ventana en el centro (tarea f13-t3). */
   function atenderSuceso(suceso: Suceso, pausado: boolean): void {
@@ -420,6 +561,7 @@ export function abrirPantallaMapa(
     filaHerramientas,
     estado,
     medidor,
+    indicador.elemento,
     leyenda,
     secciones.elemento,
     recuadro,
@@ -429,6 +571,18 @@ export function abrirPantallaMapa(
 
   const mapa = crearMapaDelJuego(lienzo);
   if (partida) mapa.paisJugador = partida.jugador.paisId;
+  // Ajustes se abre también en la partida (tarea f14-t2): lo que se cambia se nota al momento.
+  const dejarDeEscucharAjustes = alCambiarAjuste((clave, valor) => {
+    if (clave === 'pausaSucesos')
+      motor?.enviar({ tipo: 'ajustes', pausaAutomatica: Boolean(valor) });
+    else if (clave === 'intensidadTerreno') mapa.terrenoVisible = Number(valor);
+    else if (clave === 'brilloAgua') brillo.hidden = !valor;
+    else if (clave === 'medidorFps') medidor.hidden = !valor;
+    else if (clave === 'nocheMapa') {
+      if (valor) moverNoche(fraccionActual());
+      else mapa.solDelJuego = null;
+    }
+  });
   moverNoche(fraccionActual());
   if (tiempo) {
     barraPartida?.marcarPausa(tiempo.velocidad === 0);
@@ -800,6 +954,10 @@ export function abrirPantallaMapa(
     document.removeEventListener('keydown', alTeclearTiempo);
     tiempo?.destruir();
     if (avisoAbierto()) cerrarAviso();
+    document.removeEventListener('keydown', alTeclearGuardar, true);
+    dejarDeEscucharAjustes();
+    indicador.destruir();
+    esperando.clear();
     atenuarMusica(false);
     if (animacion !== null) cancelAnimationFrame(animacion);
     motor?.enviar({ tipo: 'terminar' });
@@ -814,23 +972,89 @@ export function abrirPantallaMapa(
     mapa.destruir();
     elemento.remove();
   };
+  /**
+   * Antes de salir (tarea f14-t2, decisión del jugador): si hay algo jugado sin guardar, pregunta
+   * «¿Guardar antes de salir?»; si no, solo confirma. El tiempo se para mientras.
+   */
   const pedirSalida = async (): Promise<boolean> => {
     if (!tiempo) return true;
-    const velocidad = tiempo.velocidad;
-    tiempo.ponerVelocidad(0);
-    const salir = await confirmarSalidaDePartida();
-    if (!salir) tiempo.ponerVelocidad(velocidad);
-    return salir;
+    const seguir = pausarMientras();
+    if (!hayCambios()) {
+      const salir = await confirmarSalidaDePartida();
+      if (!salir) seguir();
+      return salir;
+    }
+    const respuesta = await pedirEleccion({
+      titulo: t('juego.guardado.salir.titulo'),
+      texto: t('juego.guardado.salir.texto'),
+      respuestas: [
+        { id: 'cancelar', texto: t('juego.guardado.salir.cancelar') },
+        { id: 'sinGuardar', texto: t('juego.guardado.salir.sinGuardar'), estilo: 'peligro' },
+        { id: 'guardar', texto: t('juego.guardado.salir.guardar'), estilo: 'principal' },
+      ],
+    });
+    if (respuesta === 'sinGuardar') return true;
+    if (respuesta === 'guardar') {
+      const guardada =
+        ranuraActual !== null ? await guardarEnRanura(ranuraActual) : await elegirRanura(false);
+      if (guardada) return true;
+    }
+    seguir();
+    return false;
+  };
+  /** El menú de la partida, bajo el botón «Menú» (tarea f14-t2). */
+  const abrirMenuPartida = (): void => {
+    const caja = volver.getBoundingClientRect();
+    abrirMenuContextual({
+      etiqueta: t('juego.guardado.menu.titulo'),
+      opciones: [
+        {
+          etiqueta: t('juego.guardado.menu.guardar'),
+          icono: 'guardar',
+          atajo: 'Ctrl+S',
+          accion: guardarRapido,
+        },
+        {
+          etiqueta: t('juego.guardado.menu.guardarEn'),
+          icono: 'guardar',
+          accion: () => void elegirRanura(),
+        },
+        { etiqueta: t('juego.guardado.menu.cargar'), icono: 'cargar', accion: elegirCarga },
+        {
+          etiqueta: t('juego.guardado.menu.ajustes'),
+          icono: 'ajustes',
+          accion: () => {
+            const seguir = pausarMientras();
+            void abrirAjustes().cerrada.then(seguir);
+          },
+        },
+        {
+          etiqueta: t('juego.guardado.menu.exportar'),
+          icono: 'exportar',
+          accion: () => void exportarArchivo(),
+        },
+        SEPARADOR,
+        {
+          etiqueta: t('juego.guardado.menu.salir'),
+          icono: 'salir',
+          accion: () => {
+            void pedirSalida().then((salir) => {
+              if (salir) alCerrar();
+            });
+          },
+        },
+      ],
+      x: caja.left,
+      y: caja.bottom + 6,
+    });
   };
   volver.addEventListener('click', () => {
-    reproducir('boton');
     if (!partida) {
+      reproducir('boton');
       alCerrar();
       return;
     }
-    void pedirSalida().then((salir) => {
-      if (salir) alCerrar();
-    });
+    abrirMenuPartida();
   });
-  return { elemento, mapa, partida, pedirSalida, cerrar };
+  return { elemento, mapa, partida, pedirSalida, hayCambios, cerrar };
 }

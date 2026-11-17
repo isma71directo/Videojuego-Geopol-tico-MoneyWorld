@@ -114,7 +114,7 @@ describe('ventana de confirmación (tarea f10-t3)', () => {
     const caja = ventana()!;
     expect(caja.getAttribute('role')).toBe('alertdialog');
     expect(caja.textContent).toContain('¿Salir al menú?');
-    expect(caja.textContent).toContain('Fase 14');
+    expect(caja.textContent).toContain('No hay nada sin guardar');
     expect(document.activeElement?.textContent).toBe('Seguir jugando');
     expect(confirmacionAbierta()).toBe(true);
     // Escape no llega al mapa (que quitaría la selección).

@@ -1,6 +1,6 @@
 {
   "name": "geopolitica-2010",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "Simulador geopolítico en el navegador que arranca el 1 de enero de 2010 (nombre provisional: «Geopolítica 2010»).",
   "private": true,
   "type": "module",
@@ -47,6 +47,7 @@
     "ajv": "^8.20.0",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
+    "fake-indexeddb": "^6.2.8",
     "globals": "^17.14.0",
     "happy-dom": "^21.0.4",
     "polygon-clipping": "^0.15.7",

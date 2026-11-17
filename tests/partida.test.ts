@@ -36,6 +36,7 @@ describe('crear la partida (motor, tarea f10-t1)', () => {
       );
       expect(partida).toEqual<Partida>({
         formato: FORMATO_PARTIDA,
+        id: 'p7',
         semilla: 7,
         fecha: FECHA_INICIO,
         hora: 0,

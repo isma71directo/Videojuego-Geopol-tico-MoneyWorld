@@ -1,0 +1,118 @@
+/* Ventanas «Guardar partida» y «Cargar partida» (tareas f14-t2 y f14-t4). */
+.guardados {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guardados__nota,
+.guardados__vacio {
+  margin: 0;
+  color: var(--texto-suave);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.guardados__vacio {
+  margin-top: 12px;
+}
+
+.guardados__aviso {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  border-radius: var(--radio-pequeno);
+  background: rgb(242 184 75 / 12%);
+  color: var(--en-curso);
+  font-size: 13px;
+}
+
+.guardados__fila {
+  display: flex;
+  width: 100%;
+  min-height: var(--tactil);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+
+.guardados__fila:hover,
+.guardados__fila:focus-visible {
+  border-color: var(--acento);
+  background: rgb(90 176 255 / 10%);
+}
+
+.guardados__fila:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.guardados__fila--vacia {
+  border-style: dashed;
+  background: transparent;
+}
+
+.guardados__bandera {
+  flex: none;
+  width: 48px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 12%);
+}
+
+.guardados__bandera--vacia {
+  display: block;
+  border: 1px dashed var(--borde);
+  box-shadow: none;
+}
+
+.guardados__textos {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.guardados__etiqueta {
+  font-size: 13px;
+}
+
+.guardados__partida {
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guardados__fila--vacia .guardados__partida {
+  color: var(--texto-suave);
+}
+
+.guardados__cuando {
+  color: var(--texto-suave);
+  font-size: 12px;
+}
+
+/* «Importar un archivo…» (tarea f14-t3). */
+.guardados__importar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.guardados__importar .icono {
+  width: 18px;
+  height: 18px;
+}

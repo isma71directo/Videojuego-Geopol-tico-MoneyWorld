@@ -19,7 +19,14 @@ const MINUTOS_REFRESCO = 5;
 const app = document.querySelector<HTMLElement>('#app')!;
 const avisoVersion = document.querySelector<HTMLElement>('#aviso-version')!;
 
-const inicio = crearPantallaInicio();
+const inicio = crearPantallaInicio({
+  // «Continuar» o «Cargar partida» en el inicio (tarea f14-t4): a jugarla.
+  alCargarPartida: (cargada, ranura) => {
+    partida = cargada;
+    ranuraDeLaPartida = ranura;
+    location.hash = '#partida';
+  },
+});
 inicio.acciones.appendChild(
   // Todavía no hay partidas: la fecha y el país se añadirán en la Fase 4.
   botonReportar(() => ({
@@ -48,8 +55,10 @@ function mostrarAvisoVersion(version: string): void {
 // vuelve a la pantalla anterior.
 let pantallaMapa: PantallaMapa | null = null;
 let pantallaNueva: PantallaNuevaPartida | null = null;
-/** Partida en curso (hasta la Fase 14 no se guarda: al recargar la página se pierde). */
+/** Partida en curso; se guarda desde su menú (Fase 14). */
 let partida: Partida | null = null;
+/** Ranura de la que se cargó la partida en curso (Ctrl+S guarda en ella; tarea f14-t2). */
+let ranuraDeLaPartida: number | null = null;
 /** Si la pantalla se abrió desde el juego, «Volver» equivale al botón «atrás» del navegador. */
 let abiertaDesdeElJuego = false;
 
@@ -63,14 +72,24 @@ function volverAlInicio(): void {
   }
 }
 
-/** Sale de la partida (ya confirmado): se pierde, porque aún no se guarda (Fase 14). */
+/** Sale de la partida (ya confirmado, y guardada si el jugador ha querido). */
 function terminarPartida(): void {
   partida = null;
+  ranuraDeLaPartida = null;
   volverAlInicio();
+}
+
+/** Cambia a una partida cargada desde el menú de la partida (tarea f14-t2). */
+function cambiarDePartida(cargada: Partida, ranura: number | null): void {
+  partida = cargada;
+  ranuraDeLaPartida = ranura;
+  mostrarSegunDireccion();
 }
 
 function mostrarSegunDireccion(): void {
   const hash = location.hash;
+  // En el inicio, «Continuar» con la partida guardada más reciente (tarea f14-t4).
+  if (!['#mapa', '#nueva-partida', '#partida'].includes(hash)) void inicio.actualizarGuardados();
   // Sin partida empezada (al recargar), «#partida» lleva a elegir país.
   if (hash === '#partida' && !partida) {
     history.replaceState(null, '', '#nueva-partida');
@@ -90,12 +109,18 @@ function mostrarSegunDireccion(): void {
     pantallaMapa = null;
   }
   if (hash === '#mapa') pantallaMapa ??= abrirPantallaMapa(volverAlInicio);
-  else if (hash === '#partida') pantallaMapa ??= abrirPantallaMapa(terminarPartida, { partida });
-  else if (hash === '#nueva-partida') {
+  else if (hash === '#partida') {
+    pantallaMapa ??= abrirPantallaMapa(terminarPartida, {
+      partida,
+      ranura: ranuraDeLaPartida,
+      alCargar: cambiarDePartida,
+    });
+  } else if (hash === '#nueva-partida') {
     pantallaNueva ??= abrirPantallaNuevaPartida({
       alVolver: volverAlInicio,
       alEmpezar: (nueva) => {
         partida = nueva;
+        ranuraDeLaPartida = null;
         // La partida sustituye a la elección en el historial: «atrás» vuelve al inicio.
         location.replace('#partida');
       },
@@ -119,9 +144,9 @@ window.addEventListener('hashchange', () => {
   }
   mostrarSegunDireccion();
 });
-// Recargar o cerrar la pestaña con una partida en marcha la perdería: el navegador pregunta.
+// Recargar o cerrar la pestaña con algo jugado sin guardar lo perdería: el navegador pregunta.
 window.addEventListener('beforeunload', (evento) => {
-  if (partida) evento.preventDefault();
+  if (partida && pantallaMapa?.hayCambios()) evento.preventDefault();
 });
 mostrarSegunDireccion();
 

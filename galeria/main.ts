@@ -29,6 +29,12 @@ import { el, reemplazar, type Hijo } from '../src/ui/dom';
 import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { muestrario } from './muestrario';
 import { mostrarAvisoSuceso } from '../src/ui/aviso-suceso';
+import { filaGuardado, etiquetaGuardado } from '../src/ui/guardar-cargar';
+import { crearIndicadorGuardado } from '../src/ui/indicador-guardado';
+import { almacenEnMemoria } from '../src/ui/almacen-partidas';
+import type { ResumenGuardado } from '../src/sim/guardado';
+import { FORMATO_PARTIDA } from '../src/sim/partida';
+import { VERSION } from '../src/compartido/version';
 import { RECURSOS_POR_TIPO, type TipoRecurso } from '../src/datos/regiones-economia';
 import { iconoDeRecurso } from '../src/ui/ficha-region';
 
@@ -230,6 +236,90 @@ function avisoPausa(): HTMLElement {
     t('galeria.aviso.nota'),
     el('ul', { class: 'galeria__sonidos' }, el('li', {}, boton)),
     estado,
+  );
+}
+
+/**
+ * Guardar y cargar (tarea f14-t4): cómo se ve cada guardado en las ventanas «Guardar partida» y
+ * «Cargar partida» (con datos de ejemplo) y el indicador que aparece al guardar, con su sonido.
+ */
+function guardarCargar(conjunto: ConjuntoPaises): HTMLElement {
+  const nombreDe = (id: string): string => conjunto.paises[id]?.nombre ?? id;
+  const ejemplo = (
+    tipo: ResumenGuardado['tipo'],
+    ranura: number | null,
+    paisId: string,
+    fecha: string,
+    hora: number,
+  ): ResumenGuardado => ({
+    id: `ejemplo-${tipo}-${ranura ?? fecha}`,
+    tipo,
+    ranura,
+    partidaId: 'ejemplo',
+    paisId,
+    fecha,
+    hora,
+    guardadoEn: new Date(Date.UTC(2026, 10, 17, 9, 30)).toISOString(),
+    version: VERSION,
+    formato: FORMATO_PARTIDA,
+  });
+  const opciones = { almacen: almacenEnMemoria(), nombreDe, raiz: RAIZ };
+  const fila = (resumen: ResumenGuardado | null, etiqueta: string): HTMLElement =>
+    el(
+      'li',
+      {},
+      filaGuardado(resumen, {
+        ...opciones,
+        etiqueta,
+        alElegir: () => {
+          sonido.activar();
+          sonido.reproducir('boton');
+        },
+      }),
+    );
+  const guardados = [
+    ejemplo('manual', 1, 'ESP', '2011-03-14', 9),
+    ejemplo('automatico', null, 'JPN', '2012-06-01', 0),
+    ejemplo('anual', null, 'BRA', '2013-01-01', 0),
+  ];
+  const lista = el(
+    'ol',
+    { class: 'guardados galeria__guardados' },
+    fila(guardados[0]!, etiquetaGuardado(guardados[0]!)),
+    fila(null, t('juego.guardado.ranura', { n: 2 })),
+    fila(guardados[1]!, etiquetaGuardado(guardados[1]!)),
+    fila(guardados[2]!, etiquetaGuardado(guardados[2]!)),
+  );
+  const indicador = crearIndicadorGuardado({ alSonar: () => sonido.reproducir('guardado') });
+  let espera: number | null = null;
+  const probar = (texto: string, hacer: () => void): HTMLButtonElement => {
+    const boton = el('button', { class: 'boton', type: 'button' }, texto);
+    boton.addEventListener('click', () => {
+      sonido.activar();
+      if (espera !== null) clearTimeout(espera);
+      hacer();
+    });
+    return boton;
+  };
+  /** Como en la partida: «Guardando…» un momento y después lo guardado. */
+  const guardar = (texto: string, sonar: boolean): void => {
+    indicador.guardando();
+    espera = window.setTimeout(() => indicador.hecho(texto, sonar), 700);
+  };
+  return seccion(
+    t('galeria.guardado.titulo'),
+    t('galeria.guardado.nota'),
+    lista,
+    el(
+      'div',
+      { class: 'galeria__botones' },
+      probar(t('galeria.guardado.aMano'), () => guardar(t('juego.guardado.hecho', { n: 1 }), true)),
+      probar(t('galeria.guardado.automatico'), () =>
+        guardar(t('juego.guardado.hechoAutomatico'), false),
+      ),
+      probar(t('galeria.guardado.error'), () => indicador.error(t('juego.guardado.error'))),
+    ),
+    el('div', { class: 'galeria__indicador' }, indicador.elemento),
   );
 }
 
@@ -518,6 +608,7 @@ async function iniciar(): Promise<void> {
       sonidos(),
       musicaAmbiental(),
       avisoPausa(),
+      guardarCargar(conjunto),
       retratos(gobiernos, conjunto),
       ...muestrario(conjunto, seccion),
       ...banderas(conjunto),
