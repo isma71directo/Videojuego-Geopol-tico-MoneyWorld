@@ -759,6 +759,8 @@
   color: var(--texto-suave);
   font-size: 14px;
   line-height: 1.5;
+  /* Los saltos de línea del texto separan párrafos (p. ej., las opciones de una decisión). */
+  white-space: pre-line;
 }
 
 .confirmacion__botones {

@@ -73,6 +73,8 @@ export interface Partida {
   efectos: Efecto[];
   /** Sucesos programados, por orden (tarea f13-t3). */
   agenda: Suceso[];
+  /** Lo que ha decidido el jugador y aún no ha usado ningún sistema (tarea f18-t3). */
+  decisiones?: Record<string, string>;
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */

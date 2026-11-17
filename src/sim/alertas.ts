@@ -12,10 +12,13 @@ import type { Sistema } from './motor';
 import { horaAbsoluta, momentoDe } from './reloj';
 import { programar } from './sucesos';
 
-export type TipoAlerta = 'recesion' | 'paro' | 'inflacion' | 'inflacionGrave' | 'deflacion';
+export type TipoAlerta =
+  'recesion' | 'paro' | 'inflacion' | 'inflacionGrave' | 'deflacion' | 'crisisDeuda';
 
 /** Todas, en el orden en que se avisan si llegan a la vez. */
 export const TIPOS_ALERTA: readonly TipoAlerta[] = [
+  // (La de la crisis de deuda la avisa el mercado de la deuda, Fase 18.)
+  'crisisDeuda',
   'recesion',
   'inflacionGrave',
   'inflacion',
@@ -24,9 +27,16 @@ export const TIPOS_ALERTA: readonly TipoAlerta[] = [
 ];
 
 /** Las graves paran la partida (si la pausa automática está activada). */
-export const ALERTAS_GRAVES: ReadonlySet<TipoAlerta> = new Set(['recesion', 'inflacionGrave']);
+export const ALERTAS_GRAVES: ReadonlySet<TipoAlerta> = new Set([
+  'recesion',
+  'inflacionGrave',
+  'crisisDeuda',
+]);
 
-/** Una alerta con su dato (tanto por uno): la caída del PIB, el paro o la inflación. */
+/**
+ * Una alerta con su dato: la caída del PIB, el paro o la inflación (tanto por uno), o la prima de
+ * riesgo (puntos) en la crisis de deuda.
+ */
 export interface AlertaEconomica {
   tipo: TipoAlerta;
   valor: number;

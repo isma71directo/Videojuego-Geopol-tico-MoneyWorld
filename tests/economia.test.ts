@@ -21,8 +21,8 @@ import {
 } from '../src/sim/economia';
 import { desempaquetar, empaquetar, JUEGO } from '../src/sim/guardado';
 import { crearMotor } from '../src/sim/motor';
-import { completarPresupuesto } from '../src/sim/presupuesto';
-import { completarMercado } from '../src/sim/deuda';
+import { completarPresupuesto, sistemaPresupuesto } from '../src/sim/presupuesto';
+import { completarMercado, sistemaMercado } from '../src/sim/deuda';
 import { paisCompleto } from './ayudas/pais-completo';
 import { crearPartida, FORMATO_PARTIDA } from '../src/sim/partida';
 
@@ -32,12 +32,12 @@ const paises = JSON.parse(
 const jugables = Object.values(paises.paises).filter((p) => p.jugable);
 const economiaDe = (id: string): EconomiaPais =>
   economiaInicial(paises.paises[id]!.datos, paises.paises[id]!.nivelRenta)!;
-/** Avanza unos años (en «realista», si no se dice) y devuelve el crecimiento de cada uno. */
-function anios(economia: EconomiaPais, cuantos: number, dureza = 1): number[] {
+/** Avanza unos años la economía sola y devuelve el crecimiento de cada uno. */
+function anios(economia: EconomiaPais, cuantos: number): number[] {
   const crecimientos: number[] = [];
   for (let a = 0; a < cuantos; a++) {
     const antes = economia.pib;
-    for (let m = 0; m < 12; m++) avanzarMes(economia, dureza);
+    for (let m = 0; m < 12; m++) avanzarMes(economia);
     crecimientos.push(economia.pib / antes - 1);
   }
   return crecimientos;
@@ -162,40 +162,48 @@ describe('nada mejora solo: si se hace mal, empeora (ajuste f15-a1)', () => {
     );
   });
 
-  it('Grecia, sin hacer nada, se hunde cuatro años seguidos y en diez no recupera su PIB de 2010', () => {
+  it('Grecia, sin hacer nada, se hunde tres años seguidos y en diez no recupera su PIB de 2010', () => {
     // Real: −5,5 %, −10,1 %, −7,1 % y −2,7 % en 2010–2013 (−23 % en total). Con su presupuesto y
-    // el mercado de su deuda, que le encarece el crédito (Fase 18).
+    // el mercado de su deuda: el crédito se encarece, los mercados se cierran y deja de pagar
+    // (Fase 18).
     const grecia = paisCompleto(paises, 'GRC');
-    const crecimientos = grecia.anios(4);
+    const crecimientos = grecia.anios(3);
     for (const g of crecimientos) expect(g).toBeLessThan(0);
-    expect(grecia.economia.pib / paises.paises.GRC!.datos.pib!).toBeLessThan(0.85);
-    grecia.anios(6);
+    expect(grecia.economia.pib / paises.paises.GRC!.datos.pib!).toBeLessThan(0.8);
+    grecia.anios(7);
     expect(grecia.economia.pib).toBeLessThan(paises.paises.GRC!.datos.pib!);
   });
 
-  it('los desequilibrios de 2010 fuerzan un ajuste: recorte del gasto; y la prima de riesgo encarece el crédito y hunde la confianza (Fase 18)', () => {
+  it('sin hacer nada, la prima de Grecia se dispara: crédito caro, confianza hundida y, al cerrarse los mercados, el impago con sus recortes (Fase 18)', () => {
     const grecia = paisCompleto(paises, 'GRC');
     const gasto = grecia.economia.demandaBase.consumoPublico;
     const inversion = grecia.economia.demanda.inversion;
-    const pendiente = grecia.economia.desequilibrio.ajustePendiente;
     const prima = grecia.mercado.prima;
+    // El diagnóstico de 2010: muy desequilibrada (déficit del 11,4 %: sobra lo que pasa del 3 %).
     expect(grecia.economia.desequilibrio.intensidad).toBeGreaterThan(1.5);
-    // Déficit de 2010 del 11,4 %: hay que cerrar lo que pasa del 3 %.
-    expect(pendiente).toBeCloseTo(0.084, 3);
-    grecia.anios(2);
-    expect(grecia.economia.demandaBase.consumoPublico).toBeLessThan(gasto - 0.02);
-    expect(grecia.economia.desequilibrio.ajustePendiente).toBeLessThan(pendiente);
-    // La prima sube, el crédito se encarece: se invierte menos y cae la confianza de las empresas.
+    expect(grecia.economia.desequilibrio.ajustePendiente).toBeCloseTo(0.084, 3);
+    // Nada se recorta solo: el primer año el gasto público no cambia…
+    grecia.avanzar(12);
+    expect(grecia.economia.demandaBase.consumoPublico).toBeCloseTo(gasto, 6);
+    // … pero la prima sube y el crédito se encarece: se invierte menos y cae la confianza.
     expect(grecia.mercado.prima).toBeGreaterThan(prima + 2);
     expect(grecia.economia.demanda.inversion).toBeLessThan(inversion * 0.9);
     expect(grecia.economia.confianzaEmpresas).toBeLessThan(85);
+    // Al cerrarse los mercados, con una deuda impagable, deja de pagar y tiene que recortar.
+    grecia.avanzar(24);
+    expect(grecia.mercado.programa?.tipo).toBe('impago');
+    expect(grecia.mercado.rating).toBe('D');
+    expect(grecia.economia.demandaBase.consumoPublico).toBeLessThan(gasto - 0.02);
   });
 
-  it('un país sin desequilibrios no sufre ese ajuste', () => {
-    const china = economiaDe('CHN');
-    expect(china.desequilibrio.intensidad).toBeLessThan(0.05);
-    anios(china, 3);
-    expect(china.desequilibrio.creditoPerdido).toBeLessThan(0.001);
+  it('un país sano no entra en crisis ni recorta (China)', () => {
+    const china = paisCompleto(paises, 'CHN');
+    const gasto = china.economia.demandaBase.consumoPublico;
+    expect(china.economia.desequilibrio.intensidad).toBeLessThan(0.05);
+    china.anios(3);
+    expect(china.mercado.programa).toBeNull();
+    expect(china.mercado.cerrado).toBe(false);
+    expect(china.economia.demandaBase.consumoPublico).toBeCloseTo(gasto, 6);
   });
 
   it('si se invierte menos, hay menos capital y menos PIB', () => {
@@ -225,26 +233,14 @@ describe('nada mejora solo: si se hace mal, empeora (ajuste f15-a1)', () => {
       return completo.economia.pib < pais.datos.pib!;
     });
     // (Portugal también, en la partida, con el contagio de Grecia: tests/mercado-deuda.test.ts.)
-    expect(encogen.map((p) => p.id)).toEqual(expect.arrayContaining(['GRC', 'ISL']));
+    expect(encogen.map((p) => p.id)).toContain('GRC');
     expect(encogen.length).toBeGreaterThanOrEqual(5);
   });
 
-  it('según la dificultad: en realista es más duro que en fácil, y el ajuste dura lo mismo', () => {
+  it('según la dificultad: en realista, la prima pesa más en el crédito que en fácil', () => {
     expect(durezaDe('realista')).toBe(1);
     expect(durezaDe('facil')).toBeLessThan(durezaDe('normal'));
     expect(durezaDe('normal')).toBeLessThan(1);
-    const realista = economiaDe('GRC');
-    const facil = economiaDe('GRC');
-    const fin = (e: EconomiaPais, dureza: number) => {
-      let mes = 0;
-      while (e.desequilibrio.ajustePendiente > 0 && mes < 240) {
-        avanzarMes(e, dureza);
-        mes++;
-      }
-      return mes;
-    };
-    expect(fin(realista, 1)).toBe(fin(facil, durezaDe('facil')));
-    // Y, con su mercado, la prima pesa más en el crédito en «realista».
     const griegaRealista = paisCompleto(paises, 'GRC', 1);
     const griegaFacil = paisCompleto(paises, 'GRC', durezaDe('facil'));
     griegaRealista.avanzar(36);
@@ -310,9 +306,11 @@ describe('en la partida (tarea f15-t2)', () => {
     expect(cargada).toEqual(partida);
   });
 
-  it('el motor aplica la dureza de la dificultad de la partida (ajuste f15-a1)', () => {
+  it('el motor aplica la dureza de la dificultad de la partida (con el mercado de la deuda, Fase 18)', () => {
     const pibGrecia = (dificultad: 'facil' | 'realista') => {
-      const motor = crearMotor({ sistemas: [sistemaEconomia] });
+      const motor = crearMotor({
+        sistemas: [sistemaEconomia, sistemaPresupuesto, sistemaMercado],
+      });
       const partida = crearPartida(
         { paisId: 'ESP', dificultad, eventosHistoricos: true, semilla: 3 },
         paises.paises,

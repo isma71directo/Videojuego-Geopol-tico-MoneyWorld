@@ -6,6 +6,7 @@ import type { ConjuntoPaises } from '../src/datos/paises';
 import { sistemaAlertas } from '../src/sim/alertas';
 import {
   avanzarMes,
+  durezaDe,
   economiaInicial,
   nivelDe,
   pibNominal,
@@ -13,6 +14,8 @@ import {
   type EconomiaPais,
 } from '../src/sim/economia';
 import { crearMotor } from '../src/sim/motor';
+import { empezarSalida } from '../src/sim/deuda';
+import { paisCompleto } from './ayudas/pais-completo';
 import { crearPartida } from '../src/sim/partida';
 import {
   avanzarPresupuesto,
@@ -46,10 +49,10 @@ const paisDe = (id: string): Pais => {
     estado: { tesoreria: tesoreriaInicial(datos.datos as never) },
   };
 };
-/** Avanza unos meses la economía y el presupuesto (en «realista», si no se dice). */
-const meses = (p: Pais, n: number, dureza = 1, cadaMes?: () => void) => {
+/** Avanza unos meses la economía y el presupuesto (sin el mercado de la deuda). */
+const meses = (p: Pais, n: number, cadaMes?: () => void) => {
   for (let i = 0; i < n; i++) {
-    avanzarMes(p.economia, dureza);
+    avanzarMes(p.economia);
     avanzarPresupuesto(p.presupuesto, p.economia, p.estado);
     cadaMes?.();
   }
@@ -76,11 +79,14 @@ describe('responde a la economía (tarea f17-t3)', () => {
     expect(japon.presupuesto.transversales.pensiones).toBeGreaterThan(pensiones * precios * 1.08);
   });
 
-  it('los recortes del ajuste forzoso salen de los ministerios (más en «realista» que en «fácil»)', () => {
-    const realista = paisDe('GRC');
-    const facil = paisDe('GRC');
-    meses(realista, 36, 1);
-    meses(facil, 36, 0.5);
+  it('los recortes del rescate del FMI salen de los ministerios (más en «realista» que en «fácil»; Fase 18)', () => {
+    const realista = paisCompleto(paises, 'GRC', 1);
+    const facil = paisCompleto(paises, 'GRC', durezaDe('facil'));
+    for (const p of [realista, facil]) {
+      empezarSalida('fmi', p.mercado, p.economia, p.presupuesto);
+      p.avanzar(24);
+    }
+    expect(realista.mercado.programa?.tipo).toBe('fmi');
     expect(ministerios(realista.presupuesto)).toBeLessThan(ministerios(facil.presupuesto));
     // Las partidas de cada ministerio siguen sumando lo suyo.
     for (const m of MINISTERIOS) {
@@ -116,7 +122,7 @@ describe('el déficit se cubre con deuda: si se hace mal, empeora (tarea f17-t3)
 
   it('la tesorería no baja de un mes de gastos: el Estado emite deuda', () => {
     const grecia = paisDe('GRC');
-    meses(grecia, 24, 1, () => {
+    meses(grecia, 24, () => {
       expect(grecia.estado.tesoreria).toBeGreaterThanOrEqual(
         (totalGastos(grecia.presupuesto) / 12) * 0.999,
       );

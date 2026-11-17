@@ -86,8 +86,6 @@ export interface PresupuestoPais {
   tipos: Record<Ingreso, number>;
   /** Prestación al año por cada punto de paro y dólar de PIB nominal (para que siga al paro). */
   porParado: number;
-  /** Consumo público de la economía el último mes (para llevar al presupuesto sus recortes). */
-  consumoPublicoVisto: number;
   /** PIB potencial nominal el último mes: los ministerios crecen con él (tarea f17-t3). */
   potencialVisto: number;
   /**
@@ -351,7 +349,6 @@ export function presupuestoInicial(
     tipoInteres,
     tipos,
     porParado: paro > 0 ? transversales.desempleo / (paro * pib) : 0,
-    consumoPublicoVisto: economia?.demandaBase.consumoPublico ?? 0,
     potencialVisto: economia ? economia.pibPotencial * economia.nivelPrecios : pib,
     serie: { ingresos: [], gastos: [], deuda: [] },
   };
@@ -390,18 +387,13 @@ export function avanzarPresupuesto(
   const bases = basesDeIngresos(economia);
   for (const i of INGRESOS) presupuesto.ingresos[i] = presupuesto.tipos[i] * bases[i];
   // Ministerios: con el PIB potencial nominal (precios y capacidad), así que pesan lo mismo con la
-  // economía en su potencial y más si cae por debajo (estabilizador automático)…
+  // economía en su potencial y más si cae por debajo (estabilizador automático). (Los recortes de
+  // una crisis de deuda los hace el mercado de la deuda: src/sim/deuda.ts.)
   const potencial = economia.pibPotencial * economia.nivelPrecios;
   const crecer = presupuesto.potencialVisto > 0 ? potencial / presupuesto.potencialVisto : precios;
   presupuesto.potencialVisto = potencial;
-  const ministerios = suma(MINISTERIOS.map((m) => gastoMinisterio(presupuesto, m)));
-  // … menos los recortes del ajuste forzoso de este mes (f15-a1), repartidos entre todos.
-  const recorte =
-    Math.max(0, presupuesto.consumoPublicoVisto - economia.demandaBase.consumoPublico) * pib;
-  presupuesto.consumoPublicoVisto = economia.demandaBase.consumoPublico;
-  const quedan = ministerios > 0 ? Math.max(0, 1 - recorte / (ministerios * crecer)) : 1;
   for (const m of MINISTERIOS) {
-    for (const p of PARTIDAS) presupuesto.ministerios[m][p] *= crecer * quedan;
+    for (const p of PARTIDAS) presupuesto.ministerios[m][p] *= crecer;
   }
   // Pensiones, con los precios y el envejecimiento; desempleo, con el paro; intereses, con la deuda.
   presupuesto.transversales.pensiones *=

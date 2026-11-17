@@ -1246,6 +1246,10 @@
       "deflacion": {
         "titulo": "Deflación",
         "texto": "Los precios bajan ({valor} al año): se espera a que bajen más y se consume menos, lo que frena la economía."
+      },
+      "crisisDeuda": {
+        "titulo": "Crisis de deuda",
+        "texto": "La prima de riesgo ha llegado a {valor} puntos y los mercados ya no prestan al país: no puede renovar la deuda que vence ni cubrir su déficit."
       }
     },
     "sucesos": {
@@ -1285,9 +1289,6 @@
       "inversionAyuda": "Lo que se invierte en máquinas, edificios e infraestructuras, en % del PIB: se suma al capital y hace crecer la producción.",
       "ahorro": "Ahorro nacional",
       "ahorroAyuda": "Lo que no consumen los hogares ni el Estado, en % del PIB.",
-      "ajuste": "Ajuste forzoso",
-      "ajusteValor": "{cantidad} por recortar",
-      "ajusteAyuda": "Con la deuda, el déficit, el déficit exterior o el paro de 2010, los mercados le cierran el crédito y el Estado tiene que recortar su gasto (lo que falta, en % del PIB) hasta dejar el déficit en el 3 % del PIB: baja la inversión, cae la confianza y el PIB se hunde mientras dure. Si nadie actúa, no se arregla solo. (Provisional: la deuda de verdad llega en la Fase 18.)",
       "sectoresTitulo": "Producción por sectores",
       "sectores": {
         "agricultura": "Agricultura y pesca",
@@ -1305,6 +1306,13 @@
       "graficoPreciosTitulo": "Paro e inflación desde enero de 2010 (%)",
       "sinDatos": "Sin datos para su economía.",
       "ventanaNota": "La pantalla completa de Economía llega en la Fase 19, y el banco central, en la 20."
+    },
+    "decisiones": {
+      "crisisDeuda": {
+        "pregunta": "Hay que elegir una salida:\n• Rescate del FMI: presta al 3,5 % durante tres años a cambio de un ajuste (recortes de los ministerios y subidas de impuestos, con recesión) hasta dejar el déficit en el 3 % del PIB.\n• Impago: se borra la mitad de la deuda y no se pagan intereses durante cuatro años, pero el rating cae a D, nadie presta (hay que recortar ministerios y pensiones hasta gastar solo lo que se recauda), la confianza se hunde y luego la prima tarda años en bajar.\n\nSi cierras sin elegir, se te volverá a preguntar el mes que viene.",
+        "fmi": "Pedir el rescate del FMI",
+        "impago": "Declarar el impago"
+      }
     }
   },
   "hojaDeRuta": {
@@ -1517,7 +1525,8 @@
       "alertaParo": "Alerta: el paro se dispara",
       "alertaInflacion": "Alerta: inflación alta",
       "alertaInflacionGrave": "Alerta: inflación desbocada",
-      "alertaDeflacion": "Alerta: deflación"
+      "alertaDeflacion": "Alerta: deflación",
+      "alertaCrisisDeuda": "Alerta: crisis de deuda"
     },
     "economia": {
       "titulo": "Economía de un país",
@@ -1545,7 +1554,7 @@
     },
     "alertas": {
       "titulo": "Alertas económicas",
-      "nota": "Las alertas del país del jugador, cada una con su icono y su sonido. Salen en una tarjeta arriba a la derecha que se va sola; las graves (recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. Pulsa para ver y oír cada una con un dato de ejemplo."
+      "nota": "Las alertas del país del jugador, cada una con su icono y su sonido. Salen en una tarjeta arriba a la derecha que se va sola; las graves (crisis de deuda, recesión e inflación desbocada) paran la partida y salen en el aviso del centro si la pausa automática está activada. Pulsa para ver y oír cada una con un dato de ejemplo."
     },
     "musica": {
       "titulo": "Música ambiental",

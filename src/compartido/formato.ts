@@ -37,6 +37,11 @@ export function porcentaje(valor: number): string {
   return `${decimal.format(valor)} %`;
 }
 
+/** Puntos con un decimal: 15.34 → «15,3». */
+export function puntos(valor: number): string {
+  return decimal.format(valor);
+}
+
 /** Puntos con signo y un decimal: 6 → «+6,0»; −3.84 → «−3,8»; 0 → «0,0». */
 export function puntosConSigno(valor: number): string {
   const texto = decimal.format(Math.abs(valor));

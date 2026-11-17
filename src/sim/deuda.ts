@@ -13,7 +13,18 @@ import config from './config/deuda.json';
 import { durezaDe, pibNominal, type EconomiaPais } from './economia';
 import type { Sistema } from './motor';
 import type { Partida } from './partida';
-import { saldo, totalIngresos, type PresupuestoPais } from './presupuesto';
+import {
+  gastoMinisterio,
+  INGRESOS,
+  MINISTERIOS,
+  PARTIDAS,
+  saldo,
+  totalIngresos,
+  totalPorPartida,
+  type PresupuestoPais,
+} from './presupuesto';
+import { horaAbsoluta, momentoDe } from './reloj';
+import { programar } from './sucesos';
 
 /** Lo que mira el mercado de un país. */
 export interface Fundamentos {
@@ -126,6 +137,22 @@ export function fundamentosDe2010(
 
 const m = config.mercado;
 const c = config.contagio;
+const k = config.crisis;
+
+/** Las salidas de una crisis de deuda (tarea f18-t3). */
+export type SalidaCrisis = 'fmi' | 'impago';
+export const SALIDAS_CRISIS: readonly SalidaCrisis[] = ['fmi', 'impago'];
+
+export interface ProgramaCrisis {
+  tipo: SalidaCrisis | 'decidiendo';
+  /** Meses que le quedan. */
+  meses: number;
+  /** En un impago, el tipo medio que pagaba la deuda (vuelve a pagarlo al acabar la moratoria). */
+  tipoInteres?: number;
+}
+
+/** Clave de la decisión del jugador ante una crisis de deuda (orden «decidir» del motor). */
+export const CLAVE_CRISIS = 'crisisDeuda';
 
 /** El mercado de la deuda de un país: su prima, su rating y lo que necesita para calcularlos. */
 export interface MercadoDeuda {
@@ -139,6 +166,13 @@ export interface MercadoDeuda {
   rating: Rating;
   /** ¿Han dejado de prestarle los mercados? (Crisis de deuda: tarea f18-t3.) */
   cerrado: boolean;
+  /**
+   * La salida de la crisis (tarea f18-t3): rescate del FMI o impago, con los meses que le quedan;
+   * «decidiendo» mientras el jugador elige. Null fuera de una crisis.
+   */
+  programa: ProgramaCrisis | null;
+  /** Recargo de la prima tras un impago (puntos), que se apaga. */
+  recargo: number;
   /** Lo que no cambia hasta otras fases: estabilidad política, déficit exterior y región. */
   estabilidad: number;
   deficitExterior: number;
@@ -197,6 +231,8 @@ export function mercadoInicial(
     tipoMercado: 0,
     rating: 'AAA',
     cerrado: false,
+    programa: null,
+    recargo: 0,
     estabilidad: de2010.estabilidad,
     deficitExterior: de2010.deficitExterior,
     region: region ?? '',
@@ -272,26 +308,40 @@ export function avanzarMercado(
   const f = fundamentosAhora(id, mercado, economia, presupuesto);
   mercado.ajuste *= Math.pow(0.5, 1 / m.mesesAjuste);
   const extra = Math.min(c.maximo, contagio * vulnerabilidad(f));
-  const objetivo = Math.min(config.primaMaxima, Math.exp(riesgoPais(f) + extra) + mercado.ajuste);
+  mercado.recargo *= Math.pow(0.5, 1 / k.mesesRecargo);
+  const objetivo = Math.min(
+    config.primaMaxima,
+    Math.exp(riesgoPais(f) + extra) + mercado.ajuste + mercado.recargo,
+  );
   mercado.prima = Math.max(0, mercado.prima + (objetivo - mercado.prima) * m.reaccionMensual);
   mercado.tipoMercado = tipoDeMercado(mercado.prima, economia.inflacionEsperada);
   // La deuda que vence este mes y la nueva se pagan al tipo de ahora: el tipo medio se acerca.
+  // (Con un rescate del FMI, al tipo del FMI; en un impago no se renueva nada: lo que se debe
+  // sigue al tipo que tenía.)
   const deuda = presupuesto.deuda;
   const nueva = Math.max(0, deuda - mercado.deudaVista);
   const vence = deuda / (12 * m.vidaMedia);
-  if (deuda > 0) {
+  const tipoNuevo = mercado.programa?.tipo === 'fmi' ? k.tipoFmi : mercado.tipoMercado;
+  const enImpago = mercado.programa?.tipo === 'impago';
+  if (deuda > 0 && !enImpago) {
     const parte = Math.min(1, (nueva + vence) / deuda);
-    presupuesto.tipoInteres += (mercado.tipoMercado / 100 - presupuesto.tipoInteres) * parte;
+    presupuesto.tipoInteres += (tipoNuevo / 100 - presupuesto.tipoInteres) * parte;
   }
   mercado.deudaVista = deuda;
-  if (economia.meses % m.mesesRevision === 0) {
-    mercado.rating = revisarRating(mercado.rating, ratingDe(mercado.prima));
+  if (enImpago) mercado.rating = 'D';
+  else if (economia.meses % m.mesesRevision === 0 || mercado.rating === 'D') {
+    mercado.rating = revisarRating(
+      mercado.rating === 'D' ? 'C' : mercado.rating,
+      ratingDe(mercado.prima),
+    );
   }
-  mercado.cerrado = mercado.prima > m.umbralCierre;
+  // Cerrados con la prima disparada, durante un impago y mientras dure un rescate.
+  mercado.cerrado = mercado.prima > m.umbralCierre || mercado.programa !== null;
   mercado.serie.push(redondearPrima(mercado.prima));
-  // El crédito de la economía se encarece con la prima (según la dificultad).
+  // El crédito de la economía se encarece con la prima (según la dificultad); en un impago, mucho.
+  const primaCredito = enImpago ? Math.max(mercado.prima, k.primaImpago) : mercado.prima;
   economia.primaRiesgo =
-    economia.primaReferencia + (mercado.prima - economia.primaReferencia) * dureza;
+    economia.primaReferencia + (primaCredito - economia.primaReferencia) * dureza;
 }
 
 /**
@@ -301,9 +351,18 @@ export function avanzarMercado(
 export const sistemaMercado: Sistema = (pasos, partida) => {
   if (!pasos.some((paso) => paso.ritmo === 'mensual')) return;
   const dureza = durezaDe(partida.opciones.dificultad);
+  // (Un rescate del FMI hace de cortafuegos: no contagia. Un impago sí, y mucho.)
   const enApuros = Object.entries(partida.paises)
-    .filter(([, e]) => e.mercado && e.mercado.prima > c.umbral)
-    .map(([id, e]) => ({ id, region: e.mercado!.region, prima: e.mercado!.prima }));
+    .filter(([, e]) => e.mercado && e.mercado.programa?.tipo !== 'fmi')
+    .map(([id, e]) => ({
+      id,
+      region: e.mercado!.region,
+      prima:
+        e.mercado!.programa?.tipo === 'impago'
+          ? Math.max(e.mercado!.prima, k.primaImpago)
+          : e.mercado!.prima,
+    }))
+    .filter((pais) => pais.prima > c.umbral);
   for (const [id, estado] of Object.entries(partida.paises)) {
     const { mercado, economia, presupuesto } = estado;
     if (!mercado || !economia || !presupuesto) continue;
@@ -312,8 +371,216 @@ export const sistemaMercado: Sistema = (pasos, partida) => {
       0,
     );
     avanzarMercado(id, mercado, economia, presupuesto, contagio, dureza);
+    const esJugador = id === partida.jugador.paisId;
+    const decision = esJugador ? partida.decisiones?.[CLAVE_CRISIS] : undefined;
+    if (decision && partida.decisiones) delete partida.decisiones[CLAVE_CRISIS];
+    const aviso = gestionarCrisis(mercado, economia, presupuesto, {
+      esJugador,
+      // (Una opción que no existe no cuenta.)
+      decision: SALIDAS_CRISIS.find((salida) => salida === decision),
+      dureza,
+    });
+    // Al jugador se le pregunta qué hacer (la partida se para), una hora después.
+    if (aviso) {
+      const { fecha, hora } = momentoDe(horaAbsoluta(partida) + 1);
+      partida.agenda = programar(partida.agenda, {
+        id: `c${partida.fecha}-${id}`,
+        titulo: '',
+        texto: '',
+        fecha,
+        hora,
+        importante: true,
+        origen: 'economia',
+        alerta: { tipo: 'crisisDeuda', valor: mercado.prima },
+        decision: { clave: CLAVE_CRISIS, opciones: [...SALIDAS_CRISIS] },
+      });
+    }
   }
 };
+
+/** ¿Elegiría la IA el impago? Solo si su deuda es impagable (mucha y con intereses enormes). */
+export function eligeImpago(economia: EconomiaPais, presupuesto: PresupuestoPais): boolean {
+  const pib = pibNominal(economia);
+  const ingresos = totalIngresos(presupuesto);
+  return (
+    pib > 0 &&
+    presupuesto.deuda / pib > k.impagoDeuda &&
+    ingresos > 0 &&
+    presupuesto.transversales.intereses / ingresos > k.impagoCarga
+  );
+}
+
+/** La salida que elige la IA: el impago si su deuda es impagable; si no, el rescate del FMI. */
+export function salidaDeLaIa(economia: EconomiaPais, presupuesto: PresupuestoPais): SalidaCrisis {
+  return eligeImpago(economia, presupuesto) ? 'impago' : 'fmi';
+}
+
+/** Empieza la salida elegida: el rescate del FMI o el impago (con su quita y su golpe). */
+export function empezarSalida(
+  salida: SalidaCrisis,
+  mercado: MercadoDeuda,
+  economia: EconomiaPais,
+  presupuesto: PresupuestoPais,
+): void {
+  if (salida === 'fmi') {
+    mercado.programa = { tipo: 'fmi', meses: k.mesesFmi };
+    return;
+  }
+  // Se deja de pagar: se borra parte de la deuda y, mientras dura, no se pagan intereses.
+  mercado.programa = { tipo: 'impago', meses: k.mesesImpago, tipoInteres: presupuesto.tipoInteres };
+  mercado.rating = 'D';
+  presupuesto.deuda *= 1 - k.quita;
+  presupuesto.tipoInteres = 0;
+  presupuesto.transversales.intereses = 0;
+  mercado.deudaVista = presupuesto.deuda;
+  economia.confianzaEmpresas -= k.confianzaImpagoEmpresas;
+  economia.confianzaConsumidores -= k.confianzaImpagoConsumidores;
+}
+
+/**
+ * Un mes del programa de ajuste del FMI: recortes del gasto de los ministerios y subidas de
+ * impuestos (`ajusteAnual` puntos del PIB al año, por la dureza) hasta dejar el déficit en el
+ * objetivo. Los recortes bajan el consumo público de la economía y los impuestos, el de los
+ * hogares: la demanda cae (recesión).
+ */
+export function ajustarConFmi(
+  economia: EconomiaPais,
+  presupuesto: PresupuestoPais,
+  dureza: number,
+): void {
+  const pib = pibNominal(economia);
+  if (pib <= 0) return;
+  const deficit = -saldo(presupuesto) / pib;
+  if (deficit <= k.deficitObjetivo) return;
+  // Cada mes, una parte de lo que sobra (al principio, mucho: los programas cargan el ajuste al
+  // principio), y al menos «ajusteAnual» al año.
+  const sobra = deficit - k.deficitObjetivo;
+  const ajuste = Math.min(sobra, Math.max(k.ajusteAnual / 12, sobra * k.cierreFmi) * dureza) * pib;
+  recortarGasto(presupuesto, economia, ajuste * k.parteRecortes, false);
+  subirImpuestos(presupuesto, economia, ajuste * (1 - k.parteRecortes));
+}
+
+/**
+ * Recorta por igual a todos los ministerios y, si `conPensiones`, también las pensiones
+ * (`recorte`: dinero al año; como mucho, «recorteMaximo» de ese gasto cada mes), y le quita a la
+ * demanda lo que se gastaba: el personal y el mantenimiento son consumo público; la inversión,
+ * inversión; y los programas (ayudas y subvenciones) y las pensiones, en parte, consumo de los
+ * hogares.
+ */
+function recortarGasto(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais,
+  recorte: number,
+  conPensiones: boolean,
+): void {
+  const pensiones = conPensiones ? presupuesto.transversales.pensiones : 0;
+  const total = MINISTERIOS.reduce((t, mi) => t + gastoMinisterio(presupuesto, mi), pensiones);
+  const pib = pibNominal(economia);
+  if (total <= 0 || recorte <= 0 || pib <= 0) return;
+  const parte = Math.min(k.recorteMaximo, recorte / total);
+  const partidas = totalPorPartida(presupuesto);
+  const demanda = economia.demandaBase;
+  const quitar = (actual: number, dinero: number): number =>
+    Math.max(0, actual - (parte * dinero) / pib);
+  // (El personal y el mantenimiento son el consumo público: baja en la misma proporción.)
+  demanda.consumoPublico *= 1 - parte;
+  demanda.inversion = quitar(demanda.inversion, partidas.inversion);
+  demanda.consumo = quitar(
+    demanda.consumo,
+    (partidas.programas + pensiones) * k.consumoPorImpuesto,
+  );
+  for (const mi of MINISTERIOS) {
+    for (const p of PARTIDAS) presupuesto.ministerios[mi][p] *= 1 - parte;
+  }
+  presupuesto.transversales.pensiones -= parte * pensiones;
+}
+
+/** Sube todos los impuestos por igual hasta recaudar `subida` más al año; los hogares consumen menos. */
+function subirImpuestos(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais,
+  subida: number,
+): void {
+  const ingresos = totalIngresos(presupuesto);
+  if (ingresos <= 0 || subida <= 0) return;
+  const factor = 1 + subida / ingresos;
+  for (const i of INGRESOS) {
+    presupuesto.tipos[i] *= factor;
+    presupuesto.ingresos[i] *= factor;
+  }
+  const pib = pibNominal(economia);
+  economia.demandaBase.consumo = Math.max(
+    0,
+    economia.demandaBase.consumo - (k.consumoPorImpuesto * subida) / pib,
+  );
+}
+
+/**
+ * La crisis de deuda de un país cada mes (tarea f18-t3). Si los mercados se cierran sin salida,
+ * la IA elige (el impago si su deuda es impagable; si no, el FMI) y el jugador decide (devuelve
+ * true para preguntarle). Durante el rescate, el programa de ajuste; durante el impago, solo se
+ * gasta lo que se recauda. Al acabar, vuelven los mercados (el rescate se alarga si la prima sigue
+ * disparada; tras un impago, la prima lleva un recargo).
+ */
+export function gestionarCrisis(
+  mercado: MercadoDeuda,
+  economia: EconomiaPais,
+  presupuesto: PresupuestoPais,
+  opciones: { esJugador: boolean; decision?: SalidaCrisis; dureza?: number },
+): boolean {
+  const dureza = opciones.dureza ?? 1;
+  const programa = mercado.programa;
+  if (!programa) {
+    if (mercado.prima <= m.umbralCierre) return false;
+    if (opciones.esJugador) {
+      mercado.programa = { tipo: 'decidiendo', meses: 0 };
+      return true;
+    }
+    empezarSalida(salidaDeLaIa(economia, presupuesto), mercado, economia, presupuesto);
+    return false;
+  }
+  if (programa.tipo === 'decidiendo') {
+    const salida =
+      opciones.decision ?? (opciones.esJugador ? null : salidaDeLaIa(economia, presupuesto));
+    if (salida) empezarSalida(salida, mercado, economia, presupuesto);
+    // Sin respuesta del jugador (cerró la ventana sin elegir, o cargó la partida antes de
+    // hacerlo): se le vuelve a preguntar.
+    return salida === null;
+  }
+  if (programa.tipo === 'fmi') {
+    ajustarConFmi(economia, presupuesto, dureza);
+  } else {
+    // Sin mercados, solo se puede gastar lo que se recauda: cada mes se recorta «cierreImpago»
+    // del déficit que quede, en los ministerios y en las pensiones. (Mientras, lo que falta se
+    // debe a proveedores y funcionarios: cuenta como deuda.)
+    const deficit = -saldo(presupuesto);
+    if (deficit > 0) recortarGasto(presupuesto, economia, deficit * k.cierreImpago, true);
+  }
+  programa.meses -= 1;
+  if (programa.meses > 0) return false;
+  if (programa.tipo === 'fmi' && mercado.prima > m.umbralCierre) {
+    // El programa acaba y los mercados siguen cerrados: hay que volver a elegir (otro rescate o
+    // el impago; como en Grecia en 2012).
+    if (opciones.esJugador) {
+      mercado.programa = { tipo: 'decidiendo', meses: 0 };
+      return true;
+    }
+    empezarSalida(salidaDeLaIa(economia, presupuesto), mercado, economia, presupuesto);
+    return false;
+  }
+  if (programa.tipo === 'impago') {
+    // La deuda que queda vuelve a pagar intereses; la prima, con un recargo que se apaga.
+    presupuesto.tipoInteres = programa.tipoInteres ?? mercado.tipoMercado / 100;
+    mercado.recargo = k.recargoImpago;
+    mercado.ajuste = 0;
+    mercado.prima = Math.min(mercado.prima, m.umbralCierre);
+    // Sale del impago con el rating que le da su prima (desde C, como mucho dos escalones).
+    mercado.rating = revisarRating('C', ratingDe(mercado.prima));
+  }
+  mercado.programa = null;
+  mercado.cerrado = mercado.prima > m.umbralCierre;
+  return false;
+}
 
 /** Lo que hace falta de cada país para completar el mercado de una partida guardada. */
 export interface PaisParaMercado {

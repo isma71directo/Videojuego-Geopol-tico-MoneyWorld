@@ -7,7 +7,7 @@
 import { icono, type NombreIcono } from '../av/iconos';
 import type { Efecto } from '../av/sonido';
 import { formatearFechaLarga } from '../compartido/fechas';
-import { porcentaje } from '../compartido/formato';
+import { porcentaje, puntos } from '../compartido/formato';
 import { t } from '../i18n';
 import type { TipoAlerta } from '../sim/alertas';
 import type { Suceso } from '../sim/sucesos';
@@ -22,6 +22,7 @@ export const ICONO_ALERTA: Record<TipoAlerta, NombreIcono> = {
   inflacion: 'inflacion',
   inflacionGrave: 'inflacion',
   deflacion: 'deflacion',
+  crisisDeuda: 'deuda',
 };
 
 /** El sonido propio de cada alerta. */
@@ -31,6 +32,7 @@ export const SONIDO_ALERTA: Record<TipoAlerta, Efecto> = {
   inflacion: 'alertaInflacion',
   inflacionGrave: 'alertaInflacionGrave',
   deflacion: 'alertaDeflacion',
+  crisisDeuda: 'alertaCrisisDeuda',
 };
 
 /** Cuánto se queda a la vista una tarjeta (ms). */
@@ -45,7 +47,10 @@ export function traducirSuceso(suceso: Suceso): Suceso {
   return {
     ...suceso,
     titulo: t(`juego.alertas.${alerta.tipo}.titulo`),
-    texto: t(`juego.alertas.${alerta.tipo}.texto`, { valor: porcentaje(alerta.valor * 100) }),
+    texto: t(`juego.alertas.${alerta.tipo}.texto`, {
+      // (La de la crisis de deuda trae la prima de riesgo, en puntos.)
+      valor: alerta.tipo === 'crisisDeuda' ? puntos(alerta.valor) : porcentaje(alerta.valor * 100),
+    }),
   };
 }
 

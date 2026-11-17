@@ -256,6 +256,8 @@ const EJEMPLO_ALERTA: Record<TipoAlerta, number> = {
   inflacion: 0.124,
   inflacionGrave: 0.27,
   deflacion: -0.008,
+  // (La prima de riesgo, en puntos.)
+  crisisDeuda: 16.4,
 };
 
 /** Alertas económicas (tarea f16-t4): cada una con su icono, su sonido y su tarjeta. */
