@@ -75,6 +75,7 @@
       "icono": "estrella",
       "pestanas": {
         "resumen": 26,
+        "presupuesto": 19,
         "acciones": 62
       }
     },
@@ -349,7 +350,7 @@
   },
   "pestanasMinisterio": {
     "resumen": 26,
-    "presupuesto": 26,
+    "presupuesto": 19,
     "leyes": 67,
     "acciones": null,
     "infraestructuras": 35

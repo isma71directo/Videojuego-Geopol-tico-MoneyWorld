@@ -22,7 +22,16 @@ import { contenidoLeyenda } from './leyenda';
 import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
-import { crearBarraSecciones, ponerContenido, refrescarElemento } from './secciones';
+import {
+  abrirElemento,
+  crearBarraSecciones,
+  elementoDeMinisterio,
+  ponerContenido,
+  ponerContenidoPestana,
+  refrescarElemento,
+} from './secciones';
+import { presupuestoMinisterio, refrescarPresupuestosMinisterio } from './presupuesto-ministerio';
+import { MINISTERIOS } from '../sim/presupuesto';
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
 import { contenidoVentanaPresupuesto, refrescarPresupuestoEnVivo } from './presupuesto-en-vivo';
@@ -429,6 +438,7 @@ export function abrirPantallaMapa(
           refrescarEconomiaEnVivo();
           refrescarPresupuestoEnVivo();
           refrescarEditoresPresupuesto();
+          refrescarPresupuestosMinisterio();
           void guardarAutomatico(mensaje.partida);
         } else if (mensaje.peticion !== undefined) {
           esperando.get(mensaje.peticion)?.(mensaje.partida);
@@ -649,10 +659,24 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
                 }
               );
             },
-            aprobar: (presupuesto) => motor?.enviar({ tipo: 'presupuesto', presupuesto }),
+            ordenar: (cambios) => motor?.enviar({ tipo: 'cambiosPresupuesto', cambios }),
+            abrirMinisterio: (ministerio) => abrirElemento(elementoDeMinisterio(ministerio)),
           }).elemento,
       ),
     );
+    // La pestaña «Presupuesto» de cada ministerio (ajuste f19-a3): el suyo se decide ahí.
+    for (const ministerio of MINISTERIOS) {
+      ponerContenidoPestana(
+        elementoDeMinisterio(ministerio),
+        'presupuesto',
+        () =>
+          presupuestoMinisterio({
+            ministerio,
+            fuente: () => fuentePresupuesto(partida.jugador.paisId),
+            ordenar: (cambios) => motor?.enviar({ tipo: 'cambiosPresupuesto', cambios }),
+          }).elemento,
+      );
+    }
   }
   const alTeclearSecciones = (evento: KeyboardEvent): void => {
     secciones.alTeclear(evento);
@@ -1084,6 +1108,9 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
     ponerContenido('efectos', null);
     ponerContenido('economia', null);
     ponerContenido('presupuesto', null);
+    for (const ministerio of MINISTERIOS) {
+      ponerContenidoPestana(elementoDeMinisterio(ministerio), 'presupuesto', null);
+    }
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

@@ -7,6 +7,37 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.20.1 - 2026-11-18
+
+Ajustes de la Fase 19 (decisiones del jugador tras ver la v0.20.0): el presupuesto de cada
+ministerio, en su ministerio, como en Power & Revolution.
+
+### Añadido
+
+- **Pestaña «Presupuesto» en la ventana de cada ministerio** (y en Presidencia):
+  - su gasto, sus empleados públicos (estimados) y su sueldo medio;
+  - puestos nuevos o despidos, en número, con su coste, la indemnización y el día en que valen;
+  - la subida de los sueldos;
+  - inversión, compras y mantenimiento, y programas y ayudas, en % y en dinero;
+  - en Trabajo y Seguridad Social, la subida de las pensiones y la prestación por parado.
+- **Cada cambio vale cuando le toca:**
+  - las subidas para el año que viene, el 1 de enero;
+  - las extraordinarias, el mes siguiente;
+  - los puestos nuevos, cuando acaba la oposición (de 3 a 9 meses según el país, estimado);
+  - los despidos, el mes siguiente, con indemnización.
+- **Los puestos públicos nuevos sacan gente del paro** (la mitad los ocupan parados); los despidos
+  la devuelven.
+- **Cambios pendientes**, cada uno con su fecha, en la vista general y en cada ministerio.
+
+### Cambiado
+
+- **Gobierno › Presupuesto es la vista general**, con dos pestañas:
+  - «General»: el resumen, la previsión a 12 meses, un único ajuste general de todo el gasto
+    (para el año que viene o extraordinario) y la lista de ministerios, que abre la ventana de cada
+    uno;
+  - «Cuentas y gráficos».
+- Ya no hay un deslizador por ministerio en la ventana general.
+
 ## 0.20.0 - 2026-11-18
 
 Fase 19: presupuesto jugable. Primera fase con el nuevo orden de la hoja de ruta (decisión del

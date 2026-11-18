@@ -1,11 +1,10 @@
 // @vitest-environment happy-dom
-/** La Pantalla «Presupuesto» editable (tarea f19-t2). */
+/** Gobierno › Presupuesto, la vista general (tareas f19-t2 a f19-t4 y ajuste f19-a2). */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
-import type { PresupuestoDecidido } from '../src/sim/hacienda';
-import { gastoMinisterio, MINISTERIOS, PARTIDAS } from '../src/sim/presupuesto';
+import { MINISTERIOS, type CambioPresupuesto, type Ministerio } from '../src/sim/presupuesto';
 import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { diaQueSeAplica, editorPresupuesto } from '../src/ui/presupuesto-editable';
 import { contenidoVentanaPresupuesto } from '../src/ui/presupuesto-en-vivo';
@@ -15,146 +14,93 @@ const paises = JSON.parse(
   readFileSync(resolve('public/data/paises-2010.json'), 'utf8'),
 ) as ConjuntoPaises;
 
-/** Un editor con España y lo que se aprueba. */
+/** La vista general con España y lo que se ordena. */
 function conEspana(fecha = '2010-01-15') {
   const espana = paisCompleto(paises, 'ESP', 1, { jugador: true });
-  const aprobados: PresupuestoDecidido[] = [];
-  let dia = fecha;
+  const ordenados: CambioPresupuesto[][] = [];
+  const abiertos: Ministerio[] = [];
   const editor = editorPresupuesto({
-    fuente: () => ({ presupuesto: espana.presupuesto, economia: espana.economia, fecha: dia }),
-    aprobar: (decidido) => aprobados.push(decidido),
+    fuente: () => ({
+      id: 'ESP',
+      presupuesto: espana.presupuesto,
+      economia: espana.economia,
+      fecha,
+      mercado: espana.mercado,
+      tesoreria: espana.estado.tesoreria,
+    }),
+    ordenar: (cambios) => ordenados.push(cambios),
+    abrirMinisterio: (m) => abiertos.push(m),
   });
   document.body.replaceChildren(editor.elemento);
-  return {
-    espana,
-    editor,
-    aprobados,
-    irA: (nueva: string) => {
-      dia = nueva;
-    },
-  };
+  return { espana, editor, ordenados, abiertos };
 }
 const mover = (control: HTMLInputElement, valor: number): void => {
   control.value = String(valor);
   control.dispatchEvent(new Event('input', { bubbles: true }));
+  control.dispatchEvent(new Event('change', { bubbles: true }));
 };
-const deslizadorDe = (raiz: Element, ministerio: string, indice = 0): HTMLInputElement =>
-  raiz.querySelectorAll<HTMLInputElement>(`[data-ministerio="${ministerio}"] input[type=range]`)[
-    indice
-  ]!;
 const boton = (raiz: Element, texto: string): HTMLButtonElement =>
   [...raiz.querySelectorAll('button')].find((b) => b.textContent!.includes(texto))!;
+const deslizador = (raiz: Element) => raiz.querySelector<HTMLInputElement>('input[type=range]')!;
 
-describe('la Pantalla «Presupuesto» editable (tarea f19-t2)', () => {
-  it('enseña el presupuesto en vigor, los 20 ministerios con sus partidas, las pensiones y el paro', () => {
+describe('Gobierno › Presupuesto, la vista general (ajuste f19-a2)', () => {
+  it('se ve el presupuesto: resumen, previsión y los 20 ministerios (solo para ver)', () => {
     const { editor } = conEspana();
     const texto = editor.elemento.textContent!;
-    expect(texto).toContain('Nuevo presupuesto');
     expect(texto).toContain('en vigor, el de 2010');
-    expect(texto).toContain('Gasto de los ministerios');
     expect(texto).toMatch(/Déficit−\d{3}\.\d{3} M\$ \(26,\d % de los ingresos\)/);
-    expect(editor.elemento.querySelectorAll('details[data-ministerio]')).toHaveLength(
-      MINISTERIOS.length,
-    );
-    // Cada ministerio: uno para todo y uno por partida.
-    expect(
-      editor.elemento.querySelectorAll('[data-ministerio="sanidad"] input[type=range]'),
-    ).toHaveLength(1 + PARTIDAS.length);
-    expect(texto).toContain('Subida de las pensiones en enero');
-    expect(texto).toContain('Prestación de cada parado');
-    expect(texto).toContain('Lo que apruebes se aplica el 1 de febrero de 2010.');
+    expect(texto).toContain('Previsión a 12 meses');
+    // Un único deslizador: el ajuste general (los de cada ministerio, en su ventana).
+    expect(editor.elemento.querySelectorAll('input[type=range]')).toHaveLength(1);
+    expect(editor.elemento.querySelectorAll('[data-ministerio]')).toHaveLength(MINISTERIOS.length);
+    expect(texto).toMatch(/empleados\*/);
   });
 
-  it('al mover un ministerio cambian su dinero, sus partidas y el resumen; y se aprueba', () => {
-    const { espana, editor, aprobados } = conEspana();
-    const educacion = gastoMinisterio(espana.presupuesto, 'educacion');
-    const deficitAntes = editor.elemento.querySelector(
-      '.presupuesto-editable__resumen',
-    )!.textContent!;
-    mover(deslizadorDe(editor.elemento, 'educacion'), 120);
-    const resumen = editor.elemento.querySelector('.presupuesto-editable__resumen')!.textContent!;
-    expect(resumen).not.toBe(deficitAntes);
-    expect(resumen).toMatch(/\+\d,\d % frente al que está en vigor/);
-    // Sus partidas, al 120 % también.
-    expect(deslizadorDe(editor.elemento, 'educacion', 1).value).toBe('120');
-    // Una partida sola: el ministerio entero se ajusta a lo que suma.
-    mover(deslizadorDe(editor.elemento, 'educacion', 1), 100);
-    expect(Number(deslizadorDe(editor.elemento, 'educacion').value)).toBeLessThan(120);
-    mover(deslizadorDe(editor.elemento, 'educacion'), 120);
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    expect(aprobados).toHaveLength(1);
-    const enEducacion = PARTIDAS.reduce((t, p) => t + aprobados[0]!.ministerios.educacion[p], 0);
-    expect(enEducacion).toBeCloseTo(educacion * 1.2, -3);
-    // El resto, como estaba.
-    expect(aprobados[0]!.ministerios.defensa).toEqual(espana.presupuesto.ministerios.defensa);
-    expect(editor.elemento.textContent).toContain('Aprobado: se aplica el 1 de febrero de 2010.');
+  it('un clic en un ministerio abre su ventana', () => {
+    const { editor, abiertos } = conEspana();
+    editor.elemento.querySelector<HTMLButtonElement>('[data-ministerio="sanidad"]')!.click();
+    expect(abiertos).toEqual(['sanidad']);
   });
 
-  it('los atajos: subir todo con el IPC, dejarlo como está y recortar un 5 %', () => {
-    const { espana, editor, aprobados } = conEspana();
-    const total = MINISTERIOS.reduce((t, m) => t + gastoMinisterio(espana.presupuesto, m), 0);
-    const aprobado = () =>
-      MINISTERIOS.reduce(
-        (t, m) => t + PARTIDAS.reduce((s, p) => s + aprobados.at(-1)!.ministerios[m][p], 0),
-        0,
-      );
-    boton(editor.elemento, 'Recortar un 5 %').click();
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    expect(aprobado()).toBeCloseTo(total * 0.95, -3);
-    boton(editor.elemento, 'Subir todo con el IPC').click();
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    expect(aprobado()).toBeCloseTo(total * (1 + espana.economia.inflacion), -3);
-    boton(editor.elemento, 'Dejarlo como está').click();
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    expect(aprobado()).toBeCloseTo(total, -3);
-  });
-
-  it('las pensiones: con el IPC (por ley) o lo que se decida; y la prestación por parado', () => {
-    const { espana, editor, aprobados } = conEspana();
-    const casilla = editor.elemento.querySelector<HTMLInputElement>('.presupuesto-editable__ipc')!;
-    expect(casilla.checked).toBe(true);
-    const [pensiones, prestacion] = [
-      ...editor.elemento.querySelectorAll<HTMLInputElement>(
-        '.presupuesto-editable > .deslizador input[type=range]',
-      ),
-    ];
-    mover(pensiones!, 0);
-    expect(casilla.checked).toBe(false);
-    mover(prestacion!, 80);
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    expect(aprobados[0]!.revalorizacion).toBe(0);
-    expect(aprobados[0]!.prestacionParado).toBeCloseTo(
-      espana.presupuesto.prestacionParado * 0.8,
-      0,
-    );
-    casilla.checked = true;
-    casilla.dispatchEvent(new Event('change'));
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    expect(aprobados[1]!.revalorizacion).toBeNull();
-  });
-
-  it('cada mes: a mitad de cambios no se pierde nada; aplicado lo aprobado, empieza de nuevo', () => {
-    const { editor, irA } = conEspana();
-    mover(deslizadorDe(editor.elemento, 'sanidad'), 90);
-    const abierto = editor.elemento.querySelector<HTMLDetailsElement>(
-      '[data-ministerio="sanidad"]',
+  it('el ajuste general: todo el gasto en un %, para el año que viene o extraordinario', () => {
+    const { editor, ordenados } = conEspana();
+    mover(deslizador(editor.elemento), -4);
+    expect(editor.elemento.textContent).toMatch(/−4,0 %/);
+    boton(editor.elemento, 'Aplicar el ajuste').click();
+    expect(ordenados).toEqual([
+      [{ tipo: 'partida', ministerio: 'todos', partida: 'todas', factor: 0.96, cuando: 'anio' }],
+    ]);
+    // Vale desde el 1 de enero y se ve como pendiente.
+    expect(editor.elemento.textContent).toContain('Ordenado: vale desde el 1 de enero de 2011.');
+    expect(editor.elemento.textContent).toContain('Cambios pendientes');
+    expect(editor.elemento.textContent).toContain('Todos los ministerios: todo el gasto −4,0 %');
+    // Extraordinario: desde el mes siguiente.
+    const extraordinario = editor.elemento.querySelector<HTMLInputElement>(
+      '.presupuesto-editable__cuando[value="mes"]',
     )!;
-    abierto.open = true;
-    irA('2010-01-20');
-    editor.actualizar();
-    // Lo tocado sigue ahí (y abierto).
-    expect(deslizadorDe(editor.elemento, 'sanidad').value).toBe('90');
-    expect(abierto.isConnected).toBe(true);
-    boton(editor.elemento, 'Aprobar el presupuesto').click();
-    irA('2010-02-01');
-    editor.actualizar();
-    expect(deslizadorDe(editor.elemento, 'sanidad').value).toBe('100');
-    expect(editor.elemento.textContent).toContain(
-      'Lo que apruebes se aplica el 1 de marzo de 2010.',
-    );
+    extraordinario.checked = true;
+    extraordinario.dispatchEvent(new Event('change'));
+    mover(deslizador(editor.elemento), 3);
+    boton(editor.elemento, 'Aplicar el ajuste').click();
+    expect(ordenados[1]![0]).toMatchObject({ factor: 1.03, cuando: 'mes' });
+    expect(editor.elemento.textContent).toContain('Ordenado: vale desde el 1 de febrero de 2010.');
+    // Sin ajuste, no se ordena nada.
+    boton(editor.elemento, 'Aplicar el ajuste').click();
+    expect(ordenados).toHaveLength(2);
   });
 
-  it('la previsión a 12 meses: hace un año, ahora, sin cambios y con este presupuesto (tarea f19-t3)', () => {
+  it('los atajos ponen el ajuste: con el IPC, recortar un 5 % o sin cambios', () => {
+    const { espana, editor, ordenados } = conEspana();
+    boton(editor.elemento, 'Recortar un 5 %').click();
+    boton(editor.elemento, 'Aplicar el ajuste').click();
+    expect(ordenados[0]![0]).toMatchObject({ factor: 0.95 });
+    boton(editor.elemento, 'con el IPC').click();
+    boton(editor.elemento, 'Aplicar el ajuste').click();
+    const ipc = Math.round(espana.economia.inflacion * 200) / 2;
+    expect((ordenados[1]![0] as { factor: number }).factor).toBeCloseTo(1 + ipc / 100, 6);
+  });
+
+  it('la previsión: hace un año, ahora, sin cambios y con este ajuste (tarea f19-t3)', () => {
     const { espana, editor } = conEspana();
     const tabla = () => editor.elemento.querySelector('.presupuesto-editable__tabla')!;
     expect([...tabla().querySelectorAll('thead th')].map((c) => c.textContent)).toEqual([
@@ -164,38 +110,41 @@ describe('la Pantalla «Presupuesto» editable (tarea f19-t2)', () => {
       'En 12 meses, sin cambios',
       'En 12 meses, con este presupuesto',
     ]);
-    // En enero de 2010 aún no hay año anterior.
-    const filaDeDeuda = () =>
+    const deuda = () =>
       [...tabla().querySelectorAll('tbody tr')].find((f) => f.textContent!.startsWith('Deuda'))!;
-    expect(filaDeDeuda().querySelectorAll('td')[0]!.textContent).toBe('—');
-    const conEste = () => filaDeDeuda().querySelectorAll('td')[3]!.textContent;
-    expect(conEste()).toBe(filaDeDeuda().querySelectorAll('td')[2]!.textContent);
-    // Gastar más: al soltar el deslizador, la columna de este presupuesto cambia.
-    const sanidad = deslizadorDe(editor.elemento, 'sanidad');
-    mover(sanidad, 160);
-    sanidad.dispatchEvent(new Event('change', { bubbles: true }));
-    expect(conEste()).not.toBe(filaDeDeuda().querySelectorAll('td')[2]!.textContent);
+    expect(deuda().querySelectorAll('td')[0]!.textContent).toBe('—');
+    expect(deuda().querySelectorAll('td')[3]!.textContent).toBe(
+      deuda().querySelectorAll('td')[2]!.textContent,
+    );
+    // Con un ajuste extraordinario, la columna de este presupuesto cambia al soltar.
+    const extraordinario = editor.elemento.querySelector<HTMLInputElement>(
+      '.presupuesto-editable__cuando[value="mes"]',
+    )!;
+    extraordinario.checked = true;
+    extraordinario.dispatchEvent(new Event('change'));
+    mover(deslizador(editor.elemento), 15);
+    expect(deuda().querySelectorAll('td')[3]!.textContent).not.toBe(
+      deuda().querySelectorAll('td')[2]!.textContent,
+    );
     // Pasado un año, hay año anterior.
     espana.avanzar(13);
     editor.actualizar();
-    expect(filaDeDeuda().querySelectorAll('td')[0]!.textContent).toMatch(/M\$/);
+    expect(deuda().querySelectorAll('td')[0]!.textContent).toMatch(/M\$|billones/);
   });
 
-  it('suena y se ve (tarea f19-t4): un tono que sube o baja al soltar, y un sello al aprobar', () => {
+  it('suena y se ve (tarea f19-t4): un tono al soltar y un sello al aplicar', () => {
     const sonidos: string[] = [];
     sonidosDeComponentes((efecto) => sonidos.push(efecto));
     try {
       const { editor } = conEspana();
-      const cultura = deslizadorDe(editor.elemento, 'cultura');
-      mover(cultura, 130);
-      cultura.dispatchEvent(new Event('change', { bubbles: true }));
-      mover(cultura, 90);
-      cultura.dispatchEvent(new Event('change', { bubbles: true }));
+      mover(deslizador(editor.elemento), 5);
+      mover(deslizador(editor.elemento), 2);
       expect(sonidos).toEqual(['deslizadorSube', 'deslizadorBaja']);
-      boton(editor.elemento, 'Aprobar el presupuesto').click();
+      boton(editor.elemento, 'Aplicar el ajuste').click();
       expect(sonidos.at(-1)).toBe('presupuestoAprobado');
-      const sello = editor.elemento.querySelector('.presupuesto-editable__sello');
-      expect(sello?.textContent).toBe('Aprobado');
+      expect(editor.elemento.querySelector('.presupuesto-editable__sello')?.textContent).toBe(
+        'Aprobado',
+      );
     } finally {
       sonidosDeComponentes(null);
     }
@@ -206,7 +155,7 @@ describe('la Pantalla «Presupuesto» editable (tarea f19-t2)', () => {
     expect(diaQueSeAplica('2010-12-31')).toBe('2011-01-01');
   });
 
-  it('en Gobierno › Presupuesto: dos pestañas, «Nuevo presupuesto» y «En vigor»', () => {
+  it('en Gobierno › Presupuesto: dos pestañas, «General» y «Cuentas y gráficos»', () => {
     const espana = paisCompleto(paises, 'ESP');
     const fuente = () => ({
       presupuesto: espana.presupuesto,
@@ -215,14 +164,13 @@ describe('la Pantalla «Presupuesto» editable (tarea f19-t2)', () => {
       fecha: '2010-01-01',
       mercado: espana.mercado,
     });
-    const editor = vi.fn(() => editorPresupuesto({ fuente, aprobar: () => undefined }).elemento);
+    const editor = vi.fn(() => editorPresupuesto({ fuente, ordenar: () => undefined }).elemento);
     const ventana = contenidoVentanaPresupuesto(fuente, 'España', editor);
     document.body.replaceChildren(ventana);
     const pestanas = [...ventana.querySelectorAll('[role=tab]')].map((p) => p.textContent!.trim());
     expect(pestanas).toHaveLength(2);
-    expect(pestanas[0]).toContain('Nuevo presupuesto');
-    expect(pestanas[1]).toContain('En vigor');
+    expect(pestanas[0]).toContain('General');
+    expect(pestanas[1]).toContain('Cuentas y gráficos');
     expect(editor).toHaveBeenCalledTimes(1);
-    expect(ventana.textContent).toContain('Aprobar el presupuesto');
   });
 });

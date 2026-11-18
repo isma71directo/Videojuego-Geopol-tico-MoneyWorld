@@ -510,6 +510,10 @@
             "titulo": "Gobierno",
             "texto": "Popularidad, estabilidad y cohesión del gobierno, y el equipo de ministros."
           },
+          "presupuesto": {
+            "titulo": "Presupuesto",
+            "texto": "El presupuesto de la Presidencia del Gobierno: su personal, sus compras y sus programas."
+          },
           "acciones": {
             "titulo": "Acciones",
             "texto": "Remodelar el gobierno, comunicación y cuestión de confianza ante el parlamento."
@@ -1352,16 +1356,14 @@
       }
     },
     "hacienda": {
-      "titulo": "Nuevo presupuesto",
+      "titulo": "Presupuesto",
       "enVigor": "en vigor, el de {anio}",
       "prorrogado": "en vigor, el de {anio}, prorrogado",
-      "explicacion": "Prepara el presupuesto: cada gasto, en % de lo que se gasta ahora. Se queda en dinero hasta que apruebes otro, así que con la inflación compra menos. Lo que apruebes vale desde el día 1 del mes siguiente; si llega enero sin presupuesto nuevo, se prorroga el anterior.",
+      "explicacion": "Aquí ves el presupuesto y lo ajustas en general. El de cada ministerio (sus empleados, sueldos, inversión y programas) se decide en su ventana, en la pestaña «Presupuesto». Todo queda en dinero hasta que se decida otra cosa, así que con la inflación compra menos.",
       "ministerios": "Gasto de los ministerios",
-      "conCambio": "{dinero} ({cambio} frente al que está en vigor)",
       "gastoTotal": "Gasto total al año",
       "ingresos": "Ingresos al ritmo de ahora",
       "conIpc": "Subir todo con el IPC (+{ipc})",
-      "congelar": "Dejarlo como está",
       "recortar": "Recortar un 5 %",
       "pensionesYParo": "Pensiones y paro",
       "pensiones": "Subida de las pensiones en enero",
@@ -1370,14 +1372,9 @@
       "prestacion": "Prestación de cada parado",
       "prestacionAyuda": "Lo que cobra al año, de media, cada parado (estimado). Más prestación sostiene el consumo, pero cuesta más cuanto más paro hay.",
       "prestacionValor": "{dinero} al año",
-      "ministeriosTitulo": "Gasto de cada ministerio",
-      "todoElMinisterio": "Todo el ministerio",
-      "partidaValor": "{dinero} ({porcentaje} %)",
-      "aprobar": "Aprobar el presupuesto",
-      "seAplica": "Lo que apruebes se aplica el {fecha}.",
-      "pendiente": "Aprobado: se aplica el {fecha}.",
-      "pestanaNuevo": "Nuevo presupuesto",
-      "pestanaEnVigor": "En vigor",
+      "ministeriosTitulo": "Presupuesto de cada ministerio",
+      "pestanaNuevo": "General",
+      "pestanaEnVigor": "Cuentas y gráficos",
       "previsionTitulo": "Previsión a 12 meses",
       "columnas": {
         "haceUnAnio": "Hace un año",
@@ -1388,7 +1385,65 @@
       "saldo": "Saldo",
       "previsionNota": "Con las mismas reglas que la partida, si no cambia nada más: sin contar con lo que hagan los demás países. La columna de este presupuesto se recalcula al soltar cada deslizador.",
       "avisoCierre": "Atención: con este presupuesto, los mercados dejarían de prestar en los próximos 12 meses (crisis de deuda).",
-      "sello": "Aprobado"
+      "sello": "Aprobado",
+      "conAjuste": "{dinero} ({cambio})",
+      "ajusteTitulo": "Ajuste general",
+      "ajusteGeneral": "Todo el gasto de los ministerios",
+      "ajusteGeneralAyuda": "Sube o baja a la vez el gasto de todos los ministerios (sueldos, inversión, compras y programas).",
+      "cuando": {
+        "anio": "Para el año que viene (desde el {fecha})",
+        "mes": "Extraordinario (desde el {fecha})"
+      },
+      "sinCambios": "Sin cambios",
+      "aplicar": "Aplicar el ajuste",
+      "ordenado": "Ordenado: vale desde el {fecha}.",
+      "ministeriosNota": "Pulsa un ministerio para abrir su ventana y decidir su presupuesto. * Empleados estimados.",
+      "ministerioFila": "{dinero} · {parte} · {empleados} empleados*",
+      "abrirMinisterio": "Abrir el ministerio"
+    },
+    "cambios": {
+      "todos": "Todos los ministerios",
+      "todoElGasto": "todo el gasto",
+      "partida": "{ministerio}: {partida} {cambio} ({cuando})",
+      "cuando": {
+        "anio": "para el año que viene",
+        "mes": "extraordinario"
+      },
+      "sueldos": "{ministerio}: sueldos {cambio} ({cuando})",
+      "puestos": "{ministerio}: {cantidad} puestos nuevos (tras la oposición)",
+      "despidos": "{ministerio}: {cantidad} despidos",
+      "pensionesIpc": "Pensiones: suben con el IPC cada enero",
+      "pensiones": "Pensiones: {cambio} cada enero",
+      "prestacion": "Prestación por parado: {dinero} al año",
+      "pendientes": "Cambios pendientes",
+      "desde": "desde el {fecha}"
+    },
+    "ministerioPresupuesto": {
+      "titulo": "Presupuesto del ministerio",
+      "cabecera": "{dinero} al año · {parte} del gasto del Estado",
+      "empleados": "{empleados} empleados públicos* · sueldo medio de {sueldo} al año",
+      "personal": "Personal",
+      "puestos": "Puestos nuevos (en negativo, despidos)",
+      "puestosNuevos": "Cuestan {dinero} al año. Empiezan el {fecha}, cuando acabe la oposición; la mitad los ocuparán parados.",
+      "despidos": "Ahorran {dinero} al año, pero vuelven al paro y su indemnización cuesta {indemnizacion}. Desde el {fecha}.",
+      "sinPuestos": "Sin puestos nuevos ni despidos.",
+      "sueldos": "Subida de los sueldos",
+      "sueldosAyuda": "El sueldo medio de los empleados del ministerio. Subirlo cuesta en todos sus empleados; bajarlo ahorra, pero sus empleados consumen menos.",
+      "valorCambio": "{dinero} ({cambio})",
+      "restoTitulo": "Inversión, compras y programas",
+      "partidas": {
+        "inversion": "Inversión",
+        "inversionAyuda": "Lo que invierte el ministerio al año (edificios, equipos, redes): crea capital para producir más.",
+        "mantenimiento": "Compras y mantenimiento",
+        "mantenimientoAyuda": "Lo que compra y lo que cuesta mantener lo que tiene. Es consumo público.",
+        "programas": "Programas y ayudas",
+        "programasAyuda": "Ayudas, subvenciones y programas del ministerio: llegan a los hogares y a las empresas."
+      },
+      "obras": "Las obras, con su presupuesto de construcción que se gasta según avanzan, llegan con la Fase 36. Hasta entonces, la inversión es una partida que se sube o se baja.",
+      "total": "Con estos cambios: {dinero} al año ({cambio}).",
+      "aplicar": "Aplicar los cambios",
+      "ordenado": "Ordenado: {n} cambios, cada uno cuando le toca (ver «Cambios pendientes»).",
+      "nota": "* Estimado: no hay datos abiertos de empleados públicos por ministerio; salen del gasto de personal y de un sueldo medio según el nivel de renta."
     }
   },
   "hojaDeRuta": {

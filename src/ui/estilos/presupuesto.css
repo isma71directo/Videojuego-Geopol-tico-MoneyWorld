@@ -213,3 +213,145 @@
   pointer-events: none;
   opacity: 0;
 }
+
+/* Vista general (ajuste f19-a2): las opciones de cuándo vale y la lista de ministerios. */
+.presupuesto-editable__opciones {
+  display: grid;
+  gap: 4px;
+}
+
+.presupuesto-editable__ministerios {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.presupuesto-editable__ministerio-fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radio-pequeno);
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.presupuesto-editable__ministerio-fila:hover,
+.presupuesto-editable__ministerio-fila:focus-visible {
+  background: var(--superficie);
+}
+
+.presupuesto-editable__ministerio-fila .icono {
+  width: 16px;
+  height: 16px;
+  color: var(--acento);
+}
+
+.presupuesto-editable__ministerio-fila .presupuesto__nombre {
+  flex: 1;
+}
+
+.presupuesto-editable__ministerio-fila .presupuesto__valor {
+  color: var(--texto-suave);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Cambios pendientes, cada uno con su fecha. */
+.cambios-pendientes__lista {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+
+.cambios-pendientes__lista li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 8px;
+  border-left: 3px solid var(--en-curso);
+  background: var(--superficie);
+}
+
+.cambios-pendientes__lista time {
+  color: var(--texto-suave);
+  white-space: nowrap;
+}
+
+/* Pestaña «Presupuesto» de cada ministerio (ajuste f19-a3). */
+.presupuesto-ministerio {
+  display: grid;
+  gap: 10px;
+}
+
+.presupuesto-ministerio__empleados,
+.presupuesto-ministerio__total {
+  margin: 0;
+  font-size: 14px;
+}
+
+.presupuesto-ministerio__total {
+  font-weight: 600;
+}
+
+.presupuesto-ministerio__nota {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.presupuesto-ministerio__fila-puestos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.presupuesto-ministerio__fila-puestos > span {
+  flex: 1 1 100%;
+  font-weight: 600;
+}
+
+.presupuesto-ministerio__puestos {
+  width: 120px;
+  padding: 6px 8px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.boton--pequeno {
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.presupuesto-ministerio .deslizador {
+  position: relative;
+}
+
+.presupuesto-ministerio .deslizador > .icono {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  color: var(--texto-suave);
+}

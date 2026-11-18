@@ -20,6 +20,7 @@ import {
   type Efecto,
 } from './efectos';
 import type { PresupuestoDecidido } from './hacienda';
+import type { CambioPresupuesto } from './presupuesto';
 import { avanzarPartida, type Partida } from './partida';
 import {
   horaAbsoluta,
@@ -57,6 +58,8 @@ export type OrdenMotor =
   | { tipo: 'decidir'; clave: string; opcion: string }
   /** El presupuesto que aprueba el jugador (Fase 19): vale desde el mes siguiente. */
   | { tipo: 'presupuesto'; presupuesto: PresupuestoDecidido }
+  /** Cambios del presupuesto de los ministerios (ajuste f19-a1): cada uno vale cuando le toca. */
+  | { tipo: 'cambiosPresupuesto'; cambios: CambioPresupuesto[] }
   | { tipo: 'terminar' };
 
 /** El estado de la partida que necesita la pantalla. */
@@ -222,6 +225,18 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
         if (!partida) return [];
         // Lo aplica Hacienda en el paso del mes siguiente (src/sim/hacienda.ts).
         partida = { ...partida, presupuestoDecidido: structuredClone(orden.presupuesto) };
+        return [];
+      }
+      if (orden.tipo === 'cambiosPresupuesto') {
+        if (!partida) return [];
+        // Los programa Hacienda en el paso del mes siguiente, cada uno con su día.
+        partida = {
+          ...partida,
+          cambiosPresupuesto: [
+            ...(partida.cambiosPresupuesto ?? []),
+            ...structuredClone(orden.cambios),
+          ],
+        };
         return [];
       }
       if (orden.tipo === 'programar') {

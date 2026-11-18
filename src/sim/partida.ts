@@ -7,7 +7,7 @@
  */
 import type { Efecto } from './efectos';
 import { economiaInicial, nivelDe, type EconomiaPais } from './economia';
-import { presupuestoInicial, type PresupuestoPais } from './presupuesto';
+import { presupuestoInicial, type CambioPresupuesto, type PresupuestoPais } from './presupuesto';
 import { mercadoInicial, type MercadoDeuda } from './deuda';
 import type { PresupuestoDecidido } from './hacienda';
 import type { Suceso } from './sucesos';
@@ -79,6 +79,8 @@ export interface Partida {
   decisiones?: Record<string, string>;
   /** El presupuesto que ha mandado el jugador y aún no se ha aplicado (Fase 19). */
   presupuestoDecidido?: PresupuestoDecidido;
+  /** Los cambios del presupuesto que ha ordenado el jugador y aún no se han programado (f19-a1). */
+  cambiosPresupuesto?: CambioPresupuesto[];
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */

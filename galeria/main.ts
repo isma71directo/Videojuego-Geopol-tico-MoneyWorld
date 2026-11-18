@@ -37,7 +37,9 @@ import { bloqueEconomia } from '../src/ui/economia-en-vivo';
 import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
 import { distintivoRating } from '../src/ui/rating';
 import { editorPresupuesto } from '../src/ui/presupuesto-editable';
-import { fechaDelMes, haciendaDelMes, type PresupuestoDecidido } from '../src/sim/hacienda';
+import { presupuestoMinisterio } from '../src/ui/presupuesto-ministerio';
+import { fechaDelMes, haciendaDelMes } from '../src/sim/hacienda';
+import type { CambioPresupuesto } from '../src/sim/presupuesto';
 import {
   avanzarMercado,
   gestionarCrisis,
@@ -474,7 +476,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   let bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
   // Y el presupuesto nuevo (tarea f19-t2): lo aprobado se aplica al avanzar, como en la partida
   // (el día 1 del mes siguiente).
-  let pendiente: PresupuestoDecidido | null = null;
+  let pendientes: CambioPresupuesto[] = [];
   const crearEditor = () =>
     editorPresupuesto({
       fuente: () => ({
@@ -485,25 +487,43 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
         mercado,
         tesoreria: estado.tesoreria,
       }),
-      aprobar: (decidido) => {
-        pendiente = decidido;
+      ordenar: (cambios) => {
+        pendientes.push(...cambios);
       },
     });
   let editor = crearEditor();
+  // Y la pestaña «Presupuesto» de un ministerio (ajuste f19-a3): Trabajo y Seguridad Social, con
+  // las pensiones y el paro.
+  const crearMinisterio = () =>
+    presupuestoMinisterio({
+      ministerio: 'trabajo',
+      fuente: () => ({ presupuesto, economia: actual, fecha }),
+      ordenar: (cambios) => {
+        pendientes.push(...cambios);
+      },
+    });
+  let ministerio = crearMinisterio();
   const contenedor = el(
     'div',
     { class: 'galeria__economia' },
     bloque.elemento,
     bloqueP.elemento,
     editor.elemento,
+    ministerio.elemento,
   );
   /** Rehace los bloques (con sus gráficos animados) al cambiar de país o volver a 2010. */
   const rehacer = (): void => {
     bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
     bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
-    pendiente = null;
+    pendientes = [];
     editor = crearEditor();
-    contenedor.replaceChildren(bloque.elemento, bloqueP.elemento, editor.elemento);
+    ministerio = crearMinisterio();
+    contenedor.replaceChildren(
+      bloque.elemento,
+      bloqueP.elemento,
+      editor.elemento,
+      ministerio.elemento,
+    );
   };
   const boton = (texto: string, hacer: () => void): HTMLButtonElement => {
     const b = el('button', { class: 'boton', type: 'button' }, texto);
@@ -544,15 +564,17 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
             haciendaDelMes(presupuesto, actual, mercado, {
               esJugador: true,
               fecha: fechaDelMes(actual.meses),
-              decidido: pendiente ?? undefined,
+              cambios: pendientes,
+              estado,
             });
-            pendiente = null;
+            pendientes = [];
           }
         }
         fecha = `${Number(fecha.slice(0, 4)) + 1}-01-01`;
         bloque.actualizar();
         bloqueP.actualizar();
         editor.actualizar();
+        ministerio.actualizar();
       }),
       boton(t('galeria.economia.reiniciar'), () => {
         empezar();

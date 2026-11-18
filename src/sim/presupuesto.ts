@@ -68,6 +68,33 @@ export type Ministerio = (typeof MINISTERIOS)[number];
 export const PARTIDAS = ['personal', 'inversion', 'mantenimiento', 'programas'] as const;
 export type Partida = (typeof PARTIDAS)[number];
 
+/**
+ * Un cambio del presupuesto que decide el jugador (ajuste f19-a1), con su plazo:
+ * - una partida (o todas) de un ministerio (o de todos), por un factor: con la subida anual
+ *   («anio», desde el 1 de enero) o extraordinaria («mes», desde el mes siguiente);
+ * - la subida de los sueldos de un ministerio (o de todos), igual;
+ * - puestos nuevos (tras la oposición) o despidos (desde el mes siguiente, con indemnización);
+ * - la subida de las pensiones de cada enero (null: el IPC) y la prestación de cada parado.
+ */
+export type CambioPresupuesto =
+  | {
+      tipo: 'partida';
+      ministerio: Ministerio | 'todos';
+      partida: Partida | 'todas';
+      factor: number;
+      cuando: 'anio' | 'mes';
+    }
+  | { tipo: 'sueldos'; ministerio: Ministerio | 'todos'; subida: number; cuando: 'anio' | 'mes' }
+  | { tipo: 'puestos'; ministerio: Ministerio; cantidad: number }
+  | { tipo: 'pensiones'; revalorizacion: number | null }
+  | { tipo: 'prestacion'; prestacionParado: number };
+
+/** Un cambio decidido y el día (el 1 de un mes) en que empieza a valer. */
+export interface CambioProgramado {
+  cambio: CambioPresupuesto;
+  desde: string;
+}
+
 /** Gastos que no son de un ministerio. */
 export const TRANSVERSALES = ['pensiones', 'desempleo', 'intereses'] as const;
 export type Transversal = (typeof TRANSVERSALES)[number];
@@ -94,6 +121,13 @@ export interface PresupuestoPais {
    * la población.
    */
   activos: number;
+  /**
+   * Empleados públicos de cada ministerio (personas; ESTIMADOS con el sueldo medio de su nivel de
+   * renta: ajuste f19-a1). Su gasto de personal, entre ellos, es su sueldo medio.
+   */
+  empleados: Record<Ministerio, number>;
+  /** Cambios decididos que aún no valen, con el día en que empiezan (ajuste f19-a1). */
+  pendientes: CambioProgramado[];
   /** Prestación media al año de cada parado, en dólares (fija hasta que se decida; Fase 19). */
   prestacionParado: number;
   /** Subida de las pensiones cada enero (tanto por uno); null: el IPC, como dice la ley. */
@@ -378,9 +412,12 @@ export function presupuestoInicial(
   const paro = economia?.paro ?? (dato(datos, 'paro') ?? 8) / 100;
   const activos = activosDe(datos, nivel, economia?.meses ?? 0);
 
+  const ministerios = ajustarPartidas(totales, objetivo);
   const presupuesto: PresupuestoPais = {
     ingresos,
-    ministerios: ajustarPartidas(totales, objetivo),
+    ministerios,
+    empleados: empleadosDe(ministerios, sueldoMedioDe(nivel, pib, activos)),
+    pendientes: [],
     transversales,
     deuda,
     tipoInteres,
@@ -410,6 +447,30 @@ function activosDe(datos: DatosPresupuesto, nivel: NivelRenta, meses: number): n
   const poblacion = dato(datos, 'poblacion') ?? 0;
   const crecimiento = configEconomia.crecimientoPoblacion[nivel];
   return poblacion * h.tasaActividad[nivel] * Math.pow(1 + crecimiento, meses / 12);
+}
+
+/**
+ * El sueldo medio público ESTIMADO (ajuste f19-a1): «sueldoRelativo» de su nivel de renta por el
+ * PIB nominal por activo.
+ */
+function sueldoMedioDe(nivel: NivelRenta, pib: number, activos: number): number {
+  return activos > 0 ? (h.sueldoRelativo[nivel] * pib) / activos : 0;
+}
+
+/** Los empleados de cada ministerio: su gasto de personal entre el sueldo medio. */
+function empleadosDe(
+  ministerios: Record<Ministerio, Record<Partida, number>>,
+  sueldo: number,
+): Record<Ministerio, number> {
+  return Object.fromEntries(
+    MINISTERIOS.map((m) => [m, sueldo > 0 ? Math.round(ministerios[m].personal / sueldo) : 0]),
+  ) as Record<Ministerio, number>;
+}
+
+/** El sueldo medio de los empleados de un ministerio (su gasto de personal entre ellos). */
+export function sueldoMedio(presupuesto: PresupuestoPais, ministerio: Ministerio): number {
+  const empleados = presupuesto.empleados[ministerio];
+  return empleados > 0 ? presupuesto.ministerios[ministerio].personal / empleados : 0;
 }
 
 /** Personal y mantenimiento, inversión y programas de todos los ministerios. */
@@ -589,6 +650,8 @@ export function completarPresupuesto(
         : null;
     } else if (estado.presupuesto && !estado.presupuesto.referencia && pais) {
       completarHacienda(estado.presupuesto, estado.economia, pais);
+    } else if (estado.presupuesto && !estado.presupuesto.empleados && pais) {
+      completarEmpleo(estado.presupuesto, estado.economia, pais);
     }
   }
   return partida;
@@ -614,6 +677,7 @@ function completarHacienda(
       : 0;
   presupuesto.revalorizacion = null;
   presupuesto.aprobado = { anio: anioDe(meses), prorrogado: false };
+  completarEmpleo(presupuesto, economia, pais);
   presupuesto.referencia = referenciaDe(
     presupuesto,
     economia ?? null,
@@ -621,6 +685,20 @@ function completarHacienda(
   );
   delete antiguo.porParado;
   delete antiguo.potencialVisto;
+}
+
+/** Lo que el ajuste f19-a1 añadió: los empleados de cada ministerio y los cambios pendientes. */
+function completarEmpleo(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais | null | undefined,
+  pais: PaisParaPresupuesto,
+): void {
+  const pib = economia ? pibNominal(economia) : totalGastos(presupuesto);
+  presupuesto.empleados = empleadosDe(
+    presupuesto.ministerios,
+    sueldoMedioDe(nivelDe(pais.nivelRenta), pib, presupuesto.activos),
+  );
+  presupuesto.pendientes = [];
 }
 
 /**
@@ -631,6 +709,7 @@ export function faltaPresupuesto(partida: Pick<PartidaJuego, 'paises'>): boolean
   return Object.values(partida.paises).some(
     (estado) =>
       estado.presupuesto === undefined ||
-      (estado.presupuesto !== null && !estado.presupuesto.referencia),
+      (estado.presupuesto !== null &&
+        (!estado.presupuesto.referencia || !estado.presupuesto.empleados)),
   );
 }

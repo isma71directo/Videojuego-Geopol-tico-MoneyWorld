@@ -10,15 +10,22 @@
  *
  * El jugador manda su presupuesto con la orden «presupuesto» del motor; este sistema lo aplica en
  * el paso del mes siguiente. Va después del presupuesto y del mercado de la deuda. Motor puro.
+ *
+ * Con el ajuste f19-a1 (decisiones del jugador), cada ministerio decide el suyo con cambios
+ * concretos (orden «cambiosPresupuesto»), y cada uno vale cuando le toca: una subida anual, el 1 de
+ * enero; una extraordinaria, el mes siguiente; los puestos nuevos, cuando acaba la oposición (y
+ * sacan gente del paro); los despidos, el mes siguiente (vuelven al paro, con indemnización).
  */
 import config from './config/presupuesto.json';
 import { UMBRAL_CIERRE, type MercadoDeuda } from './deuda';
-import { crecimientoPotencial, pibNominal, type EconomiaPais } from './economia';
+import { crecimientoPotencial, pibNominal, type EconomiaPais, type NivelRenta } from './economia';
 import type { Sistema } from './motor';
 import {
   MINISTERIOS,
   PARTIDAS,
   saldo,
+  sueldoMedio,
+  type CambioPresupuesto,
   type Ministerio,
   type Partida,
   type PresupuestoPais,
@@ -52,7 +59,7 @@ const dinero = (valor: unknown, siNo: number): number =>
   typeof valor === 'number' && Number.isFinite(valor) && valor >= 0 ? valor : siNo;
 
 /**
- * Aprueba un presupuesto (del jugador o de la IA) en \`anio\`. Lo que no sea válido se queda como
+ * Aprueba un presupuesto (del jugador o de la IA) en `anio`. Lo que no sea válido se queda como
  * estaba; la subida de las pensiones, entre sus límites.
  */
 export function aprobarPresupuesto(
@@ -122,9 +129,111 @@ export function revalorizarPensiones(presupuesto: PresupuestoPais, economia: Eco
   presupuesto.transversales.pensiones *= 1 + subida;
 }
 
+/** El día 1 del mes que sigue a `fecha` («AAAA-MM-DD»). */
+export function diaUnoSiguiente(fecha: string): string {
+  const anio = Number(fecha.slice(0, 4));
+  const mes = Number(fecha.slice(5, 7));
+  return mes === 12 ? `${anio + 1}-01-01` : `${anio}-${String(mes + 1).padStart(2, '0')}-01`;
+}
+
+/** `dia` (el 1 de un mes) más `meses` meses. */
+function sumarMesesA(dia: string, meses: number): string {
+  const total = Number(dia.slice(0, 4)) * 12 + Number(dia.slice(5, 7)) - 1 + meses;
+  return `${Math.floor(total / 12)}-${String((total % 12) + 1).padStart(2, '0')}-01`;
+}
+
 /**
- * Un mes de Hacienda de un país (el día 1, con su \`fecha\`): aplica lo que haya decidido el
- * jugador y, en enero, el presupuesto del año (la IA aprueba el suyo; el del jugador se prorroga
+ * El día en que empieza a valer un cambio cuyo primer mes posible es `base` (el 1 del mes
+ * siguiente a la orden): una subida anual, el siguiente 1 de enero; los puestos nuevos, cuando
+ * acaba la oposición; lo demás, ese mismo día.
+ */
+export function desdeCuando(cambio: CambioPresupuesto, base: string, nivel: NivelRenta): string {
+  if ((cambio.tipo === 'partida' || cambio.tipo === 'sueldos') && cambio.cuando === 'anio') {
+    return base.slice(5, 7) === '01' ? base : `${Number(base.slice(0, 4)) + 1}-01-01`;
+  }
+  if (cambio.tipo === 'puestos' && cambio.cantidad > 0) {
+    return sumarMesesA(base, h.mesesOposicion[nivel]);
+  }
+  return base;
+}
+
+/** El día en que valdrá un cambio que se ordena hoy (`fecha`), para enseñarlo. */
+export function fechaDeAplicacion(
+  cambio: CambioPresupuesto,
+  fecha: string,
+  nivel: NivelRenta,
+): string {
+  return desdeCuando(cambio, diaUnoSiguiente(fecha), nivel);
+}
+
+/** Los ministerios a los que toca un cambio. */
+const ministeriosDe = (ministerio: Ministerio | 'todos'): readonly Ministerio[] =>
+  ministerio === 'todos' ? MINISTERIOS : [ministerio];
+
+/** Un número entre sus límites, o null si no es un número. */
+const cifra = (valor: unknown, [minimo, maximo]: readonly [number, number]): number | null =>
+  typeof valor === 'number' && Number.isFinite(valor)
+    ? Math.min(maximo, Math.max(minimo, valor))
+    : null;
+
+/**
+ * Aplica un cambio que ya vale (ajuste f19-a1). Los puestos nuevos sacan del paro a los parados
+ * que los ocupan; los despidos vuelven al paro y su indemnización sale de la tesorería.
+ */
+export function aplicarCambio(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais,
+  estado: { tesoreria: number } | null,
+  cambio: CambioPresupuesto,
+): void {
+  if (cambio.tipo === 'partida') {
+    const factor = cifra(cambio.factor, [0, h.limiteFactor]);
+    if (factor === null) return;
+    const partidas = cambio.partida === 'todas' ? PARTIDAS : [cambio.partida];
+    for (const m of ministeriosDe(cambio.ministerio)) {
+      for (const p of partidas) presupuesto.ministerios[m][p] *= factor;
+    }
+    return;
+  }
+  if (cambio.tipo === 'sueldos') {
+    const subida = cifra(cambio.subida, [-h.limiteSubidaSueldos, h.limiteSubidaSueldos]);
+    if (subida === null) return;
+    for (const m of ministeriosDe(cambio.ministerio)) {
+      presupuesto.ministerios[m].personal *= 1 + subida;
+    }
+    return;
+  }
+  if (cambio.tipo === 'puestos') {
+    const m = cambio.ministerio;
+    const empleados = presupuesto.empleados[m] ?? 0;
+    const cantidad = cifra(Math.round(cambio.cantidad), [-empleados, Math.max(empleados, 1e6)]);
+    if (cantidad === null || cantidad === 0 || !(presupuesto.activos > 0)) return;
+    const sueldo = sueldoMedio(presupuesto, m);
+    presupuesto.empleados[m] = empleados + cantidad;
+    presupuesto.ministerios[m].personal = Math.max(
+      0,
+      presupuesto.ministerios[m].personal + cantidad * sueldo,
+    );
+    // Contratados: salen del paro los parados que ocupan los puestos. Despedidos: vuelven todos.
+    const alParo = (cantidad > 0 ? -h.parteParados * cantidad : -cantidad) / presupuesto.activos;
+    economia.paro = Math.max(0, economia.paro + alParo);
+    economia.paroEstructural = Math.max(0, economia.paroEstructural + alParo);
+    if (cantidad < 0 && estado) estado.tesoreria -= -cantidad * sueldo * h.indemnizacion;
+    return;
+  }
+  if (cambio.tipo === 'pensiones') {
+    presupuesto.revalorizacion =
+      cambio.revalorizacion === null ? null : cifra(cambio.revalorizacion, LIMITES_REVALORIZACION);
+    return;
+  }
+  const prestacion = cifra(cambio.prestacionParado, [0, Number.MAX_VALUE]);
+  if (prestacion !== null) presupuesto.prestacionParado = prestacion;
+}
+
+/**
+ * Un mes de Hacienda de un país (el día 1, con su `fecha`): aplica lo que haya decidido el
+ * jugador (el presupuesto entero o los cambios de sus ministerios, cada uno cuando le toca) y, en
+ * enero, el presupuesto del año (la IA aprueba el suyo; el del jugador se prorroga
  * si no ha aprobado otro este año) y la subida de las pensiones. En una crisis de deuda, la IA no
  * aprueba presupuesto (manda el rescate o el impago) y las pensiones se congelan.
  */
@@ -132,21 +241,49 @@ export function haciendaDelMes(
   presupuesto: PresupuestoPais,
   economia: EconomiaPais,
   mercado: MercadoDeuda | null,
-  opciones: { esJugador: boolean; fecha: string; decidido?: PresupuestoDecidido },
+  opciones: {
+    esJugador: boolean;
+    fecha: string;
+    decidido?: PresupuestoDecidido;
+    /** Los cambios que ha ordenado el jugador el mes pasado (ajuste f19-a1). */
+    cambios?: readonly CambioPresupuesto[];
+    /** Su tesorería (de ella salen las indemnizaciones). */
+    estado?: { tesoreria: number };
+  },
 ): void {
-  const anio = Number(opciones.fecha.slice(0, 4));
+  const { fecha } = opciones;
+  const anio = Number(fecha.slice(0, 4));
   if (opciones.decidido) aprobarPresupuesto(presupuesto, opciones.decidido, anio);
-  if (opciones.fecha.slice(5, 7) !== '01') return;
+  // Los cambios nuevos, con su día; y los que ya valen, aplicados (por orden).
+  for (const cambio of opciones.cambios ?? []) {
+    presupuesto.pendientes.push({
+      cambio: structuredClone(cambio),
+      desde: desdeCuando(cambio, fecha, economia.nivelRenta),
+    });
+  }
+  const ahora = presupuesto.pendientes.filter((p) => p.desde <= fecha);
+  presupuesto.pendientes = presupuesto.pendientes.filter((p) => p.desde > fecha);
+  for (const { cambio } of ahora) {
+    aplicarCambio(presupuesto, economia, opciones.estado ?? null, cambio);
+  }
+  if (fecha.slice(5, 7) !== '01') return;
   const enCrisis = Boolean(mercado?.programa);
+  // Las subidas anuales que valen hoy son el presupuesto del año.
+  const anual = ahora.some(
+    ({ cambio }) =>
+      (cambio.tipo === 'partida' || cambio.tipo === 'sueldos') && cambio.cuando === 'anio',
+  );
   if (!opciones.esJugador && !enCrisis) {
     aprobarPresupuesto(presupuesto, presupuestoDeLaIa(presupuesto, economia, mercado), anio);
+  } else if (anual) {
+    presupuesto.aprobado = { anio, prorrogado: false };
   } else if (presupuesto.aprobado.anio < anio) {
     presupuesto.aprobado.prorrogado = true;
   }
   if (!enCrisis) revalorizarPensiones(presupuesto, economia);
 }
 
-/** La fecha del paso mensual de una economía que lleva \`meses\` meses desde enero de 2010. */
+/** La fecha del paso mensual de una economía que lleva `meses` meses desde enero de 2010. */
 export function fechaDelMes(meses: number): string {
   const anio = 2010 + Math.floor(meses / 12);
   const mes = (meses % 12) + 1;
@@ -162,6 +299,8 @@ export const sistemaHacienda: Sistema = (pasos, partida) => {
     if (paso.ritmo !== 'mensual') continue;
     const decidido = partida.presupuestoDecidido;
     if (decidido) delete partida.presupuestoDecidido;
+    const cambios = partida.cambiosPresupuesto;
+    if (cambios) delete partida.cambiosPresupuesto;
     for (const [id, estado] of Object.entries(partida.paises)) {
       const { presupuesto, economia } = estado;
       if (!presupuesto || !economia) continue;
@@ -170,6 +309,8 @@ export const sistemaHacienda: Sistema = (pasos, partida) => {
         esJugador,
         fecha: paso.fecha,
         decidido: esJugador ? decidido : undefined,
+        cambios: esJugador ? cambios : undefined,
+        estado,
       });
     }
   }
