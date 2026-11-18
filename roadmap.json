@@ -1,13 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.20.0",
-  "actualizado": "2026-11-18T08:56:13Z",
+  "versionActual": "0.20.1",
+  "actualizado": "2026-11-18T08:57:10Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Ajustes de la Fase 19 hechos (f19-a1 a f19-a3). f19-a3: la pestaña «Presupuesto» de cada ministerio, con empleados, sueldos, puestos nuevos o despidos, inversión, compras y programas en cifras y en %, cada cambio con su plazo; en Trabajo y Seguridad Social, pensiones y prestación por parado.",
-    "siguientePaso": "Cerrar la v0.20.1 en el mismo PR #39.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 19 cerrada como v0.20.1 (en el PR #39, que incluye la v0.20.0): presupuesto jugable, con la vista general en Gobierno › Presupuesto y el presupuesto de cada ministerio en su ventana, como en Power & Revolution (empleados, sueldos, puestos nuevos, inversión, compras y programas), y cada cambio con su plazo.",
+    "siguientePaso": "Cuando el jugador fusione el PR #39: presentar el plan de la Fase 20 (deuda y Tesoro jugables) y preguntarle las decisiones de diseño.",
+    "pendienteDelJugador": ["Probar la v0.20.1 en el PC (ver el PR #39) y fusionarlo"]
   },
   "etapas": [
     {
@@ -1193,7 +1193,7 @@
           "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/5ea5188"
         }
       ]
     },
@@ -4836,6 +4836,16 @@
         "El presupuesto en dinero (no en % del PIB) y fijo hasta que se decida; anual, con prórroga; los gobiernos de la IA aprueban el suyo cada enero según su situación; lo decidido llega a la economía",
         "Nuevo orden de la hoja de ruta: desde la Fase 19, cada fase trae decisiones del jugador (la 20, deuda y Tesoro jugables)",
         "Sonidos de los deslizadores y sello con sonido al aprobar el presupuesto"
+      ]
+    },
+    {
+      "version": "0.20.1",
+      "fecha": "2026-11-18",
+      "cambios": [
+        "El presupuesto de cada ministerio, en su ventana (pestaña «Presupuesto»), como en Power & Revolution: empleados, sueldos, puestos nuevos o despidos, inversión, compras y programas, en cifras y en % (decisiones del jugador)",
+        "Cada cambio vale cuando le toca: subidas anuales en enero, extraordinarias el mes siguiente, puestos nuevos tras la oposición (sacan gente del paro) y despidos con indemnización",
+        "Gobierno › Presupuesto, la vista general: resumen, previsión, ajuste general de todo el gasto, cambios pendientes y lista de ministerios que abre cada uno",
+        "Pensiones y prestación por desempleo, en Trabajo y Seguridad Social"
       ]
     }
   ]
