@@ -1,13 +1,16 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.19.0",
-  "actualizado": "2026-11-17T23:45:55Z",
+  "actualizado": "2026-11-18T07:18:40Z",
   "faseActiva": "fase-19",
   "ultimaSesion": {
-    "fecha": "2026-11-17",
-    "resumen": "Fase 18 cerrada como v0.19.0 (deuda, prima de riesgo y rating): fórmula calibrada con los tipos reales de la OCDE, mercado de la deuda mensual, crisis de deuda con rescate del FMI o impago (decisión del jugador en una ventana; la IA según su situación), distintivo animado del rating, gráfico de la prima y alertas de crisis y de rating. PR abierto.",
-    "siguientePaso": "Cuando el jugador fusione el PR de la v0.19.0: presentar el plan de la Fase 19 (Pantalla de Economía) y preguntarle las decisiones de diseño.",
-    "pendienteDelJugador": ["Probar la v0.19.0 en el PC (ver el PR) y fusionarlo"]
+    "fecha": "2026-11-18",
+    "resumen": "El jugador probó la v0.18.0: falta jugabilidad («solo se abre una pestaña y se pasa el tiempo») y el presupuesto no debe medirse en % del PIB. Decidido: presupuesto en dinero y en % del total (el % del PIB, en la ayuda); gasto de los ministerios fijo en dinero hasta que se decida (pensiones con los precios); deuda jugable con cuatro acciones (emitir, amortizar y recomprar, negociar, ayuda preventiva). Hoja de ruta reordenada: Fase 19 presupuesto jugable, 20 deuda y Tesoro jugables, 21-22 impuestos, 23 banco central y pantalla de Economía, 24 moneda, 25 bancos. Regla 21: jugable en cada fase. PR #38 (v0.19.0) abierto, con este plan.",
+    "siguientePaso": "Cuando el jugador fusione el PR #38 y responda las preguntas del plan de la Fase 19 (presupuesto jugable), empezar f19-t1: presupuesto en dinero.",
+    "pendienteDelJugador": [
+      "Fusionar el PR #38 (v0.19.0, con el plan nuevo)",
+      "Responder las preguntas de diseño de la Fase 19"
+    ]
   },
   "etapas": [
     {
@@ -1131,30 +1134,37 @@
       "id": "fase-19",
       "etapa": "B",
       "version": "0.20.0",
-      "nombre": "Pantalla de Economía",
-      "objetivo": "Ver la evolución de la economía con gráficos",
+      "nombre": "Presupuesto jugable",
+      "objetivo": "El jugador decide el presupuesto, en dinero",
       "dependeDe": ["fase-18"],
-      "hechoCuando": "Los gráficos funcionan con los datos de la partida",
-      "pruebaJugador": "Jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido",
+      "hechoCuando": "El presupuesto se decide en dinero y sus efectos son coherentes",
+      "pruebaJugador": "Con España, recortar y subir partidas y ver en 12 meses el déficit, la deuda y la prima",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f19-t1",
-          "titulo": "Historial mensual de indicadores",
+          "titulo": "Presupuesto en dinero: el gasto de los ministerios, fijo hasta que se decida; las pensiones, con los precios; en pantalla, dinero y % del total (el % del PIB, en la ayuda)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f19-t2",
-          "titulo": "Pantalla «Economía» con gráficos y capa del mapa con crecimiento e inflación en tiempo real",
+          "titulo": "Los gobiernos de la IA aprueban su presupuesto cada año, según su situación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f19-t3",
-          "titulo": "Audiovisual: gráficos históricos animados",
+          "titulo": "Pantalla «Presupuesto» editable: deslizadores por ministerio y partida, previsión a 12 meses, comparación con el año anterior y prórroga",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f19-t4",
+          "titulo": "Audiovisual: deslizadores con respuesta visual y sonora; animación y sonido al aprobar el presupuesto",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1165,30 +1175,37 @@
       "id": "fase-20",
       "etapa": "B",
       "version": "0.21.0",
-      "nombre": "Banco central y tipos de interés",
-      "objetivo": "Política monetaria",
+      "nombre": "Deuda y Tesoro jugables",
+      "objetivo": "Gestionar la deuda: emitir, pagar, negociar y pedir ayuda",
       "dependeDe": ["fase-19"],
-      "hechoCuando": "La política monetaria funciona",
-      "pruebaJugador": "Subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses",
+      "hechoCuando": "La deuda se gestiona a mano y la IA también lo hace",
+      "pruebaJugador": "Con Grecia en 2010, alargar los plazos, pedir la línea preventiva y ver si evita la crisis",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f20-t1",
-          "titulo": "Banco central (independiente o no) con regla tipo Taylor",
+          "titulo": "La deuda por emisiones: letras a 1 año y bonos a 5 y 10 años, con su tipo y su vencimiento; calendario de vencimientos",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f20-t2",
-          "titulo": "Zona euro: el BCE decide para los 16 miembros de 2010",
+          "titulo": "Ventana «Deuda y Tesoro»: tesorería, vencimientos, emitir a mano, amortizar y recomprar; si se acaba la tesorería, impago",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f20-t3",
-          "titulo": "Audiovisual: visualización de los tipos de interés y de su evolución",
+          "titulo": "Negociar con los acreedores (plazo, interés o quita) y pedir ayuda antes de la crisis (línea preventiva del FMI o préstamo de otros países); también la IA",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f20-t4",
+          "titulo": "Audiovisual: calendario de vencimientos animado y sonidos de la subasta y de la negociación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1199,30 +1216,37 @@
       "id": "fase-21",
       "etapa": "B",
       "version": "0.22.0",
-      "nombre": "Moneda y divisas",
-      "objetivo": "Tipos de cambio y regímenes de moneda",
+      "nombre": "Impuestos: modelo y tipos",
+      "objetivo": "Sistema fiscal completo, con los tipos en manos del jugador",
       "dependeDe": ["fase-20"],
-      "hechoCuando": "Cada país tiene su régimen de moneda y se puede cambiar",
-      "pruebaJugador": "Devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses",
+      "hechoCuando": "Todos los impuestos recaudan y se pueden cambiar",
+      "pruebaJugador": "Revisar los impuestos de España en 2010 y subir el IVA",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f21-t1",
-          "titulo": "Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar",
+          "titulo": "Todos los impuestos de la sección 6.3 con sus parámetros",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f21-t2",
-          "titulo": "Reservas de divisas y controles de capital",
+          "titulo": "Recaudación con curva de Laffer suave, economía sumergida y evasión",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f21-t3",
-          "titulo": "Audiovisual: símbolos de las monedas y gráfico del tipo de cambio",
+          "titulo": "Subir y bajar cada impuesto desde la Pantalla de Presupuesto, con su efecto en la recaudación",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f21-t4",
+          "titulo": "Audiovisual: iconos de cada impuesto",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1233,30 +1257,30 @@
       "id": "fase-22",
       "etapa": "B",
       "version": "0.23.0",
-      "nombre": "Bancos, bolsa y crisis",
-      "objetivo": "Crisis financieras con contagio",
+      "nombre": "Impuestos: efectos y simulador",
+      "objetivo": "Ver qué pasa al cambiar los impuestos",
       "dependeDe": ["fase-21"],
-      "hechoCuando": "Puede producirse una crisis financiera y contagiarse",
-      "pruebaJugador": "Seguir en el mapa el contagio de una crisis en una partida de prueba",
+      "hechoCuando": "Todos los impuestos funcionan y el simulador acierta de forma aproximada",
+      "pruebaJugador": "Subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f22-t1",
-          "titulo": "Sistema bancario simplificado: solvencia, crédito y rescates",
+          "titulo": "Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f22-t2",
-          "titulo": "Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio",
+          "titulo": "Pantalla «Impuestos» con simulador («si subes el IVA un punto, recaudarás X»)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f22-t3",
-          "titulo": "Audiovisual: animación del contagio de una crisis en el mapa",
+          "titulo": "Audiovisual: curva de Laffer animada y simulador visual de la recaudación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1267,30 +1291,37 @@
       "id": "fase-23",
       "etapa": "B",
       "version": "0.24.0",
-      "nombre": "Pantalla de Presupuesto",
-      "objetivo": "Editar el presupuesto",
+      "nombre": "Banco central y pantalla de Economía",
+      "objetivo": "Política monetaria, y ver la economía con gráficos para decidirla",
       "dependeDe": ["fase-22"],
-      "hechoCuando": "El presupuesto es editable y sus efectos son coherentes",
-      "pruebaJugador": "Subir mucho el gasto y comprobar que el rating baja",
+      "hechoCuando": "La política monetaria funciona y se ve en los gráficos",
+      "pruebaJugador": "Subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses en la pantalla de Economía",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f23-t1",
-          "titulo": "Pantalla «Presupuesto» con deslizadores, previsión a 12 meses y comparación con el año anterior",
+          "titulo": "Banco central (independiente o no) con regla tipo Taylor; el jugador decide los tipos si no es independiente",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f23-t2",
-          "titulo": "Prórroga presupuestaria (preparada para cuando exista el parlamento)",
+          "titulo": "Zona euro: el BCE decide para los 16 miembros de 2010",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f23-t3",
-          "titulo": "Audiovisual: deslizadores con respuesta visual y sonora",
+          "titulo": "Pantalla «Economía» con el historial mensual de indicadores, gráficos y capa del mapa con crecimiento e inflación en tiempo real",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f23-t4",
+          "titulo": "Audiovisual: visualización de los tipos de interés y gráficos históricos animados",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1301,30 +1332,30 @@
       "id": "fase-24",
       "etapa": "B",
       "version": "0.25.0",
-      "nombre": "Impuestos: modelo",
-      "objetivo": "Sistema fiscal completo",
+      "nombre": "Moneda y divisas",
+      "objetivo": "Tipos de cambio y regímenes de moneda",
       "dependeDe": ["fase-23"],
-      "hechoCuando": "Todos los impuestos recaudan",
-      "pruebaJugador": "Revisar los impuestos de España en 2010",
+      "hechoCuando": "Cada país tiene su régimen de moneda y se puede cambiar",
+      "pruebaJugador": "Devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f24-t1",
-          "titulo": "Todos los impuestos de la sección 6.3 con sus parámetros",
+          "titulo": "Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f24-t2",
-          "titulo": "Recaudación con curva de Laffer suave, economía sumergida y evasión",
+          "titulo": "Reservas de divisas y controles de capital",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f24-t3",
-          "titulo": "Audiovisual: iconos de cada impuesto",
+          "titulo": "Audiovisual: símbolos de las monedas y gráfico del tipo de cambio",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
@@ -1335,30 +1366,30 @@
       "id": "fase-25",
       "etapa": "B",
       "version": "0.26.0",
-      "nombre": "Impuestos: efectos y simulador",
-      "objetivo": "Ver qué pasa al cambiar los impuestos",
+      "nombre": "Bancos, bolsa y crisis",
+      "objetivo": "Crisis financieras con contagio",
       "dependeDe": ["fase-24"],
-      "hechoCuando": "Todos los impuestos funcionan y el simulador acierta de forma aproximada",
-      "pruebaJugador": "Subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses",
+      "hechoCuando": "Puede producirse una crisis financiera y contagiarse",
+      "pruebaJugador": "Seguir en el mapa el contagio de una crisis en una partida de prueba y decidir si rescatar a los bancos",
       "estado": "pendiente",
       "tareas": [
         {
           "id": "f25-t1",
-          "titulo": "Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización",
+          "titulo": "Sistema bancario simplificado: solvencia, crédito y rescates (el jugador decide si rescata a sus bancos)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f25-t2",
-          "titulo": "Pantalla «Impuestos» con simulador («si subes el IVA un punto, recaudarás X»)",
+          "titulo": "Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f25-t3",
-          "titulo": "Audiovisual: curva de Laffer animada y simulador visual de la recaudación",
+          "titulo": "Audiovisual: animación del contagio de una crisis en el mapa",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""

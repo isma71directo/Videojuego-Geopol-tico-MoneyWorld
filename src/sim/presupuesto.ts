@@ -81,7 +81,7 @@ export interface PresupuestoPais {
   /**
    * Tipo efectivo de cada ingreso sobre su base (tanto por uno): lo recaudado en 2010 entre su
    * base de 2010. Con él, la recaudación sigue a la economía (y son los impuestos que el jugador
-   * podrá cambiar en las Fases 24 y 25).
+   * podrá cambiar en las Fases 21 y 22).
    */
   tipos: Record<Ingreso, number>;
   /** Prestación al año por cada punto de paro y dólar de PIB nominal (para que siga al paro). */
@@ -370,7 +370,7 @@ function anotarMes(presupuesto: PresupuestoPais, pib: number): void {
 const e = config.evolucion;
 
 /**
- * Un mes del presupuesto (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 23):
+ * Un mes del presupuesto (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 19):
  * la recaudación sigue a sus bases, los ministerios crecen con los precios y el potencial (y
  * pierden los recortes del ajuste forzoso), las pensiones suben con los precios y el
  * envejecimiento, el desempleo sigue al paro y los intereses, a la deuda. El saldo pasa por la

@@ -1221,7 +1221,7 @@
       "graficoDeudaTitulo": "Deuda pública desde enero de 2010 (% del PIB)",
       "ministeriosTitulo": "Gasto de cada ministerio",
       "nota": "Totales del FMI y partes del Banco Mundial (2010). * Estimado: el reparto entre ministerios (salvo sanidad, educación y defensa) y las partidas internas.",
-      "ventanaNota": "Solo para ver: el presupuesto se podrá cambiar en la Fase 23, y la deuda tendrá prima de riesgo y rating en la 18.",
+      "ventanaNota": "Solo para ver: el presupuesto se podrá cambiar en la Fase 19, y la deuda se podrá gestionar en la 20.",
       "sinDatos": "No hay datos para su presupuesto.",
       "rating": "Rating de la deuda",
       "ratingAyuda": "La nota que dan las agencias a la deuda del país según su prima de riesgo, de AAA (la mejor) a C (los mercados no prestan); D es el impago. Se revisa cada trimestre y se mueve como mucho dos escalones.",
@@ -1256,7 +1256,7 @@
       },
       "inflacionGrave": {
         "titulo": "Inflación desbocada",
-        "texto": "Los precios suben un {valor} al año. La inversión cae con fuerza y la confianza de las empresas se hunde. (El banco central, que puede frenarla, llega en la Fase 20.)"
+        "texto": "Los precios suben un {valor} al año. La inversión cae con fuerza y la confianza de las empresas se hunde. (El banco central, que puede frenarla, llega en la Fase 23.)"
       },
       "deflacion": {
         "titulo": "Deflación",
@@ -1297,7 +1297,7 @@
       "paro": "Paro",
       "paroAyuda": "Parados sobre la población activa (dato de 2010 del Banco Mundial); entre paréntesis, cuánto ha cambiado en 12 meses. Sube cuando la economía produce por debajo de lo que podría (ley de Okun) y, si se queda alto mucho tiempo, parte se vuelve estructural y ya no baja solo. Los parados gastan menos y el paro hunde la confianza.",
       "inflacion": "Inflación",
-      "inflacionAyuda": "Cuánto suben los precios al año al ritmo de este mes (dato de 2010 del Banco Mundial). Cada país arrastra la suya: baja con mucho paro y sube cuando falta (por ejemplo, si se gasta de más). Por encima del 10 % resta inversión y confianza de las empresas; con deflación (en negativo) se consume menos. El banco central, que la frena, llega en la Fase 20.",
+      "inflacionAyuda": "Cuánto suben los precios al año al ritmo de este mes (dato de 2010 del Banco Mundial). Cada país arrastra la suya: baja con mucho paro y sube cuando falta (por ejemplo, si se gasta de más). Por encima del 10 % resta inversión y confianza de las empresas; con deflación (en negativo) se consume menos. El banco central, que la frena, llega en la Fase 23.",
       "crecimiento": "Crecimiento (12 meses)",
       "crecimientoDesde": "Crecimiento desde 2010 (anual)",
       "crecimientoAyuda": "Cuánto ha crecido el PIB real en los últimos 12 meses (o, si aún no ha pasado un año, desde enero de 2010, al ritmo de un año). Empieza con el crecimiento real de 2010 y se acerca poco a poco al potencial.",
@@ -1328,7 +1328,7 @@
       "nota": "PIB real en dólares de 2010. * Confianza estimada.",
       "graficoPreciosTitulo": "Paro e inflación desde enero de 2010 (%)",
       "sinDatos": "Sin datos para su economía.",
-      "ventanaNota": "La pantalla completa de Economía llega en la Fase 19, y el banco central, en la 20."
+      "ventanaNota": "La pantalla completa de Economía y el banco central llegan en la Fase 23."
     },
     "decisiones": {
       "crisisDeuda": {

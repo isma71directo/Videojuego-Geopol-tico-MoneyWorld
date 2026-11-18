@@ -1,7 +1,7 @@
 /**
  * El presupuesto en vivo (tarea f17-t4; decisión del jugador: en la pestaña Economía de la ficha
  * de cada país y, para el del jugador, en Gobierno › Presupuesto, en solo lectura hasta la
- * Pantalla de Presupuesto de la Fase 23). Ingresos, gastos, saldo, deuda, intereses y tesorería;
+ * Pantalla de Presupuesto de la Fase 19). Ingresos, gastos, saldo, deuda, intereses y tesorería;
  * de qué se nutren los ingresos y en qué se va el gasto, con iconos; el gráfico de ingresos y
  * gastos desde enero de 2010; y, en la ventana, la deuda y los 20 ministerios por dentro. Con la
  * Fase 18, también el mercado de la deuda (tarea f18-t4): el rating con su distintivo animado, la

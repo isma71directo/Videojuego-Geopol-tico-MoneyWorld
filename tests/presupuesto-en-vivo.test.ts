@@ -137,7 +137,7 @@ describe('el presupuesto en vivo (tarea f17-t4)', () => {
     expect(
       ventana.querySelector('[data-ministerio="sanidad"] .presupuesto__valor')!.textContent,
     ).not.toContain('*');
-    expect(ventana.textContent).toContain('Fase 23');
+    expect(ventana.textContent).toContain('Fase 19');
   });
 
   it('sin presupuesto (sin datos), lo dice', () => {

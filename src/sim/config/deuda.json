@@ -1,5 +1,5 @@
 {
-  "$comentario": "Deuda, prima de riesgo y rating (Fase 18; decisión del jugador: fórmula pública calibrada con los tipos reales a 10 años de 2010 de la OCDE, 40 países). El tipo de mercado de la deuda de un país es «tipoBase» (provisional hasta el banco central de la Fase 20) + «pesoInflacion» × (inflación esperada − «inflacionReferencia»; nunca menos de «inflacionMinima») + la prima de riesgo. La prima (en puntos) es e elevado al riesgo, que suma lo de abajo. Calibrada por mínimos cuadrados con los 40 países (con la deuda, el déficit y el déficit exterior obligados a sumar riesgo); los coeficientes de la inflación, la estabilidad y la carga de intereses, a juicio (los 40 son sobre todo países ricos).",
+  "$comentario": "Deuda, prima de riesgo y rating (Fase 18; decisión del jugador: fórmula pública calibrada con los tipos reales a 10 años de 2010 de la OCDE, 40 países). El tipo de mercado de la deuda de un país es «tipoBase» (provisional hasta el banco central de la Fase 23) + «pesoInflacion» × (inflación esperada − «inflacionReferencia»; nunca menos de «inflacionMinima») + la prima de riesgo. La prima (en puntos) es e elevado al riesgo, que suma lo de abajo. Calibrada por mínimos cuadrados con los 40 países (con la deuda, el déficit y el déficit exterior obligados a sumar riesgo); los coeficientes de la inflación, la estabilidad y la carga de intereses, a juicio (los 40 son sobre todo países ricos).",
   "tipoBase": 2.5,
   "pesoInflacion": 0.5,
   "inflacionReferencia": 2,
@@ -27,7 +27,7 @@
     "cargaConMonedaPropia": 0.3
   },
   "primaMaxima": 60,
-  "$comentarioMonedaPropia": "Países sin moneda propia en 2010 (PROVISIONAL hasta la moneda, Fase 21): los 16 del euro y los de moneda atada al euro (Bulgaria, Estonia, Letonia y Lituania).",
+  "$comentarioMonedaPropia": "Países sin moneda propia en 2010 (PROVISIONAL hasta la moneda, Fase 24): los 16 del euro y los de moneda atada al euro (Bulgaria, Estonia, Letonia y Lituania).",
   "sinMonedaPropia": [
     "AUT",
     "BEL",

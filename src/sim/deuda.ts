@@ -7,7 +7,7 @@
  * política, su inflación, su deuda, su déficit, su déficit exterior y lo que se le van los
  * ingresos en intereses; sin moneda propia (el euro), la deuda y el déficit pesan más. La prima
  * es e elevada al riesgo; el tipo de mercado, un tipo base (provisional hasta el banco central de
- * la Fase 20) más la inflación esperada y la prima; y el rating, según la prima. Motor puro.
+ * la Fase 23) más la inflación esperada y la prima; y el rating, según la prima. Motor puro.
  */
 import config from './config/deuda.json';
 import { durezaDe, pibNominal, type EconomiaPais } from './economia';
@@ -51,7 +51,7 @@ export interface Fundamentos {
 const r = config.riesgo;
 const SIN_MONEDA_PROPIA: ReadonlySet<string> = new Set(config.sinMonedaPropia);
 
-/** ¿Tiene el país moneda propia (y banco central que la respalde)? Provisional hasta la Fase 21. */
+/** ¿Tiene el país moneda propia (y banco central que la respalde)? Provisional hasta la Fase 24. */
 export function tieneMonedaPropia(id: string): boolean {
   return !SIN_MONEDA_PROPIA.has(id);
 }

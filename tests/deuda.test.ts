@@ -71,7 +71,7 @@ describe('la fórmula de la prima de 2010 (tarea f18-t1)', () => {
     expect(ratingDe(30)).toBe('C');
   });
 
-  it('los países del euro de 2010 no tienen moneda propia (provisional hasta la Fase 21)', () => {
+  it('los países del euro de 2010 no tienen moneda propia (provisional hasta la Fase 24)', () => {
     expect(tieneMonedaPropia('GRC')).toBe(false);
     expect(tieneMonedaPropia('DEU')).toBe(false);
     expect(tieneMonedaPropia('JPN')).toBe(true);
