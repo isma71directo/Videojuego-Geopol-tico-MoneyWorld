@@ -438,6 +438,23 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Pensiones y paro también se deciden:** la subida anual de las pensiones (por defecto, el IPC) y la prestación de cada parado. Las reformas a fondo, con la Fase 31.
 - **La IA, según su situación:** cada enero, con margen sube el gasto con la inflación; con un déficit alto, lo congela; con la prima cerca del cierre de los mercados, recorta; con superávit, gasta algo más. Copiar los presupuestos reales de 2011-2014 de los 190 países no es posible: no hay datos abiertos completos.
 
+**En pantalla (tarea f19-t2):**
+- En la ficha de cada país y en Gobierno › Presupuesto, todo en dinero:
+  - ingresos, gastos, deuda e intereses en dólares; el déficit y los intereses, también como parte de los ingresos;
+  - de dónde salen los ingresos, en % de lo recaudado; en qué se gasta, en % de lo gastado;
+  - cada ministerio, en dinero y como parte del gasto;
+  - los gráficos, en miles de millones de dólares, con el PIB nominal de cada mes (reconstruido con la inflación de cada mes);
+  - el % del PIB, solo en las ayudas, para comparar países.
+- **Gobierno › Presupuesto tiene dos pestañas:** «Nuevo presupuesto» (el editor) y «En vigor» (lo de antes).
+- **El editor:**
+  - un deslizador por ministerio (del 0 % al 200 % de lo que gasta ahora, con su dinero) y, desplegado, uno por cada partida; mover el ministerio mueve sus partidas en la misma proporción;
+  - la subida de las pensiones del próximo enero (del −5 % al +10 %) o «con el IPC, como dice la ley»;
+  - la prestación de cada parado (del 0 % al 200 %, en dólares al año);
+  - atajos: subir todo con el IPC, dejarlo como está y recortar un 5 %;
+  - un resumen que cambia al momento: gasto de los ministerios frente al que está en vigor, gasto total, ingresos al ritmo de ahora y saldo;
+  - «Aprobar el presupuesto» lo manda al motor y avisa del día en que se aplica (el 1 del mes siguiente). A mitad de cambios, el paso de los meses no borra lo tocado.
+- También en la galería (Economía de un país), donde lo aprobado se aplica al avanzar.
+
 
 ### 6.3 Impuestos
 

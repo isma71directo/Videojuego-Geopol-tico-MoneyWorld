@@ -93,8 +93,10 @@ describe('el presupuesto en vivo (tarea f17-t4)', () => {
     ]) {
       expect(texto).toContain(parte);
     }
-    // España: déficit del 9,5 % del PIB, en rojo.
-    expect(texto).toContain('-9,5 % del PIB');
+    // España: déficit del 9,5 % del PIB, en rojo; en dinero y frente a lo que ingresa (36,4 % del
+    // PIB): un 26 % de los ingresos. El % del PIB, solo en las ayudas (Fase 19).
+    expect(texto).toMatch(/−\d{3}\.\d{3} M\$ \(26,\d % de los ingresos\)/);
+    expect(texto).not.toContain('del PIB');
     expect(bloque.elemento.querySelector('.economia__baja')).not.toBeNull();
     // Dos barras con sus iconos (7 ingresos y 7 grupos de gasto).
     expect(bloque.elemento.querySelectorAll('.grafico__leyenda--partes .icono')).toHaveLength(14);
@@ -137,7 +139,7 @@ describe('el presupuesto en vivo (tarea f17-t4)', () => {
     expect(
       ventana.querySelector('[data-ministerio="sanidad"] .presupuesto__valor')!.textContent,
     ).not.toContain('*');
-    expect(ventana.textContent).toContain('Fase 19');
+    expect(ventana.textContent).toContain('Fase 20');
   });
 
   it('sin presupuesto (sin datos), lo dice', () => {

@@ -25,6 +25,7 @@ import { crearBarraSecciones, ponerContenido, refrescarElemento } from './seccio
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
 import { contenidoVentanaPresupuesto, refrescarPresupuestoEnVivo } from './presupuesto-en-vivo';
+import { editorPresupuesto, refrescarEditoresPresupuesto } from './presupuesto-editable';
 import { avisoAbierto, cerrarAviso, mostrarAvisoSuceso } from './aviso-suceso';
 import {
   cerrarAlertasEconomicas,
@@ -426,6 +427,7 @@ export function abrirPantallaMapa(
           partida.fecha = mensaje.partida.fecha;
           refrescarEconomiaEnVivo();
           refrescarPresupuestoEnVivo();
+          refrescarEditoresPresupuesto();
           void guardarAutomatico(mensaje.partida);
         } else if (mensaje.peticion !== undefined) {
           esperando.get(mensaje.peticion)?.(mensaje.partida);
@@ -628,11 +630,17 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
         nombreDe(partida.jugador.paisId),
       ),
     );
-    // Gobierno › Presupuesto (tarea f17-t4): el del país del jugador, en vivo y solo para ver.
+    // Gobierno › Presupuesto (tarea f17-t4): el del país del jugador, en vivo; con la Fase 19, el
+    // presupuesto nuevo se prepara y se aprueba aquí (vale desde el mes siguiente).
     ponerContenido('presupuesto', () =>
       contenidoVentanaPresupuesto(
         () => fuentePresupuesto(partida.jugador.paisId),
         nombreDe(partida.jugador.paisId),
+        () =>
+          editorPresupuesto({
+            fuente: () => fuentePresupuesto(partida.jugador.paisId),
+            aprobar: (presupuesto) => motor?.enviar({ tipo: 'presupuesto', presupuesto }),
+          }).elemento,
       ),
     );
   }

@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.19.0",
-  "actualizado": "2026-11-18T07:39:52Z",
+  "actualizado": "2026-11-18T07:49:26Z",
   "faseActiva": "fase-19",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 (presupuesto jugable) en curso. f19-t1 hecha: el presupuesto en dinero en el motor. El gasto de los ministerios queda fijo hasta que se decida otro (ya no crece con la economía). Las pensiones crecen con el envejecimiento y suben cada enero lo decidido (por defecto, el IPC). La prestación por parado va en dinero (población activa estimada). El presupuesto es anual con prórroga. La IA aprueba el suyo cada enero según su situación: recorta, congela, sube con la inflación o con la economía. Lo decidido llega a la economía (consumo público, inversión y consumo). Los recortes de una crisis de deuda llegan por el mismo camino. Nuevo sistema sistemaHacienda y orden «presupuesto» del motor; formato de partida 8.",
-    "siguientePaso": "f19-t2: Pantalla «Presupuesto» editable (ministerios y sus 4 partidas, subida de las pensiones y prestación por parado) y todo en dinero y % del total en la ficha y en Gobierno › Presupuesto.",
+    "resumen": "Fase 19 (presupuesto jugable) en curso. f19-t1 y f19-t2 hechas. f19-t2: el presupuesto se ve en dinero (ficha y Gobierno › Presupuesto; gráficos en miles de millones de dólares; el % del PIB, solo en las ayudas) y Gobierno › Presupuesto tiene la pestaña «Nuevo presupuesto». En ella hay un deslizador por ministerio y por partida, la subida de las pensiones (o el IPC), la prestación por parado, atajos (IPC, congelar, recortar un 5 %), un resumen al momento y «Aprobar», que vale desde el día 1 del mes siguiente. También en la galería.",
+    "siguientePaso": "f19-t3: previsión a 12 meses (déficit, deuda y prima si no cambia nada más) y comparación con el año anterior, en el editor.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1143,13 +1143,13 @@
           "titulo": "El presupuesto en dinero, en el motor: gasto fijo hasta que se decida, subida de las pensiones y prestación por parado, presupuesto anual con cambios y prórroga, y la IA según su situación",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/ef0a385"
         },
         {
           "id": "f19-t2",
           "titulo": "Pantalla «Presupuesto» editable (ministerios y sus 4 partidas, pensiones y paro) y todo en dinero y % del total (el % del PIB, en la ayuda)",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-18",
           "enlace": ""
         },
         {

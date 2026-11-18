@@ -36,6 +36,8 @@ import { crearIndicadorGuardado } from '../src/ui/indicador-guardado';
 import { bloqueEconomia } from '../src/ui/economia-en-vivo';
 import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
 import { distintivoRating } from '../src/ui/rating';
+import { editorPresupuesto } from '../src/ui/presupuesto-editable';
+import { fechaDelMes, haciendaDelMes, type PresupuestoDecidido } from '../src/sim/hacienda';
 import {
   avanzarMercado,
   gestionarCrisis,
@@ -470,12 +472,31 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   });
   let bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
   let bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
-  const contenedor = el('div', { class: 'galeria__economia' }, bloque.elemento, bloqueP.elemento);
+  // Y el presupuesto nuevo (tarea f19-t2): lo aprobado se aplica al avanzar, como en la partida
+  // (el día 1 del mes siguiente).
+  let pendiente: PresupuestoDecidido | null = null;
+  const crearEditor = () =>
+    editorPresupuesto({
+      fuente: () => ({ presupuesto, economia: actual, fecha }),
+      aprobar: (decidido) => {
+        pendiente = decidido;
+      },
+    });
+  let editor = crearEditor();
+  const contenedor = el(
+    'div',
+    { class: 'galeria__economia' },
+    bloque.elemento,
+    bloqueP.elemento,
+    editor.elemento,
+  );
   /** Rehace los bloques (con sus gráficos animados) al cambiar de país o volver a 2010. */
   const rehacer = (): void => {
     bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
     bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
-    contenedor.replaceChildren(bloque.elemento, bloqueP.elemento);
+    pendiente = null;
+    editor = crearEditor();
+    contenedor.replaceChildren(bloque.elemento, bloqueP.elemento, editor.elemento);
   };
   const boton = (texto: string, hacer: () => void): HTMLButtonElement => {
     const b = el('button', { class: 'boton', type: 'button' }, texto);
@@ -512,10 +533,19 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
             avanzarMercado(paisId, mercado, actual, presupuesto, 0);
             gestionarCrisis(mercado, actual, presupuesto, { esJugador: false });
           }
+          if (presupuesto) {
+            haciendaDelMes(presupuesto, actual, mercado, {
+              esJugador: true,
+              fecha: fechaDelMes(actual.meses),
+              decidido: pendiente ?? undefined,
+            });
+            pendiente = null;
+          }
         }
         fecha = `${Number(fecha.slice(0, 4)) + 1}-01-01`;
         bloque.actualizar();
         bloqueP.actualizar();
+        editor.actualizar();
       }),
       boton(t('galeria.economia.reiniciar'), () => {
         empezar();

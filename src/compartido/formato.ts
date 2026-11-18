@@ -27,6 +27,11 @@ export function dolares(valor: number): string {
   return `${entero.format(valor)} $`;
 }
 
+/** Dinero con signo: −98381300000 → «−98.381 M$». */
+export function dineroConSigno(valor: number): string {
+  return `${valor < 0 ? '−' : ''}${dolares(Math.abs(valor))}`;
+}
+
 /** 30658.7 → «30.659 $». */
 export function dolaresPorPersona(valor: number): string {
   return `${entero.format(valor)} $`;
