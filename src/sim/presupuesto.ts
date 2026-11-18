@@ -14,6 +14,7 @@
  * la economía (consumo público, inversión y consumo de los hogares). Motor puro, sin interfaz.
  */
 import config from './config/presupuesto.json';
+import configDeuda from './config/deuda.json';
 import configEconomia from './config/economia.json';
 import {
   brechaProduccion,
@@ -24,6 +25,7 @@ import {
   type EconomiaPais,
   type NivelRenta,
 } from './economia';
+import type { MercadoDeuda } from './deuda';
 import type { Sistema } from './motor';
 import type { EstadoPais, Partida as PartidaJuego } from './partida';
 
@@ -76,6 +78,28 @@ export type Partida = (typeof PARTIDAS)[number];
  * - puestos nuevos (tras la oposición) o despidos (desde el mes siguiente, con indemnización);
  * - la subida de las pensiones de cada enero (null: el IPC) y la prestación de cada parado.
  */
+/** Los plazos de la deuda (tarea f20-t1): letras a 1 año y bonos a 5 y a 10 años. */
+export const PLAZOS = ['letras', 'bonos5', 'bonos10'] as const;
+export type Plazo = (typeof PLAZOS)[number];
+/** Qué parte de lo que se emite va a cada plazo (suma 1). */
+export type Reparto = Record<Plazo, number>;
+
+/** El Tesoro de un país (tarea f20-t1). */
+export interface TesoroPais {
+  /** ¿Emite solo cuando falta dinero (y paga antes si sobra)? La IA, siempre. */
+  automatico: boolean;
+  /** Cómo reparte lo que emite entre los plazos. */
+  reparto: Reparto;
+  /** El tipo de cada plazo este mes (tanto por uno; lo pone el mercado de la deuda). */
+  tipos: Record<Plazo, number>;
+  /** ¿Se puede emitir este mes? (No con los mercados cerrados sin rescate.) */
+  abierto: boolean;
+  /** El precio de recompra de la deuda este mes (por dólar; lo pone el mercado). */
+  precioRecompra: number;
+  /** ¿Ya se ha avisado de que queda poca tesorería? (Para no avisar cada mes.) */
+  bajo: boolean;
+}
+
 export type CambioPresupuesto =
   | {
       tipo: 'partida';
@@ -87,7 +111,12 @@ export type CambioPresupuesto =
   | { tipo: 'sueldos'; ministerio: Ministerio | 'todos'; subida: number; cuando: 'anio' | 'mes' }
   | { tipo: 'puestos'; ministerio: Ministerio; cantidad: number }
   | { tipo: 'pensiones'; revalorizacion: number | null }
-  | { tipo: 'prestacion'; prestacionParado: number };
+  | { tipo: 'prestacion'; prestacionParado: number }
+  /** Tesoro (tarea f20-t1): emitir a mano, recomprar deuda o cambiar el Tesoro automático. */
+  // El Tesoro (tarea f20-t1). Sin reparto (null), el que tenga el Tesoro.
+  | { tipo: 'emision'; importe: number; reparto: Reparto | null }
+  | { tipo: 'recompra'; importe: number }
+  | { tipo: 'tesoro'; automatico: boolean; reparto: Reparto | null };
 
 /** Un cambio decidido y el día (el 1 de un mes) en que empieza a valer. */
 export interface CambioProgramado {
@@ -126,6 +155,13 @@ export interface PresupuestoPais {
    * renta: ajuste f19-a1). Su gasto de personal, entre ellos, es su sueldo medio.
    */
   empleados: Record<Ministerio, number>;
+  /**
+   * Calendario de vencimientos (tarea f20-t1): la deuda que vence en cada uno de los próximos meses
+   * (el primero, el mes que viene). Suma la deuda.
+   */
+  vencimientos: number[];
+  /** El Tesoro (tarea f20-t1): si emite solo, con qué reparto de plazos y a qué tipos. */
+  tesoro: TesoroPais;
   /** Cambios decididos que aún no valen, con el día en que empiezan (ajuste f19-a1). */
   pendientes: CambioProgramado[];
   /** Prestación media al año de cada parado, en dólares (fija hasta que se decida; Fase 19). */
@@ -418,6 +454,8 @@ export function presupuestoInicial(
     ministerios,
     empleados: empleadosDe(ministerios, sueldoMedioDe(nivel, pib, activos)),
     pendientes: [],
+    vencimientos: vencimientosIniciales(deuda),
+    tesoro: tesoroInicial(tipoInteres),
     transversales,
     deuda,
     tipoInteres,
@@ -567,6 +605,144 @@ function anotarMes(presupuesto: PresupuestoPais, pib: number): void {
 }
 
 const e = config.evolucion;
+const ts = config.tesoro;
+
+/** Lo que vence de la deuda de 2010 cada mes: unas letras el primer año y el resto en 10 años. */
+export function vencimientosIniciales(deuda: number): number[] {
+  const meses = ts.meses;
+  const letras = deuda * ts.perfilInicial.letras;
+  const resto = deuda - letras;
+  const plazoLetras = ts.plazos.letras;
+  return Array.from(
+    { length: meses },
+    (_, i) => (i < plazoLetras ? letras / plazoLetras : 0) + resto / meses,
+  );
+}
+
+/** El Tesoro al empezar: automático, con el reparto de partida y el tipo medio de 2010. */
+export function tesoroInicial(tipoInteres: number): TesoroPais {
+  return {
+    automatico: true,
+    reparto: { ...ts.repartoInicial },
+    tipos: { letras: tipoInteres, bonos5: tipoInteres, bonos10: tipoInteres },
+    abierto: true,
+    precioRecompra: 1,
+    bajo: false,
+  };
+}
+
+/** Un reparto válido: cada parte entre 0 y 1, y que sumen 1 (si no, el de partida). */
+export function repartoValido(reparto: Partial<Reparto> | null | undefined): Reparto {
+  const partes = PLAZOS.map((p) => {
+    const v = reparto?.[p];
+    return typeof v === 'number' && Number.isFinite(v) && v > 0 ? v : 0;
+  });
+  const total = partes.reduce((a, b) => a + b, 0);
+  if (!(total > 0)) return { ...ts.repartoInicial };
+  return Object.fromEntries(PLAZOS.map((p, i) => [p, partes[i]! / total])) as Reparto;
+}
+
+/**
+ * Emite deuda por `importe` (dólares) con un reparto de plazos (tarea f20-t1): cada parte, al tipo
+ * de su plazo y con su vencimiento. El tipo medio de la deuda se mueve con lo nuevo.
+ */
+export function emitirDeuda(
+  presupuesto: PresupuestoPais,
+  estado: { tesoreria: number },
+  importe: number,
+  reparto: Reparto = presupuesto.tesoro.reparto,
+): void {
+  if (!(importe > 0)) return;
+  const partes = repartoValido(reparto);
+  let intereses = presupuesto.deuda * presupuesto.tipoInteres;
+  for (const p of PLAZOS) {
+    const monto = importe * partes[p];
+    if (monto <= 0) continue;
+    const indice = Math.min(presupuesto.vencimientos.length, ts.plazos[p]) - 1;
+    presupuesto.vencimientos[indice] = (presupuesto.vencimientos[indice] ?? 0) + monto;
+    intereses += monto * presupuesto.tesoro.tipos[p];
+  }
+  presupuesto.deuda += importe;
+  presupuesto.tipoInteres = presupuesto.deuda > 0 ? intereses / presupuesto.deuda : 0;
+  estado.tesoreria += importe;
+}
+
+/** Paga antes `importe` de los vencimientos más cercanos, a la par (el Tesoro, cuando sobra). */
+export function amortizarDeuda(
+  presupuesto: PresupuestoPais,
+  estado: { tesoreria: number },
+  importe: number,
+): void {
+  let queda = Math.min(importe, presupuesto.deuda);
+  for (let i = 0; i < presupuesto.vencimientos.length && queda > 0; i++) {
+    const pago = Math.min(queda, presupuesto.vencimientos[i]!);
+    presupuesto.vencimientos[i]! -= pago;
+    queda -= pago;
+  }
+  const pagado = Math.min(importe, presupuesto.deuda) - queda;
+  presupuesto.deuda -= pagado;
+  estado.tesoreria -= pagado;
+}
+
+/**
+ * Recompra deuda gastando `importe` de la tesorería, al precio de mercado de este mes: cada dólar
+ * retira 1 / precio de deuda, de todos los vencimientos por igual.
+ */
+export function recomprarDeuda(
+  presupuesto: PresupuestoPais,
+  estado: { tesoreria: number },
+  importe: number,
+): void {
+  const gasto = Math.min(importe, Math.max(0, estado.tesoreria));
+  const precio = presupuesto.tesoro.precioRecompra;
+  if (!(gasto > 0) || !(precio > 0) || !(presupuesto.deuda > 0)) return;
+  const retirada = Math.min(presupuesto.deuda, gasto / precio);
+  const parte = retirada / presupuesto.deuda;
+  presupuesto.vencimientos = presupuesto.vencimientos.map((v) => v * (1 - parte));
+  presupuesto.deuda -= retirada;
+  estado.tesoreria -= retirada * precio;
+}
+
+/** La curva de tipos del Tesoro (en src/sim/config/deuda.json). */
+const cv = configDeuda.curva;
+
+/** El tipo de cada plazo (%): el del mercado más su diferencial, nunca por debajo del mínimo. */
+export function tipoDelPlazo(tipoMercado: number, plazo: Plazo): number {
+  return Math.max(cv.minimo, tipoMercado + cv.diferencial[plazo]);
+}
+
+/**
+ * Pone al Tesoro de un país los tipos de cada plazo, si puede emitir y el precio de recompra de su
+ * deuda (tarea f20-t1). Con los mercados cerrados solo emite con un rescate, mientras decide o en
+ * un impago (lo que debe a proveedores).
+ */
+export function ponerTiposDelTesoro(mercado: MercadoDeuda, presupuesto: PresupuestoPais): void {
+  const programa = mercado.programa?.tipo;
+  for (const p of PLAZOS) {
+    presupuesto.tesoro.tipos[p] =
+      programa === 'impago'
+        ? 0
+        : (programa === 'fmi' ? configDeuda.crisis.tipoFmi : tipoDelPlazo(mercado.tipoMercado, p)) /
+          100;
+  }
+  presupuesto.tesoro.abierto =
+    mercado.prima <= configDeuda.mercado.umbralCierre || programa !== undefined;
+  // Recomprar: la deuda vale menos si el mercado pide más de lo que paga (y más si pide menos).
+  const precio =
+    1 + (presupuesto.tipoInteres - mercado.tipoMercado / 100) * vidaMediaRestante(presupuesto);
+  presupuesto.tesoro.precioRecompra = Math.min(cv.precioMaximo, Math.max(cv.precioMinimo, precio));
+}
+
+/** La vida media que le queda a la deuda (años), con el calendario de vencimientos. */
+export function vidaMediaRestante(presupuesto: Pick<PresupuestoPais, 'vencimientos'>): number {
+  let total = 0;
+  let ponderado = 0;
+  presupuesto.vencimientos.forEach((v, i) => {
+    total += v;
+    ponderado += v * (i + 1);
+  });
+  return total > 0 ? ponderado / total / 12 : 0;
+}
 
 /**
  * Un mes del presupuesto (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 19):
@@ -599,17 +775,22 @@ export function avanzarPresupuesto(
   presupuesto.transversales.desempleo =
     presupuesto.prestacionParado * economia.paro * presupuesto.activos;
   presupuesto.transversales.intereses = presupuesto.deuda * presupuesto.tipoInteres;
-  // El saldo del mes pasa por la tesorería; el déficit se cubre con deuda y el superávit la paga.
+  // El saldo del mes pasa por la tesorería, y se paga la deuda que vence (tarea f20-t1).
   estado.tesoreria += saldo(presupuesto) / 12;
+  const vence = Math.min(presupuesto.deuda, presupuesto.vencimientos.shift() ?? 0);
+  presupuesto.vencimientos.push(0);
+  presupuesto.deuda -= vence;
+  estado.tesoreria -= vence;
+  // El Tesoro automático emite lo que falta para el colchón (si se puede) y, si sobra, paga antes.
   const gastoMes = totalGastos(presupuesto) / 12;
-  if (estado.tesoreria < e.colchonMeses * gastoMes) {
-    const emitir = e.colchonMeses * gastoMes - estado.tesoreria;
-    presupuesto.deuda += emitir;
-    estado.tesoreria += emitir;
-  } else if (estado.tesoreria > e.maximoMeses * gastoMes) {
-    const amortizar = Math.min(presupuesto.deuda, estado.tesoreria - e.objetivoMeses * gastoMes);
-    presupuesto.deuda -= amortizar;
-    estado.tesoreria -= amortizar;
+  if (presupuesto.tesoro.automatico) {
+    if (estado.tesoreria < e.colchonMeses * gastoMes) {
+      if (presupuesto.tesoro.abierto) {
+        emitirDeuda(presupuesto, estado, e.colchonMeses * gastoMes - estado.tesoreria);
+      }
+    } else if (estado.tesoreria > e.maximoMeses * gastoMes) {
+      amortizarDeuda(presupuesto, estado, estado.tesoreria - e.objetivoMeses * gastoMes);
+    }
   }
   // Lo decidido llega a la economía (para el mes que viene).
   llevarALaEconomia(presupuesto, economia);
@@ -652,6 +833,14 @@ export function completarPresupuesto(
       completarHacienda(estado.presupuesto, estado.economia, pais);
     } else if (estado.presupuesto && !estado.presupuesto.empleados && pais) {
       completarEmpleo(estado.presupuesto, estado.economia, pais);
+    } else if (estado.presupuesto && !estado.presupuesto.vencimientos) {
+      completarTesoro(estado.presupuesto);
+    } else {
+      continue;
+    }
+    // Lo nuevo del Tesoro, con los tipos que pide hoy el mercado (si ya lo tiene).
+    if (estado.presupuesto && estado.mercado) {
+      ponerTiposDelTesoro(estado.mercado, estado.presupuesto);
     }
   }
   return partida;
@@ -699,6 +888,13 @@ function completarEmpleo(
     sueldoMedioDe(nivelDe(pais.nivelRenta), pib, presupuesto.activos),
   );
   presupuesto.pendientes = [];
+  completarTesoro(presupuesto);
+}
+
+/** Lo que la tarea f20-t1 añadió: el calendario de vencimientos y el Tesoro. */
+function completarTesoro(presupuesto: PresupuestoPais): void {
+  presupuesto.vencimientos = vencimientosIniciales(presupuesto.deuda);
+  presupuesto.tesoro = tesoroInicial(presupuesto.tipoInteres);
 }
 
 /**
@@ -710,6 +906,8 @@ export function faltaPresupuesto(partida: Pick<PartidaJuego, 'paises'>): boolean
     (estado) =>
       estado.presupuesto === undefined ||
       (estado.presupuesto !== null &&
-        (!estado.presupuesto.referencia || !estado.presupuesto.empleados)),
+        (!estado.presupuesto.referencia ||
+          !estado.presupuesto.empleados ||
+          !estado.presupuesto.vencimientos)),
   );
 }

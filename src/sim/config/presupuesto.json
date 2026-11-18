@@ -127,5 +127,22 @@
     "limiteFactor": 3,
     "limiteSubidaSueldos": 0.5
   },
-  "$comentarioEmpleo": "Empleo público (ajuste f19-a1; decisiones del jugador). ESTIMADO: no hay datos abiertos del número de empleados públicos en el conjunto de 2010. Sueldo medio público = «sueldoRelativo» × el PIB por activo, por nivel de renta (en los países ricos, más o menos el PIB por activo; en los pobres, varias veces más); empleados de cada ministerio = su gasto de personal / ese sueldo. Los puestos nuevos empiezan cuando acaba la oposición, «mesesOposicion» meses después del mes siguiente a la orden (ESTIMADO por nivel de renta, provisional hasta las leyes de la Fase 67); los ocupan parados en «parteParados» (el resto viene de otros empleos o de fuera del mercado de trabajo), y esos salen del paro. Los despidos valen desde el mes siguiente, vuelven al paro y cuestan una indemnización de «indemnizacion» años de sueldo de cada despedido. Un cambio de una partida no multiplica más de «limiteFactor» veces su gasto; una subida de los sueldos, entre −«limiteSubidaSueldos» y +«limiteSubidaSueldos»."
+  "$comentarioEmpleo": "Empleo público (ajuste f19-a1; decisiones del jugador). ESTIMADO: no hay datos abiertos del número de empleados públicos en el conjunto de 2010. Sueldo medio público = «sueldoRelativo» × el PIB por activo, por nivel de renta (en los países ricos, más o menos el PIB por activo; en los pobres, varias veces más); empleados de cada ministerio = su gasto de personal / ese sueldo. Los puestos nuevos empiezan cuando acaba la oposición, «mesesOposicion» meses después del mes siguiente a la orden (ESTIMADO por nivel de renta, provisional hasta las leyes de la Fase 67); los ocupan parados en «parteParados» (el resto viene de otros empleos o de fuera del mercado de trabajo), y esos salen del paro. Los despidos valen desde el mes siguiente, vuelven al paro y cuestan una indemnización de «indemnizacion» años de sueldo de cada despedido. Un cambio de una partida no multiplica más de «limiteFactor» veces su gasto; una subida de los sueldos, entre −«limiteSubidaSueldos» y +«limiteSubidaSueldos».",
+  "$comentarioTesoro": "El Tesoro (tarea f20-t1; decisiones del jugador: Tesoro automático que se puede apagar). La deuda se emite en letras (a «plazos.letras» meses) y en bonos a 5 y a 10 años, cada una con su tipo (el del mercado según el plazo); el calendario de vencimientos guarda lo que vence cada mes durante «meses» meses. La deuda de 2010 vence así: «perfilInicial.letras» en letras durante el primer año y el resto repartido por igual en 10 años (una vida media parecida a la de los países de la OCDE). El Tesoro automático emite, con su reparto (al empezar, «repartoInicial»), lo que falte para tener «colchonMeses» meses de gasto en la tesorería, y si sobra más de «maximoMeses», paga antes los vencimientos más cercanos hasta quedarse con «objetivoMeses» (en «evolucion»). Apagado, no emite nadie: si la tesorería se acaba, el país deja de pagar.",
+  "tesoro": {
+    "meses": 120,
+    "plazos": {
+      "letras": 12,
+      "bonos5": 60,
+      "bonos10": 120
+    },
+    "perfilInicial": {
+      "letras": 0.05
+    },
+    "repartoInicial": {
+      "letras": 0.1,
+      "bonos5": 0.3,
+      "bonos10": 0.6
+    }
+  }
 }

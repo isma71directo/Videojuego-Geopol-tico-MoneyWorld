@@ -71,11 +71,10 @@
     ["CCC", 17],
     ["CC", 22]
   ],
-  "$comentarioMercado": "El mercado cada mes (tarea f18-t2): la prima se acerca «reaccionMensual» a la que pide la fórmula (más el contagio); los 40 países con tipo real de 2010 empiezan con él, y esa diferencia con la fórmula se apaga a la mitad cada «mesesAjuste» meses. Cada mes vence la deuda de 1 / (12 × «vidaMedia») y se renueva al tipo de mercado, como la nueva. El rating se revisa cada «mesesRevision» meses y se mueve como mucho «pasosRating» escalones. Con la prima por encima de «umbralCierre», los mercados dejan de prestar (crisis de deuda: tarea f18-t3).",
+  "$comentarioMercado": "El mercado cada mes (tarea f18-t2): la prima se acerca «reaccionMensual» a la que pide la fórmula (más el contagio); los 40 países con tipo real de 2010 empiezan con él, y esa diferencia con la fórmula se apaga a la mitad cada «mesesAjuste» meses. La deuda vence según su calendario y el Tesoro la renueva al tipo de cada plazo (tarea f20-t1: «curva» y src/sim/config/presupuesto.json, «tesoro»). El rating se revisa cada «mesesRevision» meses y se mueve como mucho «pasosRating» escalones. Con la prima por encima de «umbralCierre», los mercados dejan de prestar (crisis de deuda: tarea f18-t3).",
   "mercado": {
     "reaccionMensual": 0.3,
     "mesesAjuste": 24,
-    "vidaMedia": 6.5,
     "mesesRevision": 3,
     "pasosRating": 2,
     "umbralCierre": 15
@@ -109,5 +108,16 @@
     "cierreImpago": 0.25,
     "recorteMaximo": 0.1,
     "cierreFmi": 0.04
+  },
+  "$comentarioCurva": "Tipos de cada plazo (tarea f20-t1): el del mercado (el del bono a 10 años) más «diferencial» puntos según el plazo (a corto plazo se paga menos), nunca por debajo de «minimo» (%). Con un rescate del FMI, todos al «tipoFmi»; en un impago no se pagan intereses. Recomprar deuda cuesta su precio de mercado: 1 + (tipo medio de la deuda − tipo de mercado) × su vida media restante (años), entre «precioMinimo» y «precioMaximo» por dólar.",
+  "curva": {
+    "diferencial": {
+      "letras": -1.5,
+      "bonos5": -0.5,
+      "bonos10": 0
+    },
+    "minimo": 0.25,
+    "precioMinimo": 0.5,
+    "precioMaximo": 1.5
   }
 }

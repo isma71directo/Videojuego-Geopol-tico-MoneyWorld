@@ -272,6 +272,9 @@ const EJEMPLO_ALERTA: Record<TipoAlerta, number> = {
   crisisDeuda: 16.4,
   ratingBaja: 6.3,
   ratingSube: 2.1,
+  // (La tesorería, en dólares.)
+  sinTesoreria: -4.2e9,
+  tesoreriaBaja: 11.8e9,
 };
 /** La nota de ejemplo de las alertas del rating. */
 const EJEMPLO_RATING: Partial<Record<TipoAlerta, string>> = { ratingBaja: 'BB-', ratingSube: 'A' };

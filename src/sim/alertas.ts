@@ -20,14 +20,19 @@ export type TipoAlerta =
   | 'deflacion'
   | 'crisisDeuda'
   | 'ratingBaja'
-  | 'ratingSube';
+  | 'ratingSube'
+  | 'sinTesoreria'
+  | 'tesoreriaBaja';
 
 /** Todas, en el orden en que se avisan si llegan a la vez. */
 export const TIPOS_ALERTA: readonly TipoAlerta[] = [
-  // (La de la crisis de deuda y las del rating las avisa el mercado de la deuda, Fase 18.)
+  // (La de la crisis de deuda y las del rating las avisa el mercado de la deuda, Fase 18; las
+  // de la tesorería, Hacienda, tarea f20-t1.)
+  'sinTesoreria',
   'crisisDeuda',
   'ratingBaja',
   'ratingSube',
+  'tesoreriaBaja',
   'recesion',
   'inflacionGrave',
   'inflacion',
@@ -40,11 +45,13 @@ export const ALERTAS_GRAVES: ReadonlySet<TipoAlerta> = new Set([
   'recesion',
   'inflacionGrave',
   'crisisDeuda',
+  'sinTesoreria',
 ]);
 
 /**
  * Una alerta con su dato: la caída del PIB, el paro o la inflación (tanto por uno), o la prima de
- * riesgo (puntos) en la crisis de deuda y en las del rating, que llevan también la nota nueva.
+ * riesgo (puntos) en la crisis de deuda y en las del rating, que llevan también la nota nueva; o
+ * la tesorería (dólares) en las del Tesoro.
  */
 export interface AlertaEconomica {
   tipo: TipoAlerta;

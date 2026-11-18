@@ -43,6 +43,8 @@ export type Efecto =
   | 'alertaCrisisDeuda'
   | 'alertaRatingBaja'
   | 'alertaRatingSube'
+  | 'alertaSinTesoreria'
+  | 'alertaTesoreriaBaja'
   | 'deslizadorSube'
   | 'deslizadorBaja'
   | 'presupuestoAprobado';
@@ -249,6 +251,22 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'sine', inicio: 0.02, duracion: 0.14, frecuencia: 784, volumen: 0.12 },
     { forma: 'sine', inicio: 0.16, duracion: 0.3, frecuencia: 1046.5, volumen: 0.12 },
     { forma: 'triangle', inicio: 0.16, duracion: 0.3, frecuencia: 523.3, volumen: 0.05 },
+  ],
+  // Sin tesorería (tarea f20-t1): unas monedas que caen en una caja vacía y un golpe grave que
+  // cierra (la caja se queda vacía: impago).
+  alertaSinTesoreria: [
+    { forma: 'sine', inicio: 0, duracion: 0.06, frecuencia: 2093, volumen: 0.07 },
+    { forma: 'sine', inicio: 0.08, duracion: 0.06, frecuencia: 1760, volumen: 0.06 },
+    { forma: 'sine', inicio: 0.15, duracion: 0.06, frecuencia: 1568, volumen: 0.05 },
+    { forma: 'ruido', inicio: 0.3, duracion: 0.08, frecuencia: 180, volumen: 0.09 },
+    { forma: 'triangle', inicio: 0.3, duracion: 0.45, frecuencia: 110, volumen: 0.16 },
+    { forma: 'triangle', inicio: 0.3, duracion: 0.45, frecuencia: 116.5, volumen: 0.08 },
+  ],
+  // Tesorería baja: dos monedas sueltas que suenan cada vez más graves.
+  alertaTesoreriaBaja: [
+    { forma: 'sine', inicio: 0, duracion: 0.1, frecuencia: 1318.5, volumen: 0.08 },
+    { forma: 'sine', inicio: 0.14, duracion: 0.18, frecuencia: 987.8, volumen: 0.08 },
+    { forma: 'triangle', inicio: 0.14, duracion: 0.18, frecuencia: 493.9, volumen: 0.04 },
   ],
   // Deslizadores del presupuesto (tarea f19-t4): al soltarlos, un tono corto que sube o baja,
   // según se haya subido o bajado el gasto.

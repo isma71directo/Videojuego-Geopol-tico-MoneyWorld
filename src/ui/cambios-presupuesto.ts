@@ -47,6 +47,12 @@ export function describirCambio(cambio: CambioPresupuesto): string {
         : t('juego.cambios.pensiones', { cambio: cambioEnPorcentaje(cambio.revalorizacion) });
     case 'prestacion':
       return t('juego.cambios.prestacion', { dinero: dolares(cambio.prestacionParado) });
+    case 'emision':
+      return t('juego.cambios.emision', { dinero: dolares(cambio.importe) });
+    case 'recompra':
+      return t('juego.cambios.recompra', { dinero: dolares(cambio.importe) });
+    case 'tesoro':
+      return t(cambio.automatico ? 'juego.cambios.tesoroAutomatico' : 'juego.cambios.tesoroManual');
   }
 }
 
@@ -56,6 +62,10 @@ export function tocaA(cambio: CambioPresupuesto, ministerio: Ministerio): boolea
     return cambio.ministerio === 'todos' || cambio.ministerio === ministerio;
   }
   if (cambio.tipo === 'puestos') return cambio.ministerio === ministerio;
+  // La deuda y el Tesoro son de Economía y Hacienda.
+  if (cambio.tipo === 'emision' || cambio.tipo === 'recompra' || cambio.tipo === 'tesoro') {
+    return ministerio === 'economia';
+  }
   // Las pensiones y la prestación por parado son de Trabajo y Seguridad Social.
   return ministerio === 'trabajo';
 }

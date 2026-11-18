@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.1",
-  "actualizado": "2026-11-18T09:18:35Z",
+  "actualizado": "2026-11-18T09:33:21Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 20 (deuda y Tesoro jugables) concretada con el jugador: en el Ministerio de Economía y Hacienda; Tesoro automático que se puede apagar; negociación por rondas de oferta y contraoferta; ayuda del FMI, del fondo de la zona euro y de países con superávit.",
-    "siguientePaso": "f20-t1: la deuda por emisiones en el motor (plazos, vencimientos, Tesoro automático, emitir, recomprar, impago si se acaba la tesorería).",
+    "resumen": "f20-t1 hecha: la deuda se emite en letras a 1 año y bonos a 5 y 10 años, cada plazo con su tipo; calendario de vencimientos de 10 años; Tesoro automático (se puede apagar) que emite lo que falta para un mes de gasto y paga antes si sobra; emitir y recomprar a mano; si la tesorería se acaba, impago, con avisos al jugador; partidas en formato 9.",
+    "siguientePaso": "f20-t2: pestaña «Deuda y Tesoro» en la ventana del Ministerio de Economía y Hacienda (tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático).",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1211,15 +1211,15 @@
         {
           "id": "f20-t1",
           "titulo": "La deuda por emisiones, en el motor: letras a 1 año y bonos a 5 y 10 años con su tipo, calendario de vencimientos, Tesoro automático que se puede apagar, emitir a mano y recomprar; si se acaba la tesorería, impago",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-18",
           "enlace": ""
         },
         {
           "id": "f20-t2",
           "titulo": "Pestaña «Deuda y Tesoro» en el Ministerio de Economía y Hacienda: tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-18",
           "enlace": ""
         },
         {

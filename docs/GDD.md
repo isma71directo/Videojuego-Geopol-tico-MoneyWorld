@@ -500,6 +500,19 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - el fondo de rescate de la zona euro, para sus miembros desde mayo de 2010;
   - préstamos de países con superávit (China, Alemania, Japón, Arabia Saudí…), con su interés.
 
+**El Tesoro en el motor (tarea f20-t1; parámetros en `src/sim/config/presupuesto.json`, «tesoro», y en `src/sim/config/deuda.json`, «curva»):**
+- **Plazos y tipos:** letras a 1 año, bonos a 5 y a 10 años. Cada mes el mercado pone el tipo de cada plazo: el suyo menos 1,5 puntos las letras y menos 0,5 los bonos a 5 años (nunca por debajo del 0,25 %). Con un rescate, al tipo del FMI; en un impago, sin intereses.
+- **Calendario de vencimientos (10 años, mes a mes):** cada emisión vence en su plazo. La deuda de 2010 vence un 5 % en letras durante el primer año y el resto repartido en 10 años (vida media de unos 5 años, ESTIMADA: no hay datos abiertos por país en el conjunto de 2010).
+- **Cada mes:** el saldo del presupuesto pasa por la tesorería y se paga lo que vence.
+- **El Tesoro automático** (el de la IA, siempre):
+  - emite lo que falte para tener un mes de gasto en la tesorería, con su reparto (al empezar, 10 % letras, 30 % bonos a 5 años y 60 % a 10);
+  - si hay más de 3 meses de gasto, paga antes lo que vence antes hasta quedarse con 2.
+- **Apagado:** solo se emite a mano. Si queda menos de un mes de gasto, aviso; si la tesorería se acaba, el país deja de pagar (el impago de la Fase 18, con su quita, que también rebaja el calendario).
+- **Con los mercados cerrados** no se puede emitir, salvo con un rescate, mientras se decide la salida o en un impago (lo que falta se debe a proveedores, sin intereses).
+- **Recomprar** gasta tesorería al precio de la deuda en el mercado: 1 + (tipo medio de la deuda − tipo del mercado) × vida media que le queda, entre 0,5 y 1,5. Si el mercado pide menos de lo que paga la deuda, se paga por encima de su valor. Con la prima alta la deuda está barata, pero recomprarla con dinero prestado sube los intereses.
+- **Avisos al jugador:** «Sin dinero en la tesorería» (grave, para la partida) y «Queda poca tesorería».
+- **Partidas guardadas:** formato 9; las de la v0.20 se completan al cargar con el calendario de 2010 y el Tesoro automático.
+
 **El motor de los cambios (ajuste f19-a1; parámetros en `src/sim/config/presupuesto.json`, «hacienda»):**
 - **Empleados públicos de cada ministerio, ESTIMADOS** (no hay datos abiertos en el conjunto de 2010):
   - su gasto de personal entre un sueldo medio de 1 vez (países ricos) a 3 veces (países pobres) el PIB por activo;
@@ -1298,7 +1311,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 **Tests:**
 - Emitir a corto plazo sale más barato, pero obliga a renovar antes.
-- Recomprar deuda con la prima alta sale caro.
+- Recomprar deuda sale caro si el mercado pide menos de lo que paga (se paga por encima de su valor); con la prima alta está barata, pero recomprarla con dinero prestado sube los intereses.
 - Una quita negociada baja la deuda, pero sube la prima de después.
 - Si la tesorería se acaba, el país deja de pagar.
 
@@ -2498,6 +2511,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 18/11/2026 | Fase 19 concretada con el jugador: presupuesto anual con cambios a mitad de año y prórroga; cada ministerio con sus 4 partidas; la subida de las pensiones y la prestación por parado también se deciden; la IA aprueba su presupuesto según su situación; la fase sigue con 4 tareas | Plan de la Fase 19 aprobado por el jugador | 6.2, 9, 13 |
 | 18/11/2026 | Presupuesto de cada ministerio en su ventana (ajustes f19-a1 a f19-a3, v0.20.1): Gobierno › Presupuesto queda para ver y para un ajuste general; cada ministerio decide el suyo en su pestaña «Presupuesto», como en Power & Revolution, con cifras (empleados, sueldos, puestos nuevos) y porcentajes; cada cambio vale cuando le toca (anual en enero, extraordinario el mes siguiente, puestos tras la oposición, despidos con indemnización, obras según se construyen desde la Fase 36); los puestos nuevos sacan gente del paro; pensiones y prestación por desempleo, en Trabajo y Seguridad Social | Mensaje del jugador tras ver la v0.20.0 (PR #39) | 6.2, 9, 13 |
 | 18/11/2026 | Fase 20 concretada con el jugador: la deuda y el Tesoro, en el Ministerio de Economía y Hacienda; Tesoro automático que se puede apagar; negociación por rondas de oferta y contraoferta; ayuda del FMI, del fondo de la zona euro y de países con superávit | Plan de la Fase 20 aprobado por el jugador | 6.2, 9, 13 |
+| 18/11/2026 | El Tesoro en el motor (tarea f20-t1): curva de tipos por plazo, calendario de vencimientos de 10 años, colchón de un mes de gasto y avisos de tesorería. El test de la recompra se precisa: con la prima alta la deuda está barata (cotiza por debajo de su valor), así que lo caro es recomprarla con dinero prestado (sube los intereses) o recomprar cuando el mercado pide menos de lo que paga la deuda | Al programarlo: el plan decía «recomprar con la prima alta sale caro», que no es lo que pasa en los mercados | 6.2, 9 |
 
 ---
 

@@ -1280,6 +1280,14 @@
       "ratingSube": {
         "titulo": "Suben el rating",
         "texto": "Las agencias suben la nota de la deuda a {rating} (prima de riesgo de {valor} puntos). La deuda nueva y el crédito salen más baratos."
+      },
+      "sinTesoreria": {
+        "titulo": "Sin dinero en la tesorería",
+        "texto": "La tesorería se ha quedado en {valor} y el Tesoro no ha emitido deuda para cubrirlo: el país deja de pagar. Se borra la mitad de la deuda, no se pagan intereses durante cuatro años y el rating cae a D, pero nadie presta: hay que gastar solo lo que se recauda."
+      },
+      "tesoreriaBaja": {
+        "titulo": "Queda poca tesorería",
+        "texto": "Con el Tesoro automático apagado, en la tesorería quedan {valor}: menos de un mes de gasto. Si se acaba sin emitir deuda, el país dejará de pagar."
       }
     },
     "sucesos": {
@@ -1415,6 +1423,10 @@
       "pensionesIpc": "Pensiones: suben con el IPC cada enero",
       "pensiones": "Pensiones: {cambio} cada enero",
       "prestacion": "Prestación por parado: {dinero} al año",
+      "emision": "Tesoro: emitir {dinero} de deuda",
+      "recompra": "Tesoro: recomprar {dinero} de deuda",
+      "tesoroAutomatico": "Tesoro automático encendido",
+      "tesoroManual": "Tesoro automático apagado: emites tú",
       "pendientes": "Cambios pendientes",
       "desde": "desde el {fecha}"
     },
@@ -1614,7 +1626,8 @@
       "programas": "Programas y transferencias",
       "pensiones": "Pensiones",
       "rating": "Rating de la deuda",
-      "prima": "Prima de riesgo"
+      "prima": "Prima de riesgo",
+      "tesoreria": "Tesorería"
     },
     "banderas": {
       "titulo": "Banderas de los {n} Estados",
@@ -1664,7 +1677,9 @@
       "alertaRatingSube": "Alerta: suben el rating",
       "deslizadorSube": "Deslizador del presupuesto: sube",
       "deslizadorBaja": "Deslizador del presupuesto: baja",
-      "presupuestoAprobado": "Presupuesto aprobado"
+      "presupuestoAprobado": "Presupuesto aprobado",
+      "alertaSinTesoreria": "Alerta: sin tesorería",
+      "alertaTesoreriaBaja": "Alerta: tesorería baja"
     },
     "economia": {
       "titulo": "Economía de un país",

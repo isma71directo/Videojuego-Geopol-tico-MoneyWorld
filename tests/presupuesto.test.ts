@@ -149,7 +149,13 @@ describe('en la partida (tarea f17-t2)', () => {
 
   it('cada país empieza con su presupuesto y se guarda con la partida', () => {
     const partida = nueva();
-    expect(partida.paises.ESP!.presupuesto).toEqual(presupuestoDe('ESP'));
+    // (El Tesoro, con los tipos que pide el mercado de la deuda al empezar: tarea f20-t1.)
+    const { tesoro, ...presupuesto } = partida.paises.ESP!.presupuesto!;
+    const { tesoro: tesoroDe2010, ...de2010 } = presupuestoDe('ESP');
+    expect(presupuesto).toEqual(de2010);
+    expect({ ...tesoro, tipos: tesoroDe2010.tipos, precioRecompra: 1 }).toEqual(tesoroDe2010);
+    expect(tesoro.tipos.letras).toBeLessThan(tesoro.tipos.bonos5);
+    expect(tesoro.tipos.bonos5).toBeLessThan(tesoro.tipos.bonos10);
     const { archivo } = empaquetar(partida, { tipo: 'anual' }, '0.18.0', new Date());
     expect(desempaquetar(JSON.parse(JSON.stringify(archivo))).partida).toEqual(partida);
   });

@@ -20,6 +20,7 @@ import {
   PARTIDAS,
   saldo,
   totalIngresos,
+  ponerTiposDelTesoro,
   type PresupuestoPais,
 } from './presupuesto';
 import { horaAbsoluta, momentoDe } from './reloj';
@@ -257,6 +258,7 @@ export function mercadoInicial(
   // Lo que pesa en el crédito: la de 2010 es la referencia.
   economia.primaRiesgo = mercado.prima;
   economia.primaReferencia = mercado.prima;
+  ponerTiposDelTesoro(mercado, presupuesto);
   return mercado;
 }
 
@@ -317,19 +319,12 @@ export function avanzarMercado(
   );
   mercado.prima = Math.max(0, mercado.prima + (objetivo - mercado.prima) * m.reaccionMensual);
   mercado.tipoMercado = tipoDeMercado(mercado.prima, economia.inflacionEsperada);
-  // La deuda que vence este mes y la nueva se pagan al tipo de ahora: el tipo medio se acerca.
-  // (Con un rescate del FMI, al tipo del FMI; en un impago no se renueva nada: lo que se debe
-  // sigue al tipo que tenía.)
-  const deuda = presupuesto.deuda;
-  const nueva = Math.max(0, deuda - mercado.deudaVista);
-  const vence = deuda / (12 * m.vidaMedia);
-  const tipoNuevo = mercado.programa?.tipo === 'fmi' ? k.tipoFmi : mercado.tipoMercado;
+  // Lo que pide el mercado este mes por cada plazo de la deuda (tarea f20-t1): el Tesoro emite a
+  // esos tipos el mes que viene. (Con un rescate del FMI, al tipo del FMI; en un impago no se
+  // pagan intereses.)
   const enImpago = mercado.programa?.tipo === 'impago';
-  if (deuda > 0 && !enImpago) {
-    const parte = Math.min(1, (nueva + vence) / deuda);
-    presupuesto.tipoInteres += (tipoNuevo / 100 - presupuesto.tipoInteres) * parte;
-  }
-  mercado.deudaVista = deuda;
+  ponerTiposDelTesoro(mercado, presupuesto);
+  mercado.deudaVista = presupuesto.deuda;
   if (enImpago) mercado.rating = 'D';
   else if (economia.meses % m.mesesRevision === 0 || mercado.rating === 'D') {
     mercado.rating = revisarRating(
@@ -453,9 +448,11 @@ export function empezarSalida(
   mercado.programa = { tipo: 'impago', meses: k.mesesImpago, tipoInteres: presupuesto.tipoInteres };
   mercado.rating = 'D';
   presupuesto.deuda *= 1 - k.quita;
+  presupuesto.vencimientos = presupuesto.vencimientos.map((v) => v * (1 - k.quita));
   presupuesto.tipoInteres = 0;
   presupuesto.transversales.intereses = 0;
   mercado.deudaVista = presupuesto.deuda;
+  ponerTiposDelTesoro(mercado, presupuesto);
   economia.confianzaEmpresas -= k.confianzaImpagoEmpresas;
   economia.confianzaConsumidores -= k.confianzaImpagoConsumidores;
 }
@@ -522,6 +519,18 @@ function subirImpuestos(presupuesto: PresupuestoPais, subida: number): void {
  * disparada; tras un impago, la prima lleva un recargo).
  */
 export function gestionarCrisis(
+  mercado: MercadoDeuda,
+  economia: EconomiaPais,
+  presupuesto: PresupuestoPais,
+  opciones: { esJugador: boolean; decision?: SalidaCrisis; dureza?: number },
+): boolean {
+  const preguntar = crisisDelMes(mercado, economia, presupuesto, opciones);
+  // El Tesoro emite el mes que viene con lo que haya quedado (rescate, impago o mercados).
+  ponerTiposDelTesoro(mercado, presupuesto);
+  return preguntar;
+}
+
+function crisisDelMes(
   mercado: MercadoDeuda,
   economia: EconomiaPais,
   presupuesto: PresupuestoPais,
