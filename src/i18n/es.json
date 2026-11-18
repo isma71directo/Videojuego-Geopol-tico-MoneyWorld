@@ -1175,20 +1175,20 @@
       "titulo": "Presupuesto del Estado",
       "delPib": "{valor} del PIB",
       "ingresos": "Ingresos",
-      "ingresosAyuda": "Lo que recauda el Estado al año ({dinero}): impuestos, cotizaciones y otros ingresos. Sigue a la economía: en una recesión se recauda menos.",
+      "ingresosAyuda": "Lo que recauda el Estado al año: impuestos, cotizaciones y otros ingresos ({pib}, para comparar con otros países). Sigue a la economía: en una recesión se recauda menos.",
       "gastos": "Gastos",
-      "gastosAyuda": "Lo que gasta el Estado al año ({dinero}): ministerios, pensiones, desempleo e intereses de la deuda.",
+      "gastosAyuda": "Lo que gasta el Estado al año: ministerios, pensiones, desempleo e intereses de la deuda ({pib}).",
       "deficit": "Déficit",
       "superavit": "Superávit",
-      "saldoAyuda": "Ingresos menos gastos. Si es negativo (déficit), el Estado emite deuda para cubrirlo; si es positivo, paga deuda y ahorra.",
+      "saldoAyuda": "Ingresos menos gastos. Si es negativo (déficit), el Estado emite deuda para cubrirlo; si es positivo, paga deuda y ahorra. Entre paréntesis, lo que supone frente a lo que se ingresa ({pib}).",
       "deuda": "Deuda pública",
-      "deudaAyuda": "Lo que debe el Estado ({dinero}), al {tipo} de interés medio (la deuda que vence y la nueva se pagan al tipo de mercado de cada mes). Crece con cada déficit.",
+      "deudaAyuda": "Lo que debe el Estado ({pib}: así lo miran las agencias y los mercados), al {tipo} de interés medio (la deuda que vence y la nueva se pagan al tipo de mercado de cada mes). Crece con cada déficit.",
       "intereses": "Intereses de la deuda",
-      "interesesAyuda": "Lo que cuesta cada año la deuda: más deuda, más intereses, y más déficit (bola de nieve).",
+      "interesesAyuda": "Lo que cuesta cada año la deuda: más deuda, más intereses, y más déficit (bola de nieve). Entre paréntesis, la parte de lo que se ingresa que se va en intereses ({pib}).",
       "tesoreria": "Tesorería",
       "tesoreriaAyuda": "Dinero en caja. Si baja de un mes de gastos, el Estado emite deuda; si pasa de tres, paga deuda.",
-      "ingresosTitulo": "De dónde salen los ingresos",
-      "gastosTitulo": "En qué se gasta",
+      "ingresosTitulo": "De dónde salen los ingresos (% de lo recaudado)",
+      "gastosTitulo": "En qué se gasta (% de lo gastado)",
       "tipos": {
         "rentaPersonas": "Renta de las personas",
         "rentaSociedades": "Sociedades",
@@ -1217,11 +1217,11 @@
         "programas": "Programas",
         "programasAyuda": "Transferencias, subvenciones y ayudas que reparte el ministerio."
       },
-      "graficoTitulo": "Ingresos y gastos desde enero de 2010 (% del PIB)",
-      "graficoDeudaTitulo": "Deuda pública desde enero de 2010 (% del PIB)",
+      "graficoTitulo": "Ingresos y gastos desde enero de 2010 (miles de millones de $ al año)",
+      "graficoDeudaTitulo": "Deuda pública desde enero de 2010 (miles de millones de $)",
       "ministeriosTitulo": "Gasto de cada ministerio",
       "nota": "Totales del FMI y partes del Banco Mundial (2010). * Estimado: el reparto entre ministerios (salvo sanidad, educación y defensa) y las partidas internas.",
-      "ventanaNota": "Solo para ver: el presupuesto se podrá cambiar en la Fase 23, y la deuda tendrá prima de riesgo y rating en la 18.",
+      "ventanaNota": "La deuda se podrá gestionar en la Fase 20.",
       "sinDatos": "No hay datos para su presupuesto.",
       "rating": "Rating de la deuda",
       "ratingAyuda": "La nota que dan las agencias a la deuda del país según su prima de riesgo, de AAA (la mejor) a C (los mercados no prestan); D es el impago. Se revisa cada trimestre y se mueve como mucho dos escalones.",
@@ -1237,7 +1237,10 @@
       "crisisAyuda": "Los mercados no prestan al país. Con el rescate del FMI, la deuda se paga al 3,5 % a cambio de un ajuste (recortes y subidas de impuestos). En un impago no se pagan intereses, pero solo se puede gastar lo que se recauda.",
       "graficoPrimaTitulo": "Prima de riesgo desde enero de 2010 (puntos)",
       "cierreMercados": "Cierre de los mercados",
-      "primaCorta": "Prima"
+      "primaCorta": "Prima",
+      "saldoValor": "{dinero} ({parte} de los ingresos)",
+      "interesesValor": "{dinero} ({parte} de los ingresos)",
+      "ministerioValor": "{dinero}{marca} · {parte}"
     },
     "alertas": {
       "etiqueta": "Alerta económica",
@@ -1256,7 +1259,7 @@
       },
       "inflacionGrave": {
         "titulo": "Inflación desbocada",
-        "texto": "Los precios suben un {valor} al año. La inversión cae con fuerza y la confianza de las empresas se hunde. (El banco central, que puede frenarla, llega en la Fase 20.)"
+        "texto": "Los precios suben un {valor} al año. La inversión cae con fuerza y la confianza de las empresas se hunde. (El banco central, que puede frenarla, llega en la Fase 23.)"
       },
       "deflacion": {
         "titulo": "Deflación",
@@ -1297,7 +1300,7 @@
       "paro": "Paro",
       "paroAyuda": "Parados sobre la población activa (dato de 2010 del Banco Mundial); entre paréntesis, cuánto ha cambiado en 12 meses. Sube cuando la economía produce por debajo de lo que podría (ley de Okun) y, si se queda alto mucho tiempo, parte se vuelve estructural y ya no baja solo. Los parados gastan menos y el paro hunde la confianza.",
       "inflacion": "Inflación",
-      "inflacionAyuda": "Cuánto suben los precios al año al ritmo de este mes (dato de 2010 del Banco Mundial). Cada país arrastra la suya: baja con mucho paro y sube cuando falta (por ejemplo, si se gasta de más). Por encima del 10 % resta inversión y confianza de las empresas; con deflación (en negativo) se consume menos. El banco central, que la frena, llega en la Fase 20.",
+      "inflacionAyuda": "Cuánto suben los precios al año al ritmo de este mes (dato de 2010 del Banco Mundial). Cada país arrastra la suya: baja con mucho paro y sube cuando falta (por ejemplo, si se gasta de más). Por encima del 10 % resta inversión y confianza de las empresas; con deflación (en negativo) se consume menos. El banco central, que la frena, llega en la Fase 23.",
       "crecimiento": "Crecimiento (12 meses)",
       "crecimientoDesde": "Crecimiento desde 2010 (anual)",
       "crecimientoAyuda": "Cuánto ha crecido el PIB real en los últimos 12 meses (o, si aún no ha pasado un año, desde enero de 2010, al ritmo de un año). Empieza con el crecimiento real de 2010 y se acerca poco a poco al potencial.",
@@ -1328,7 +1331,7 @@
       "nota": "PIB real en dólares de 2010. * Confianza estimada.",
       "graficoPreciosTitulo": "Paro e inflación desde enero de 2010 (%)",
       "sinDatos": "Sin datos para su economía.",
-      "ventanaNota": "La pantalla completa de Economía llega en la Fase 19, y el banco central, en la 20."
+      "ventanaNota": "La pantalla completa de Economía y el banco central llegan en la Fase 23."
     },
     "decisiones": {
       "crisisDeuda": {
@@ -1347,6 +1350,45 @@
         "riesgo": "riesgo de impago",
         "impago": "en impago"
       }
+    },
+    "hacienda": {
+      "titulo": "Nuevo presupuesto",
+      "enVigor": "en vigor, el de {anio}",
+      "prorrogado": "en vigor, el de {anio}, prorrogado",
+      "explicacion": "Prepara el presupuesto: cada gasto, en % de lo que se gasta ahora. Se queda en dinero hasta que apruebes otro, así que con la inflación compra menos. Lo que apruebes vale desde el día 1 del mes siguiente; si llega enero sin presupuesto nuevo, se prorroga el anterior.",
+      "ministerios": "Gasto de los ministerios",
+      "conCambio": "{dinero} ({cambio} frente al que está en vigor)",
+      "gastoTotal": "Gasto total al año",
+      "ingresos": "Ingresos al ritmo de ahora",
+      "conIpc": "Subir todo con el IPC (+{ipc})",
+      "congelar": "Dejarlo como está",
+      "recortar": "Recortar un 5 %",
+      "pensionesYParo": "Pensiones y paro",
+      "pensiones": "Subida de las pensiones en enero",
+      "pensionesAyuda": "Cuánto suben las pensiones cada enero. Subirlas más que los precios sube el consumo y el gasto; menos, ahorra, pero los pensionistas pierden poder de compra.",
+      "pensionesConIpc": "Con el IPC, como dice la ley",
+      "prestacion": "Prestación de cada parado",
+      "prestacionAyuda": "Lo que cobra al año, de media, cada parado (estimado). Más prestación sostiene el consumo, pero cuesta más cuanto más paro hay.",
+      "prestacionValor": "{dinero} al año",
+      "ministeriosTitulo": "Gasto de cada ministerio",
+      "todoElMinisterio": "Todo el ministerio",
+      "partidaValor": "{dinero} ({porcentaje} %)",
+      "aprobar": "Aprobar el presupuesto",
+      "seAplica": "Lo que apruebes se aplica el {fecha}.",
+      "pendiente": "Aprobado: se aplica el {fecha}.",
+      "pestanaNuevo": "Nuevo presupuesto",
+      "pestanaEnVigor": "En vigor",
+      "previsionTitulo": "Previsión a 12 meses",
+      "columnas": {
+        "haceUnAnio": "Hace un año",
+        "ahora": "Ahora",
+        "sinCambios": "En 12 meses, sin cambios",
+        "conEste": "En 12 meses, con este presupuesto"
+      },
+      "saldo": "Saldo",
+      "previsionNota": "Con las mismas reglas que la partida, si no cambia nada más: sin contar con lo que hagan los demás países. La columna de este presupuesto se recalcula al soltar cada deslizador.",
+      "avisoCierre": "Atención: con este presupuesto, los mercados dejarían de prestar en los próximos 12 meses (crisis de deuda).",
+      "sello": "Aprobado"
     }
   },
   "hojaDeRuta": {
@@ -1564,7 +1606,10 @@
       "alertaDeflacion": "Alerta: deflación",
       "alertaCrisisDeuda": "Alerta: crisis de deuda",
       "alertaRatingBaja": "Alerta: bajan el rating",
-      "alertaRatingSube": "Alerta: suben el rating"
+      "alertaRatingSube": "Alerta: suben el rating",
+      "deslizadorSube": "Deslizador del presupuesto: sube",
+      "deslizadorBaja": "Deslizador del presupuesto: baja",
+      "presupuestoAprobado": "Presupuesto aprobado"
     },
     "economia": {
       "titulo": "Economía de un país",

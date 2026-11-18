@@ -55,3 +55,161 @@
 .presupuesto__partidas {
   margin: 0 0 8px 26px;
 }
+
+/* Pantalla «Presupuesto» editable (tarea f19-t2). */
+.presupuesto-editable {
+  display: grid;
+  gap: 10px;
+}
+
+.presupuesto-editable__resumen {
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie);
+}
+
+.presupuesto-editable__atajos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.presupuesto-editable__casilla {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.presupuesto-editable__ministerio > .deslizador {
+  margin: 6px 0 0;
+}
+
+.presupuesto-editable__partidas {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 4px;
+  padding-left: 14px;
+  border-left: 2px solid var(--borde);
+}
+
+.presupuesto-editable__partidas .deslizador {
+  position: relative;
+}
+
+.presupuesto-editable__partidas .deslizador > .icono {
+  position: absolute;
+  left: -30px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  color: var(--texto-suave);
+}
+
+/* El botón de aprobar, siempre a la vista al bajar por la lista. */
+.presupuesto-editable__pie {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  background: var(--superficie-flotante);
+}
+
+.presupuesto-editable__aviso {
+  margin: 0;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+
+.presupuesto-editable__aviso[data-pendiente='true'] {
+  color: var(--hecha);
+}
+
+.presupuesto-editable__explicacion {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.presupuesto-editable__resumen .panel-pais__fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 3px 0;
+  font-size: 14px;
+}
+
+.presupuesto-editable__resumen dt {
+  color: var(--texto-suave);
+}
+
+.presupuesto-editable__resumen dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Previsión a 12 meses (tarea f19-t3). */
+.presupuesto-editable__prevision {
+  display: grid;
+  gap: 6px;
+}
+
+.presupuesto-editable__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.presupuesto-editable__tabla th,
+.presupuesto-editable__tabla td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--borde);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.presupuesto-editable__tabla thead th {
+  color: var(--texto-suave);
+  font-weight: 600;
+  white-space: normal;
+  vertical-align: bottom;
+}
+
+.presupuesto-editable__tabla tbody th {
+  text-align: left;
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+/* La columna del presupuesto que se prepara, destacada. */
+.presupuesto-editable__tabla tr > :last-child {
+  background: color-mix(in srgb, var(--acento) 10%, transparent);
+}
+
+/* El sello al aprobar el presupuesto (tarea f19-t4; el pie, pegajoso, lo contiene). */
+.presupuesto-editable__sello {
+  /* Encima del botón de aprobar, como un sello sobre el papel. */
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  margin-top: -18px;
+  padding: 4px 14px;
+  border: 3px solid var(--hecha);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--fondo) 70%, transparent);
+  color: var(--hecha);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+}

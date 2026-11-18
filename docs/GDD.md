@@ -207,9 +207,9 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 **Decisiones del jugador (17/11/2026, plan de la Fase 15):**
 - **Sectores:** siete ramas de actividad, con los datos reales de 2010 de la ONU (UNSD, *National Accounts – Analysis of Main Aggregates*): agricultura, ganadería y pesca; minería y energía; industria manufacturera; construcción; comercio, hostelería y turismo; transporte y comunicaciones; y otros servicios (finanzas, inmobiliaria, administración, educación, sanidad…). Cada una con su productividad, trabajo y capital.
-- **Sin azar en la economía:** no hay variaciones al azar mes a mes; la economía cambia por las decisiones que se toman (del jugador y de la IA): inversión, gasto, impuestos, servicios… Mientras esas decisiones no existan (presupuesto y deuda, Fases 17 y 18; impuestos, Fases 24 y 25), evoluciona según el modelo y según sus desequilibrios de 2010 (ajuste f15-a1). El azar de la partida está en las decisiones de la IA y en los sucesos, no en el PIB.
+- **Sin azar en la economía:** no hay variaciones al azar mes a mes; la economía cambia por las decisiones que se toman (del jugador y de la IA): inversión, gasto, impuestos, servicios… Mientras esas decisiones no existan (presupuesto y deuda, Fases 19 y 20; impuestos, Fases 21 y 22), evoluciona según el modelo y según sus desequilibrios de 2010 (ajuste f15-a1). El azar de la partida está en las decisiones de la IA y en los sucesos, no en el PIB.
 - **Arranque:** cada país empieza creciendo como creció de verdad en 2010 (muchos salían de la crisis de 2009) y el modelo lo lleva poco a poco a su crecimiento potencial.
-- **Dónde se ve:** en la pestaña Economía de la ficha de cada país (valores en vivo y gráfico desde el 1 de enero de 2010) y, para el país del jugador, en la ventana Economía › Economía (la pantalla completa de Economía llega en la Fase 19).
+- **Dónde se ve:** en la pestaña Economía de la ficha de cada país (valores en vivo y gráfico desde el 1 de enero de 2010) y, para el país del jugador, en la ventana Economía › Economía (la pantalla completa de Economía llega en la Fase 23).
 
 **Modelo de la Fase 15 (tarea f15-t2; parámetros en `src/sim/config/economia.json`):**
 - Cada sector produce A · K^0,35 · L^0,65. Al empezar, el capital es el de equilibrio con la inversión de 2010 del país (entre 1,5 y 4 veces el PIB), repartido según lo intensivo de cada sector; el empleo, la población activa sin parados, repartida según la productividad de cada sector; y la productividad A sale de que cada sector produzca lo que dicen los datos.
@@ -226,7 +226,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
 **Decisiones del jugador (17/11/2026, plan de la Fase 16: inflación y paro):**
 - **Paro con la ley de Okun e histéresis:** el paro sube cuando la economía crece por debajo de su potencial y baja cuando crece por encima, más deprisa en los mercados laborales rígidos o con mucho empleo temporal (sensibilidad estimada y marcada hasta que lleguen las leyes laborales). Si se queda alto mucho tiempo, parte se vuelve estructural y ya no baja sola. El paro estructural de cada país sale de su paro de 2010 y solo lo cambian las decisiones (leyes, educación) o la histéresis. Los parados no producen: menos ocupados, menos producción.
-- **Inflación persistente:** cada país arrastra su inflación (expectativas); sube cuando la economía va por encima de su potencial y baja cuando va por debajo, sin un ancla que la arregle sola (Venezuela sigue alta y Japón, cerca de la deflación). El ancla llega con el banco central (Fase 20). Con ella, el PIB nominal (precios corrientes).
+- **Inflación persistente:** cada país arrastra su inflación (expectativas); sube cuando la economía va por encima de su potencial y baja cuando va por debajo, sin un ancla que la arregle sola (Venezuela sigue alta y Japón, cerca de la deflación). El ancla llega con el banco central (Fase 23). Con ella, el PIB nominal (precios corrientes).
 - **Consecuencias ya:** el paro alto, y sobre todo que suba, baja la confianza de los consumidores y el consumo; una inflación alta (más del 10 %) da incertidumbre y baja la inversión y la confianza de las empresas, y la deflación frena el consumo. La popularidad no cambia todavía (llega con la opinión pública).
 - **Alertas económicas** solo para el país del jugador, con aviso visual y un sonido propio de cada tipo (recesión, paro que se dispara, inflación alta y deflación); las graves (recesión, inflación de más del 20 %) pausan la partida si la pausa automática está activada.
 
@@ -269,7 +269,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 **Decisiones del jugador (17/11/2026, plan de la Fase 17):**
 - **Cada ministerio por dentro:** los ingresos, por tipo (impuestos sobre la renta de las personas y de las sociedades, IVA y consumos, cotizaciones sociales, aranceles y otros: recursos naturales, empresas públicas y ayudas recibidas). Los gastos, por ministerio (los 20 del juego), cada uno con sus partidas internas: personal, inversión, mantenimiento (compras de bienes y servicios) y programas (transferencias y subvenciones). Aparte van las pensiones, las prestaciones por desempleo y los intereses de la deuda.
 - **Datos:** Banco Mundial (composición real de los ingresos y del gasto por tipo, con sanidad, educación y defensa reales) y FMI (totales de ingresos, gasto, saldo y deuda de 2010). Lo que no tiene dato real (el reparto del resto de ministerios y sus partidas internas) se estima por nivel de renta y se marca.
-- **Responde a la economía** hasta que el jugador pueda decidir (Pantalla de Presupuesto, Fase 23), con estabilizadores automáticos:
+- **Responde a la economía** hasta que el jugador pueda decidir (Pantalla de Presupuesto, Fase 19), con estabilizadores automáticos:
   - la recaudación sigue al PIB nominal y cae en una recesión;
   - las prestaciones por desempleo suben con el paro;
   - las pensiones suben con la inflación;
@@ -278,7 +278,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 
   Nada se arregla solo: un déficit que no se corrige acumula deuda e intereses.
 - **Déficit → deuda:** el saldo de cada mes pasa por la tesorería. Si baja de un mes de gastos, el Estado emite deuda automáticamente, al tipo medio que pagaba en 2010. La deuda empieza en su dato real de 2010 y sus intereses entran en el gasto (bola de nieve). En la Fase 18, el precio lo ponen los mercados (prima de riesgo y rating).
-- **Dónde se ve:** en la pestaña Economía de la ficha de cada país y en Gobierno › Presupuesto (solo lectura hasta la Fase 23), con un gráfico de ingresos y gastos.
+- **Dónde se ve:** en la pestaña Economía de la ficha de cada país y en Gobierno › Presupuesto (solo lectura hasta la Fase 19), con un gráfico de ingresos y gastos.
 
 **Modelo del presupuesto de 2010 (tarea f17-t2; parámetros en `src/sim/config/presupuesto.json`):**
 - **Totales:** los ingresos y el gasto de todas las administraciones del FMI (% del PIB de 2010). El saldo resultante es el déficit real; en unos pocos países no cuadra en la propia fuente.
@@ -297,7 +297,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Cada ministerio parte de un perfil estimado (Educación, sobre todo personal; Transportes, sobre todo inversión). Se ajusta para que, entre todos, cada partida sume lo del país y cada ministerio, lo suyo.
 - **Deuda:** la real de 2010 (FMI). La tesorería inicial sigue siendo un mes de ingresos.
 
-**Evolución mes a mes (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 23):**
+**Evolución mes a mes (tarea f17-t3; responde a la economía, sin decisiones hasta la Fase 19):**
 - **Ingresos:** cada uno es su tipo efectivo de 2010 por su base de ahora.
   - Renta de las personas: el PIB nominal, que cae la mitad de lo que cae la brecha de producción.
   - Renta de las sociedades (beneficios): cae el doble.
@@ -306,7 +306,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Aranceles: las importaciones.
   - El resto: el PIB nominal.
 - **Gastos:**
-  - Ministerios: crecen con el PIB potencial nominal, así que pesan lo mismo con la economía en su potencial y más si cae por debajo (estabilizador automático). Pierden los recortes de una crisis de deuda (Fase 18; hasta la v0.18.0, los del ajuste forzoso f15-a1).
+  - Ministerios: hasta la v0.19.0 crecían con el PIB potencial nominal. Desde la Fase 19, quedan fijos en dinero hasta que se decide otro presupuesto (ver «El presupuesto en dinero», más abajo).
   - Pensiones: suben con los precios y con el envejecimiento (2 % real al año en los países de renta media-alta y alta).
   - Desempleo: sigue al paro.
   - Intereses: la deuda por su tipo.
@@ -325,7 +325,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - ingresos, gastos, déficit o superávit, deuda, intereses y tesorería (en % del PIB y en dinero al pasar el ratón);
   - de dónde salen los ingresos y en qué se gasta, en barras con iconos;
   - y el gráfico de ingresos y gastos desde 2010.
-- En Gobierno › Presupuesto (el país del jugador, solo para ver hasta la Fase 23), lo mismo más el gráfico de la deuda y los 20 ministerios, cada uno desplegable con sus cuatro partidas; un asterisco marca lo estimado.
+- En Gobierno › Presupuesto (el país del jugador, solo para ver hasta la Fase 19), lo mismo más el gráfico de la deuda y los 20 ministerios, cada uno desplegable con sus cuatro partidas; un asterisco marca lo estimado.
 - Iconos nuevos: renta, IVA, personal, mantenimiento, programas y pensiones.
 - La tesorería de la barra superior ya se mueve con el presupuesto.
 
@@ -340,15 +340,15 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Consecuencias de una prima alta:**
   - el crédito se encarece para bancos, empresas y familias: se invierte menos y cae la confianza de las empresas (sustituye al cierre del crédito del ajuste forzoso f15-a1);
   - contagio: cuando un país entra en crisis, sube la prima de los que se le parecen (misma región o moneda y deuda alta).
-  - La huida de capitales queda para la moneda (Fase 21).
-- **Sustituye al ajuste forzoso provisional** de la v0.16.1: los recortes ya no son automáticos. Llegan con el rescate del FMI, y el jugador los decidirá con la Pantalla de Presupuesto (Fase 23).
+  - La huida de capitales queda para la moneda (Fase 24).
+- **Sustituye al ajuste forzoso provisional** de la v0.16.1: los recortes ya no son automáticos. Llegan con el rescate del FMI, y el jugador los decidirá con la Pantalla de Presupuesto (Fase 19).
 
 **La fórmula (tarea f18-t1; parámetros en `src/sim/config/deuda.json`):**
-- **Tipo de mercado** = tipo base (2,5 %, provisional hasta el banco central de la Fase 20) + la mitad de lo que la inflación esperada pase del 2 % + la prima de riesgo.
+- **Tipo de mercado** = tipo base (2,5 %, provisional hasta el banco central de la Fase 23) + la mitad de lo que la inflación esperada pase del 2 % + la prima de riesgo.
 - **Prima de riesgo** = e elevado al riesgo. El riesgo:
   - baja con la renta por habitante (por debajo de 12 000 $ pesa mucho menos), la estabilidad política (WGI del Banco Mundial) y el crecimiento;
   - sube con la inflación, la deuda por encima del 60 % del PIB, el déficit, el déficit exterior y lo que se lleven los intereses de los ingresos por encima del 15 %;
-  - sin moneda propia (los 16 del euro de 2010 y las monedas atadas a él; provisional hasta la Fase 21), la deuda, el déficit y el déficit exterior pesan mucho más.
+  - sin moneda propia (los 16 del euro de 2010 y las monedas atadas a él; provisional hasta la Fase 24), la deuda, el déficit y el déficit exterior pesan mucho más.
 - **Calibración:** por mínimos cuadrados con los 40 tipos reales de la OCDE de 2010, con la deuda, el déficit y el déficit exterior obligados a sumar riesgo. Error medio: 0,8 puntos (Grecia 9,2 % frente al 9,1 % real; España 4,1 % frente al 4,25 %; EE. UU. 3,3 % frente al 3,2 %).
 - **Rating:** según la prima, de AAA (hasta 0,8 puntos) a CC (hasta 22). Por encima, C (los mercados no prestan); D, el impago.
 - **En 2010:**
@@ -396,6 +396,75 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - «Crisis de deuda»: para la partida y abre la ventana de la decisión.
 - Iconos nuevos: rating y prima. En la galería, la escala de notas y un distintivo de ejemplo que sube y baja con su sonido.
 
+
+**Decisiones del jugador (18/11/2026, tras probar la v0.18.0: presupuesto en dinero y Hacienda jugable):**
+- **El presupuesto se ve en dinero**, no en % del PIB:
+  - cada ingreso, como parte de lo recaudado;
+  - cada gasto, como parte de lo gastado;
+  - el % del PIB queda en la ayuda, para comparar países;
+  - hasta la moneda de la Fase 24, todo va en dólares.
+- **El gasto de los ministerios queda fijo en dinero hasta que se decida otro** (el jugador o la IA). No crece solo con la economía, y con la inflación un gasto congelado compra menos.
+  - Las pensiones suben con los precios, por ley. Las prestaciones por desempleo siguen a los parados y los intereses, a la deuda.
+  - Los ingresos siguen saliendo de los impuestos sobre sus bases (rentas, consumo, salarios e importaciones), que se mueven con la economía.
+  - Sustituye al crecimiento con el PIB potencial de la tarea f17-t3. Se hará en la Fase 19, junto con la Pantalla de Presupuesto editable.
+- **Deuda jugable (Fase 20):** emitir a mano, amortizar y recomprar, negociar con los acreedores y pedir ayuda antes de la crisis.
+- **Nuevo orden de la hoja de ruta:** desde la Fase 19, cada fase trae decisiones del jugador (regla 21; sección 9).
+
+**El presupuesto en dinero (tarea f19-t1; parámetros en `src/sim/config/presupuesto.json`, «hacienda»):**
+- **Gasto fijo:** el gasto de cada ministerio y partida queda en dinero hasta que se aprueba otro presupuesto.
+- **Pensiones:** crecen cada mes con el envejecimiento (hay más pensionistas). Cada enero suben lo decidido o, por defecto, el IPC; por ley no bajan. En una crisis de deuda se congelan.
+- **Desempleo:** la prestación media de cada parado, en dinero, por los parados.
+  - Los parados salen de la población activa, que es ESTIMADA: no hay datos abiertos en el conjunto de 2010. Es la población por una tasa de actividad del 42 % al 50 % según el nivel de renta, y crece con la población.
+  - España 2010: unos 23 millones de activos y unos 9 000 $ al año por parado.
+- **Presupuesto anual:** el aprobado vale desde el mes siguiente. Si llega enero sin presupuesto nuevo, se prorroga el anterior (y se ve «prorrogado»).
+- **Lo decidido llega a la economía cada mes.** Se compara con 2010 en proporción del PIB potencial nominal:
+  - el personal y el mantenimiento mueven el consumo público, en proporción;
+  - la inversión pública mueve la inversión;
+  - los programas, las pensiones y la prestación por parado, y lo que han cambiado los impuestos de los hogares, mueven el consumo de los hogares, a la mitad (propensión a consumir de 0,5).
+  - Así, un gasto congelado pesa menos con la inflación y el crecimiento, y un recorte o una subida de impuestos frenan la demanda. Los recortes del FMI y del impago también llegan así.
+- **La IA aprueba su presupuesto cada enero**, salvo en una crisis de deuda:
+  - con la prima por encima del 65 % del cierre de los mercados, recorta un 4 % y congela las pensiones;
+  - con un déficit del 5 % del PIB o más, congela el gasto;
+  - con uno del 3 % al 5 %, lo sube con la inflación;
+  - con menos (con margen), lo sube con la economía: inflación y crecimiento potencial, para que mantenga su peso;
+  - con superávit, con la economía y un 2 % más.
+- **Sin intervención (2010–2018):**
+  - con los presupuestos de la IA, los déficits de 2018 son creíbles: EE. UU. 7 %, Reino Unido 4,5 %, Francia 3,5 %, Italia 3 % y Alemania con superávit;
+  - Grecia deja de pagar en 2011, Irlanda en 2013 y Portugal en 2013, y España pide el rescate en 2014.
+
+**Decisiones del jugador (18/11/2026, plan de la Fase 19: presupuesto jugable):**
+- **Presupuesto anual con cambios a mitad de año:** se aprueba el del año y se puede modificar; cada cambio vale desde el mes siguiente. Si llega enero sin presupuesto nuevo, se prorroga el anterior.
+- **Detalle:** cada ministerio con un deslizador y, desplegado, uno por cada una de sus 4 partidas.
+- **Pensiones y paro también se deciden:** la subida anual de las pensiones (por defecto, el IPC) y la prestación de cada parado. Las reformas a fondo, con la Fase 31.
+- **La IA, según su situación:** cada enero, con margen sube el gasto con la inflación; con un déficit alto, lo congela; con la prima cerca del cierre de los mercados, recorta; con superávit, gasta algo más. Copiar los presupuestos reales de 2011-2014 de los 190 países no es posible: no hay datos abiertos completos.
+
+**En pantalla (tarea f19-t2):**
+- En la ficha de cada país y en Gobierno › Presupuesto, todo en dinero:
+  - ingresos, gastos, deuda e intereses en dólares; el déficit y los intereses, también como parte de los ingresos;
+  - de dónde salen los ingresos, en % de lo recaudado; en qué se gasta, en % de lo gastado;
+  - cada ministerio, en dinero y como parte del gasto;
+  - los gráficos, en miles de millones de dólares, con el PIB nominal de cada mes (reconstruido con la inflación de cada mes);
+  - el % del PIB, solo en las ayudas, para comparar países.
+- **Gobierno › Presupuesto tiene dos pestañas:** «Nuevo presupuesto» (el editor) y «En vigor» (lo de antes).
+- **El editor:**
+  - un deslizador por ministerio (del 0 % al 200 % de lo que gasta ahora, con su dinero) y, desplegado, uno por cada partida; mover el ministerio mueve sus partidas en la misma proporción;
+  - la subida de las pensiones del próximo enero (del −5 % al +10 %) o «con el IPC, como dice la ley»;
+  - la prestación de cada parado (del 0 % al 200 %, en dólares al año);
+  - atajos: subir todo con el IPC, dejarlo como está y recortar un 5 %;
+  - un resumen que cambia al momento: gasto de los ministerios frente al que está en vigor, gasto total, ingresos al ritmo de ahora y saldo;
+  - «Aprobar el presupuesto» lo manda al motor y avisa del día en que se aplica (el 1 del mes siguiente). A mitad de cambios, el paso de los meses no borra lo tocado.
+- También en la galería (Economía de un país), donde lo aprobado se aplica al avanzar.
+
+**Previsión a 12 meses (tarea f19-t3):**
+- En el editor, una tabla con cuatro columnas: hace un año, ahora, en 12 meses sin cambios y en 12 meses con el presupuesto que se prepara. Las filas son ingresos, gastos, saldo, deuda y prima (con el rating).
+- Se calcula con las mismas reglas que la partida (economía, presupuesto, mercado de la deuda y Hacienda) sobre una copia del país, sin el contagio de los demás. Si no cambia nada más, coincide con lo que pasa de verdad (hay un test que lo comprueba).
+- La columna del presupuesto que se prepara se recalcula al soltar cada deslizador. Si con él los mercados dejaran de prestar en esos 12 meses, avisa.
+- «Hace un año» sale de las series del presupuesto y del mercado. En el primer año, «—».
+
+**Imagen y sonido (tarea f19-t4):**
+- Al soltar un deslizador del presupuesto suena un tono corto que sube o baja, según se haya subido o bajado el gasto. Su cifra, la del ministerio y la del resumen destellan en verde (sube) o en rojo (baja).
+- Al aprobar el presupuesto suena el golpe de un sello y un acorde mayor, y un sello «Aprobado» cae sobre el botón y se desvanece.
+- Los tres sonidos, en la galería (Sonidos).
 
 
 ### 6.3 Impuestos
@@ -1113,35 +1182,103 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 3. Crisis de deuda: mercados cerrados, rescate del FMI (programa de ajuste) o impago (quita y mercados cerrados), para el jugador y para la IA.
 4. **Audiovisual:** distintivo animado del rating, gráfico de la prima y alertas de rating y de crisis con su sonido.
 
-**Notas:** hasta el banco central (Fase 20), el tipo de interés de base de cada país es provisional. La crisis de deuda (tarea 3) se concretó en la sección 6.2: moratoria de intereses y recortes también de las pensiones en el impago, ajuste del FMI proporcional al déficit, nueva elección al acabar un rescate, y contagio del impago (el rescate hace de cortafuegos). Sustituye al desequilibrio provisional del ajuste f15-a1 (la deuda, el déficit y el déficit exterior de 2010 pasan a ser los de verdad, que cambian con el presupuesto).
+**Notas:** hasta el banco central (Fase 23), el tipo de interés de base de cada país es provisional. La crisis de deuda (tarea 3) se concretó en la sección 6.2: moratoria de intereses y recortes también de las pensiones en el impago, ajuste del FMI proporcional al déficit, nueva elección al acabar un rescate, y contagio del impago (el rescate hace de cortafuegos). Sustituye al desequilibrio provisional del ajuste f15-a1 (la deuda, el déficit y el déficit exterior de 2010 pasan a ser los de verdad, que cambian con el presupuesto).
 
 **Tests:** gastar más sin ingresos sube la deuda y, a partir de cierto umbral, la prima de riesgo; sin intervención, Grecia entra en crisis de deuda en 2010–2012.
 **Prueba en el PC:** ver la prima de riesgo de Grecia durante 2010.
 **Hecho cuando:** la deuda y el rating responden al déficit.
 
-#### Fase 19 — v0.20.0 · Pantalla de Economía
-**Objetivo:** ver la evolución de la economía con gráficos.
-**Tareas**
-1. Historial mensual de indicadores.
-2. Pantalla «Economía» con gráficos y capa del mapa con crecimiento e inflación en tiempo real.
-3. **Audiovisual:** gráficos históricos animados.
+> **Nuevo orden (18/11/2026, decisión del jugador tras probar la v0.18.0):** «falta jugabilidad: solo se abre una pestaña y se pasa el tiempo». Desde la Fase 19, cada fase trae decisiones del jugador antes que más sistemas automáticos (regla 21). El presupuesto editable (antes Fase 23) y una deuda jugable nueva pasan a las Fases 19 y 20. Los impuestos (antes 24 y 25) se adelantan a las 21 y 22. El banco central (antes 20) se junta con la pantalla de Economía (antes 19) en la 23. La moneda (antes 21) pasa a la 24 y los bancos (antes 22), a la 25.
 
-**Tests:** el historial guarda un valor por mes de cada indicador, sin huecos.
-**Prueba en el PC:** jugar 2 años y revisar que los gráficos de España, EE. UU. y China tienen sentido.
-**Hecho cuando:** los gráficos funcionan con los datos de la partida.
+#### Fase 19 — v0.20.0 · Presupuesto jugable
+**Objetivo:** el jugador decide el presupuesto, en dinero.
+**Tareas** (decisiones del jugador del 18/11/2026: en dinero y en % del total; el gasto, fijo hasta que se decida; presupuesto anual con cambios a mitad de año; cada ministerio con sus 4 partidas; pensiones y paro también; la IA, según su situación)
+1. El presupuesto en dinero, en el motor:
+   - el gasto de los ministerios queda fijo en dinero hasta que se decida otro (ya no crece solo con la economía; con la inflación, compra menos);
+   - las pensiones suben cada año lo que se decida (por defecto, el IPC) y cada parado cobra su prestación;
+   - presupuesto anual con modificaciones durante el año, que valen desde el mes siguiente; si llega enero sin presupuesto nuevo, se prorroga el anterior (preparado para cuando exista el parlamento);
+   - los gobiernos de la IA aprueban el suyo cada enero, según su situación: con margen, suben el gasto con la inflación; con un déficit alto, lo congelan; si la prima se acerca al cierre de los mercados, recortan; con superávit, gastan algo más.
+2. Pantalla «Presupuesto» editable, y todo en dinero:
+   - un deslizador por ministerio y, al desplegarlo, uno por cada una de sus 4 partidas (la inversión crea capital; el personal y el mantenimiento son consumo público; los programas llegan a los hogares);
+   - la subida anual de las pensiones y la prestación de cada parado;
+   - en la pantalla, en la ficha y en Gobierno › Presupuesto, todo en dinero y en % del total (cada ingreso, de lo recaudado; cada gasto, de lo gastado). El % del PIB, en la ayuda, para comparar países.
+3. Previsión a 12 meses (déficit, deuda y prima si no cambia nada más) y comparación con el año anterior.
+4. **Audiovisual:** deslizadores con respuesta visual y sonora; animación y sonido al aprobar el presupuesto.
 
-#### Fase 20 — v0.21.0 · Banco central y tipos de interés
-**Objetivo:** política monetaria.
+**Tests:**
+- La previsión a 12 meses coincide con lo que pasa si no cambia nada más.
+- Recortar baja la demanda y sube el paro.
+- Gastar más sin ingresos sube la deuda y la prima.
+- Con la inflación, un gasto congelado compra menos.
+- Subir las pensiones por encima del IPC sube el consumo y el déficit.
+
+**Prueba en el PC:** con España, recortar y subir partidas y ver en 12 meses el déficit, la deuda y la prima.
+**Hecho cuando:** el presupuesto se decide en dinero y sus efectos son coherentes.
+
+#### Fase 20 — v0.21.0 · Deuda y Tesoro jugables
+**Objetivo:** gestionar la deuda: emitir, pagar, negociar y pedir ayuda.
+**Tareas** (decisión del jugador del 18/11/2026: las cuatro acciones)
+1. La deuda por emisiones:
+   - letras a 1 año y bonos a 5 y a 10 años, cada emisión con su tipo y su vencimiento;
+   - calendario de vencimientos.
+2. Ventana «Deuda y Tesoro»:
+   - tesorería y vencimientos;
+   - emitir a mano (cuánto y a qué plazo, con el tipo según la prima y el plazo);
+   - amortizar y recomprar deuda con la tesorería;
+   - si se acaba la tesorería, impago.
+3. Negociar y pedir ayuda (también la IA):
+   - negociar con los acreedores: más plazo, menos interés o una quita negociada. Pueden aceptar o no, y aceptar cuesta rating y confianza;
+   - pedir ayuda antes de la crisis: una línea preventiva del FMI o un préstamo de otros países, con condiciones.
+4. **Audiovisual:** calendario de vencimientos animado y sonidos de la subasta y de la negociación.
+
+**Tests:**
+- Emitir a corto plazo sale más barato, pero obliga a renovar antes.
+- Recomprar deuda con la prima alta sale caro.
+- Una quita negociada baja la deuda, pero sube la prima de después.
+- Si la tesorería se acaba, el país deja de pagar.
+
+**Prueba en el PC:** con Grecia en 2010, alargar los plazos, pedir la línea preventiva y ver si evita la crisis.
+**Hecho cuando:** la deuda se gestiona a mano y la IA también lo hace.
+
+#### Fase 21 — v0.22.0 · Impuestos: modelo y tipos
+**Objetivo:** sistema fiscal completo, con los tipos en manos del jugador.
 **Tareas**
-1. Banco central (independiente o no) con regla tipo Taylor.
+1. Todos los impuestos de la sección 6.3 con sus parámetros.
+2. Recaudación con curva de Laffer suave, economía sumergida y evasión.
+3. Subir y bajar cada impuesto desde la Pantalla de Presupuesto, con su efecto en la recaudación.
+4. **Audiovisual:** iconos de cada impuesto.
+
+**Tests:** subir un impuesto aumenta la recaudación hasta un punto y después la reduce.
+**Prueba en el PC:** revisar los impuestos de España en 2010 y subir el IVA.
+**Hecho cuando:** todos los impuestos recaudan y se pueden cambiar.
+
+#### Fase 22 — v0.23.0 · Impuestos: efectos y simulador
+**Objetivo:** ver qué pasa al cambiar los impuestos.
+**Tareas**
+1. Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización.
+2. Pantalla «Impuestos» con simulador («si subes el IVA un punto, recaudarás X»).
+3. **Audiovisual:** curva de Laffer animada y simulador visual de la recaudación.
+
+**Tests:** el simulador acierta la recaudación real a 6 meses con un margen razonable.
+**Prueba en el PC:** subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses.
+**Hecho cuando:** todos los impuestos funcionan y el simulador acierta de forma aproximada.
+
+#### Fase 23 — v0.24.0 · Banco central y pantalla de Economía
+**Objetivo:** política monetaria, y ver la economía con gráficos para decidirla.
+**Tareas**
+1. Banco central (independiente o no) con regla tipo Taylor. El jugador decide los tipos si no es independiente.
 2. Zona euro: el BCE decide para los 16 miembros de 2010.
-3. **Audiovisual:** visualización de los tipos de interés y de su evolución.
+3. Pantalla «Economía» con el historial mensual de indicadores, gráficos y capa del mapa con crecimiento e inflación en tiempo real.
+4. **Audiovisual:** visualización de los tipos de interés y gráficos históricos animados.
 
-**Tests:** subir los tipos reduce la inflación y el crecimiento con retraso.
-**Prueba en el PC:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses.
-**Hecho cuando:** la política monetaria funciona.
+**Tests:**
+- Subir los tipos reduce la inflación y el crecimiento con retraso.
+- El historial guarda un valor por mes de cada indicador, sin huecos.
 
-#### Fase 21 — v0.22.0 · Moneda y divisas
+**Prueba en el PC:** subir los tipos en un país sin banco central independiente y ver el efecto en 12 meses en la pantalla de Economía.
+**Hecho cuando:** la política monetaria funciona y se ve en los gráficos.
+
+#### Fase 24 — v0.25.0 · Moneda y divisas
 **Objetivo:** tipos de cambio y regímenes de moneda.
 **Tareas**
 1. Regímenes de moneda (flotante, fijo y unión monetaria); devaluar y revaluar.
@@ -1152,49 +1289,16 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 **Prueba en el PC:** devaluar la moneda de un país y ver sus exportaciones al cabo de 6 meses.
 **Hecho cuando:** cada país tiene su régimen de moneda y se puede cambiar.
 
-#### Fase 22 — v0.23.0 · Bancos, bolsa y crisis
+#### Fase 25 — v0.26.0 · Bancos, bolsa y crisis
 **Objetivo:** crisis financieras con contagio.
 **Tareas**
-1. Sistema bancario simplificado: solvencia, crédito y rescates.
+1. Sistema bancario simplificado: solvencia, crédito y rescates (el jugador decide si rescata a sus bancos).
 2. Bolsa e índice de precios de la vivienda; burbujas y crisis con contagio.
 3. **Audiovisual:** animación del contagio de una crisis en el mapa.
 
 **Tests:** una crisis bancaria se contagia a los socios con mucha exposición.
-**Prueba en el PC:** seguir en el mapa el contagio de una crisis en una partida de prueba.
+**Prueba en el PC:** seguir en el mapa el contagio de una crisis en una partida de prueba y decidir si rescatar a los bancos.
 **Hecho cuando:** puede producirse una crisis financiera y contagiarse.
-
-#### Fase 23 — v0.24.0 · Pantalla de Presupuesto
-**Objetivo:** editar el presupuesto.
-**Tareas**
-1. Pantalla «Presupuesto» con deslizadores, previsión a 12 meses y comparación con el año anterior.
-2. Prórroga presupuestaria (preparada para cuando exista el parlamento).
-3. **Audiovisual:** deslizadores con respuesta visual y sonora.
-
-**Tests:** la previsión a 12 meses coincide con lo que pasa si no cambia nada más.
-**Prueba en el PC:** subir mucho el gasto y comprobar que el rating baja.
-**Hecho cuando:** el presupuesto es editable y sus efectos son coherentes.
-
-#### Fase 24 — v0.25.0 · Impuestos: modelo
-**Objetivo:** sistema fiscal completo.
-**Tareas**
-1. Todos los impuestos de la sección 6.3 con sus parámetros.
-2. Recaudación con curva de Laffer suave, economía sumergida y evasión.
-3. **Audiovisual:** iconos de cada impuesto.
-
-**Tests:** subir un impuesto aumenta la recaudación hasta un punto y después la reduce.
-**Prueba en el PC:** revisar los impuestos de España en 2010.
-**Hecho cuando:** todos los impuestos recaudan.
-
-#### Fase 25 — v0.26.0 · Impuestos: efectos y simulador
-**Objetivo:** ver qué pasa al cambiar los impuestos.
-**Tareas**
-1. Efectos en consumo, inversión, inflación, desigualdad (Gini) y deslocalización.
-2. Pantalla «Impuestos» con simulador («si subes el IVA un punto, recaudarás X»).
-3. **Audiovisual:** curva de Laffer animada y simulador visual de la recaudación.
-
-**Tests:** el simulador acierta la recaudación real a 6 meses con un margen razonable.
-**Prueba en el PC:** subir el IVA y el IRPF y comparar la previsión con el resultado real a 6 meses.
-**Hecho cuando:** todos los impuestos funcionan y el simulador acierta de forma aproximada.
 
 #### Fase 26 — v0.27.0 · Consejo de Ministros
 **Objetivo:** gobernar desde los ministerios.
@@ -2260,6 +2364,7 @@ La Hoja de ruta muestra también el bloque **"Última sesión"** (qué se hizo, 
 18. **Limitaciones de red:** si el entorno no puede acceder a una fuente de datos, explicarlo al jugador y proponer una alternativa; no inventar datos haciéndolos pasar por reales.
 19. **Audiovisual en cada fase:** cada fase entrega su contenido audiovisual (gráficos, animación, sonido y, si procede, 3D) según la sección 7.1. Se crea con código o con material de licencia libre anotado en `/docs/creditos.md`; nunca se usa material sin licencia clara. El 3D se propone al jugador en el plan de la fase y siempre tiene alternativa en 2D.
 20. **Consecuencias probadas (pilar 9):** cada sistema llega con al menos un test de «si se hace mal, empeora» (p. ej. recortar la inversión hace caer el PIB; gastar sin ingresos dispara la deuda y los intereses) y ningún modelo da mejoras gratis por defecto.
+21. **Jugable en cada fase:** desde la Fase 19, cada fase entrega al menos una decisión del jugador con consecuencias que se ven. Si una fase solo trae un sistema automático, se junta con la que trae su decisión o se reordena; se revisa al preparar el plan de cada fase.
 
 ---
 
@@ -2324,6 +2429,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Fase 17 concretada con el jugador: presupuesto con cada ministerio por dentro (personal, inversión, mantenimiento y programas); datos del Banco Mundial y el FMI; responde a la economía con estabilizadores automáticos; el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto; la fase pasa a 4 tareas | Plan de la Fase 17 aprobado por el jugador | 6.2, 9, 13 |
 | 17/11/2026 | Fase 18 concretada con el jugador: rating y prima con fórmula calibrada con los tipos reales de 2010 de la OCDE; la prima encarece la deuda poco a poco (vida media); en una crisis de deuda se elige entre el rescate del FMI y el impago; una prima alta encarece el crédito y se contagia; sustituye al ajuste forzoso provisional; la fase pasa a 4 tareas | Plan de la Fase 18 aprobado por el jugador | 6.2, 9, 13 |
 | 17/11/2026 | Crisis de deuda concretada al programarla (tarea f18-t3): en el impago, moratoria de intereses durante 4 años y recortes también de las pensiones hasta cerrar el déficit; el ajuste del FMI es proporcional al déficit que sobra; si un rescate acaba con los mercados cerrados, se vuelve a elegir; el impago contagia y el rescate hace de cortafuegos; si el jugador cierra la ventana sin elegir, se le pregunta el mes siguiente; desaparece la fila «Ajuste forzoso» de la ficha | Calibración de la tarea f18-t3 (con el diseño aprobado por el jugador) | 6.2, 9 |
+| 18/11/2026 | Hacienda jugable y nuevo orden: el presupuesto se ve en dinero y en % del total (el % del PIB, en la ayuda); el gasto de los ministerios queda fijo en dinero hasta que se decida; deuda jugable (emitir, amortizar y recomprar, negociar y pedir ayuda preventiva); la Fase 19 pasa a ser el presupuesto jugable y la 20 la deuda jugable, los impuestos se adelantan a las 21 y 22, el banco central se junta con la pantalla de Economía en la 23, la moneda pasa a la 24 y los bancos a la 25; regla 21 (jugable en cada fase) | Prueba de la v0.18.0 por el jugador («falta jugabilidad»; «el presupuesto no es un % del PIB») | 6.2, 9, 11, 13 |
+| 18/11/2026 | Fase 19 concretada con el jugador: presupuesto anual con cambios a mitad de año y prórroga; cada ministerio con sus 4 partidas; la subida de las pensiones y la prestación por parado también se deciden; la IA aprueba su presupuesto según su situación; la fase sigue con 4 tareas | Plan de la Fase 19 aprobado por el jugador | 6.2, 9, 13 |
 
 ---
 
@@ -2354,6 +2461,8 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Inflación y paro | Paro: Okun con histéresis / Okun simple; inflación: persistente / converge al 2 % / la de 2010 más la brecha; efectos: consumo, inversión, popularidad; alertas: mi país con aviso y sonido / también los grandes / solo en Informes | **Decidido por el jugador (17/11/2026):** Okun con histéresis; inflación persistente hasta el banco central; el paro baja el consumo y la inflación alta, la inversión (la popularidad, todavía no); alertas del país del jugador con aviso y sonido (las graves pausan) |
 | Presupuesto | Detalle: ministerios y partidas / grandes bloques / cada ministerio por dentro; datos: Banco Mundial + FMI / COFOG; evolución: responde a la economía / fijo en % del PIB; tesorería: déficit → deuda / tesorería sin deuda | **Decidido por el jugador (17/11/2026):** cada ministerio por dentro; Banco Mundial + FMI (lo demás, estimado y marcado); responde a la economía (estabilizadores automáticos); el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto |
 | Deuda, prima y rating | Datos: fórmula + tipos reales / solo fórmula / ratings a mano; intereses: poco a poco / al momento; crisis: elegir FMI o impago / siempre FMI / siempre impago; efectos: crédito más caro, contagio, huida de capitales | **Decidido por el jugador (17/11/2026):** fórmula calibrada con los tipos reales de 2010 de la OCDE (40 países); la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago (la IA, según su situación); crédito más caro y contagio |
+| Hacienda jugable | Mostrar: dinero y % del total / dinero y % de los ingresos / solo dinero; gasto: fijo hasta que se decida / actualizado con el IPC / con la economía; deuda: emitir, amortizar y recomprar, negociar, ayuda preventiva; orden: ya y reordenar / ya sin reordenar / solo corregir el dinero | **Decidido por el jugador (18/11/2026):** dinero y % del total (el % del PIB, en la ayuda); gasto fijo en dinero hasta que se decida (pensiones con los precios); las cuatro acciones con la deuda; Fases 19 (presupuesto jugable) y 20 (deuda jugable) ya, y la hoja de ruta reordenada para que cada fase traiga decisiones (regla 21) |
+| Presupuesto jugable | Cuándo: anual con cambios / en cualquier momento / solo en enero; detalle: ministerio y partidas / ministerio / bloques; pensiones y paro: sí / no; IA: según su situación / siempre prorrogan | **Decidido por el jugador (18/11/2026):** anual con cambios a mitad de año y prórroga; ministerio y sus 4 partidas; pensiones y paro también; la IA, según su situación |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |

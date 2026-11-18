@@ -88,15 +88,15 @@
     "presupuesto": {
       "icono": "presupuesto",
       "pestanas": {
-        "partidas": 23,
-        "deuda": 23
+        "partidas": 19,
+        "deuda": 20
       }
     },
     "impuestos": {
       "icono": "impuestos",
       "pestanas": {
-        "impuestos": 25,
-        "simulador": 25
+        "impuestos": 22,
+        "simulador": 22
       }
     },
     "parlamento": {
@@ -145,8 +145,8 @@
     "economia": {
       "icono": "crecimiento",
       "pestanas": {
-        "indicadores": 19,
-        "banco": 20
+        "indicadores": 23,
+        "banco": 23
       }
     },
     "sectores": {
@@ -357,10 +357,10 @@
   "fases": {
     "13": "Efectos y pausa automática",
     "18": "Deuda, prima de riesgo y rating",
-    "19": "Pantalla de Economía",
-    "20": "Banco central y tipos de interés",
-    "23": "Pantalla de Presupuesto",
-    "25": "Impuestos: efectos y simulador",
+    "19": "Presupuesto jugable",
+    "20": "Deuda y Tesoro jugables",
+    "22": "Impuestos: efectos y simulador",
+    "23": "Banco central y pantalla de Economía",
     "26": "Consejo de Ministros",
     "27": "Asesores, noticias e informe del mes",
     "29": "Población por región",

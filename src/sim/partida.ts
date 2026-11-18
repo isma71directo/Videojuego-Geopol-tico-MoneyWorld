@@ -9,6 +9,7 @@ import type { Efecto } from './efectos';
 import { economiaInicial, nivelDe, type EconomiaPais } from './economia';
 import { presupuestoInicial, type PresupuestoPais } from './presupuesto';
 import { mercadoInicial, type MercadoDeuda } from './deuda';
+import type { PresupuestoDecidido } from './hacienda';
 import type { Suceso } from './sucesos';
 import { avanzarHoras, HUSO_UTC, type Huso, type Paso } from './reloj';
 import {
@@ -27,9 +28,10 @@ import {
  *  - 4: v0.16.1: los desequilibrios de 2010 en la economía (ajuste f15-a1).
  *  - 5: v0.17.0: el paro y la inflación en la economía (Fase 16).
  *  - 6: v0.18.0: el presupuesto de cada país (Fase 17).
- *  - 7: v0.19.0 en adelante: el mercado de la deuda de cada país (Fase 18).
+ *  - 7: v0.19.0: el mercado de la deuda de cada país (Fase 18).
+ *  - 8: v0.20.0 en adelante: el presupuesto en dinero y fijo hasta que se decida (Fase 19).
  */
-export const FORMATO_PARTIDA = 7;
+export const FORMATO_PARTIDA = 8;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */
@@ -75,6 +77,8 @@ export interface Partida {
   agenda: Suceso[];
   /** Lo que ha decidido el jugador y aún no ha usado ningún sistema (tarea f18-t3). */
   decisiones?: Record<string, string>;
+  /** El presupuesto que ha mandado el jugador y aún no se ha aplicado (Fase 19). */
+  presupuestoDecidido?: PresupuestoDecidido;
 }
 
 /** Estado de un país en la partida; crece con cada fase (GDD, sección 8). */

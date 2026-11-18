@@ -7,7 +7,7 @@
  * política, su inflación, su deuda, su déficit, su déficit exterior y lo que se le van los
  * ingresos en intereses; sin moneda propia (el euro), la deuda y el déficit pesan más. La prima
  * es e elevada al riesgo; el tipo de mercado, un tipo base (provisional hasta el banco central de
- * la Fase 20) más la inflación esperada y la prima; y el rating, según la prima. Motor puro.
+ * la Fase 23) más la inflación esperada y la prima; y el rating, según la prima. Motor puro.
  */
 import config from './config/deuda.json';
 import { durezaDe, pibNominal, type EconomiaPais } from './economia';
@@ -20,7 +20,6 @@ import {
   PARTIDAS,
   saldo,
   totalIngresos,
-  totalPorPartida,
   type PresupuestoPais,
 } from './presupuesto';
 import { horaAbsoluta, momentoDe } from './reloj';
@@ -51,7 +50,7 @@ export interface Fundamentos {
 const r = config.riesgo;
 const SIN_MONEDA_PROPIA: ReadonlySet<string> = new Set(config.sinMonedaPropia);
 
-/** ¿Tiene el país moneda propia (y banco central que la respalde)? Provisional hasta la Fase 21. */
+/** ¿Tiene el país moneda propia (y banco central que la respalde)? Provisional hasta la Fase 24. */
 export function tieneMonedaPropia(id: string): boolean {
   return !SIN_MONEDA_PROPIA.has(id);
 }
@@ -480,51 +479,32 @@ export function ajustarConFmi(
   // principio), y al menos «ajusteAnual» al año.
   const sobra = deficit - k.deficitObjetivo;
   const ajuste = Math.min(sobra, Math.max(k.ajusteAnual / 12, sobra * k.cierreFmi) * dureza) * pib;
-  recortarGasto(presupuesto, economia, ajuste * k.parteRecortes, false);
-  subirImpuestos(presupuesto, economia, ajuste * (1 - k.parteRecortes));
+  recortarGasto(presupuesto, ajuste * k.parteRecortes, false);
+  subirImpuestos(presupuesto, ajuste * (1 - k.parteRecortes));
 }
 
 /**
  * Recorta por igual a todos los ministerios y, si `conPensiones`, también las pensiones
- * (`recorte`: dinero al año; como mucho, «recorteMaximo» de ese gasto cada mes), y le quita a la
- * demanda lo que se gastaba: el personal y el mantenimiento son consumo público; la inversión,
- * inversión; y los programas (ayudas y subvenciones) y las pensiones, en parte, consumo de los
- * hogares.
+ * (`recorte`: dinero al año; como mucho, «recorteMaximo» de ese gasto cada mes). Lo que se deja de
+ * gastar lo nota la economía por el presupuesto (Fase 19): el personal y el mantenimiento son
+ * consumo público; la inversión, inversión; y los programas y las pensiones, consumo de los hogares.
  */
-function recortarGasto(
-  presupuesto: PresupuestoPais,
-  economia: EconomiaPais,
-  recorte: number,
-  conPensiones: boolean,
-): void {
+function recortarGasto(presupuesto: PresupuestoPais, recorte: number, conPensiones: boolean): void {
   const pensiones = conPensiones ? presupuesto.transversales.pensiones : 0;
   const total = MINISTERIOS.reduce((t, mi) => t + gastoMinisterio(presupuesto, mi), pensiones);
-  const pib = pibNominal(economia);
-  if (total <= 0 || recorte <= 0 || pib <= 0) return;
+  if (total <= 0 || recorte <= 0) return;
   const parte = Math.min(k.recorteMaximo, recorte / total);
-  const partidas = totalPorPartida(presupuesto);
-  const demanda = economia.demandaBase;
-  const quitar = (actual: number, dinero: number): number =>
-    Math.max(0, actual - (parte * dinero) / pib);
-  // (El personal y el mantenimiento son el consumo público: baja en la misma proporción.)
-  demanda.consumoPublico *= 1 - parte;
-  demanda.inversion = quitar(demanda.inversion, partidas.inversion);
-  demanda.consumo = quitar(
-    demanda.consumo,
-    (partidas.programas + pensiones) * k.consumoPorImpuesto,
-  );
   for (const mi of MINISTERIOS) {
     for (const p of PARTIDAS) presupuesto.ministerios[mi][p] *= 1 - parte;
   }
   presupuesto.transversales.pensiones -= parte * pensiones;
 }
 
-/** Sube todos los impuestos por igual hasta recaudar `subida` más al año; los hogares consumen menos. */
-function subirImpuestos(
-  presupuesto: PresupuestoPais,
-  economia: EconomiaPais,
-  subida: number,
-): void {
+/**
+ * Sube todos los impuestos por igual hasta recaudar `subida` más al año (los de los hogares les
+ * quitan consumo, por el presupuesto: Fase 19).
+ */
+function subirImpuestos(presupuesto: PresupuestoPais, subida: number): void {
   const ingresos = totalIngresos(presupuesto);
   if (ingresos <= 0 || subida <= 0) return;
   const factor = 1 + subida / ingresos;
@@ -532,11 +512,6 @@ function subirImpuestos(
     presupuesto.tipos[i] *= factor;
     presupuesto.ingresos[i] *= factor;
   }
-  const pib = pibNominal(economia);
-  economia.demandaBase.consumo = Math.max(
-    0,
-    economia.demandaBase.consumo - (k.consumoPorImpuesto * subida) / pib,
-  );
 }
 
 /**
@@ -578,7 +553,7 @@ export function gestionarCrisis(
     // del déficit que quede, en los ministerios y en las pensiones. (Mientras, lo que falta se
     // debe a proveedores y funcionarios: cuenta como deuda.)
     const deficit = -saldo(presupuesto);
-    if (deficit > 0) recortarGasto(presupuesto, economia, deficit * k.cierreImpago, true);
+    if (deficit > 0) recortarGasto(presupuesto, deficit * k.cierreImpago, true);
   }
   programa.meses -= 1;
   if (programa.meses > 0) return false;

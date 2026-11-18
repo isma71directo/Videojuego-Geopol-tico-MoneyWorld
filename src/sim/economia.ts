@@ -5,7 +5,8 @@
  *  - Siete sectores, con los datos reales de 2010 de la ONU. Cada uno produce según
  *    productividad × capital^α × trabajo^(1 − α).
  *  - Sin azar: la economía cambia por las decisiones (inversión, gasto, impuestos, servicios…).
- *    Mientras no las haya (presupuesto y deuda, Fases 17 y 18; impuestos, Fases 24 y 25), evoluciona según el modelo.
+ *    Mientras no las haya (presupuesto y deuda, Fases 19 y 20; impuestos, Fases 21 y 22),
+ *    evoluciona según el modelo.
  *  - Arranque: cada país crece en 2010 como creció de verdad, y esa diferencia con su crecimiento
  *    potencial se apaga poco a poco.
  *
@@ -33,7 +34,7 @@
  *
  * Inflación (tarea f16-t2; persistente, decisión del jugador): cada país arrastra la suya (las
  * expectativas); baja si el paro está por encima del estructural y sube si está por debajo (curva
- * de Phillips), sin un ancla que la arregle sola hasta el banco central (Fase 20). Una inflación
+ * de Phillips), sin un ancla que la arregle sola hasta el banco central (Fase 23). Una inflación
  * alta resta inversión y confianza de las empresas; la deflación frena el consumo.
  */
 import config from './config/economia.json';

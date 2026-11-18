@@ -1,7 +1,7 @@
 /**
  * El presupuesto en vivo (tarea f17-t4; decisión del jugador: en la pestaña Economía de la ficha
  * de cada país y, para el del jugador, en Gobierno › Presupuesto, en solo lectura hasta la
- * Pantalla de Presupuesto de la Fase 23). Ingresos, gastos, saldo, deuda, intereses y tesorería;
+ * Pantalla de Presupuesto de la Fase 19). Ingresos, gastos, saldo, deuda, intereses y tesorería;
  * de qué se nutren los ingresos y en qué se va el gasto, con iconos; el gráfico de ingresos y
  * gastos desde enero de 2010; y, en la ventana, la deuda y los 20 ministerios por dentro. Con la
  * Fase 18, también el mercado de la deuda (tarea f18-t4): el rating con su distintivo animado, la
@@ -11,7 +11,7 @@
  */
 import { icono, type NombreIcono } from '../av/iconos';
 import { formatearFechaLarga } from '../compartido/fechas';
-import { dolares, porcentaje, puntos } from '../compartido/formato';
+import { dineroConSigno, dolares, porcentaje, puntos } from '../compartido/formato';
 import { t } from '../i18n';
 import { UMBRAL_CIERRE, type MercadoDeuda, type Rating } from '../sim/deuda';
 import { pibNominal, type EconomiaPais } from '../sim/economia';
@@ -29,6 +29,7 @@ import {
   type PresupuestoPais,
 } from '../sim/presupuesto';
 import { barraDePartes, graficoLineas } from './componentes/graficos';
+import { crearPestanas } from './componentes/pestanas';
 import { conInformacion } from './componentes/info';
 import secciones from './config/secciones.json';
 import { el } from './dom';
@@ -124,9 +125,28 @@ function fila(
   return el('div', { class: 'panel-pais__fila' }, termino, el('dd', { class: clase }, valor));
 }
 
-/** «36,4 % del PIB». */
+/** «36,4 % del PIB» (en las ayudas: para comparar con otros países). */
 const delPib = (valor: number, pib: number): string =>
   t('juego.presupuesto.delPib', { valor: porcentaje(pib > 0 ? (valor / pib) * 100 : 0) });
+
+/**
+ * El PIB nominal de cada uno de los últimos `meses` meses (dólares al año): el real de cada mes por
+ * el nivel de precios de entonces, que se reconstruye hacia atrás con la inflación de cada mes.
+ */
+export function pibNominalPorMes(
+  economia: Pick<EconomiaPais, 'serie' | 'serieInflacion' | 'nivelPrecios'>,
+  meses: number,
+): number[] {
+  const { serie, serieInflacion } = economia;
+  const resultado: number[] = new Array<number>(meses).fill(0);
+  let precios = economia.nivelPrecios;
+  for (let k = 0; k < meses; k++) {
+    const i = Math.max(0, serie.length - 1 - k);
+    resultado[meses - 1 - k] = (serie[i] ?? 0) * precios;
+    precios /= Math.pow(1 + (serieInflacion[i] ?? 0), 1 / 12);
+  }
+  return resultado;
+}
 
 /** Cómo se dibuja un bloque: entero (en la ventana) o resumido (en la ficha). */
 export interface OpcionesPresupuesto {
@@ -183,6 +203,12 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
   const { presupuesto, economia, tesoreria, fecha, mercado } = vista;
   const pib = economia ? pibNominal(economia) : totalGastos(presupuesto);
   const resultado = saldo(presupuesto);
+  const ingresos = totalIngresos(presupuesto);
+  const gastado = totalGastos(presupuesto);
+  // Las series se guardan en % del PIB; se ven en dinero, con el PIB nominal de cada mes.
+  const pibs = economia ? pibNominalPorMes(economia, presupuesto.serie.ingresos.length) : null;
+  const enDinero = (serie: readonly number[]) =>
+    serie.map((v, mes) => [mes, pibs ? ((v / 100) * pibs[mes]!) / 1e9 : v] as const);
   const ancho = opciones.anchoGrafico ?? 520;
   const alto = ancho < 400 ? 200 : 180;
   const meses = presupuesto.serie.ingresos.length - 1;
@@ -197,36 +223,46 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
     fila(
       'hacienda',
       t('juego.presupuesto.ingresos'),
-      delPib(totalIngresos(presupuesto), pib),
-      t('juego.presupuesto.ingresosAyuda', { dinero: dolares(totalIngresos(presupuesto)) }),
+      dolares(totalIngresos(presupuesto)),
+      t('juego.presupuesto.ingresosAyuda', { pib: delPib(totalIngresos(presupuesto), pib) }),
     ),
     fila(
       'presupuesto',
       t('juego.presupuesto.gastos'),
-      delPib(totalGastos(presupuesto), pib),
-      t('juego.presupuesto.gastosAyuda', { dinero: dolares(totalGastos(presupuesto)) }),
+      dolares(totalGastos(presupuesto)),
+      t('juego.presupuesto.gastosAyuda', { pib: delPib(totalGastos(presupuesto), pib) }),
     ),
     fila(
       'crecimiento',
       resultado < 0 ? t('juego.presupuesto.deficit') : t('juego.presupuesto.superavit'),
-      delPib(resultado, pib),
-      t('juego.presupuesto.saldoAyuda'),
+      t('juego.presupuesto.saldoValor', {
+        dinero: dineroConSigno(resultado),
+        parte: porcentaje(ingresos > 0 ? (Math.abs(resultado) / ingresos) * 100 : 0),
+      }),
+      t('juego.presupuesto.saldoAyuda', { pib: delPib(resultado, pib) }),
       resultado < 0 ? 'economia__baja' : undefined,
     ),
     fila(
       'deuda',
       t('juego.presupuesto.deuda'),
-      delPib(presupuesto.deuda, pib),
+      dolares(presupuesto.deuda),
       t('juego.presupuesto.deudaAyuda', {
-        dinero: dolares(presupuesto.deuda),
+        pib: delPib(presupuesto.deuda, pib),
         tipo: porcentaje(presupuesto.tipoInteres * 100),
       }),
     ),
     fila(
       'deuda',
       t('juego.presupuesto.intereses'),
-      delPib(presupuesto.transversales.intereses, pib),
-      t('juego.presupuesto.interesesAyuda'),
+      t('juego.presupuesto.interesesValor', {
+        dinero: dolares(presupuesto.transversales.intereses),
+        parte: porcentaje(
+          ingresos > 0 ? (presupuesto.transversales.intereses / ingresos) * 100 : 0,
+        ),
+      }),
+      t('juego.presupuesto.interesesAyuda', {
+        pib: delPib(presupuesto.transversales.intereses, pib),
+      }),
     ),
     fila(
       'lingote',
@@ -236,11 +272,12 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
     ),
     ...(mercado ? filasMercado(mercado, vista.ratingAntes) : []),
   );
-  const ingresos = barraDePartes({
+  const barraIngresos = barraDePartes({
     titulo: t('juego.presupuesto.ingresosTitulo'),
     partes: INGRESOS.map((i, color) => ({
       etiqueta: t(`juego.presupuesto.tipos.${i}`),
-      valor: (presupuesto.ingresos[i] / pib) * 100,
+      // (Cada ingreso, como parte de lo recaudado.)
+      valor: ingresos > 0 ? (presupuesto.ingresos[i] / ingresos) * 100 : 0,
       color,
       icono: ICONO_INGRESO[i],
     })),
@@ -263,7 +300,8 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
     titulo: t('juego.presupuesto.gastosTitulo'),
     partes: GRUPOS_GASTO.map((g, color) => ({
       etiqueta: t(`juego.presupuesto.grupos.${g}`),
-      valor: (valorGrupo[g] / pib) * 100,
+      // (Cada gasto, como parte de lo gastado.)
+      valor: gastado > 0 ? (valorGrupo[g] / gastado) * 100 : 0,
       color,
       icono: ICONO_GRUPO[g],
     })),
@@ -274,18 +312,18 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
     series: [
       {
         nombre: t('juego.presupuesto.ingresos'),
-        puntos: presupuesto.serie.ingresos.map((v, mes) => [mes, v] as const),
+        puntos: enDinero(presupuesto.serie.ingresos),
       },
       {
         nombre: t('juego.presupuesto.gastos'),
-        puntos: presupuesto.serie.gastos.map((v, mes) => [mes, v] as const),
+        puntos: enDinero(presupuesto.serie.gastos),
       },
     ],
     ancho,
     alto,
     animado: primera,
     latido: !primera,
-    formatoY: (v) => porcentaje(v),
+    formatoY: (v) => (pibs ? dolares(v * 1e9) : porcentaje(v)),
     ...ejeX,
   });
   const partes: HTMLElement[] = [
@@ -297,7 +335,7 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
       el('time', { datetime: fecha }, formatearFechaLarga(fecha)),
     ),
     datos,
-    ingresos,
+    barraIngresos,
     gastos,
     grafico,
   ];
@@ -308,14 +346,14 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
         series: [
           {
             nombre: t('juego.presupuesto.deuda'),
-            puntos: presupuesto.serie.deuda.map((v, mes) => [mes, v] as const),
+            puntos: enDinero(presupuesto.serie.deuda),
           },
         ],
         ancho,
         alto,
         animado: primera,
         latido: !primera,
-        formatoY: (v) => porcentaje(v),
+        formatoY: (v) => (pibs ? dolares(v * 1e9) : porcentaje(v)),
         ...ejeX,
       }),
     );
@@ -340,15 +378,17 @@ function contenido(vista: Vista, opciones: OpcionesPresupuesto, primera: boolean
         }),
       );
     }
-    partes.push(tablaMinisterios(presupuesto, pib));
+    partes.push(tablaMinisterios(presupuesto));
   }
   partes.push(el('p', { class: 'panel-pais__pie economia__nota' }, t('juego.presupuesto.nota')));
   return partes;
 }
 
 /** Los 20 ministerios, cada uno desplegable con sus partidas, y los gastos fuera de ellos. */
-function tablaMinisterios(presupuesto: PresupuestoPais, pib: number): HTMLElement {
+function tablaMinisterios(presupuesto: PresupuestoPais): HTMLElement {
   const lista = el('div', { class: 'presupuesto__ministerios' });
+  const gastado = totalGastos(presupuesto);
+  const parte = (valor: number) => porcentaje(gastado > 0 ? (valor / gastado) * 100 : 0);
   for (const m of MINISTERIOS) {
     const nombre = t(`juego.secciones.ministerios.${m}.nombre`);
     const estimado = !CON_DATOS.has(m);
@@ -364,7 +404,11 @@ function tablaMinisterios(presupuesto: PresupuestoPais, pib: number): HTMLElemen
           el(
             'span',
             { class: estimado ? 'presupuesto__valor es-estimado' : 'presupuesto__valor' },
-            `${delPib(gastoMinisterio(presupuesto, m), pib)}${estimado ? '*' : ''}`,
+            t('juego.presupuesto.ministerioValor', {
+              dinero: dolares(gastoMinisterio(presupuesto, m)),
+              parte: parte(gastoMinisterio(presupuesto, m)),
+              marca: estimado ? '*' : '',
+            }),
           ),
         ),
         el(
@@ -374,7 +418,7 @@ function tablaMinisterios(presupuesto: PresupuestoPais, pib: number): HTMLElemen
             fila(
               ICONO_PARTIDA[p],
               t(`juego.presupuesto.partidas.${p}`),
-              delPib(presupuesto.ministerios[m][p], pib),
+              dolares(presupuesto.ministerios[m][p]),
               t(`juego.presupuesto.partidas.${p}Ayuda`),
               'es-estimado',
             ),
@@ -441,12 +485,37 @@ export function bloquePresupuesto(
 export function contenidoVentanaPresupuesto(
   fuente: FuentePresupuesto,
   nombrePais: string,
+  /** El editor del presupuesto (Fase 19): con él, dos pestañas, «Nuevo presupuesto» y «En vigor». */
+  editor?: () => HTMLElement,
 ): HTMLElement {
+  const enVigor = (): HTMLElement[] => [
+    bloquePresupuesto(fuente, { completo: true }).elemento,
+    el('p', { class: 'panel-pais__pie' }, t('juego.presupuesto.ventanaNota')),
+  ];
   return el(
     'div',
     { class: 'economia-ventana' },
     el('h3', { class: 'economia-ventana__titulo' }, nombrePais),
-    bloquePresupuesto(fuente, { completo: true }).elemento,
-    el('p', { class: 'panel-pais__pie' }, t('juego.presupuesto.ventanaNota')),
+    ...(editor
+      ? [
+          crearPestanas(
+            [
+              {
+                id: 'nuevo',
+                titulo: t('juego.hacienda.pestanaNuevo'),
+                icono: 'presupuesto',
+                contenido: () => [editor()],
+              },
+              {
+                id: 'vigor',
+                titulo: t('juego.hacienda.pestanaEnVigor'),
+                icono: 'hacienda',
+                contenido: enVigor,
+              },
+            ],
+            { etiqueta: t('juego.presupuesto.titulo') },
+          ).elemento,
+        ]
+      : enVigor()),
   );
 }
