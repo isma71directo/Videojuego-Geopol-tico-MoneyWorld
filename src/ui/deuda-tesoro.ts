@@ -29,8 +29,11 @@ import {
 import {
   negociar as negociarConAcreedores,
   type AccionNegociacion,
+  type NegociacionDeuda,
   type OfertaAyuda,
 } from '../sim/acreedores';
+import type { Efecto } from '../av/sonido';
+import { animar } from './componentes/animacion';
 import {
   apartadoAyuda,
   apartadoNegociar,
@@ -87,6 +90,19 @@ export function refrescarDeudaTesoro(): void {
     if (vista.elemento.isConnected) vista.actualizar();
     else vistas.delete(vista);
   }
+}
+
+/** Cuánto tarda en crecer la primera barra del calendario, y cuánto más cada una (ms). */
+const DURACION_BARRA = 420;
+const RETRASO_BARRA = 45;
+
+/** El sonido de cada momento de la negociación (tarea f20-t4). */
+export function sonidoDeNegociacion(negociacion: NegociacionDeuda): Efecto {
+  if (negociacion.estado === 'acuerdo') return 'negociacionAcuerdo';
+  if (negociacion.estado === 'ruptura') return 'negociacionRuptura';
+  return negociacion.respuesta === 'contraoferta'
+    ? 'negociacionContraoferta'
+    : 'negociacionRechazo';
 }
 
 /** Lo que vence cada año (el 1 de cada mes se paga lo de su casilla), desde el mes que viene. */
@@ -293,12 +309,14 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
       (a) => a.importe > 0.5,
     );
     const mayor = Math.max(1, ...porAnio.map((a) => a.importe));
+    const rellenos: HTMLElement[] = [];
     const calendario = el(
       'ol',
       { class: 'deuda-tesoro__calendario', 'aria-label': t('juego.tesoro.calendario') },
       ...porAnio.map(({ anio, importe }) => {
         const relleno = el('span', { class: 'deuda-tesoro__relleno' });
         relleno.style.width = `${((importe / mayor) * 100).toFixed(1)}%`;
+        rellenos.push(relleno);
         return el(
           'li',
           { title: `${anio}: ${dolares(importe)}` },
@@ -397,7 +415,11 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
     );
     botonEmitir.addEventListener('click', () => {
       if (!(borrador.emitir > 0) || !abierto) return;
-      ordenar([{ tipo: 'emision', importe: borrador.emitir, reparto: reparto() }], botonEmitir);
+      ordenar(
+        [{ tipo: 'emision', importe: borrador.emitir, reparto: reparto() }],
+        botonEmitir,
+        'subasta',
+      );
     });
 
     // ── Recomprar ──
@@ -431,14 +453,14 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
     );
     botonRecomprar.addEventListener('click', () => {
       if (!(borrador.recomprar > 0)) return;
-      ordenar([{ tipo: 'recompra', importe: borrador.recomprar }], botonRecomprar);
+      ordenar([{ tipo: 'recompra', importe: borrador.recomprar }], botonRecomprar, 'subasta');
     });
 
     /** Manda los cambios, los anota como pendientes y vuelve a empezar. */
-    function ordenar(cambios: CambioPresupuesto[], boton?: HTMLElement): void {
+    function ordenar(cambios: CambioPresupuesto[], boton?: HTMLElement, efecto?: Efecto): void {
       opciones.ordenar(cambios);
       anotarOrdenados(actual!.fecha, nivel, cambios);
-      if (boton) sellar(boton);
+      if (boton) sellar(boton, efecto);
       borrador = borradorVacio();
       pintar();
       aviso.textContent = t('juego.tesoro.ordenado');
@@ -455,13 +477,9 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
         borrador: borradorNegociacion,
         negociar: (accion) => {
           // La misma respuesta que dará el motor (con el mismo estado), al momento.
-          const antes = mercado.negociacion?.estado;
           const negociacion = negociarConAcreedores(mercado, presupuesto, accion, actual.fecha);
           opciones.enviarNegociacion?.(accion);
-          if (negociacion?.estado === 'acuerdo' && antes === 'abierta')
-            sonar('presupuestoAprobado');
-          else if (negociacion)
-            sonar(negociacion.respuesta === 'rechaza' ? 'deseleccionar' : 'seleccionar');
+          if (negociacion) sonar(sonidoDeNegociacion(negociacion));
           pintar();
         },
         ofertas: opciones.ofertas?.() ?? [],
@@ -526,10 +544,28 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
     );
     pintarReparto();
     pintarRecomprar();
+    // El calendario crece barra a barra al abrirse y cada mes (tarea f20-t4); no con cada clic.
+    if (animarCalendario) {
+      animarCalendario = false;
+      rellenos.forEach((relleno, i) => {
+        void animar(
+          relleno,
+          [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+          DURACION_BARRA + i * RETRASO_BARRA,
+        );
+      });
+    }
   };
 
   sonarAlSoltar(elemento, () => []);
-  const vista: DeudaTesoro = { elemento, actualizar: pintar };
+  let animarCalendario = true;
+  const vista: DeudaTesoro = {
+    elemento,
+    actualizar: () => {
+      animarCalendario = true;
+      pintar();
+    },
+  };
   pintar();
   vistas.add(vista);
   return vista;

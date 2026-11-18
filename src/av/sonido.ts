@@ -48,7 +48,12 @@ export type Efecto =
   | 'alertaAyudaRetirada'
   | 'deslizadorSube'
   | 'deslizadorBaja'
-  | 'presupuestoAprobado';
+  | 'presupuestoAprobado'
+  | 'subasta'
+  | 'negociacionAcuerdo'
+  | 'negociacionContraoferta'
+  | 'negociacionRechazo'
+  | 'negociacionRuptura';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -276,6 +281,36 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'triangle', inicio: 0.08, duracion: 0.22, frecuencia: 440, volumen: 0.11 },
     { forma: 'triangle', inicio: 0.3, duracion: 0.42, frecuencia: 293.7, volumen: 0.12 },
     { forma: 'sine', inicio: 0.3, duracion: 0.42, frecuencia: 146.8, volumen: 0.07 },
+  ],
+  // La subasta del Tesoro (tarea f20-t4): dos golpes de mazo (seco, madera) y una nota clara,
+  // «adjudicado». Para emitir y para recomprar.
+  subasta: [
+    { forma: 'ruido', inicio: 0, duracion: 0.03, frecuencia: 700, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0, duracion: 0.06, frecuencia: 196, volumen: 0.12 },
+    { forma: 'ruido', inicio: 0.1, duracion: 0.03, frecuencia: 700, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0.1, duracion: 0.06, frecuencia: 196, volumen: 0.12 },
+    { forma: 'sine', inicio: 0.18, duracion: 0.12, frecuencia: 1046.5, volumen: 0.08 },
+  ],
+  // La negociación con los acreedores: el acuerdo, un acorde mayor que se abre (do, mi, sol);
+  // la contraoferta, dos notas que suben como una pregunta; el rechazo, dos que bajan (menor);
+  // la ruptura, un golpe grave y disonante.
+  negociacionAcuerdo: [
+    { forma: 'sine', inicio: 0, duracion: 0.28, frecuencia: 523.3, volumen: 0.08 },
+    { forma: 'sine', inicio: 0.05, duracion: 0.23, frecuencia: 659.3, volumen: 0.07 },
+    { forma: 'triangle', inicio: 0.1, duracion: 0.18, frecuencia: 784, volumen: 0.07 },
+  ],
+  negociacionContraoferta: [
+    { forma: 'triangle', inicio: 0, duracion: 0.12, frecuencia: 587.3, volumen: 0.1 },
+    { forma: 'triangle', inicio: 0.13, duracion: 0.15, frecuencia: 698.5, volumen: 0.1 },
+  ],
+  negociacionRechazo: [
+    { forma: 'triangle', inicio: 0, duracion: 0.12, frecuencia: 392, volumen: 0.1 },
+    { forma: 'triangle', inicio: 0.13, duracion: 0.16, frecuencia: 311.1, volumen: 0.1 },
+  ],
+  negociacionRuptura: [
+    { forma: 'ruido', inicio: 0, duracion: 0.05, frecuencia: 200, volumen: 0.1 },
+    { forma: 'triangle', inicio: 0, duracion: 0.28, frecuencia: 233.1, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0, duracion: 0.28, frecuencia: 220, volumen: 0.08 },
   ],
   // Deslizadores del presupuesto (tarea f19-t4): al soltarlos, un tono corto que sube o baja,
   // según se haya subido o bajado el gasto.

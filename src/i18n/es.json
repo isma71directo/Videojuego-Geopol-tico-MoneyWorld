@@ -1780,7 +1780,12 @@
       "presupuestoAprobado": "Presupuesto aprobado",
       "alertaSinTesoreria": "Alerta: sin tesorería",
       "alertaTesoreriaBaja": "Alerta: tesorería baja",
-      "alertaAyudaRetirada": "Alerta: retiran la ayuda"
+      "alertaAyudaRetirada": "Alerta: retiran la ayuda",
+      "subasta": "Subasta del Tesoro",
+      "negociacionAcuerdo": "Negociación: acuerdo",
+      "negociacionContraoferta": "Negociación: contraoferta",
+      "negociacionRechazo": "Negociación: rechazo",
+      "negociacionRuptura": "Negociación: ruptura"
     },
     "economia": {
       "titulo": "Economía de un país",

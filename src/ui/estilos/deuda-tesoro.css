@@ -191,3 +191,8 @@
 .deuda-tesoro__ofertas strong {
   font-size: 14px;
 }
+
+/* (Las barras del calendario crecen desde la izquierda: tarea f20-t4.) */
+.deuda-tesoro__relleno {
+  transform-origin: left center;
+}

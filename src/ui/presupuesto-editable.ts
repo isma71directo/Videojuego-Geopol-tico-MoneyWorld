@@ -13,6 +13,7 @@
 import { icono } from '../av/iconos';
 import { dineroConSigno, dolares, enteros, porcentaje, puntos } from '../compartido/formato';
 import { formatearFechaLarga } from '../compartido/fechas';
+import type { Efecto } from '../av/sonido';
 import { t } from '../i18n';
 import type { MercadoDeuda } from '../sim/deuda';
 import type { EconomiaPais } from '../sim/economia';
@@ -122,8 +123,8 @@ export function pendientesDe(presupuesto: PresupuestoPais, fecha: string): Cambi
 }
 
 /** El sello «Aprobado» y su sonido (tarea f19-t4) sobre un botón. */
-export function sellar(boton: HTMLElement): void {
-  sonar('presupuestoAprobado');
+export function sellar(boton: HTMLElement, efecto: Efecto = 'presupuestoAprobado'): void {
+  sonar(efecto);
   const sello = el(
     'span',
     { class: 'presupuesto-editable__sello', 'aria-hidden': 'true' },

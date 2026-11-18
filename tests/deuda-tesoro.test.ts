@@ -7,7 +7,14 @@ import type { ConjuntoPaises } from '../src/datos/paises';
 import { ofertasDeAyuda, pedirAyuda, type AccionNegociacion } from '../src/sim/acreedores';
 import type { CambioPresupuesto } from '../src/sim/presupuesto';
 import { cerrarVentanas } from '../src/ui/componentes/ventana';
-import { deudaTesoro, emisionCon, vencimientosPorAnio } from '../src/ui/deuda-tesoro';
+import { EFECTOS } from '../src/av/sonido';
+import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
+import {
+  deudaTesoro,
+  emisionCon,
+  sonidoDeNegociacion,
+  vencimientosPorAnio,
+} from '../src/ui/deuda-tesoro';
 import {
   abrirElemento,
   elementoDeMinisterio,
@@ -309,5 +316,56 @@ describe('negociar y pedir ayuda en la pestaña (tarea f20-t3)', () => {
       /Objetivo para el próximo enero: un déficit de como mucho [\d.]+ M\$ \([\d,]+ % del PIB\)/,
     );
     expect(vista.elemento.querySelector('.deuda-tesoro__ofertas')).toBeNull();
+  });
+});
+
+describe('audiovisual (tarea f20-t4)', () => {
+  it('suena la subasta al emitir o recomprar, y cada respuesta de los acreedores tiene su sonido', () => {
+    const sonidos: string[] = [];
+    sonidosDeComponentes((efecto) => sonidos.push(efecto));
+    try {
+      const { vista } = pestana();
+      escribir(campo(vista.elemento, 'Cuánto emitir'), 2000);
+      boton(vista.elemento, 'Emitir').click();
+      expect(sonidos).toContain('subasta');
+      const base = { desde: '2010-06-01', ronda: 1, propuesta: null, acuerdo: null };
+      expect(
+        sonidoDeNegociacion({
+          ...base,
+          estado: 'abierta',
+          respuesta: 'contraoferta',
+          contraoferta: null,
+        }),
+      ).toBe('negociacionContraoferta');
+      expect(
+        sonidoDeNegociacion({
+          ...base,
+          estado: 'abierta',
+          respuesta: 'rechaza',
+          contraoferta: null,
+        }),
+      ).toBe('negociacionRechazo');
+      expect(
+        sonidoDeNegociacion({
+          ...base,
+          estado: 'acuerdo',
+          respuesta: 'acepta',
+          contraoferta: null,
+        }),
+      ).toBe('negociacionAcuerdo');
+      expect(
+        sonidoDeNegociacion({
+          ...base,
+          estado: 'ruptura',
+          respuesta: 'rechaza',
+          contraoferta: null,
+        }),
+      ).toBe('negociacionRuptura');
+      for (const efecto of ['subasta', 'negociacionAcuerdo', 'negociacionRuptura'] as const) {
+        expect(EFECTOS[efecto].length).toBeGreaterThan(0);
+      }
+    } finally {
+      sonidosDeComponentes(null);
+    }
   });
 });
