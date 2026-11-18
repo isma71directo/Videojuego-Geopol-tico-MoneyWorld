@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
 import type { PresupuestoDecidido } from '../src/sim/hacienda';
 import { gastoMinisterio, MINISTERIOS, PARTIDAS } from '../src/sim/presupuesto';
+import { sonidosDeComponentes } from '../src/ui/componentes/sonidos';
 import { diaQueSeAplica, editorPresupuesto } from '../src/ui/presupuesto-editable';
 import { contenidoVentanaPresupuesto } from '../src/ui/presupuesto-en-vivo';
 import { paisCompleto } from './ayudas/pais-completo';
@@ -178,6 +179,26 @@ describe('la Pantalla «Presupuesto» editable (tarea f19-t2)', () => {
     espana.avanzar(13);
     editor.actualizar();
     expect(filaDeDeuda().querySelectorAll('td')[0]!.textContent).toMatch(/M\$/);
+  });
+
+  it('suena y se ve (tarea f19-t4): un tono que sube o baja al soltar, y un sello al aprobar', () => {
+    const sonidos: string[] = [];
+    sonidosDeComponentes((efecto) => sonidos.push(efecto));
+    try {
+      const { editor } = conEspana();
+      const cultura = deslizadorDe(editor.elemento, 'cultura');
+      mover(cultura, 130);
+      cultura.dispatchEvent(new Event('change', { bubbles: true }));
+      mover(cultura, 90);
+      cultura.dispatchEvent(new Event('change', { bubbles: true }));
+      expect(sonidos).toEqual(['deslizadorSube', 'deslizadorBaja']);
+      boton(editor.elemento, 'Aprobar el presupuesto').click();
+      expect(sonidos.at(-1)).toBe('presupuestoAprobado');
+      const sello = editor.elemento.querySelector('.presupuesto-editable__sello');
+      expect(sello?.textContent).toBe('Aprobado');
+    } finally {
+      sonidosDeComponentes(null);
+    }
   });
 
   it('el día en que se aplica: el 1 del mes siguiente', () => {

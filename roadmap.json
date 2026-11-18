@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.19.0",
-  "actualizado": "2026-11-18T07:58:39Z",
+  "actualizado": "2026-11-18T08:01:56Z",
   "faseActiva": "fase-19",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 (presupuesto jugable): f19-t1, f19-t2 y f19-t3 hechas. f19-t3: previsión a 12 meses en el editor (hace un año, ahora, sin cambios y con este presupuesto: ingresos, gastos, saldo, deuda y prima). Usa las reglas de la partida sobre una copia del país; si no cambia nada más, coincide con lo que pasa de verdad.",
-    "siguientePaso": "f19-t4: deslizadores con respuesta visual y sonora, y animación y sonido al aprobar; después, cerrar la Fase 19 como v0.20.0 y abrir su PR.",
+    "resumen": "Fase 19 (presupuesto jugable): las cuatro tareas hechas. f19-t4: tonos que suben o bajan al soltar los deslizadores, destellos en verde o rojo, y sello «Aprobado» con su sonido al aprobar el presupuesto.",
+    "siguientePaso": "Cerrar la Fase 19 como v0.20.0 y abrir su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1157,13 +1157,13 @@
           "titulo": "Previsión a 12 meses (déficit, deuda y prima) y comparación con el año anterior",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/dd8ce3b"
         },
         {
           "id": "f19-t4",
           "titulo": "Audiovisual: deslizadores con respuesta visual y sonora; animación y sonido al aprobar el presupuesto",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-18",
           "enlace": ""
         }
       ]

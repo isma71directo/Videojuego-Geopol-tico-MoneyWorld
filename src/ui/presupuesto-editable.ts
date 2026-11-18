@@ -26,6 +26,7 @@ import {
   type Ministerio,
   type PresupuestoPais,
 } from '../sim/presupuesto';
+import { animar } from './componentes/animacion';
 import { crearDeslizador, type Deslizador } from './componentes/deslizador';
 import { sonar } from './componentes/sonidos';
 import { el } from './dom';
@@ -233,9 +234,35 @@ export function editorPresupuesto(opciones: OpcionesEditor): EditorPresupuesto {
       ),
     );
   };
-  // Al soltar un deslizador o marcar la casilla del IPC, la previsión con este presupuesto.
+  // Al soltar un deslizador o marcar la casilla del IPC, la previsión con este presupuesto; y,
+  // con un deslizador (tarea f19-t4), un tono que sube o baja y un destello en lo que ha cambiado.
   elemento.addEventListener('change', (evento) => {
-    if (evento.target instanceof HTMLInputElement) pintarPrevision();
+    const control = evento.target;
+    if (!(control instanceof HTMLInputElement)) return;
+    pintarPrevision();
+    if (control.type !== 'range') return;
+    const antes = Number(control.dataset.antes ?? control.defaultValue);
+    const ahora = Number(control.value);
+    control.dataset.antes = control.value;
+    if (ahora === antes) return;
+    const sube = ahora > antes;
+    sonar(sube ? 'deslizadorSube' : 'deslizadorBaja');
+    const destellos = [
+      control.closest('.deslizador')?.querySelector('.deslizador__valor'),
+      control.closest('details')?.querySelector('.presupuesto__valor'),
+      resumen.querySelector('dd'),
+    ];
+    for (const destello of destellos) {
+      if (!destello) continue;
+      void animar(
+        destello,
+        [
+          { color: sube ? 'var(--hecha)' : 'var(--peligro)', transform: 'scale(1.06)' },
+          { color: 'inherit', transform: 'scale(1)' },
+        ],
+        500,
+      );
+    }
   });
   const aviso = el('p', { class: 'presupuesto-editable__aviso', role: 'status' });
 
@@ -435,7 +462,24 @@ export function editorPresupuesto(opciones: OpcionesEditor): EditorPresupuesto {
     aprobar.addEventListener('click', () => {
       opciones.aprobar(structuredClone(decidido));
       pendiente = diaQueSeAplica(actual.fecha);
-      sonar('boton');
+      // El sello (tarea f19-t4): cae sobre el pie, se queda un momento y se va.
+      sonar('presupuestoAprobado');
+      const sello = el(
+        'span',
+        { class: 'presupuesto-editable__sello', 'aria-hidden': 'true' },
+        t('juego.hacienda.sello'),
+      );
+      aprobar.parentElement?.append(sello);
+      void animar(
+        sello,
+        [
+          { opacity: 0, transform: 'scale(1.8) rotate(-14deg)' },
+          { opacity: 1, transform: 'scale(1) rotate(-8deg)', offset: 0.3 },
+          { opacity: 1, transform: 'scale(1) rotate(-8deg)', offset: 0.75 },
+          { opacity: 0, transform: 'scale(1) rotate(-8deg)' },
+        ],
+        1400,
+      ).then(() => sello.remove());
       pintarAviso();
     });
 

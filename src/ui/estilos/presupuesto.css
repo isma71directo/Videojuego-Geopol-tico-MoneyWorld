@@ -193,3 +193,23 @@
 .presupuesto-editable__tabla tr > :last-child {
   background: color-mix(in srgb, var(--acento) 10%, transparent);
 }
+
+/* El sello al aprobar el presupuesto (tarea f19-t4; el pie, pegajoso, lo contiene). */
+.presupuesto-editable__sello {
+  /* Encima del botón de aprobar, como un sello sobre el papel. */
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  margin-top: -18px;
+  padding: 4px 14px;
+  border: 3px solid var(--hecha);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--fondo) 70%, transparent);
+  color: var(--hecha);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+}

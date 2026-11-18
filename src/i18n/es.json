@@ -1387,7 +1387,8 @@
       },
       "saldo": "Saldo",
       "previsionNota": "Con las mismas reglas que la partida, si no cambia nada más: sin contar con lo que hagan los demás países. La columna de este presupuesto se recalcula al soltar cada deslizador.",
-      "avisoCierre": "Atención: con este presupuesto, los mercados dejarían de prestar en los próximos 12 meses (crisis de deuda)."
+      "avisoCierre": "Atención: con este presupuesto, los mercados dejarían de prestar en los próximos 12 meses (crisis de deuda).",
+      "sello": "Aprobado"
     }
   },
   "hojaDeRuta": {
@@ -1605,7 +1606,10 @@
       "alertaDeflacion": "Alerta: deflación",
       "alertaCrisisDeuda": "Alerta: crisis de deuda",
       "alertaRatingBaja": "Alerta: bajan el rating",
-      "alertaRatingSube": "Alerta: suben el rating"
+      "alertaRatingSube": "Alerta: suben el rating",
+      "deslizadorSube": "Deslizador del presupuesto: sube",
+      "deslizadorBaja": "Deslizador del presupuesto: baja",
+      "presupuestoAprobado": "Presupuesto aprobado"
     },
     "economia": {
       "titulo": "Economía de un país",

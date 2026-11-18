@@ -461,6 +461,11 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - La columna del presupuesto que se prepara se recalcula al soltar cada deslizador. Si con él los mercados dejaran de prestar en esos 12 meses, avisa.
 - «Hace un año» sale de las series del presupuesto y del mercado. En el primer año, «—».
 
+**Imagen y sonido (tarea f19-t4):**
+- Al soltar un deslizador del presupuesto suena un tono corto que sube o baja, según se haya subido o bajado el gasto. Su cifra, la del ministerio y la del resumen destellan en verde (sube) o en rojo (baja).
+- Al aprobar el presupuesto suena el golpe de un sello y un acorde mayor, y un sello «Aprobado» cae sobre el botón y se desvanece.
+- Los tres sonidos, en la galería (Sonidos).
+
 
 ### 6.3 Impuestos
 

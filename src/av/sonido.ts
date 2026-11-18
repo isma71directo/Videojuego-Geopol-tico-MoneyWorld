@@ -42,7 +42,10 @@ export type Efecto =
   | 'alertaDeflacion'
   | 'alertaCrisisDeuda'
   | 'alertaRatingBaja'
-  | 'alertaRatingSube';
+  | 'alertaRatingSube'
+  | 'deslizadorSube'
+  | 'deslizadorBaja'
+  | 'presupuestoAprobado';
 
 /** Efectos de interfaz: cortos, suaves y en tonos que no cansan. */
 export const EFECTOS: Record<Efecto, readonly Nota[]> = {
@@ -246,6 +249,36 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'sine', inicio: 0.02, duracion: 0.14, frecuencia: 784, volumen: 0.12 },
     { forma: 'sine', inicio: 0.16, duracion: 0.3, frecuencia: 1046.5, volumen: 0.12 },
     { forma: 'triangle', inicio: 0.16, duracion: 0.3, frecuencia: 523.3, volumen: 0.05 },
+  ],
+  // Deslizadores del presupuesto (tarea f19-t4): al soltarlos, un tono corto que sube o baja,
+  // según se haya subido o bajado el gasto.
+  deslizadorSube: [
+    {
+      forma: 'triangle',
+      inicio: 0,
+      duracion: 0.07,
+      frecuencia: 660,
+      frecuenciaFinal: 880,
+      volumen: 0.06,
+    },
+  ],
+  deslizadorBaja: [
+    {
+      forma: 'triangle',
+      inicio: 0,
+      duracion: 0.07,
+      frecuencia: 660,
+      frecuenciaFinal: 495,
+      volumen: 0.06,
+    },
+  ],
+  // Presupuesto aprobado: el golpe de un sello y un acorde mayor que se abre (do, mi y sol).
+  presupuestoAprobado: [
+    { forma: 'ruido', inicio: 0, duracion: 0.05, frecuencia: 220, volumen: 0.12 },
+    { forma: 'triangle', inicio: 0.06, duracion: 0.5, frecuencia: 261.6, volumen: 0.06 },
+    { forma: 'sine', inicio: 0.06, duracion: 0.4, frecuencia: 523.3, volumen: 0.1 },
+    { forma: 'sine', inicio: 0.1, duracion: 0.4, frecuencia: 659.3, volumen: 0.09 },
+    { forma: 'sine', inicio: 0.14, duracion: 0.45, frecuencia: 784, volumen: 0.09 },
   ],
   // Deflación: un tono suave que se desinfla, bajando una octava.
   alertaDeflacion: [
