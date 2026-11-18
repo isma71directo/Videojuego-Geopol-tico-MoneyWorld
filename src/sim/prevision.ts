@@ -12,6 +12,7 @@ import {
   saldo,
   totalGastos,
   totalIngresos,
+  type CambioPresupuesto,
   type PresupuestoPais,
 } from './presupuesto';
 
@@ -39,7 +40,7 @@ export interface Prevision {
 /** Los meses que se prevén. */
 export const MESES_PREVISION = 12;
 
-/** El día 1 de los \`meses\` meses siguientes a \`fecha\` («AAAA-MM-DD»). */
+/** El día 1 de los `meses` meses siguientes a `fecha` («AAAA-MM-DD»). */
 export function diasUnoSiguientes(fecha: string, meses: number): string[] {
   let anio = Number(fecha.slice(0, 4));
   let mes = Number(fecha.slice(5, 7));
@@ -56,13 +57,20 @@ export function diasUnoSiguientes(fecha: string, meses: number): string[] {
 }
 
 /**
- * Prevé \`meses\` meses de un país (el del jugador) desde \`fecha\`: con \`decidido\`, como si se
+ * Prevé `meses` meses de un país (el del jugador) desde `fecha`: con `decidido`, como si se
  * aprobara hoy (vale desde el día 1 del mes siguiente); sin él, sin cambiar nada.
  */
 export function prever(
   id: string,
   pais: PaisParaPrever,
-  opciones: { fecha: string; decidido?: PresupuestoDecidido; meses?: number; dureza?: number },
+  opciones: {
+    fecha: string;
+    decidido?: PresupuestoDecidido;
+    /** Cambios de los ministerios ordenados hoy (ajuste f19-a1), cada uno cuando le toca. */
+    cambios?: readonly CambioPresupuesto[];
+    meses?: number;
+    dureza?: number;
+  },
 ): Prevision {
   const economia = structuredClone(pais.economia);
   const presupuesto = structuredClone(pais.presupuesto);
@@ -85,6 +93,8 @@ export function prever(
       esJugador: true,
       fecha: dia,
       decidido: k === 0 ? opciones.decidido : undefined,
+      cambios: k === 0 ? opciones.cambios : undefined,
+      estado,
     });
   });
   return {

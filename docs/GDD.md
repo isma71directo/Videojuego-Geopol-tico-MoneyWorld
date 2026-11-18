@@ -485,6 +485,19 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Puestos públicos y paro:** los puestos nuevos sacan gente del paro (parte de ellos los ocupan parados) cuando acaba la oposición. Los despidos la devuelven al paro. Mientras no existan las leyes (Fase 67), la duración de las oposiciones depende del nivel de renta: es ESTIMADA y provisional.
 - **La subida de las pensiones y la prestación por desempleo** se deciden en Trabajo y Seguridad Social.
 
+**El motor de los cambios (ajuste f19-a1; parámetros en `src/sim/config/presupuesto.json`, «hacienda»):**
+- **Empleados públicos de cada ministerio, ESTIMADOS** (no hay datos abiertos en el conjunto de 2010):
+  - su gasto de personal entre un sueldo medio de 1 vez (países ricos) a 3 veces (países pobres) el PIB por activo;
+  - España sale con unos 3,5 millones (real: 3,1) y unos 62 000 $ de sueldo medio.
+- **Cada cambio, cuando le toca:**
+  - partidas y sueldos, con la subida anual (el 1 de enero) o extraordinaria (el mes siguiente);
+  - los puestos nuevos, tras la oposición: 9 meses en los países ricos, 6, 4 y 3 en los demás (ESTIMADO, provisional hasta las leyes);
+  - los despidos, el mes siguiente, con una indemnización de medio año de sueldo;
+  - la subida de las pensiones y la prestación por parado, el mes siguiente.
+- **Paro:** la mitad de los puestos nuevos los ocupan parados, que salen del paro. Los despedidos vuelven todos.
+- **Si llega enero con alguna subida anual, ese es el presupuesto del año;** si no, se prorroga.
+- **La previsión a 12 meses cuenta con los cambios ordenados hoy.**
+
 
 ### 6.3 Impuestos
 
