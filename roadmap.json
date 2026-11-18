@@ -1,13 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.1",
-  "actualizado": "2026-11-18T09:01:51Z",
+  "actualizado": "2026-11-18T09:18:35Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 cerrada como v0.20.1 (PR #40; la v0.20.0 ya se fusionó en el #39): presupuesto jugable, con la vista general en Gobierno › Presupuesto y el presupuesto de cada ministerio en su ventana, como en Power & Revolution (empleados, sueldos, puestos nuevos, inversión, compras y programas), y cada cambio con su plazo.",
-    "siguientePaso": "Cuando el jugador fusione el PR #40: presentar el plan de la Fase 20 (deuda y Tesoro jugables) y preguntarle las decisiones de diseño.",
-    "pendienteDelJugador": ["Probar la v0.20.1 en el PC (ver el PR #40) y fusionarlo"]
+    "resumen": "Fase 20 (deuda y Tesoro jugables) concretada con el jugador: en el Ministerio de Economía y Hacienda; Tesoro automático que se puede apagar; negociación por rondas de oferta y contraoferta; ayuda del FMI, del fondo de la zona euro y de países con superávit.",
+    "siguientePaso": "f20-t1: la deuda por emisiones en el motor (plazos, vencimientos, Tesoro automático, emitir, recomprar, impago si se acaba la tesorería).",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -1206,25 +1206,25 @@
       "dependeDe": ["fase-19"],
       "hechoCuando": "La deuda se gestiona a mano y la IA también lo hace",
       "pruebaJugador": "Con Grecia en 2010, alargar los plazos, pedir la línea preventiva y ver si evita la crisis",
-      "estado": "pendiente",
+      "estado": "en-curso",
       "tareas": [
         {
           "id": "f20-t1",
-          "titulo": "La deuda por emisiones: letras a 1 año y bonos a 5 y 10 años, con su tipo y su vencimiento; calendario de vencimientos",
-          "estado": "pendiente",
-          "fecha": null,
+          "titulo": "La deuda por emisiones, en el motor: letras a 1 año y bonos a 5 y 10 años con su tipo, calendario de vencimientos, Tesoro automático que se puede apagar, emitir a mano y recomprar; si se acaba la tesorería, impago",
+          "estado": "en-curso",
+          "fecha": "2026-11-18",
           "enlace": ""
         },
         {
           "id": "f20-t2",
-          "titulo": "Ventana «Deuda y Tesoro»: tesorería, vencimientos, emitir a mano, amortizar y recomprar; si se acaba la tesorería, impago",
+          "titulo": "Pestaña «Deuda y Tesoro» en el Ministerio de Economía y Hacienda: tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f20-t3",
-          "titulo": "Negociar con los acreedores (plazo, interés o quita) y pedir ayuda antes de la crisis (línea preventiva del FMI o préstamo de otros países); también la IA",
+          "titulo": "Negociar con los acreedores por rondas (oferta y contraoferta) y pedir ayuda (línea preventiva del FMI, fondo de la zona euro o un país con superávit); también la IA",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
