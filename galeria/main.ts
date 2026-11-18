@@ -477,7 +477,14 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   let pendiente: PresupuestoDecidido | null = null;
   const crearEditor = () =>
     editorPresupuesto({
-      fuente: () => ({ presupuesto, economia: actual, fecha }),
+      fuente: () => ({
+        id: paisId,
+        presupuesto,
+        economia: actual,
+        fecha,
+        mercado,
+        tesoreria: estado.tesoreria,
+      }),
       aprobar: (decidido) => {
         pendiente = decidido;
       },

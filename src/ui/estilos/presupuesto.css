@@ -154,3 +154,42 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* Previsión a 12 meses (tarea f19-t3). */
+.presupuesto-editable__prevision {
+  display: grid;
+  gap: 6px;
+}
+
+.presupuesto-editable__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.presupuesto-editable__tabla th,
+.presupuesto-editable__tabla td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--borde);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.presupuesto-editable__tabla thead th {
+  color: var(--texto-suave);
+  font-weight: 600;
+  white-space: normal;
+  vertical-align: bottom;
+}
+
+.presupuesto-editable__tabla tbody th {
+  text-align: left;
+  color: var(--texto-suave);
+  font-weight: 500;
+}
+
+/* La columna del presupuesto que se prepara, destacada. */
+.presupuesto-editable__tabla tr > :last-child {
+  background: color-mix(in srgb, var(--acento) 10%, transparent);
+}

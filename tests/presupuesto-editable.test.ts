@@ -153,6 +153,33 @@ describe('la Pantalla «Presupuesto» editable (tarea f19-t2)', () => {
     );
   });
 
+  it('la previsión a 12 meses: hace un año, ahora, sin cambios y con este presupuesto (tarea f19-t3)', () => {
+    const { espana, editor } = conEspana();
+    const tabla = () => editor.elemento.querySelector('.presupuesto-editable__tabla')!;
+    expect([...tabla().querySelectorAll('thead th')].map((c) => c.textContent)).toEqual([
+      '',
+      'Hace un año',
+      'Ahora',
+      'En 12 meses, sin cambios',
+      'En 12 meses, con este presupuesto',
+    ]);
+    // En enero de 2010 aún no hay año anterior.
+    const filaDeDeuda = () =>
+      [...tabla().querySelectorAll('tbody tr')].find((f) => f.textContent!.startsWith('Deuda'))!;
+    expect(filaDeDeuda().querySelectorAll('td')[0]!.textContent).toBe('—');
+    const conEste = () => filaDeDeuda().querySelectorAll('td')[3]!.textContent;
+    expect(conEste()).toBe(filaDeDeuda().querySelectorAll('td')[2]!.textContent);
+    // Gastar más: al soltar el deslizador, la columna de este presupuesto cambia.
+    const sanidad = deslizadorDe(editor.elemento, 'sanidad');
+    mover(sanidad, 160);
+    sanidad.dispatchEvent(new Event('change', { bubbles: true }));
+    expect(conEste()).not.toBe(filaDeDeuda().querySelectorAll('td')[2]!.textContent);
+    // Pasado un año, hay año anterior.
+    espana.avanzar(13);
+    editor.actualizar();
+    expect(filaDeDeuda().querySelectorAll('td')[0]!.textContent).toMatch(/M\$/);
+  });
+
   it('el día en que se aplica: el 1 del mes siguiente', () => {
     expect(diaQueSeAplica('2010-01-15')).toBe('2010-02-01');
     expect(diaQueSeAplica('2010-12-31')).toBe('2011-01-01');

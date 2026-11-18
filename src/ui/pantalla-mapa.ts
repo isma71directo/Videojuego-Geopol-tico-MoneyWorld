@@ -5,6 +5,7 @@ import type { ConjuntoEconomiaRegiones } from '../datos/regiones-economia';
 import { t } from '../i18n';
 import { capaPorId, colorearCapa, colorearRegiones, type CapaDatos } from '../map/capas';
 import type { MapaMundo, Objetivo, RegionSenalada } from '../map/mapa';
+import { durezaDe } from '../sim/economia';
 import { FECHA_INICIO, HORA_INICIO, type Partida } from '../sim/partida';
 import { conectarGestos } from '../map/gestos';
 import { alCambiarAjuste, guardarAjuste, leerAjuste, medidorFpsActivo } from './ajustes';
@@ -638,7 +639,16 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
         nombreDe(partida.jugador.paisId),
         () =>
           editorPresupuesto({
-            fuente: () => fuentePresupuesto(partida.jugador.paisId),
+            fuente: () => {
+              const fuente = fuentePresupuesto(partida.jugador.paisId);
+              return (
+                fuente && {
+                  ...fuente,
+                  id: partida.jugador.paisId,
+                  dureza: durezaDe(partida.opciones.dificultad),
+                }
+              );
+            },
             aprobar: (presupuesto) => motor?.enviar({ tipo: 'presupuesto', presupuesto }),
           }).elemento,
       ),

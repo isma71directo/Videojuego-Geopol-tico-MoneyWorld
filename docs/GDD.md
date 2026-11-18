@@ -455,6 +455,12 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - «Aprobar el presupuesto» lo manda al motor y avisa del día en que se aplica (el 1 del mes siguiente). A mitad de cambios, el paso de los meses no borra lo tocado.
 - También en la galería (Economía de un país), donde lo aprobado se aplica al avanzar.
 
+**Previsión a 12 meses (tarea f19-t3):**
+- En el editor, una tabla con cuatro columnas: hace un año, ahora, en 12 meses sin cambios y en 12 meses con el presupuesto que se prepara. Las filas son ingresos, gastos, saldo, deuda y prima (con el rating).
+- Se calcula con las mismas reglas que la partida (economía, presupuesto, mercado de la deuda y Hacienda) sobre una copia del país, sin el contagio de los demás. Si no cambia nada más, coincide con lo que pasa de verdad (hay un test que lo comprueba).
+- La columna del presupuesto que se prepara se recalcula al soltar cada deslizador. Si con él los mercados dejaran de prestar en esos 12 meses, avisa.
+- «Hace un año» sale de las series del presupuesto y del mercado. En el primer año, «—».
+
 
 ### 6.3 Impuestos
 

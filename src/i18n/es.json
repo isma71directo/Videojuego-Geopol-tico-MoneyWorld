@@ -1377,7 +1377,17 @@
       "seAplica": "Lo que apruebes se aplica el {fecha}.",
       "pendiente": "Aprobado: se aplica el {fecha}.",
       "pestanaNuevo": "Nuevo presupuesto",
-      "pestanaEnVigor": "En vigor"
+      "pestanaEnVigor": "En vigor",
+      "previsionTitulo": "Previsión a 12 meses",
+      "columnas": {
+        "haceUnAnio": "Hace un año",
+        "ahora": "Ahora",
+        "sinCambios": "En 12 meses, sin cambios",
+        "conEste": "En 12 meses, con este presupuesto"
+      },
+      "saldo": "Saldo",
+      "previsionNota": "Con las mismas reglas que la partida, si no cambia nada más: sin contar con lo que hagan los demás países. La columna de este presupuesto se recalcula al soltar cada deslizador.",
+      "avisoCierre": "Atención: con este presupuesto, los mercados dejarían de prestar en los próximos 12 meses (crisis de deuda)."
     }
   },
   "hojaDeRuta": {

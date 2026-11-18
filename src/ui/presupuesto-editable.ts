@@ -10,14 +10,18 @@
  * resumen cambia al momento. «Aprobar» lo manda al motor, que lo aplica el día 1 del mes siguiente.
  */
 import { icono } from '../av/iconos';
-import { dineroConSigno, dolares, porcentaje } from '../compartido/formato';
+import { dineroConSigno, dolares, porcentaje, puntos } from '../compartido/formato';
 import { formatearFechaLarga } from '../compartido/fechas';
 import { t } from '../i18n';
+import type { MercadoDeuda } from '../sim/deuda';
 import type { EconomiaPais } from '../sim/economia';
 import { presupuestoEnVigor, type PresupuestoDecidido } from '../sim/hacienda';
+import { prever, type Prevision } from '../sim/prevision';
 import {
   MINISTERIOS,
   PARTIDAS,
+  saldo as saldoDe,
+  totalGastos,
   totalIngresos,
   type Ministerio,
   type PresupuestoPais,
@@ -25,7 +29,8 @@ import {
 import { crearDeslizador, type Deslizador } from './componentes/deslizador';
 import { sonar } from './componentes/sonidos';
 import { el } from './dom';
-import { ICONO_MINISTERIO, ICONO_PARTIDA } from './presupuesto-en-vivo';
+import { ICONO_MINISTERIO, ICONO_PARTIDA, pibNominalPorMes } from './presupuesto-en-vivo';
+import { textoRating } from './rating';
 import './estilos/presupuesto.css';
 
 /** Lo que necesita el editor: el presupuesto del jugador, su economía y la fecha. */
@@ -33,6 +38,14 @@ export type FuenteEditor = () => {
   presupuesto: PresupuestoPais | null;
   economia: EconomiaPais | null;
   fecha: string;
+  /**
+   * Para la previsión a 12 meses (tarea f19-t3): el país (su moneda cuenta para la prima), el
+   * mercado de su deuda, la tesorería y la dureza.
+   */
+  id?: string;
+  mercado?: MercadoDeuda | null;
+  tesoreria?: number;
+  dureza?: number;
 } | null;
 
 export interface OpcionesEditor {
@@ -65,6 +78,16 @@ export function diaQueSeAplica(fecha: string): string {
   return siguiente;
 }
 
+/** Una columna de la previsión: ingresos, gastos, saldo y deuda (dinero) y la prima. */
+interface Fila {
+  ingresos: number;
+  gastos: number;
+  saldo: number;
+  deuda: number;
+  prima: number | null;
+  rating: string | null;
+}
+
 const editores = new Set<EditorPresupuesto>();
 
 /** Pone al día los editores a la vista (cada mes de la partida). */
@@ -88,6 +111,132 @@ export function editorPresupuesto(opciones: OpcionesEditor): EditorPresupuesto {
   let pendiente: string | null = null;
 
   const resumen = el('dl', { class: 'panel-pais__datos presupuesto-editable__resumen' });
+  const prevision = el('section', {
+    class: 'presupuesto-editable__prevision',
+    'aria-label': t('juego.hacienda.previsionTitulo'),
+  });
+  /** La previsión sin cambiar nada (se calcula al pintar y cada mes). */
+  let sinCambios: Prevision | null = null;
+
+  /** Cómo estaba hace un año (con las series del presupuesto y del mercado), o null. */
+  const haceUnAnio = (
+    presupuesto: PresupuestoPais,
+    economia: EconomiaPais | null,
+    mercado: MercadoDeuda | null,
+  ): Fila | null => {
+    const n = presupuesto.serie.ingresos.length;
+    if (n < 13 || !economia) return null;
+    const i = n - 13;
+    const pib = pibNominalPorMes(economia, n)[i]!;
+    const enDinero = (serie: readonly number[]) => ((serie[i] ?? 0) / 100) * pib;
+    const ingresos = enDinero(presupuesto.serie.ingresos);
+    const gastos = enDinero(presupuesto.serie.gastos);
+    return {
+      ingresos,
+      gastos,
+      saldo: ingresos - gastos,
+      deuda: enDinero(presupuesto.serie.deuda),
+      prima: mercado ? (mercado.serie[mercado.serie.length - 13] ?? null) : null,
+      rating: null,
+    };
+  };
+
+  /**
+   * La previsión a 12 meses (tarea f19-t3): hace un año, ahora, sin cambiar nada y con el
+   * presupuesto que se está preparando.
+   */
+  const pintarPrevision = (): void => {
+    const actual = opciones.fuente();
+    const presupuesto = actual?.presupuesto;
+    if (!actual || !presupuesto || !actual.economia || !borrador) {
+      prevision.replaceChildren();
+      return;
+    }
+    const pais = {
+      economia: actual.economia,
+      presupuesto,
+      mercado: actual.mercado ?? null,
+      tesoreria: actual.tesoreria ?? 0,
+    };
+    const id = actual.id ?? '';
+    sinCambios ??= prever(id, pais, { fecha: actual.fecha, dureza: actual.dureza });
+    const conEste = prever(id, pais, {
+      fecha: actual.fecha,
+      decidido: borrador,
+      dureza: actual.dureza,
+    });
+    const ahora: Fila = {
+      ingresos: totalIngresos(presupuesto),
+      gastos: totalGastos(presupuesto),
+      saldo: saldoDe(presupuesto),
+      deuda: presupuesto.deuda,
+      prima: pais.mercado?.prima ?? null,
+      rating: pais.mercado?.rating ?? null,
+    };
+    const columnas: (Fila | null)[] = [
+      haceUnAnio(presupuesto, actual.economia, pais.mercado),
+      ahora,
+      sinCambios,
+      conEste,
+    ];
+    const celda = (texto: string, clase?: string) => el('td', { class: clase }, texto);
+    const filaDe = (nombre: string, valor: (f: Fila) => string, clase?: (f: Fila) => string) =>
+      el(
+        'tr',
+        {},
+        el('th', { scope: 'row' }, nombre),
+        ...columnas.map((f) => (f ? celda(valor(f), clase?.(f)) : celda('—'))),
+      );
+    const primaDe = (f: Fila) =>
+      f.prima === null
+        ? '—'
+        : f.rating
+          ? `${puntos(f.prima)} (${textoRating(f.rating)})`
+          : puntos(f.prima);
+    prevision.replaceChildren(
+      el('h3', { class: 'panel-pais__apartado' }, t('juego.hacienda.previsionTitulo')),
+      el(
+        'table',
+        { class: 'presupuesto-editable__tabla' },
+        el(
+          'thead',
+          {},
+          el(
+            'tr',
+            {},
+            el('th', { scope: 'col' }, ''),
+            ...['haceUnAnio', 'ahora', 'sinCambios', 'conEste'].map((c) =>
+              el('th', { scope: 'col' }, t(`juego.hacienda.columnas.${c}`)),
+            ),
+          ),
+        ),
+        el(
+          'tbody',
+          {},
+          filaDe(t('juego.presupuesto.ingresos'), (f) => dolares(f.ingresos)),
+          filaDe(t('juego.presupuesto.gastos'), (f) => dolares(f.gastos)),
+          filaDe(
+            t('juego.hacienda.saldo'),
+            (f) => dineroConSigno(f.saldo),
+            (f) => (f.saldo < 0 ? 'economia__baja' : ''),
+          ),
+          filaDe(t('juego.presupuesto.deuda'), (f) => dolares(f.deuda)),
+          filaDe(t('juego.presupuesto.prima'), primaDe),
+        ),
+      ),
+      el(
+        'p',
+        { class: 'presupuesto-editable__explicacion' },
+        conEste.cerrado && !(pais.mercado?.cerrado ?? false)
+          ? t('juego.hacienda.avisoCierre')
+          : t('juego.hacienda.previsionNota'),
+      ),
+    );
+  };
+  // Al soltar un deslizador o marcar la casilla del IPC, la previsión con este presupuesto.
+  elemento.addEventListener('change', (evento) => {
+    if (evento.target instanceof HTMLInputElement) pintarPrevision();
+  });
   const aviso = el('p', { class: 'presupuesto-editable__aviso', role: 'status' });
 
   /** El resumen del borrador frente a lo que está en vigor. */
@@ -305,6 +454,7 @@ export function editorPresupuesto(opciones: OpcionesEditor): EditorPresupuesto {
       ),
       el('p', { class: 'presupuesto-editable__explicacion' }, t('juego.hacienda.explicacion')),
       resumen,
+      prevision,
       el(
         'div',
         { class: 'presupuesto-editable__atajos' },
@@ -326,6 +476,7 @@ export function editorPresupuesto(opciones: OpcionesEditor): EditorPresupuesto {
       el('div', { class: 'presupuesto-editable__pie' }, aprobar, aviso),
     );
     pintarResumen(presupuesto);
+    pintarPrevision();
     pintarAviso();
   };
 
@@ -357,9 +508,13 @@ export function editorPresupuesto(opciones: OpcionesEditor): EditorPresupuesto {
         pendiente = null;
         cambiado = false;
       }
-      // A mitad de cambios, solo el resumen y el aviso (sin cerrar nada ni perder lo tocado).
+      // Un mes más: la previsión sin cambios es otra.
+      sinCambios = null;
+      // A mitad de cambios, solo el resumen, la previsión y el aviso (sin cerrar nada ni perder
+      // lo tocado).
       if (cambiado && borrador && enVigor) {
         pintarResumen(presupuesto);
+        pintarPrevision();
         pintarAviso();
         return;
       }
