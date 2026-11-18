@@ -8,14 +8,19 @@
  * pensiones, las prestaciones por desempleo y los intereses de la deuda. Todo en dólares
  * corrientes al ritmo de un año. Los totales de 2010 son los del FMI; las partes, del Banco
  * Mundial; el reparto del resto de ministerios y sus partidas internas, estimado (config).
- * Motor puro, sin interfaz.
+ *
+ * Con la Fase 19 (decisiones del jugador), el gasto está en dinero y no cambia hasta que se decide
+ * otro presupuesto (src/sim/hacienda.ts): con la inflación, compra menos. Lo que se decide llega a
+ * la economía (consumo público, inversión y consumo de los hogares). Motor puro, sin interfaz.
  */
 import config from './config/presupuesto.json';
+import configEconomia from './config/economia.json';
 import {
   brechaProduccion,
   nivelDe,
   pibNominal,
   type DatosEconomia,
+  type DemandaEconomia,
   type EconomiaPais,
   type NivelRenta,
 } from './economia';
@@ -84,10 +89,19 @@ export interface PresupuestoPais {
    * podrá cambiar en las Fases 21 y 22).
    */
   tipos: Record<Ingreso, number>;
-  /** Prestación al año por cada punto de paro y dólar de PIB nominal (para que siga al paro). */
-  porParado: number;
-  /** PIB potencial nominal el último mes: los ministerios crecen con él (tarea f17-t3). */
-  potencialVisto: number;
+  /**
+   * Población activa (personas; ESTIMADA con la tasa de actividad de su nivel de renta). Crece con
+   * la población.
+   */
+  activos: number;
+  /** Prestación media al año de cada parado, en dólares (fija hasta que se decida; Fase 19). */
+  prestacionParado: number;
+  /** Subida de las pensiones cada enero (tanto por uno); null: el IPC, como dice la ley. */
+  revalorizacion: number | null;
+  /** El presupuesto en vigor: el año en que se aprobó y si está prorrogado (Fase 19). */
+  aprobado: { anio: number; prorrogado: boolean };
+  /** Cómo era al empezar, para llevar a la economía lo que se decide (Fase 19). */
+  referencia: ReferenciaPresupuesto;
   /**
    * Ingresos, gastos y deuda de cada mes desde que empezó (en % del PIB nominal, para los
    * gráficos; tarea f17-t3).
@@ -95,10 +109,32 @@ export interface PresupuestoPais {
   serie: { ingresos: number[]; gastos: number[]; deuda: number[] };
 }
 
+/**
+ * El presupuesto de referencia (el de 2010, o el del momento de cargar una partida antigua), en
+ * tanto por uno del PIB potencial nominal, con la demanda de la economía de entonces. Con él, cada
+ * mes se lleva a la economía lo que ha cambiado por las decisiones (Fase 19).
+ */
+export interface ReferenciaPresupuesto {
+  /** PIB potencial nominal de entonces (dólares). */
+  potencial: number;
+  /** Personal y mantenimiento (el consumo público). */
+  funcionamiento: number;
+  inversion: number;
+  /** Programas, pensiones y prestaciones por desempleo (con el paro de referencia). */
+  transferencias: number;
+  /** Paro de referencia (tanto por uno). */
+  paro: number;
+  /** Tipo efectivo de cada ingreso y lo que recaudaba. */
+  tipos: Record<Ingreso, number>;
+  ingresos: Record<Ingreso, number>;
+  /** La demanda de la economía (sin la confianza); null sin economía. */
+  demanda: Pick<DemandaEconomia, 'consumo' | 'inversion' | 'consumoPublico'> | null;
+}
+
 /** Lo que la economía aporta a las bases de los ingresos (null: sin economía, todo el PIB). */
 type EconomiaParaBases = Pick<
   EconomiaPais,
-  'pib' | 'pibPotencial' | 'nivelPrecios' | 'paro' | 'demanda' | 'demandaBase'
+  'pib' | 'pibPotencial' | 'nivelPrecios' | 'paro' | 'demanda' | 'demandaBase' | 'meses'
 >;
 
 const b = config.bases;
@@ -340,6 +376,7 @@ export function presupuestoInicial(
     INGRESOS.map((i) => [i, bases[i] > 0 ? ingresos[i] / bases[i] : 0]),
   ) as Record<Ingreso, number>;
   const paro = economia?.paro ?? (dato(datos, 'paro') ?? 8) / 100;
+  const activos = activosDe(datos, nivel, economia?.meses ?? 0);
 
   const presupuesto: PresupuestoPais = {
     ingresos,
@@ -348,12 +385,113 @@ export function presupuestoInicial(
     deuda,
     tipoInteres,
     tipos,
-    porParado: paro > 0 ? transversales.desempleo / (paro * pib) : 0,
-    potencialVisto: economia ? economia.pibPotencial * economia.nivelPrecios : pib,
+    activos,
+    prestacionParado: paro > 0 && activos > 0 ? transversales.desempleo / (paro * activos) : 0,
+    revalorizacion: null,
+    aprobado: { anio: anioDe(economia?.meses ?? 0), prorrogado: false },
+    referencia: null as unknown as ReferenciaPresupuesto,
     serie: { ingresos: [], gastos: [], deuda: [] },
   };
+  presupuesto.referencia = referenciaDe(presupuesto, economia, pib);
   anotarMes(presupuesto, pib);
   return presupuesto;
+}
+
+const h = config.hacienda;
+
+/** El año de la partida tras `meses` meses desde enero de 2010. */
+const anioDe = (meses: number): number => 2010 + Math.floor(meses / 12);
+
+/**
+ * La población activa ESTIMADA (no hay datos abiertos en el conjunto de 2010): la población por la
+ * tasa de actividad de su nivel de renta, crecida con la población los meses ya jugados.
+ */
+function activosDe(datos: DatosPresupuesto, nivel: NivelRenta, meses: number): number {
+  const poblacion = dato(datos, 'poblacion') ?? 0;
+  const crecimiento = configEconomia.crecimientoPoblacion[nivel];
+  return poblacion * h.tasaActividad[nivel] * Math.pow(1 + crecimiento, meses / 12);
+}
+
+/** Personal y mantenimiento, inversión y programas de todos los ministerios. */
+function porPartidas(presupuesto: PresupuestoPais): Record<Partida, number> {
+  return totalPorPartida(presupuesto);
+}
+
+/** Las transferencias a los hogares por decisión (la prestación, con el paro de referencia). */
+function transferencias(presupuesto: PresupuestoPais, paroReferencia: number): number {
+  return (
+    porPartidas(presupuesto).programas +
+    presupuesto.transversales.pensiones +
+    presupuesto.prestacionParado * paroReferencia * presupuesto.activos
+  );
+}
+
+/** El presupuesto de ahora como referencia (en tanto por uno del PIB potencial nominal). */
+function referenciaDe(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaParaBases | null,
+  pib: number,
+): ReferenciaPresupuesto {
+  const potencial = economia ? economia.pibPotencial * economia.nivelPrecios : pib;
+  const partes = porPartidas(presupuesto);
+  const paro = economia?.paro ?? 0;
+  const delPotencial = (valor: number): number => (potencial > 0 ? valor / potencial : 0);
+  return {
+    potencial,
+    funcionamiento: delPotencial(partes.personal + partes.mantenimiento),
+    inversion: delPotencial(partes.inversion),
+    transferencias: delPotencial(transferencias(presupuesto, paro)),
+    paro,
+    tipos: { ...presupuesto.tipos },
+    ingresos: Object.fromEntries(
+      INGRESOS.map((i) => [i, delPotencial(presupuesto.ingresos[i])]),
+    ) as Record<Ingreso, number>,
+    demanda: economia
+      ? {
+          consumo: economia.demandaBase.consumo,
+          inversion: economia.demandaBase.inversion,
+          consumoPublico: economia.demandaBase.consumoPublico,
+        }
+      : null,
+  };
+}
+
+/**
+ * Lleva a la economía lo que ha cambiado el presupuesto por las decisiones (Fase 19), frente a la
+ * referencia y en tanto por uno del PIB potencial nominal: el personal y el mantenimiento son el
+ * consumo público (en proporción); la inversión, inversión; y las transferencias a los hogares y
+ * los impuestos que pagan, consumo (por la propensión a consumir). Así, un gasto congelado pesa
+ * menos con la inflación y el crecimiento, y un recorte o una subida de impuestos frenan la demanda.
+ */
+export function llevarALaEconomia(presupuesto: PresupuestoPais, economia: EconomiaPais): void {
+  const ref = presupuesto.referencia;
+  if (!ref.demanda) return;
+  const potencial = economia.pibPotencial * economia.nivelPrecios;
+  if (!(potencial > 0)) return;
+  const partes = porPartidas(presupuesto);
+  const delPotencial = (valor: number): number => valor / potencial;
+  const demanda = economia.demandaBase;
+  if (ref.funcionamiento > 0) {
+    demanda.consumoPublico =
+      (ref.demanda.consumoPublico * delPotencial(partes.personal + partes.mantenimiento)) /
+      ref.funcionamiento;
+  }
+  demanda.inversion = Math.max(
+    0,
+    ref.demanda.inversion + delPotencial(partes.inversion) - ref.inversion,
+  );
+  // Los impuestos de los hogares que han subido (o bajado) desde la referencia.
+  const impuestos = (h.impuestosHogares as Ingreso[]).reduce(
+    (total, i) =>
+      total + (ref.tipos[i] > 0 ? ref.ingresos[i] * (presupuesto.tipos[i] / ref.tipos[i] - 1) : 0),
+    0,
+  );
+  const masTransferencias =
+    delPotencial(transferencias(presupuesto, ref.paro)) - ref.transferencias;
+  demanda.consumo = Math.max(
+    0,
+    ref.demanda.consumo + h.propensionConsumo * (masTransferencias - impuestos),
+  );
 }
 
 /** Lo que se redondea cada dato de las series (en % del PIB). */
@@ -382,23 +520,23 @@ export function avanzarPresupuesto(
   estado: Pick<EstadoPais, 'tesoreria'>,
 ): void {
   const pib = pibNominal(economia);
-  const precios = Math.pow(1 + economia.inflacion, 1 / 12);
   // Ingresos: el tipo efectivo por su base de ahora.
   const bases = basesDeIngresos(economia);
   for (const i of INGRESOS) presupuesto.ingresos[i] = presupuesto.tipos[i] * bases[i];
-  // Ministerios: con el PIB potencial nominal (precios y capacidad), así que pesan lo mismo con la
-  // economía en su potencial y más si cae por debajo (estabilizador automático). (Los recortes de
-  // una crisis de deuda los hace el mercado de la deuda: src/sim/deuda.ts.)
-  const potencial = economia.pibPotencial * economia.nivelPrecios;
-  const crecer = presupuesto.potencialVisto > 0 ? potencial / presupuesto.potencialVisto : precios;
-  presupuesto.potencialVisto = potencial;
-  for (const m of MINISTERIOS) {
-    for (const p of PARTIDAS) presupuesto.ministerios[m][p] *= crecer;
-  }
-  // Pensiones, con los precios y el envejecimiento; desempleo, con el paro; intereses, con la deuda.
-  presupuesto.transversales.pensiones *=
-    precios * Math.pow(1 + e.envejecimiento[economia.nivelRenta], 1 / 12);
-  presupuesto.transversales.desempleo = presupuesto.porParado * economia.paro * pib;
+  // Los ministerios no cambian hasta que se decida otro presupuesto (Fase 19; los recortes de una
+  // crisis de deuda los hace el mercado de la deuda). Las pensiones crecen con el envejecimiento
+  // (más pensionistas; su subida de cada enero, en src/sim/hacienda.ts); el desempleo es la
+  // prestación de cada parado por los parados; los intereses, la deuda por su tipo.
+  presupuesto.activos *= Math.pow(
+    1 + configEconomia.crecimientoPoblacion[economia.nivelRenta],
+    1 / 12,
+  );
+  presupuesto.transversales.pensiones *= Math.pow(
+    1 + e.envejecimiento[economia.nivelRenta],
+    1 / 12,
+  );
+  presupuesto.transversales.desempleo =
+    presupuesto.prestacionParado * economia.paro * presupuesto.activos;
   presupuesto.transversales.intereses = presupuesto.deuda * presupuesto.tipoInteres;
   // El saldo del mes pasa por la tesorería; el déficit se cubre con deuda y el superávit la paga.
   estado.tesoreria += saldo(presupuesto) / 12;
@@ -412,6 +550,8 @@ export function avanzarPresupuesto(
     presupuesto.deuda -= amortizar;
     estado.tesoreria -= amortizar;
   }
+  // Lo decidido llega a la economía (para el mes que viene).
+  llevarALaEconomia(presupuesto, economia);
   anotarMes(presupuesto, pib);
 }
 
@@ -442,16 +582,55 @@ export function completarPresupuesto(
   paises: Record<string, PaisParaPresupuesto>,
 ): PartidaJuego {
   for (const [id, estado] of Object.entries(partida.paises)) {
-    if (estado.presupuesto !== undefined) continue;
     const pais = paises[id];
-    estado.presupuesto = pais
-      ? presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), estado.economia)
-      : null;
+    if (estado.presupuesto === undefined) {
+      estado.presupuesto = pais
+        ? presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), estado.economia)
+        : null;
+    } else if (estado.presupuesto && !estado.presupuesto.referencia && pais) {
+      completarHacienda(estado.presupuesto, estado.economia, pais);
+    }
   }
   return partida;
 }
 
-/** ¿Le falta el presupuesto a algún país? (Partidas de antes de la Fase 17.) */
+/**
+ * Lo que la Fase 19 añadió al presupuesto de las partidas de la v0.19.0 (formato 7): la población
+ * activa y la prestación de cada parado, la subida de las pensiones por el IPC, el presupuesto en
+ * vigor y la referencia (el de ahora: sin saltos al cargar).
+ */
+function completarHacienda(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais | null | undefined,
+  pais: PaisParaPresupuesto,
+): void {
+  const antiguo = presupuesto as PresupuestoPais & { porParado?: number; potencialVisto?: number };
+  const meses = economia?.meses ?? 0;
+  presupuesto.activos = activosDe(pais.datos, nivelDe(pais.nivelRenta), meses);
+  const paro = economia?.paro ?? 0;
+  presupuesto.prestacionParado =
+    paro > 0 && presupuesto.activos > 0
+      ? presupuesto.transversales.desempleo / (paro * presupuesto.activos)
+      : 0;
+  presupuesto.revalorizacion = null;
+  presupuesto.aprobado = { anio: anioDe(meses), prorrogado: false };
+  presupuesto.referencia = referenciaDe(
+    presupuesto,
+    economia ?? null,
+    economia ? pibNominal(economia) : totalGastos(presupuesto),
+  );
+  delete antiguo.porParado;
+  delete antiguo.potencialVisto;
+}
+
+/**
+ * ¿Le falta el presupuesto (o lo de la Fase 19) a algún país? (Partidas de antes de la Fase 17 o
+ * de la v0.19.0.)
+ */
 export function faltaPresupuesto(partida: Pick<PartidaJuego, 'paises'>): boolean {
-  return Object.values(partida.paises).some((estado) => estado.presupuesto === undefined);
+  return Object.values(partida.paises).some(
+    (estado) =>
+      estado.presupuesto === undefined ||
+      (estado.presupuesto !== null && !estado.presupuesto.referencia),
+  );
 }

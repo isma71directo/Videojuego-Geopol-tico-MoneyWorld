@@ -1,7 +1,7 @@
 /**
  * Ayuda de los tests: un país completo (economía, presupuesto y mercado de su deuda) que avanza
- * mes a mes como en la partida, sin contagio de los demás y, en una crisis de deuda, eligiendo su
- * salida como la IA (Fase 18).
+ * mes a mes como en la partida, sin contagio de los demás y como la IA: elige su salida en una
+ * crisis de deuda (Fase 18) y aprueba su presupuesto cada enero (Fase 19).
  */
 import type { ConjuntoPaises } from '../../src/datos/paises';
 import {
@@ -11,6 +11,7 @@ import {
   type MercadoDeuda,
 } from '../../src/sim/deuda';
 import { avanzarMes, economiaInicial, nivelDe, type EconomiaPais } from '../../src/sim/economia';
+import { fechaDelMes, haciendaDelMes } from '../../src/sim/hacienda';
 import {
   avanzarPresupuesto,
   presupuestoInicial,
@@ -29,7 +30,16 @@ export interface PaisCompleto {
   anios(cuantos: number): number[];
 }
 
-export function paisCompleto(paises: ConjuntoPaises, id: string, dureza = 1): PaisCompleto {
+/**
+ * Con `jugador`, Hacienda funciona como la del jugador: no aprueba presupuesto por su cuenta (se
+ * prorroga) y solo cambia lo que se decida con aprobarPresupuesto.
+ */
+export function paisCompleto(
+  paises: ConjuntoPaises,
+  id: string,
+  dureza = 1,
+  opciones: { jugador?: boolean } = {},
+): PaisCompleto {
   const pais = paises.paises[id]!;
   const economia = economiaInicial(pais.datos, pais.nivelRenta)!;
   const presupuesto = presupuestoInicial(pais.datos, nivelDe(pais.nivelRenta), economia)!;
@@ -41,6 +51,10 @@ export function paisCompleto(paises: ConjuntoPaises, id: string, dureza = 1): Pa
       avanzarPresupuesto(presupuesto, economia, estado);
       avanzarMercado(id, mercado, economia, presupuesto, 0, dureza);
       gestionarCrisis(mercado, economia, presupuesto, { esJugador: false, dureza });
+      haciendaDelMes(presupuesto, economia, mercado, {
+        esJugador: opciones.jugador ?? false,
+        fecha: fechaDelMes(economia.meses),
+      });
     }
   };
   return {

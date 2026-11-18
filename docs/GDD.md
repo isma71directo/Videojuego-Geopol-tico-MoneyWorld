@@ -306,7 +306,7 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Aranceles: las importaciones.
   - El resto: el PIB nominal.
 - **Gastos:**
-  - Ministerios: crecen con el PIB potencial nominal, así que pesan lo mismo con la economía en su potencial y más si cae por debajo (estabilizador automático). Pierden los recortes de una crisis de deuda (Fase 18; hasta la v0.18.0, los del ajuste forzoso f15-a1).
+  - Ministerios: hasta la v0.19.0 crecían con el PIB potencial nominal. Desde la Fase 19, quedan fijos en dinero hasta que se decide otro presupuesto (ver «El presupuesto en dinero», más abajo).
   - Pensiones: suben con los precios y con el envejecimiento (2 % real al año en los países de renta media-alta y alta).
   - Desempleo: sigue al paro.
   - Intereses: la deuda por su tipo.
@@ -409,6 +409,28 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - Sustituye al crecimiento con el PIB potencial de la tarea f17-t3. Se hará en la Fase 19, junto con la Pantalla de Presupuesto editable.
 - **Deuda jugable (Fase 20):** emitir a mano, amortizar y recomprar, negociar con los acreedores y pedir ayuda antes de la crisis.
 - **Nuevo orden de la hoja de ruta:** desde la Fase 19, cada fase trae decisiones del jugador (regla 21; sección 9).
+
+**El presupuesto en dinero (tarea f19-t1; parámetros en `src/sim/config/presupuesto.json`, «hacienda»):**
+- **Gasto fijo:** el gasto de cada ministerio y partida queda en dinero hasta que se aprueba otro presupuesto.
+- **Pensiones:** crecen cada mes con el envejecimiento (hay más pensionistas). Cada enero suben lo decidido o, por defecto, el IPC; por ley no bajan. En una crisis de deuda se congelan.
+- **Desempleo:** la prestación media de cada parado, en dinero, por los parados.
+  - Los parados salen de la población activa, que es ESTIMADA: no hay datos abiertos en el conjunto de 2010. Es la población por una tasa de actividad del 42 % al 50 % según el nivel de renta, y crece con la población.
+  - España 2010: unos 23 millones de activos y unos 9 000 $ al año por parado.
+- **Presupuesto anual:** el aprobado vale desde el mes siguiente. Si llega enero sin presupuesto nuevo, se prorroga el anterior (y se ve «prorrogado»).
+- **Lo decidido llega a la economía cada mes.** Se compara con 2010 en proporción del PIB potencial nominal:
+  - el personal y el mantenimiento mueven el consumo público, en proporción;
+  - la inversión pública mueve la inversión;
+  - los programas, las pensiones y la prestación por parado, y lo que han cambiado los impuestos de los hogares, mueven el consumo de los hogares, a la mitad (propensión a consumir de 0,5).
+  - Así, un gasto congelado pesa menos con la inflación y el crecimiento, y un recorte o una subida de impuestos frenan la demanda. Los recortes del FMI y del impago también llegan así.
+- **La IA aprueba su presupuesto cada enero**, salvo en una crisis de deuda:
+  - con la prima por encima del 65 % del cierre de los mercados, recorta un 4 % y congela las pensiones;
+  - con un déficit del 5 % del PIB o más, congela el gasto;
+  - con uno del 3 % al 5 %, lo sube con la inflación;
+  - con menos (con margen), lo sube con la economía: inflación y crecimiento potencial, para que mantenga su peso;
+  - con superávit, con la economía y un 2 % más.
+- **Sin intervención (2010–2018):**
+  - con los presupuestos de la IA, los déficits de 2018 son creíbles: EE. UU. 7 %, Reino Unido 4,5 %, Francia 3,5 %, Italia 3 % y Alemania con superávit;
+  - Grecia deja de pagar en 2011, Irlanda en 2013 y Portugal en 2013, y España pide el rescate en 2014.
 
 **Decisiones del jugador (18/11/2026, plan de la Fase 19: presupuesto jugable):**
 - **Presupuesto anual con cambios a mitad de año:** se aprueba el del año y se puede modificar; cada cambio vale desde el mes siguiente. Si llega enero sin presupuesto nuevo, se prorroga el anterior.

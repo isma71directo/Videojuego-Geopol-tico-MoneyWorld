@@ -71,12 +71,19 @@ describe('responde a la economía (tarea f17-t3)', () => {
     expect(espana.presupuesto.transversales.desempleo).toBeGreaterThan(desempleo * 1.1);
   });
 
-  it('las pensiones suben con los precios y con el envejecimiento', () => {
-    const japon = paisDe('JPN');
-    const pensiones = japon.presupuesto.transversales.pensiones;
-    meses(japon, 60);
-    const precios = japon.economia.nivelPrecios;
-    expect(japon.presupuesto.transversales.pensiones).toBeGreaterThan(pensiones * precios * 1.08);
+  it('las pensiones crecen con el envejecimiento y, cada enero, con el IPC; con deflación no bajan (Fase 19)', () => {
+    const espana = paisCompleto(paises, 'ESP');
+    const japon = paisCompleto(paises, 'JPN');
+    const pensionesEspana = espana.presupuesto.transversales.pensiones;
+    const pensionesJapon = japon.presupuesto.transversales.pensiones;
+    espana.avanzar(60);
+    japon.avanzar(60);
+    expect(espana.presupuesto.transversales.pensiones).toBeGreaterThan(
+      pensionesEspana * espana.economia.nivelPrecios * 1.08,
+    );
+    // Japón, con deflación: los precios bajan, pero las pensiones no.
+    expect(japon.economia.nivelPrecios).toBeLessThan(1);
+    expect(japon.presupuesto.transversales.pensiones).toBeGreaterThan(pensionesJapon * 1.08);
   });
 
   it('los recortes del rescate del FMI salen de los ministerios (más en «realista» que en «fácil»; Fase 18)', () => {

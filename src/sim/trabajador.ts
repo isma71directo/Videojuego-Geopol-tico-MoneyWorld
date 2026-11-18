@@ -9,6 +9,7 @@ import { sistemaAlertas } from './alertas';
 import { sistemaEconomia } from './economia';
 import { sistemaPresupuesto } from './presupuesto';
 import { sistemaMercado } from './deuda';
+import { sistemaHacienda } from './hacienda';
 
 /** Lo que se usa del ámbito del worker (sin depender de los tipos de la ventana). */
 const ambito = self as unknown as {
@@ -17,7 +18,13 @@ const ambito = self as unknown as {
 };
 
 // Los sistemas de la simulación (tarea f15-t2: la economía; f16-t4: sus alertas, después).
-const sistemas = [sistemaEconomia, sistemaPresupuesto, sistemaMercado, sistemaAlertas];
+const sistemas = [
+  sistemaEconomia,
+  sistemaPresupuesto,
+  sistemaMercado,
+  sistemaHacienda,
+  sistemaAlertas,
+];
 const bucle = arrancarBucle(crearMotor({ ahora: () => performance.now(), sistemas }), {
   enviar: (mensaje) => ambito.postMessage(mensaje),
   ahora: () => performance.now(),

@@ -21,7 +21,12 @@ import {
 } from '../src/sim/economia';
 import { desempaquetar, empaquetar, JUEGO } from '../src/sim/guardado';
 import { crearMotor } from '../src/sim/motor';
-import { completarPresupuesto, sistemaPresupuesto } from '../src/sim/presupuesto';
+import {
+  completarPresupuesto,
+  gastoMinisterio,
+  MINISTERIOS,
+  sistemaPresupuesto,
+} from '../src/sim/presupuesto';
 import { completarMercado, sistemaMercado } from '../src/sim/deuda';
 import { paisCompleto } from './ayudas/pais-completo';
 import { crearPartida, FORMATO_PARTIDA } from '../src/sim/partida';
@@ -182,9 +187,17 @@ describe('nada mejora solo: si se hace mal, empeora (ajuste f15-a1)', () => {
     // El diagnóstico de 2010: muy desequilibrada (déficit del 11,4 %: sobra lo que pasa del 3 %).
     expect(grecia.economia.desequilibrio.intensidad).toBeGreaterThan(1.5);
     expect(grecia.economia.desequilibrio.ajustePendiente).toBeCloseTo(0.084, 3);
-    // Nada se recorta solo: el primer año el gasto público no cambia…
-    grecia.avanzar(12);
-    expect(grecia.economia.demandaBase.consumoPublico).toBeCloseTo(gasto, 6);
+    // Nada se recorta solo: el primer año el gasto en dinero no cambia (con la inflación pesa algo
+    // menos)…
+    const ministerios = () =>
+      MINISTERIOS.reduce((t, m) => t + gastoMinisterio(grecia.presupuesto, m), 0);
+    const enDinero = ministerios();
+    grecia.avanzar(11);
+    expect(ministerios()).toBeCloseTo(enDinero, 0);
+    expect(grecia.economia.demandaBase.consumoPublico).toBeLessThan(gasto);
+    // (Con la inflación de Grecia, del 4,7 %, pesa algo más de un punto menos.)
+    expect(grecia.economia.demandaBase.consumoPublico).toBeGreaterThan(gasto - 0.02);
+    grecia.avanzar(1);
     // … pero la prima sube y el crédito se encarece: se invierte menos y cae la confianza.
     expect(grecia.mercado.prima).toBeGreaterThan(prima + 2);
     expect(grecia.economia.demanda.inversion).toBeLessThan(inversion * 0.9);
@@ -196,14 +209,20 @@ describe('nada mejora solo: si se hace mal, empeora (ajuste f15-a1)', () => {
     expect(grecia.economia.demandaBase.consumoPublico).toBeLessThan(gasto - 0.02);
   });
 
-  it('un país sano no entra en crisis ni recorta (China)', () => {
+  it('un país sano no entra en crisis ni recorta: su gobierno sube el gasto con la economía (China)', () => {
     const china = paisCompleto(paises, 'CHN');
     const gasto = china.economia.demandaBase.consumoPublico;
+    const ministerios = () =>
+      MINISTERIOS.reduce((t, m) => t + gastoMinisterio(china.presupuesto, m), 0);
+    const enDinero = ministerios();
     expect(china.economia.desequilibrio.intensidad).toBeLessThan(0.05);
     china.anios(3);
     expect(china.mercado.programa).toBeNull();
     expect(china.mercado.cerrado).toBe(false);
-    expect(china.economia.demandaBase.consumoPublico).toBeCloseTo(gasto, 6);
+    expect(ministerios()).toBeGreaterThan(enDinero * 1.3);
+    // Mantiene su peso (en diente de sierra: sube cada enero y, con la economía creciendo un 10 %
+    // al año, pesa algo menos hasta el siguiente).
+    expect(Math.abs(china.economia.demandaBase.consumoPublico - gasto)).toBeLessThan(0.025);
   });
 
   it('si se invierte menos, hay menos capital y menos PIB', () => {

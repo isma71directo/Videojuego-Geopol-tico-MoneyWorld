@@ -19,6 +19,7 @@ import {
   type DefinicionEfecto,
   type Efecto,
 } from './efectos';
+import type { PresupuestoDecidido } from './hacienda';
 import { avanzarPartida, type Partida } from './partida';
 import {
   horaAbsoluta,
@@ -54,6 +55,8 @@ export type OrdenMotor =
   | { tipo: 'instantanea'; peticion: number }
   /** Lo que decide el jugador ante un suceso (p. ej. una crisis de deuda, tarea f18-t3). */
   | { tipo: 'decidir'; clave: string; opcion: string }
+  /** El presupuesto que aprueba el jugador (Fase 19): vale desde el mes siguiente. */
+  | { tipo: 'presupuesto'; presupuesto: PresupuestoDecidido }
   | { tipo: 'terminar' };
 
 /** El estado de la partida que necesita la pantalla. */
@@ -213,6 +216,12 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
           ...partida,
           decisiones: { ...partida.decisiones, [orden.clave]: orden.opcion },
         };
+        return [];
+      }
+      if (orden.tipo === 'presupuesto') {
+        if (!partida) return [];
+        // Lo aplica Hacienda en el paso del mes siguiente (src/sim/hacienda.ts).
+        partida = { ...partida, presupuestoDecidido: structuredClone(orden.presupuesto) };
         return [];
       }
       if (orden.tipo === 'programar') {
