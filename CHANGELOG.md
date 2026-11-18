@@ -7,6 +7,56 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.20.0 - 2026-11-18
+
+Fase 19: presupuesto jugable. Primera fase con el nuevo orden de la hoja de ruta (decisión del
+jugador: desde la Fase 19, cada fase trae decisiones del jugador).
+
+### Añadido
+
+- **Pantalla «Presupuesto» editable** (Gobierno › Presupuesto, pestaña «Nuevo presupuesto»):
+  - un deslizador por ministerio y, desplegado, uno por cada partida (personal, inversión,
+    mantenimiento y programas), del 0 % al 200 % de lo que gasta ahora, con su dinero;
+  - la subida de las pensiones de cada enero o «con el IPC, como dice la ley», y la prestación de
+    cada parado;
+  - atajos: subir todo con el IPC, dejarlo como está y recortar un 5 %;
+  - un resumen que cambia al momento (gasto, ingresos y déficit);
+  - **previsión a 12 meses**: hace un año, ahora, sin cambios y con este presupuesto (ingresos,
+    gastos, saldo, deuda y prima). Usa las reglas de la partida: si no cambia nada más, coincide con
+    lo que pasa;
+  - «Aprobar el presupuesto»: vale desde el día 1 del mes siguiente, con un sello y su sonido.
+- **El presupuesto es anual** (decisión del jugador): si llega enero sin presupuesto nuevo, se
+  prorroga el anterior.
+- **Los gobiernos de la IA aprueban su presupuesto cada enero**, según su situación:
+  - con la prima cerca del cierre de los mercados, recortan;
+  - con un déficit alto, congelan; con uno moderado, suben con la inflación;
+  - con margen, suben con la economía; con superávit, algo más.
+- **Población activa** (estimada) y prestación por parado en dinero.
+- Sonidos de los deslizadores (suben o bajan) y del presupuesto aprobado. El editor también está
+  en la galería (Economía de un país).
+
+### Cambiado
+
+- **El presupuesto se ve en dinero**, no en % del PIB (decisión del jugador):
+  - ingresos, gastos, deuda e intereses en dólares; el déficit y los intereses, también como parte
+    de los ingresos;
+  - los ingresos, en % de lo recaudado; los gastos, en % de lo gastado;
+  - los gráficos, en miles de millones de dólares;
+  - el % del PIB, solo en las ayudas.
+- **El gasto de los ministerios queda fijo en dinero hasta que se decide otro** (decisión del
+  jugador): ya no crece solo con la economía, y con la inflación compra menos. Las pensiones crecen
+  con el envejecimiento y suben cada enero lo decidido (por defecto, el IPC; no bajan por ley).
+- **Lo que se decide en el presupuesto llega a la economía**: consumo público, inversión y consumo
+  de los hogares. Los recortes de una crisis de deuda llegan por el mismo camino.
+- **Nuevo orden de la hoja de ruta:**
+  - Fase 20: deuda y Tesoro jugables;
+  - Fases 21 y 22: impuestos;
+  - Fase 23: banco central y pantalla de Economía;
+  - Fase 24: moneda;
+  - Fase 25: bancos.
+- Formato de partida 8: las partidas guardadas reciben el presupuesto en dinero al cargarlas, sin
+  saltos.
+
 ## 0.19.0 - 2026-11-17
 
 Fase 18: deuda, prima de riesgo y rating.

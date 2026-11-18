@@ -1,13 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.19.0",
-  "actualizado": "2026-11-18T08:01:56Z",
-  "faseActiva": "fase-19",
+  "versionActual": "0.20.0",
+  "actualizado": "2026-11-18T08:02:54Z",
+  "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 (presupuesto jugable): las cuatro tareas hechas. f19-t4: tonos que suben o bajan al soltar los deslizadores, destellos en verde o rojo, y sello «Aprobado» con su sonido al aprobar el presupuesto.",
-    "siguientePaso": "Cerrar la Fase 19 como v0.20.0 y abrir su PR.",
-    "pendienteDelJugador": []
+    "resumen": "Fase 19 cerrada como v0.20.0 (presupuesto jugable): presupuesto en dinero y fijo hasta que se decida, anual con prórroga, IA con presupuestos según su situación, Pantalla «Presupuesto» editable con previsión a 12 meses, y sonidos y sello al aprobar. PR abierto.",
+    "siguientePaso": "Cuando el jugador fusione el PR de la v0.20.0: presentar el plan de la Fase 20 (deuda y Tesoro jugables: emitir, amortizar y recomprar, negociar y pedir ayuda) y preguntarle las decisiones de diseño.",
+    "pendienteDelJugador": ["Probar la v0.20.0 en el PC (ver el PR) y fusionarlo"]
   },
   "etapas": [
     {
@@ -1136,7 +1136,7 @@
       "dependeDe": ["fase-18"],
       "hechoCuando": "El presupuesto se decide en dinero y sus efectos son coherentes",
       "pruebaJugador": "Con España, recortar y subir partidas y ver en 12 meses el déficit, la deuda y la prima",
-      "estado": "en-curso",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f19-t1",
@@ -1164,7 +1164,7 @@
           "titulo": "Audiovisual: deslizadores con respuesta visual y sonora; animación y sonido al aprobar el presupuesto",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3c9f529"
         }
       ]
     },
@@ -4796,6 +4796,17 @@
         "Mercado de la deuda cada mes: la deuda que vence se renueva al tipo de ahora (decisión del jugador: poco a poco), rating de AAA a D revisado cada trimestre, crédito más caro con una prima alta y contagio",
         "Crisis de deuda: con los mercados cerrados, el jugador elige en una ventana entre el rescate del FMI (deuda barata a cambio de un ajuste) y el impago (quita, rating D y años sin mercados); la IA, según su situación. Sustituye al ajuste forzoso provisional",
         "Distintivo animado del rating, prima y crisis en la ficha y en Gobierno › Presupuesto, gráfico de la prima con el cierre de los mercados, y alertas de crisis y de rating con su sonido"
+      ]
+    },
+    {
+      "version": "0.20.0",
+      "fecha": "2026-11-18",
+      "cambios": [
+        "Pantalla «Presupuesto» editable: un deslizador por ministerio y por partida, la subida de las pensiones y la prestación por parado, atajos, resumen al momento y «Aprobar», que vale desde el mes siguiente (decisiones del jugador)",
+        "Previsión a 12 meses: hace un año, ahora, sin cambios y con este presupuesto (ingresos, gastos, saldo, deuda y prima), con las mismas reglas que la partida",
+        "El presupuesto en dinero (no en % del PIB) y fijo hasta que se decida; anual, con prórroga; los gobiernos de la IA aprueban el suyo cada enero según su situación; lo decidido llega a la economía",
+        "Nuevo orden de la hoja de ruta: desde la Fase 19, cada fase trae decisiones del jugador (la 20, deuda y Tesoro jugables)",
+        "Sonidos de los deslizadores y sello con sonido al aprobar el presupuesto"
       ]
     }
   ]
