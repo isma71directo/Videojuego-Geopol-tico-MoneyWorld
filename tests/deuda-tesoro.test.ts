@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { ConjuntoPaises } from '../src/datos/paises';
+import { ofertasDeAyuda, pedirAyuda, type AccionNegociacion } from '../src/sim/acreedores';
 import type { CambioPresupuesto } from '../src/sim/presupuesto';
 import { cerrarVentanas } from '../src/ui/componentes/ventana';
 import { deudaTesoro, emisionCon, vencimientosPorAnio } from '../src/ui/deuda-tesoro';
@@ -199,5 +200,114 @@ describe('la pestaña «Deuda y Tesoro» (tarea f20-t2)', () => {
     } finally {
       ponerContenidoPestana(elemento, 'deuda', null);
     }
+  });
+});
+
+describe('negociar y pedir ayuda en la pestaña (tarea f20-t3)', () => {
+  /** La pestaña de un país con la prima en `prima`, con lo que ordena y lo que negocia. */
+  function conAcreedores(id: string, prima: number, fecha = '2010-06-15') {
+    const pais = paisCompleto(paises, id, 1, { jugador: true });
+    pais.mercado.prima = prima;
+    pais.mercado.tipoMercado = 2 + prima;
+    const ordenados: CambioPresupuesto[][] = [];
+    const acciones: AccionNegociacion[] = [];
+    const vista = deudaTesoro({
+      fuente: () => ({
+        presupuesto: pais.presupuesto,
+        economia: pais.economia,
+        mercado: pais.mercado,
+        tesoreria: pais.estado.tesoreria,
+        fecha,
+      }),
+      ordenar: (cambios) => ordenados.push(cambios),
+      enviarNegociacion: (accion) => acciones.push(accion),
+      ofertas: () => ofertasDeAyuda(id, { [id]: pais }, fecha),
+    });
+    document.body.replaceChildren(vista.elemento);
+    return { pais, vista, ordenados, acciones };
+  }
+  const elegirQuita = (raiz: Element, valor: number): void => {
+    const radio = raiz.querySelector<HTMLInputElement>(
+      '.deuda-tesoro__tipo-propuesta[value="quita"]',
+    )!;
+    radio.checked = true;
+    radio.dispatchEvent(new Event('change'));
+    const control = deslizador(raiz, 'Quita');
+    control.value = String(valor);
+    control.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  it('con la prima alta: propuesta, contraoferta y acuerdo (también en el motor)', () => {
+    const { vista, acciones, pais } = conAcreedores('GRC', 11);
+    expect(vista.elemento.textContent).toContain('los acreedores temen un impago');
+    elegirQuita(vista.elemento, 50);
+    expect(vista.elemento.textContent).toMatch(
+      /Propuesta: quita del 50,0 %\. A los acreedores les cuesta como una quita del 50,0 %/,
+    );
+    boton(vista.elemento, 'Proponer (ronda 1 de 3)').click();
+    const respuesta = vista.elemento.querySelector('.deuda-tesoro__respuesta')!;
+    expect(respuesta.getAttribute('data-respuesta')).toBe('contraoferta');
+    expect(respuesta.textContent).toMatch(
+      /no aceptan quita del 50,0 %, pero ofrecen quita del 2\d,0 %/,
+    );
+    boton(vista.elemento, 'Aceptar la contraoferta').click();
+    expect(vista.elemento.textContent).toMatch(
+      /Acuerdo con los acreedores: quita del 2\d,0 %\. Vale desde el mes que viene/,
+    );
+    expect(vista.elemento.textContent).toContain(
+      'No se puede volver a negociar hasta el 1 de junio de 2011',
+    );
+    expect(acciones.map((a) => a.tipo)).toEqual(['proponer', 'aceptar']);
+    // Pendiente para el día 1.
+    expect(pais.presupuesto.pendientes.at(-1)!.cambio.tipo).toBe('acuerdo');
+    expect(vista.elemento.querySelector('.cambios-pendientes')!.textContent).toContain(
+      'Acuerdo con los acreedores: quita del',
+    );
+  });
+
+  it('sin estar en apuros: lo rechazan todo y, a la tercera, se rompe', () => {
+    const { vista, pais } = conAcreedores('DEU', 0.6);
+    expect(vista.elemento.textContent).toContain('no aceptarán perder nada');
+    for (let ronda = 1; ronda <= 3; ronda++) {
+      boton(vista.elemento, `Proponer (ronda ${ronda} de 3)`).click();
+      if (ronda < 3) {
+        expect(
+          vista.elemento.querySelector('.deuda-tesoro__respuesta')!.getAttribute('data-respuesta'),
+        ).toBe('rechaza');
+      }
+    }
+    expect(vista.elemento.textContent).toContain('acabó sin acuerdo y la prima subió');
+    expect(pais.mercado.recargo).toBeGreaterThan(0);
+    expect(boton(vista.elemento, 'Proponer (ronda 1 de 3)')).toBeUndefined();
+  });
+
+  it('pedir ayuda: lo que ofrece cada uno y sus condiciones; se ordena para el mes que viene', () => {
+    const { vista, ordenados, pais } = conAcreedores('PRT', 8);
+    const ofertas = [...vista.elemento.querySelectorAll('.deuda-tesoro__ofertas li')];
+    expect(ofertas.map((o) => o.getAttribute('data-fuente'))).toEqual(['fmi', 'eurozona']);
+    expect(ofertas[1]!.textContent).toContain('Fondo de rescate del euro');
+    expect(ofertas[1]!.textContent).toMatch(/[\d.]+ M\$ al 4,5 %, a 10 años; llega en 24 meses/);
+    expect(ofertas[0]!.textContent).toContain('bajar el déficit 1,5 puntos del PIB cada enero');
+    boton(ofertas[1]!, 'Pedir').click();
+    expect(ordenados[0]).toEqual([{ tipo: 'ayuda', fuente: 'eurozona', prestamista: null }]);
+    expect(vista.elemento.querySelector('.cambios-pendientes')!.textContent).toContain(
+      'Ayuda: fondo de rescate del euro',
+    );
+    // Ya llegando: lo entregado y el objetivo de déficit.
+    pedirAyuda(
+      ofertasDeAyuda('PRT', { PRT: pais }, '2010-07-01').find((o) => o.fuente === 'eurozona')!,
+      pais.mercado,
+      pais.economia,
+      pais.presupuesto,
+      '2010-07-01',
+    );
+    vista.actualizar();
+    expect(vista.elemento.textContent).toMatch(
+      /Fondo de rescate del euro: han llegado 0 \$ de [\d.]+ M\$/,
+    );
+    expect(vista.elemento.textContent).toMatch(
+      /Objetivo para el próximo enero: un déficit de como mucho [\d.]+ M\$ \([\d,]+ % del PIB\)/,
+    );
+    expect(vista.elemento.querySelector('.deuda-tesoro__ofertas')).toBeNull();
   });
 });

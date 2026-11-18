@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.1",
-  "actualizado": "2026-11-18T09:40:15Z",
+  "actualizado": "2026-11-18T09:56:54Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "f20-t2 hecha: pestaña «Deuda y Tesoro» en la ventana del Ministerio de Economía y Hacienda (deuda, tipo medio, vida media, tesorería, rating; tipos de cada plazo; calendario de vencimientos por año; Tesoro automático y su reparto; emitir y recomprar; cambios pendientes), también en la galería. f20-t1 ya estaba: la deuda por emisiones en el motor.",
-    "siguientePaso": "f20-t3: negociar con los acreedores por rondas (más plazo, menos interés o una quita; aceptan, rechazan o contraofertan) y pedir ayuda (línea preventiva del FMI, fondo de la zona euro desde mayo de 2010, préstamo de un país con superávit), también la IA.",
+    "resumen": "f20-t3 hecha: negociar con los acreedores por rondas (más plazo, menos interés o quita; aceptan, contraofertan o rechazan según la prima; tres rondas; un acuerdo o una ruptura suben la prima) y pedir ayuda (línea preventiva del FMI, fondo de rescate del euro desde mayo de 2010 y préstamos de países con superávit, con tramos, respaldo a la prima y objetivo de déficit que, si no se cumple, la retira). También la IA. En la pestaña «Deuda y Tesoro», con la alerta «Retiran la ayuda».",
+    "siguientePaso": "f20-t4: audiovisual (calendario de vencimientos animado, sonidos de la subasta y de la negociación) y cerrar la v0.21.0 con su PR.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1220,20 +1220,20 @@
           "titulo": "Pestaña «Deuda y Tesoro» en el Ministerio de Economía y Hacienda: tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8b19862"
         },
         {
           "id": "f20-t3",
           "titulo": "Negociar con los acreedores por rondas (oferta y contraoferta) y pedir ayuda (línea preventiva del FMI, fondo de la zona euro o un país con superávit); también la IA",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-18",
           "enlace": ""
         },
         {
           "id": "f20-t4",
           "titulo": "Audiovisual: calendario de vencimientos animado y sonidos de la subasta y de la negociación",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-18",
           "enlace": ""
         }
       ]

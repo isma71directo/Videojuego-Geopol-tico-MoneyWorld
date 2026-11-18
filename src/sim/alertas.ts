@@ -22,7 +22,8 @@ export type TipoAlerta =
   | 'ratingBaja'
   | 'ratingSube'
   | 'sinTesoreria'
-  | 'tesoreriaBaja';
+  | 'tesoreriaBaja'
+  | 'ayudaRetirada';
 
 /** Todas, en el orden en que se avisan si llegan a la vez. */
 export const TIPOS_ALERTA: readonly TipoAlerta[] = [
@@ -33,6 +34,7 @@ export const TIPOS_ALERTA: readonly TipoAlerta[] = [
   'ratingBaja',
   'ratingSube',
   'tesoreriaBaja',
+  'ayudaRetirada',
   'recesion',
   'inflacionGrave',
   'inflacion',
@@ -46,12 +48,13 @@ export const ALERTAS_GRAVES: ReadonlySet<TipoAlerta> = new Set([
   'inflacionGrave',
   'crisisDeuda',
   'sinTesoreria',
+  'ayudaRetirada',
 ]);
 
 /**
  * Una alerta con su dato: la caída del PIB, el paro o la inflación (tanto por uno), o la prima de
  * riesgo (puntos) en la crisis de deuda y en las del rating, que llevan también la nota nueva; o
- * la tesorería (dólares) en las del Tesoro.
+ * la tesorería (dólares) en las del Tesoro; o lo que llegó de la ayuda que se retira (dólares).
  */
 export interface AlertaEconomica {
   tipo: TipoAlerta;

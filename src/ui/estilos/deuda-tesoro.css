@@ -125,5 +125,69 @@
 .deuda-tesoro__acciones {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+}
+
+.deuda-tesoro__acciones > .boton {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* Negociar con los acreedores y pedir ayuda (tarea f20-t3). */
+.deuda-tesoro__animo {
+  margin: 0;
+  font-size: 14px;
+}
+
+.deuda-tesoro__tipos-propuesta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.deuda-tesoro__respuesta,
+.deuda-tesoro__resultado,
+.deuda-tesoro__ayuda-activa {
+  margin: 0;
+  padding: 6px 10px;
+  border-left: 3px solid var(--acento);
+  border-radius: var(--radio-pequeno);
+  background: color-mix(in srgb, var(--acento) 10%, transparent);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.deuda-tesoro__respuesta[data-respuesta='acepta'],
+.deuda-tesoro__resultado[data-estado='acuerdo'] {
+  border-left-color: var(--hecha);
+  background: color-mix(in srgb, var(--hecha) 10%, transparent);
+}
+
+.deuda-tesoro__respuesta[data-respuesta='rechaza'],
+.deuda-tesoro__resultado[data-estado='ruptura'] {
+  border-left-color: var(--peligro);
+  background: color-mix(in srgb, var(--peligro) 10%, transparent);
+}
+
+.deuda-tesoro__ofertas {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deuda-tesoro__ofertas li {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  font-size: 13px;
+}
+
+.deuda-tesoro__ofertas strong {
+  font-size: 14px;
 }

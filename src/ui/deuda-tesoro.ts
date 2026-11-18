@@ -26,6 +26,17 @@ import {
   type PresupuestoPais,
   type Reparto,
 } from '../sim/presupuesto';
+import {
+  negociar as negociarConAcreedores,
+  type AccionNegociacion,
+  type OfertaAyuda,
+} from '../sim/acreedores';
+import {
+  apartadoAyuda,
+  apartadoNegociar,
+  borradorNegociacionInicial,
+  type ContextoAcreedores,
+} from './acreedores-vista';
 import { listaDePendientes } from './cambios-presupuesto';
 import { crearDeslizador } from './componentes/deslizador';
 import { sonar } from './componentes/sonidos';
@@ -49,12 +60,18 @@ const DEL_TESORO: ReadonlySet<CambioPresupuesto['tipo']> = new Set([
   'emision',
   'recompra',
   'tesoro',
+  'acuerdo',
+  'ayuda',
 ]);
 
 export interface OpcionesDeudaTesoro {
   fuente: FuenteEditor;
   /** Manda los cambios del Tesoro (al motor). */
   ordenar: (cambios: CambioPresupuesto[]) => void;
+  /** Manda al motor una acción de la negociación con los acreedores (tarea f20-t3). */
+  enviarNegociacion?: (accion: AccionNegociacion) => void;
+  /** Lo que le ofrecen hoy para pedir ayuda (tarea f20-t3; sin esto, nada). */
+  ofertas?: () => readonly OfertaAyuda[];
 }
 
 export interface DeudaTesoro {
@@ -172,6 +189,7 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
     'aria-label': t('juego.tesoro.titulo'),
   });
   let borrador = borradorVacio();
+  const borradorNegociacion = borradorNegociacionInicial();
   const aviso = el('p', { class: 'presupuesto-editable__aviso', role: 'status' });
 
   const pintar = (): void => {
@@ -417,13 +435,42 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
     });
 
     /** Manda los cambios, los anota como pendientes y vuelve a empezar. */
-    function ordenar(cambios: CambioPresupuesto[], boton: HTMLElement): void {
+    function ordenar(cambios: CambioPresupuesto[], boton?: HTMLElement): void {
       opciones.ordenar(cambios);
       anotarOrdenados(actual!.fecha, nivel, cambios);
-      sellar(boton);
+      if (boton) sellar(boton);
       borrador = borradorVacio();
       pintar();
       aviso.textContent = t('juego.tesoro.ordenado');
+    }
+
+    // Negociar con los acreedores y pedir ayuda (tarea f20-t3).
+    const conLosAcreedores: HTMLElement[] = [];
+    if (mercado) {
+      const contexto: ContextoAcreedores = {
+        presupuesto,
+        economia,
+        mercado,
+        fecha: actual.fecha,
+        borrador: borradorNegociacion,
+        negociar: (accion) => {
+          // La misma respuesta que dará el motor (con el mismo estado), al momento.
+          const antes = mercado.negociacion?.estado;
+          const negociacion = negociarConAcreedores(mercado, presupuesto, accion, actual.fecha);
+          opciones.enviarNegociacion?.(accion);
+          if (negociacion?.estado === 'acuerdo' && antes === 'abierta')
+            sonar('presupuestoAprobado');
+          else if (negociacion)
+            sonar(negociacion.respuesta === 'rechaza' ? 'deseleccionar' : 'seleccionar');
+          pintar();
+        },
+        ofertas: opciones.ofertas?.() ?? [],
+        pedir: (oferta) => {
+          ordenar([{ tipo: 'ayuda', fuente: oferta.fuente, prestamista: oferta.prestamista }]);
+          sonar('presupuestoAprobado');
+        },
+      };
+      conLosAcreedores.push(...apartadoNegociar(contexto), ...apartadoAyuda(contexto));
     }
 
     const lista = listaDePendientes(
@@ -473,6 +520,7 @@ export function deudaTesoro(opciones: OpcionesDeudaTesoro): DeudaTesoro {
       recomprar.elemento,
       textoRecomprar,
       el('div', { class: 'deuda-tesoro__acciones' }, botonRecomprar),
+      ...conLosAcreedores,
       aviso,
       ...(lista ? [lista] : []),
     );

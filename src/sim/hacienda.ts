@@ -17,6 +17,14 @@
  * sacan gente del paro); los despidos, el mes siguiente (vuelven al paro, con indemnización).
  */
 import config from './config/presupuesto.json';
+import {
+  aplicarAcuerdo,
+  avanzarAyuda,
+  ayudaActiva,
+  ofertasDeAyuda,
+  pedirAyuda,
+  type OfertaAyuda,
+} from './acreedores';
 import { ALERTAS_GRAVES } from './alertas';
 import { empezarSalida, UMBRAL_CIERRE, type MercadoDeuda } from './deuda';
 import { horaAbsoluta, momentoDe } from './reloj';
@@ -33,6 +41,7 @@ import {
   sueldoMedio,
   totalGastos,
   type CambioPresupuesto,
+  type CambioProgramado,
   type Ministerio,
   type Partida,
   type PresupuestoPais,
@@ -110,7 +119,12 @@ export function presupuestoDeLaIa(
   const conLaEconomia = (1 + inflacion) * (1 + Math.max(0, crecimientoPotencial(economia)));
   let factor = conLaEconomia;
   let revalorizacion: number | null = null;
-  if (mercado && mercado.prima >= h.ia.cercaDelCierre * UMBRAL_CIERRE) {
+  // (Con una ayuda que pide bajar el déficit, la IA recorta hasta cumplirlo: tarea f20-t3.)
+  const objetivo = ayudaActiva(mercado?.ayuda) ? mercado!.ayuda!.objetivoDeficit : null;
+  if (
+    (mercado && mercado.prima >= h.ia.cercaDelCierre * UMBRAL_CIERRE) ||
+    (objetivo !== null && deficit > objetivo)
+  ) {
     factor = 1 - h.ia.recorte;
     revalorizacion = 0;
   } else if (deficit >= h.ia.deficitAlto) {
@@ -251,8 +265,11 @@ export function aplicarCambio(
     if (importe && estado) recomprarDeuda(presupuesto, estado, importe);
     return;
   }
-  presupuesto.tesoro.automatico = cambio.automatico !== false;
-  if (cambio.reparto) presupuesto.tesoro.reparto = repartoValido(cambio.reparto);
+  if (cambio.tipo === 'tesoro') {
+    presupuesto.tesoro.automatico = cambio.automatico !== false;
+    if (cambio.reparto) presupuesto.tesoro.reparto = repartoValido(cambio.reparto);
+  }
+  // (Los acuerdos con los acreedores y la ayuda necesitan el mercado: en haciendaDelMes.)
 }
 
 /** Lo que ha pasado en el Tesoro este mes (para avisar al jugador). */
@@ -261,6 +278,8 @@ export interface AvisoTesoro {
   impago: boolean;
   /** Con el Tesoro automático apagado, queda menos de un mes de gasto. */
   tesoreriaBaja: boolean;
+  /** Se ha retirado la ayuda por no cumplir el objetivo de déficit (tarea f20-t3). */
+  ayudaRetirada: boolean;
 }
 
 /**
@@ -282,9 +301,11 @@ export function haciendaDelMes(
     cambios?: readonly CambioPresupuesto[];
     /** Su tesorería (de ella salen las indemnizaciones). */
     estado?: { tesoreria: number };
+    /** Lo que le ofrecen hoy para pedir ayuda (tarea f20-t3; si la ha pedido). */
+    ofertas?: readonly OfertaAyuda[];
   },
 ): AvisoTesoro {
-  const aviso: AvisoTesoro = { impago: false, tesoreriaBaja: false };
+  const aviso: AvisoTesoro = { impago: false, tesoreriaBaja: false, ayudaRetirada: false };
   const { fecha } = opciones;
   const anio = Number(fecha.slice(0, 4));
   if (opciones.decidido) aprobarPresupuesto(presupuesto, opciones.decidido, anio);
@@ -298,11 +319,30 @@ export function haciendaDelMes(
   const ahora = presupuesto.pendientes.filter((p) => p.desde <= fecha);
   presupuesto.pendientes = presupuesto.pendientes.filter((p) => p.desde > fecha);
   for (const { cambio } of ahora) {
-    aplicarCambio(presupuesto, economia, opciones.estado ?? null, cambio);
+    if (cambio.tipo === 'acuerdo') {
+      if (mercado) aplicarAcuerdo(cambio.propuesta, mercado, economia, presupuesto);
+    } else if (cambio.tipo === 'ayuda') {
+      // La ayuda pedida, con lo que ofrezca hoy quien presta (si aún la ofrece).
+      const oferta = opciones.ofertas?.find(
+        (o) => o.fuente === cambio.fuente && o.prestamista === (cambio.prestamista ?? null),
+      );
+      if (mercado && oferta) pedirAyuda(oferta, mercado, economia, presupuesto, fecha);
+    } else {
+      aplicarCambio(presupuesto, economia, opciones.estado ?? null, cambio);
+    }
+  }
+  // Enero: el presupuesto del año.
+  if (fecha.slice(5, 7) === '01') {
+    presupuestoDeEnero(presupuesto, economia, mercado, opciones.esJugador, ahora, anio);
+  }
+  const estado = opciones.estado;
+  // Llega el tramo de la ayuda (y, en enero, con el presupuesto del año ya aprobado, se mira si
+  // se cumple su objetivo de déficit: tarea f20-t3).
+  if (mercado && estado) {
+    aviso.ayudaRetirada = avanzarAyuda(mercado, economia, presupuesto, estado, fecha);
   }
   // Si la tesorería se ha acabado (con el Tesoro apagado, o sin poder emitir), el país deja de
   // pagar (tarea f20-t1). Con poco dinero y el Tesoro apagado, un aviso.
-  const estado = opciones.estado;
   if (estado && mercado && !mercado.programa) {
     if (estado.tesoreria < 0) {
       empezarSalida('impago', mercado, economia, presupuesto);
@@ -314,14 +354,25 @@ export function haciendaDelMes(
       presupuesto.tesoro.bajo = baja;
     }
   }
-  if (fecha.slice(5, 7) !== '01') return aviso;
+  return aviso;
+}
+
+/** Enero: el presupuesto del año (la IA aprueba el suyo; el del jugador, o se prorroga). */
+function presupuestoDeEnero(
+  presupuesto: PresupuestoPais,
+  economia: EconomiaPais,
+  mercado: MercadoDeuda | null,
+  esJugador: boolean,
+  ahora: readonly CambioProgramado[],
+  anio: number,
+): void {
   const enCrisis = Boolean(mercado?.programa);
   // Las subidas anuales que valen hoy son el presupuesto del año.
   const anual = ahora.some(
     ({ cambio }) =>
       (cambio.tipo === 'partida' || cambio.tipo === 'sueldos') && cambio.cuando === 'anio',
   );
-  if (!opciones.esJugador && !enCrisis) {
+  if (!esJugador && !enCrisis) {
     aprobarPresupuesto(presupuesto, presupuestoDeLaIa(presupuesto, economia, mercado), anio);
   } else if (anual) {
     presupuesto.aprobado = { anio, prorrogado: false };
@@ -329,7 +380,18 @@ export function haciendaDelMes(
     presupuesto.aprobado.prorrogado = true;
   }
   if (!enCrisis) revalorizarPensiones(presupuesto, economia);
-  return aviso;
+}
+
+/** ¿Pide ayuda este mes? (Un cambio «ayuda» que vale hoy, ya pendiente o recién ordenado.) */
+function pideAyuda(
+  presupuesto: PresupuestoPais,
+  cambios: readonly CambioPresupuesto[] | undefined,
+  fecha: string,
+): boolean {
+  return (
+    presupuesto.pendientes.some((p) => p.cambio.tipo === 'ayuda' && p.desde <= fecha) ||
+    (cambios ?? []).some((c) => c.tipo === 'ayuda' && desdeCuando(c, fecha, 'alto') <= fecha)
+  );
 }
 
 /** La fecha del paso mensual de una economía que lleva `meses` meses desde enero de 2010. */
@@ -360,11 +422,20 @@ export const sistemaHacienda: Sistema = (pasos, partida) => {
         decidido: esJugador ? decidido : undefined,
         cambios: esJugador ? cambios : undefined,
         estado,
+        // (Solo si pide ayuda este mes: lo que le ofrecen hoy.)
+        ofertas: pideAyuda(presupuesto, esJugador ? cambios : undefined, paso.fecha)
+          ? ofertasDeAyuda(id, partida.paises, paso.fecha)
+          : undefined,
       });
-      // Al jugador se le avisa (tarea f20-t1): sin tesorería (grave) o con poca.
-      if (!esJugador || !(aviso.impago || aviso.tesoreriaBaja)) continue;
+      // Al jugador se le avisa (tareas f20-t1 y f20-t3): sin tesorería (grave), con poca o si le
+      // retiran la ayuda.
+      if (!esJugador || !(aviso.impago || aviso.tesoreriaBaja || aviso.ayudaRetirada)) continue;
       const { fecha, hora } = momentoDe(horaAbsoluta(partida) + 1);
-      const tipo = aviso.impago ? 'sinTesoreria' : 'tesoreriaBaja';
+      const tipo = aviso.impago
+        ? 'sinTesoreria'
+        : aviso.ayudaRetirada
+          ? 'ayudaRetirada'
+          : 'tesoreriaBaja';
       partida.agenda = programar(partida.agenda, {
         id: `t${partida.fecha}-${tipo}`,
         titulo: '',
@@ -373,7 +444,11 @@ export const sistemaHacienda: Sistema = (pasos, partida) => {
         hora,
         importante: ALERTAS_GRAVES.has(tipo),
         origen: 'economia',
-        alerta: { tipo, valor: estado.tesoreria },
+        alerta: {
+          tipo,
+          valor:
+            tipo === 'ayudaRetirada' ? (estado.mercado?.ayuda?.entregado ?? 0) : estado.tesoreria,
+        },
       });
     }
   }

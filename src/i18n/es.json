@@ -1288,6 +1288,10 @@
       "tesoreriaBaja": {
         "titulo": "Queda poca tesorería",
         "texto": "Con el Tesoro automático apagado, en la tesorería quedan {valor}: menos de un mes de gasto. Si se acaba sin emitir deuda, el país dejará de pagar."
+      },
+      "ayudaRetirada": {
+        "titulo": "Retiran la ayuda",
+        "texto": "No se ha cumplido el objetivo de déficit: quien prestaba retira lo que faltaba por llegar (había entregado {valor}). Sin su respaldo, la prima sube, y no volverá a prestar en dos años."
       }
     },
     "sucesos": {
@@ -1427,6 +1431,8 @@
       "recompra": "Tesoro: recomprar {dinero} de deuda",
       "tesoroAutomatico": "Tesoro automático encendido",
       "tesoroManual": "Tesoro automático apagado: emites tú",
+      "acuerdo": "Acuerdo con los acreedores: {propuesta}",
+      "ayuda": "Ayuda: {fuente}",
       "pendientes": "Cambios pendientes",
       "desde": "desde el {fecha}"
     },
@@ -1501,6 +1507,55 @@
       "recomprarVacio": "Elige cuánto gastar de la tesorería en recomprar deuda.",
       "botonRecomprar": "Recomprar",
       "ordenado": "Ordenado: vale desde el mes que viene."
+    },
+    "acreedores": {
+      "propuesta": {
+        "plazo": "{n} años más de plazo",
+        "interes": "el interés baja {n} puntos",
+        "quita": "quita del {n}",
+        "plazoUno": "un año más de plazo"
+      },
+      "fuentes": {
+        "fmi": "línea preventiva del FMI",
+        "eurozona": "fondo de rescate del euro",
+        "pais": "préstamo de {pais}"
+      },
+      "negociarTitulo": "Negociar con los acreedores",
+      "negociarAyuda": "Propón más plazo, menos interés o una quita. Los acreedores aceptan, rechazan o hacen una contraoferta según el riesgo de impago que ven; tienes tres rondas este mes. Un acuerdo sube la prima de después; romper la negociación, también.",
+      "animo": {
+        "sinRiesgo": "Con la prima en {prima} puntos, los acreedores no ven riesgo de impago: no aceptarán perder nada.",
+        "algoDeRiesgo": "Con la prima en {prima} puntos, los acreedores ven algo de riesgo: aceptarían poco.",
+        "temenImpago": "Con la prima en {prima} puntos, los acreedores temen un impago: están dispuestos a negociar."
+      },
+      "tipos": {
+        "plazo": "Más plazo",
+        "interes": "Menos interés",
+        "quita": "Quita"
+      },
+      "coste": "Propuesta: {propuesta}. A los acreedores les cuesta como una quita del {coste}.",
+      "proponer": "Proponer (ronda {ronda} de {rondas})",
+      "respuestas": {
+        "acepta": "Ronda {ronda} de {rondas}: los acreedores aceptan {propuesta}.",
+        "rechaza": "Ronda {ronda} de {rondas}: los acreedores rechazan {propuesta}. Puedes volver a ofertar.",
+        "contraoferta": "Ronda {ronda} de {rondas}: los acreedores no aceptan {propuesta}, pero ofrecen {contraoferta}."
+      },
+      "aceptar": "Aceptar la contraoferta",
+      "romper": "Romper la negociación",
+      "acuerdo": "Acuerdo con los acreedores: {propuesta}. Vale desde el mes que viene.",
+      "ruptura": "La última negociación acabó sin acuerdo y la prima subió.",
+      "hasta": "No se puede volver a negociar hasta el {fecha}.",
+      "enCrisis": "Durante una crisis de deuda no se negocia: manda el rescate o el impago.",
+      "ayudaTitulo": "Pedir ayuda",
+      "ayudaAyuda": "Antes de la crisis, otros pueden prestar barato y respaldar al país (la prima baja mientras llega el dinero), a cambio de condiciones. La ayuda llega desde el mes que viene.",
+      "oferta": "{importe} al {tipo}, a {anios} años; llega en {meses} meses.",
+      "condicion": "Condición: bajar el déficit {recorte} puntos del PIB cada enero hasta el 3 %; si no se cumple, la retira. Mientras llega, la prima baja un {respaldo}.",
+      "condicionNinguna": "Sin condiciones de déficit, pero más cara. Mientras llega, la prima baja un {respaldo}.",
+      "pedir": "Pedir",
+      "llegando": "{fuente}: han llegado {entregado} de {total} (faltan {tramos} tramos), al {tipo}.",
+      "objetivo": "Objetivo para el próximo enero: un déficit de como mucho {objetivo} ({objetivoPib} del PIB). Ahora: {ahora} ({ahoraPib} del PIB). Si no se cumple, retiran lo que falta.",
+      "sinObjetivo": "Sin objetivo de déficit.",
+      "retirada": "Se retiró la {fuente} el {fecha} por no cumplir el objetivo de déficit.",
+      "sinOfertas": "Nadie ofrece ayuda ahora: con los mercados cerrados manda el rescate o el impago, y una ayuda que se retiró tarda dos años en volver."
     }
   },
   "hojaDeRuta": {
@@ -1724,7 +1779,8 @@
       "deslizadorBaja": "Deslizador del presupuesto: baja",
       "presupuestoAprobado": "Presupuesto aprobado",
       "alertaSinTesoreria": "Alerta: sin tesorería",
-      "alertaTesoreriaBaja": "Alerta: tesorería baja"
+      "alertaTesoreriaBaja": "Alerta: tesorería baja",
+      "alertaAyudaRetirada": "Alerta: retiran la ayuda"
     },
     "economia": {
       "titulo": "Economía de un país",

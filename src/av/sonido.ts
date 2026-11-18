@@ -45,6 +45,7 @@ export type Efecto =
   | 'alertaRatingSube'
   | 'alertaSinTesoreria'
   | 'alertaTesoreriaBaja'
+  | 'alertaAyudaRetirada'
   | 'deslizadorSube'
   | 'deslizadorBaja'
   | 'presupuestoAprobado';
@@ -267,6 +268,14 @@ export const EFECTOS: Record<Efecto, readonly Nota[]> = {
     { forma: 'sine', inicio: 0, duracion: 0.1, frecuencia: 1318.5, volumen: 0.08 },
     { forma: 'sine', inicio: 0.14, duracion: 0.18, frecuencia: 987.8, volumen: 0.08 },
     { forma: 'triangle', inicio: 0.14, duracion: 0.18, frecuencia: 493.9, volumen: 0.04 },
+  ],
+  // Ayuda retirada (tarea f20-t3): una puerta que se cierra (golpe seco) y dos notas que caen
+  // una quinta (la y re), graves.
+  alertaAyudaRetirada: [
+    { forma: 'ruido', inicio: 0, duracion: 0.06, frecuencia: 220, volumen: 0.1 },
+    { forma: 'triangle', inicio: 0.08, duracion: 0.22, frecuencia: 440, volumen: 0.11 },
+    { forma: 'triangle', inicio: 0.3, duracion: 0.42, frecuencia: 293.7, volumen: 0.12 },
+    { forma: 'sine', inicio: 0.3, duracion: 0.42, frecuencia: 146.8, volumen: 0.07 },
   ],
   // Deslizadores del presupuesto (tarea f19-t4): al soltarlos, un tono corto que sube o baja,
   // según se haya subido o bajado el gasto.

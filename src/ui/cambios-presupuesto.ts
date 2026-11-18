@@ -2,9 +2,10 @@
  * Los cambios del presupuesto en palabras (ajustes f19-a2 y f19-a3): qué se ha decidido y desde
  * cuándo vale, para la vista general y para la pestaña «Presupuesto» de cada ministerio.
  */
-import { dolares, enteros, porcentaje } from '../compartido/formato';
+import { dolares, enteros, porcentaje, puntos } from '../compartido/formato';
 import { formatearFechaLarga } from '../compartido/fechas';
 import { t } from '../i18n';
+import type { FuenteAyuda, Propuesta } from '../sim/acreedores';
 import type { CambioPresupuesto, CambioProgramado, Ministerio } from '../sim/presupuesto';
 import { el } from './dom';
 
@@ -16,6 +17,34 @@ const nombreMinisterio = (ministerio: Ministerio | 'todos'): string =>
   ministerio === 'todos'
     ? t('juego.cambios.todos')
     : t(`juego.secciones.ministerios.${ministerio}.nombre`);
+
+/** Cómo se llama cada país (la pantalla lo pone al tener los datos; si no, su código). */
+let nombrePais: (id: string) => string | undefined = () => undefined;
+
+/** Pone de dónde salen los nombres de los países (para «préstamo de China»). */
+export function ponerNombresDePaises(nombres: (id: string) => string | undefined): void {
+  nombrePais = nombres;
+}
+
+/** Una propuesta a los acreedores en palabras: «5 años más de plazo», «quita del 20,0 %». */
+export function textoPropuesta(propuesta: Propuesta): string {
+  if (propuesta.tipo === 'plazo') {
+    return propuesta.anios === 1
+      ? t('juego.acreedores.propuesta.plazoUno')
+      : t('juego.acreedores.propuesta.plazo', { n: propuesta.anios });
+  }
+  if (propuesta.tipo === 'interes') {
+    return t('juego.acreedores.propuesta.interes', { n: puntos(propuesta.puntos) });
+  }
+  return t('juego.acreedores.propuesta.quita', { n: porcentaje(propuesta.parte * 100) });
+}
+
+/** Quien presta, en palabras: «línea preventiva del FMI», «préstamo de China». */
+export function textoFuente(fuente: FuenteAyuda, prestamista: string | null): string {
+  return t(`juego.acreedores.fuentes.${fuente}`, {
+    pais: prestamista ? (nombrePais(prestamista) ?? prestamista) : '',
+  });
+}
 
 /** Un cambio en palabras: «Sanidad: programas +10,0 % (subida anual)». */
 export function describirCambio(cambio: CambioPresupuesto): string {
@@ -53,6 +82,12 @@ export function describirCambio(cambio: CambioPresupuesto): string {
       return t('juego.cambios.recompra', { dinero: dolares(cambio.importe) });
     case 'tesoro':
       return t(cambio.automatico ? 'juego.cambios.tesoroAutomatico' : 'juego.cambios.tesoroManual');
+    case 'acuerdo':
+      return t('juego.cambios.acuerdo', { propuesta: textoPropuesta(cambio.propuesta) });
+    case 'ayuda':
+      return t('juego.cambios.ayuda', {
+        fuente: textoFuente(cambio.fuente, cambio.prestamista),
+      });
   }
 }
 
@@ -63,7 +98,13 @@ export function tocaA(cambio: CambioPresupuesto, ministerio: Ministerio): boolea
   }
   if (cambio.tipo === 'puestos') return cambio.ministerio === ministerio;
   // La deuda y el Tesoro son de Economía y Hacienda.
-  if (cambio.tipo === 'emision' || cambio.tipo === 'recompra' || cambio.tipo === 'tesoro') {
+  if (
+    cambio.tipo === 'emision' ||
+    cambio.tipo === 'recompra' ||
+    cambio.tipo === 'tesoro' ||
+    cambio.tipo === 'acuerdo' ||
+    cambio.tipo === 'ayuda'
+  ) {
     return ministerio === 'economia';
   }
   // Las pensiones y la prestación por parado son de Trabajo y Seguridad Social.

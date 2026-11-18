@@ -28,6 +28,7 @@ export const ICONO_ALERTA: Record<TipoAlerta, NombreIcono> = {
   ratingSube: 'rating',
   sinTesoreria: 'tesoreria',
   tesoreriaBaja: 'tesoreria',
+  ayudaRetirada: 'deuda',
 };
 
 /** El sonido propio de cada alerta. */
@@ -42,12 +43,17 @@ export const SONIDO_ALERTA: Record<TipoAlerta, Efecto> = {
   ratingSube: 'alertaRatingSube',
   sinTesoreria: 'alertaSinTesoreria',
   tesoreriaBaja: 'alertaTesoreriaBaja',
+  ayudaRetirada: 'alertaAyudaRetirada',
 };
 
 /** Las alertas cuyo dato es la prima de riesgo (puntos), no un tanto por uno. */
 const EN_PUNTOS: ReadonlySet<TipoAlerta> = new Set(['crisisDeuda', 'ratingBaja', 'ratingSube']);
 /** Las alertas cuyo dato es la tesorería (dólares). */
-const EN_DINERO: ReadonlySet<TipoAlerta> = new Set(['sinTesoreria', 'tesoreriaBaja']);
+const EN_DINERO: ReadonlySet<TipoAlerta> = new Set([
+  'sinTesoreria',
+  'tesoreriaBaja',
+  'ayudaRetirada',
+]);
 
 /** El dato de una alerta, con su formato. */
 function datoDe(tipo: TipoAlerta, valor: number): string {

@@ -9,6 +9,7 @@
  * es e elevada al riesgo; el tipo de mercado, un tipo base (provisional hasta el banco central de
  * la Fase 23) más la inflación esperada y la prima; y el rating, según la prima. Motor puro.
  */
+import type { AyudaDeuda, NegociacionDeuda } from './acreedores';
 import config from './config/deuda.json';
 import { durezaDe, pibNominal, type EconomiaPais } from './economia';
 import type { Sistema } from './motor';
@@ -176,6 +177,10 @@ export interface MercadoDeuda {
   programa: ProgramaCrisis | null;
   /** Recargo de la prima tras un impago (puntos), que se apaga. */
   recargo: number;
+  /** La última negociación con los acreedores (tarea f20-t3), o null. */
+  negociacion: NegociacionDeuda | null;
+  /** La última ayuda pedida (tarea f20-t3), o null. */
+  ayuda: AyudaDeuda | null;
   /** Lo que no cambia hasta otras fases: estabilidad política, déficit exterior y región. */
   estabilidad: number;
   deficitExterior: number;
@@ -235,6 +240,8 @@ export function mercadoInicial(
     rating: 'AAA',
     cerrado: false,
     programa: null,
+    negociacion: null,
+    ayuda: null,
     recargo: 0,
     estabilidad: de2010.estabilidad,
     deficitExterior: de2010.deficitExterior,
@@ -313,9 +320,13 @@ export function avanzarMercado(
   mercado.ajuste *= Math.pow(0.5, 1 / m.mesesAjuste);
   const extra = Math.min(c.maximo, contagio * vulnerabilidad(f));
   mercado.recargo *= Math.pow(0.5, 1 / k.mesesRecargo);
+  // Mientras llega una ayuda, respalda al país: la prima que se pide baja (tarea f20-t3).
+  const ayuda = mercado.ayuda;
+  const respaldo =
+    ayuda && ayuda.retirada === null && ayuda.tramosRestantes > 0 ? ayuda.respaldo : 0;
   const objetivo = Math.min(
     config.primaMaxima,
-    Math.exp(riesgoPais(f) + extra) + mercado.ajuste + mercado.recargo,
+    (Math.exp(riesgoPais(f) + extra) + mercado.ajuste + mercado.recargo) * (1 - respaldo),
   );
   mercado.prima = Math.max(0, mercado.prima + (objetivo - mercado.prima) * m.reaccionMensual);
   mercado.tipoMercado = tipoDeMercado(mercado.prima, economia.inflacionEsperada);
@@ -602,6 +613,11 @@ export function completarMercado(
   paises: Record<string, PaisParaMercado>,
 ): Partida {
   for (const [id, estado] of Object.entries(partida.paises)) {
+    // Lo que añadió la tarea f20-t3 (partidas de la v0.20).
+    if (estado.mercado && estado.mercado.ayuda === undefined) {
+      estado.mercado.ayuda = null;
+      estado.mercado.negociacion = null;
+    }
     if (estado.mercado !== undefined) continue;
     const pais = paises[id];
     estado.mercado =
@@ -614,5 +630,8 @@ export function completarMercado(
 
 /** ¿Le falta el mercado de su deuda a algún país? (Partidas de antes de la Fase 18.) */
 export function faltaMercado(partida: Pick<Partida, 'paises'>): boolean {
-  return Object.values(partida.paises).some((estado) => estado.mercado === undefined);
+  return Object.values(partida.paises).some(
+    (estado) =>
+      estado.mercado === undefined || (estado.mercado && estado.mercado.ayuda === undefined),
+  );
 }

@@ -522,6 +522,49 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Recomprar: el precio de la deuda hoy y cuánto se retira y se ahorra (con aviso si se paga por encima de su valor); como mucho, lo que hay en la tesorería.
 - Los cambios pendientes del Tesoro, con su día.
 
+**Negociar con los acreedores (tarea f20-t3; parámetros en `src/sim/config/deuda.json`, «acreedores»):**
+- **Qué se propone** (en la pestaña «Deuda y Tesoro»):
+  - más plazo: de 1 a 10 años más para lo que vence en los próximos 5;
+  - menos interés: de 0,25 a 5 puntos menos en el tipo medio;
+  - una quita: del 5 % al 50 % de la deuda.
+- **Lo que pierden los acreedores**, en «quita equivalente»:
+  - la quita, tal cual;
+  - el interés, los puntos por la vida media de la deuda;
+  - el plazo, lo que se retrasa por los años y por lo que el mercado pide de más sobre el tipo medio.
+- **Lo que aguantan:** nada con la prima por debajo de 3 puntos (no ven riesgo de impago); hasta un 40 % con la prima en el umbral del cierre.
+- **Su respuesta:**
+  - si les cuesta como mucho eso, aceptan;
+  - hasta el doble, contraofertan lo que aguantan;
+  - si no, rechazan.
+- **Tres rondas en el mes.** La pantalla ve la respuesta al momento; el motor la calcula igual.
+- **Un acuerdo** vale desde el mes siguiente. Sube la prima de después (15 puntos por cada unidad de quita equivalente, que se apagan con los años) y baja la confianza de las empresas.
+- **Sin acuerdo** (tres rechazos, romper o acabar el mes con la negociación abierta), la prima sube 1 punto.
+- No se vuelve a negociar en 12 meses, ni durante una crisis.
+
+**Pedir ayuda (tarea f20-t3; «ayudas», cifras ESTIMADAS para el juego):**
+- **Línea preventiva del FMI** (solo con los mercados abiertos):
+  - el 5 % del PIB al 3 %, a 5 años, en 24 tramos mensuales;
+  - pide bajar el déficit 1,5 puntos del PIB cada enero hasta el 3 %;
+  - mientras llega, la prima baja un 25 %.
+- **Fondo de rescate del euro**, para sus miembros (los 16 de 2010; Estonia desde 2011) desde el 9 de mayo de 2010:
+  - el 15 % del PIB al 4,5 %, a 10 años, en 24 tramos;
+  - pide bajar el déficit 2 puntos cada enero;
+  - la prima baja un 35 %.
+- **Préstamo de un país con superávit** (los 4 con más superávit y rating de A− o mejor):
+  - lo menor entre el 5 % del PIB y la mitad de su superávit de un año, a su tipo de mercado más 2 puntos, a 5 años y en 12 tramos;
+  - sin condiciones de déficit;
+  - la prima baja un 10 %.
+  - Su influencia política llegará con la diplomacia.
+- **Si no se cumple el objetivo de déficit:**
+  - se mira cada enero, con el presupuesto del año ya aprobado, y la primera vez al menos 6 meses después de pedirla;
+  - se retira lo que falta y la prima sube 2 puntos;
+  - quien la retira no vuelve a prestar en 2 años;
+  - el jugador recibe la alerta «Retiran la ayuda».
+- **La IA:**
+  - con la prima por encima del 60 % del umbral del cierre, pide ayuda: el fondo del euro si puede; si no, el FMI; si no, el país más barato;
+  - si tiene una ayuda con objetivo de déficit, recorta su presupuesto hasta cumplirlo;
+  - por encima del 75 %, propone 5 años más de plazo (solo si no se lo van a rechazar) y acepta la contraoferta.
+
 **El motor de los cambios (ajuste f19-a1; parámetros en `src/sim/config/presupuesto.json`, «hacienda»):**
 - **Empleados públicos de cada ministerio, ESTIMADOS** (no hay datos abiertos en el conjunto de 2010):
   - su gasto de personal entre un sueldo medio de 1 vez (países ricos) a 3 veces (países pobres) el PIB por activo;

@@ -25,6 +25,7 @@ import {
   type EconomiaPais,
   type NivelRenta,
 } from './economia';
+import type { FuenteAyuda, Propuesta } from './acreedores';
 import type { MercadoDeuda } from './deuda';
 import type { Sistema } from './motor';
 import type { EstadoPais, Partida as PartidaJuego } from './partida';
@@ -113,6 +114,9 @@ export type CambioPresupuesto =
   | { tipo: 'pensiones'; revalorizacion: number | null }
   | { tipo: 'prestacion'; prestacionParado: number }
   /** Tesoro (tarea f20-t1): emitir a mano, recomprar deuda o cambiar el Tesoro automático. */
+  // Con los acreedores (tarea f20-t3): un acuerdo de la negociación y pedir ayuda.
+  | { tipo: 'acuerdo'; propuesta: Propuesta }
+  | { tipo: 'ayuda'; fuente: FuenteAyuda; prestamista: string | null }
   // El Tesoro (tarea f20-t1). Sin reparto (null), el que tenga el Tesoro.
   | { tipo: 'emision'; importe: number; reparto: Reparto | null }
   | { tipo: 'recompra'; importe: number }
@@ -654,14 +658,29 @@ export function emitirDeuda(
 ): void {
   if (!(importe > 0)) return;
   const partes = repartoValido(reparto);
-  let intereses = presupuesto.deuda * presupuesto.tipoInteres;
   for (const p of PLAZOS) {
     const monto = importe * partes[p];
-    if (monto <= 0) continue;
-    const indice = Math.min(presupuesto.vencimientos.length, ts.plazos[p]) - 1;
-    presupuesto.vencimientos[indice] = (presupuesto.vencimientos[indice] ?? 0) + monto;
-    intereses += monto * presupuesto.tesoro.tipos[p];
+    if (monto > 0) {
+      emitirA(presupuesto, estado, monto, presupuesto.tesoro.tipos[p], ts.plazos[p]);
+    }
   }
+}
+
+/**
+ * Deuda nueva por `importe` a un tipo (tanto por uno) y un plazo (meses): entra en la tesorería,
+ * vence en su mes y mueve el tipo medio (la emisión del Tesoro y los préstamos de una ayuda).
+ */
+export function emitirA(
+  presupuesto: PresupuestoPais,
+  estado: { tesoreria: number },
+  importe: number,
+  tipo: number,
+  plazoMeses: number,
+): void {
+  if (!(importe > 0)) return;
+  const indice = Math.max(0, Math.min(presupuesto.vencimientos.length, plazoMeses) - 1);
+  presupuesto.vencimientos[indice] = (presupuesto.vencimientos[indice] ?? 0) + importe;
+  const intereses = presupuesto.deuda * presupuesto.tipoInteres + importe * tipo;
   presupuesto.deuda += importe;
   presupuesto.tipoInteres = presupuesto.deuda > 0 ? intereses / presupuesto.deuda : 0;
   estado.tesoreria += importe;

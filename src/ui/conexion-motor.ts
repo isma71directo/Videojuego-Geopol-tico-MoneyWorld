@@ -11,6 +11,7 @@ import { sistemaEconomia } from '../sim/economia';
 import { sistemaPresupuesto } from '../sim/presupuesto';
 import { sistemaMercado } from '../sim/deuda';
 import { sistemaHacienda } from '../sim/hacienda';
+import { sistemaAcreedores } from '../sim/acreedores';
 
 export interface ConexionMotor {
   enviar(orden: OrdenMotor): void;
@@ -68,6 +69,7 @@ export function conectarMotor(opciones: OpcionesConexion = {}): ConexionMotor {
         sistemaEconomia,
         sistemaPresupuesto,
         sistemaMercado,
+        sistemaAcreedores,
         sistemaHacienda,
         sistemaAlertas,
       ],

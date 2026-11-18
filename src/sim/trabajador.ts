@@ -10,6 +10,7 @@ import { sistemaEconomia } from './economia';
 import { sistemaPresupuesto } from './presupuesto';
 import { sistemaMercado } from './deuda';
 import { sistemaHacienda } from './hacienda';
+import { sistemaAcreedores } from './acreedores';
 
 /** Lo que se usa del ámbito del worker (sin depender de los tipos de la ventana). */
 const ambito = self as unknown as {
@@ -22,6 +23,7 @@ const sistemas = [
   sistemaEconomia,
   sistemaPresupuesto,
   sistemaMercado,
+  sistemaAcreedores,
   sistemaHacienda,
   sistemaAlertas,
 ];
