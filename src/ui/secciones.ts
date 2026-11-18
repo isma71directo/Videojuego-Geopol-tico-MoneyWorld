@@ -53,6 +53,8 @@ export interface Ministerio {
   faseAcciones: number | null;
   /** Si tiene infraestructuras propias (GDD 6.5). */
   infraestructuras: boolean;
+  /** Sus pestañas propias, detrás de «Presupuesto», con su fase (Economía: «Deuda y Tesoro»). */
+  pestanasExtra: Readonly<Record<string, number>>;
 }
 
 /** Prefijo de los elementos de la sub-barra que son ministerios. */
@@ -90,6 +92,7 @@ export const MINISTERIOS: ReadonlyMap<string, Ministerio> = new Map(
       icono: ministerio.icono as NombreIcono,
       faseAcciones: ministerio.faseAcciones,
       infraestructuras: ministerio.infraestructuras,
+      pestanasExtra: (ministerio as { pestanasExtra?: Record<string, number> }).pestanasExtra ?? {},
     },
   ]),
 );
@@ -143,7 +146,16 @@ export function pestanasDe(elemento: string): readonly PestanaSeccion[] {
   if (!ministerio) return SECCIONES.get(elemento)?.pestanas ?? [];
   return Object.entries(config.pestanasMinisterio)
     .filter(([id]) => id !== 'infraestructuras' || ministerio.infraestructuras)
-    .map(([id, fase]) => ({ id, fase: id === 'acciones' ? ministerio.faseAcciones : fase }));
+    .flatMap(([id, fase]): PestanaSeccion[] => [
+      { id, fase: id === 'acciones' ? ministerio.faseAcciones : fase },
+      // Las propias del ministerio, detrás de su presupuesto (tarea f20-t2).
+      ...(id === 'presupuesto'
+        ? Object.entries(ministerio.pestanasExtra).map(([extra, faseExtra]) => ({
+            id: extra,
+            fase: faseExtra,
+          }))
+        : []),
+    ]);
 }
 
 function avisoFase(fase: number | null): HTMLElement {

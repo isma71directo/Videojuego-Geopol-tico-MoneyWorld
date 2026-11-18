@@ -1,0 +1,129 @@
+/* La pestaña «Deuda y Tesoro» de Economía y Hacienda (tarea f20-t2). */
+.deuda-tesoro {
+  display: grid;
+  gap: 10px;
+}
+
+.deuda-tesoro .economia__cabecera .icono {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: -3px;
+  color: var(--acento);
+}
+
+.deuda-tesoro__rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.deuda-tesoro__tipos td,
+.deuda-tesoro__tipos th {
+  text-align: right;
+}
+
+.deuda-tesoro__tipos tr > :first-child {
+  text-align: left;
+}
+
+/* (Sin la columna destacada de la previsión del presupuesto.) */
+.deuda-tesoro__tipos tr > :last-child {
+  background: transparent;
+}
+
+.deuda-tesoro__mercados[data-abierto='false'],
+.deuda-tesoro__peligro {
+  margin: 0;
+  padding: 6px 10px;
+  border-left: 3px solid var(--peligro);
+  border-radius: var(--radio-pequeno);
+  background: color-mix(in srgb, var(--peligro) 10%, transparent);
+  color: var(--texto);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* El calendario de vencimientos: una barra fina por año, con su cifra. */
+.deuda-tesoro__calendario {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.deuda-tesoro__calendario li {
+  display: grid;
+  grid-template-columns: 3.2em 1fr 7.5em;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px;
+  border-radius: var(--radio-pequeno);
+}
+
+.deuda-tesoro__calendario li:hover {
+  background: color-mix(in srgb, var(--acento) 8%, transparent);
+}
+
+.deuda-tesoro__anio {
+  color: var(--texto-suave);
+}
+
+.deuda-tesoro__barra {
+  height: 10px;
+  border-radius: 0 4px 4px 0;
+  background: var(--borde);
+  overflow: hidden;
+}
+
+.deuda-tesoro__relleno {
+  display: block;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  background: var(--acento);
+}
+
+.deuda-tesoro__cifra {
+  text-align: right;
+}
+
+/* Cuánto emitir o recomprar: la etiqueta encima y el campo entre sus botones. */
+.deuda-tesoro__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.deuda-tesoro__etiqueta {
+  flex: 1 1 100%;
+  font-weight: 600;
+}
+
+.deuda-tesoro__importe {
+  width: 120px;
+  padding: 6px 8px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.deuda-tesoro__unidad {
+  color: var(--texto-suave);
+}
+
+.deuda-tesoro__acciones {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}

@@ -539,10 +539,6 @@
           "partidas": {
             "titulo": "Ingresos y gastos",
             "texto": "Ingresos y gastos por partida y ministerio con deslizadores, previsión a 12 meses y comparación con el año anterior."
-          },
-          "deuda": {
-            "titulo": "Deuda",
-            "texto": "Déficit, emisión de bonos, intereses, prima de riesgo y rating; impago y ayuda del FMI."
           }
         }
       },
@@ -837,6 +833,10 @@
           "infraestructuras": {
             "titulo": "Infraestructuras",
             "texto": "Sus infraestructuras por región ({infraestructuras}), su estado y su cola de obras."
+          },
+          "deuda": {
+            "titulo": "Deuda y Tesoro",
+            "texto": "La tesorería, el calendario de vencimientos, emitir y recomprar deuda, el Tesoro automático y la negociación con los acreedores."
           }
         }
       },
@@ -1456,6 +1456,51 @@
       "aplicar": "Aplicar los cambios",
       "ordenado": "Ordenado: {n} cambios, cada uno cuando le toca (ver «Cambios pendientes»).",
       "nota": "* Estimado: no hay datos abiertos de empleados públicos por ministerio; salen del gasto de personal y de un sueldo medio según el nivel de renta."
+    },
+    "tesoro": {
+      "titulo": "Deuda y Tesoro",
+      "deuda": "Deuda pública",
+      "tipoMedio": "Tipo medio",
+      "tipoMedioValor": "{tipo} · {intereses} de intereses al año",
+      "vidaMedia": "Vida media",
+      "anio": "{n} año",
+      "anios": "{n} años",
+      "tesoreria": "Tesorería",
+      "tesoreriaValor": "{dinero} · {meses} meses de gasto",
+      "mercado": "Prima de riesgo de {prima} puntos",
+      "tiposTitulo": "Lo que pide hoy el mercado",
+      "plazo": "Plazo",
+      "tipoHoy": "Tipo",
+      "vence": "Vence en",
+      "plazos": {
+        "letras": "Letras a 1 año",
+        "bonos5": "Bonos a 5 años",
+        "bonos10": "Bonos a 10 años"
+      },
+      "abierto": "Los mercados prestan: las letras salen más baratas, pero hay que renovarlas cada año; los bonos, más caros, dan años de calma.",
+      "cerrado": "Los mercados no prestan (la prima pasa de {umbral} puntos): solo se puede emitir con un rescate.",
+      "calendario": "Calendario de vencimientos",
+      "calendarioNota": "Lo que vence cada año de la deuda emitida. En los próximos 12 meses vencen {dinero}: el Tesoro tiene que pagarlo o renovarlo.",
+      "automaticoTitulo": "Tesoro automático",
+      "automatico": "Tesoro automático",
+      "automaticoAyuda": "Emite lo que falta para tener un mes de gasto en la tesorería, con este reparto entre plazos, y si sobra mucho paga antes la deuda que vence antes.",
+      "apagadoAviso": "Apagado, el Tesoro solo emite cuando tú lo mandas: si la tesorería se acaba, el país deja de pagar (impago).",
+      "parte": "{n} %",
+      "repartoResumen": "Reparto: {letras} letras, {bonos5} bonos a 5 años y {bonos10} a 10 años · al {tipo} de media, a {vida}",
+      "guardar": "Aplicar al Tesoro",
+      "emitirTitulo": "Emitir deuda",
+      "emitir": "Cuánto emitir",
+      "emitirTexto": "Con el reparto de arriba, al {tipo} de hoy: {intereses} de intereses al año. La subasta se hace el {fecha} (el tipo de ese día puede cambiar).",
+      "emitirVacio": "Elige cuánto emitir: el dinero entra en la tesorería y la deuda sube lo mismo.",
+      "botonEmitir": "Emitir",
+      "recomprarTitulo": "Recomprar deuda",
+      "precio": "La deuda se compra hoy al {precio} de lo que vale: por debajo del 100 % si el mercado pide más de lo que paga, por encima si pide menos.",
+      "recomprar": "Cuánto gastar",
+      "recomprarTexto": "Se retiran {retirada} de deuda y se ahorran {ahorro} de intereses al año, el {fecha}. El dinero sale de la tesorería.",
+      "recomprarCaro": "Cuidado: se paga por encima de lo que se debe. Se retiran solo {retirada} de deuda (y {ahorro} de intereses al año), el {fecha}.",
+      "recomprarVacio": "Elige cuánto gastar de la tesorería en recomprar deuda.",
+      "botonRecomprar": "Recomprar",
+      "ordenado": "Ordenado: vale desde el mes que viene."
     }
   },
   "hojaDeRuta": {
@@ -1683,7 +1728,7 @@
     },
     "economia": {
       "titulo": "Economía de un país",
-      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos (también el paro y la inflación), producción de los siete sectores y los gráficos del PIB y del paro y la inflación, que se dibujan al aparecer y laten con cada dato nuevo. Debajo, su presupuesto, como en Gobierno › Presupuesto: ingresos, gastos, déficit, deuda, de dónde sale el dinero y en qué se gasta, y cada ministerio por dentro. Pulsa «Avanzar un año» para ver cómo evolucionan.",
+      "nota": "Lo que se ve en la pestaña Economía de la ficha de cada país y en Economía › Economía, con los datos reales de 2010: indicadores con sus iconos (también el paro y la inflación), producción de los siete sectores y los gráficos del PIB y del paro y la inflación, que se dibujan al aparecer y laten con cada dato nuevo. Debajo, su presupuesto, como en Gobierno › Presupuesto: ingresos, gastos, déficit, deuda, de dónde sale el dinero y en qué se gasta, y cada ministerio por dentro. Al final, la pestaña «Deuda y Tesoro» de Economía y Hacienda: la tesorería, lo que pide el mercado por cada plazo, el calendario de vencimientos, el Tesoro automático, emitir y recomprar. Pulsa «Avanzar un año» para ver cómo evolucionan.",
       "avanzar": "Avanzar un año",
       "reiniciar": "Volver a 2010"
     },

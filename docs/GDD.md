@@ -513,6 +513,15 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Avisos al jugador:** «Sin dinero en la tesorería» (grave, para la partida) y «Queda poca tesorería».
 - **Partidas guardadas:** formato 9; las de la v0.20 se completan al cargar con el calendario de 2010 y el Tesoro automático.
 
+**La pestaña «Deuda y Tesoro» (tarea f20-t2):** en la ventana del Ministerio de Economía y Hacienda, detrás de «Presupuesto» (Gobierno › Presupuesto ya no anuncia una pestaña de deuda).
+- Arriba: la deuda, su tipo medio y lo que cuesta al año, la vida media, la tesorería (en dinero y en meses de gasto), el rating y la prima.
+- Lo que pide hoy el mercado por cada plazo y si los mercados prestan.
+- El calendario de vencimientos: una barra por año, con lo que vence en los próximos 12 meses.
+- El Tesoro automático (casilla, con el aviso del impago si se apaga) y su reparto entre plazos en %, con el tipo medio y la vida media de lo que emitiría.
+- Emitir: cuánto (en millones de $, con botones de ± 1.000 M$), sus intereses al año y el día de la subasta (el mes siguiente).
+- Recomprar: el precio de la deuda hoy y cuánto se retira y se ahorra (con aviso si se paga por encima de su valor); como mucho, lo que hay en la tesorería.
+- Los cambios pendientes del Tesoro, con su día.
+
 **El motor de los cambios (ajuste f19-a1; parámetros en `src/sim/config/presupuesto.json`, «hacienda»):**
 - **Empleados públicos de cada ministerio, ESTIMADOS** (no hay datos abiertos en el conjunto de 2010):
   - su gasto de personal entre un sueldo medio de 1 vez (países ricos) a 3 veces (países pobres) el PIB por activo;

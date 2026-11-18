@@ -31,6 +31,7 @@ import {
   refrescarElemento,
 } from './secciones';
 import { presupuestoMinisterio, refrescarPresupuestosMinisterio } from './presupuesto-ministerio';
+import { deudaTesoro, refrescarDeudaTesoro } from './deuda-tesoro';
 import { MINISTERIOS } from '../sim/presupuesto';
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
@@ -439,6 +440,7 @@ export function abrirPantallaMapa(
           refrescarPresupuestoEnVivo();
           refrescarEditoresPresupuesto();
           refrescarPresupuestosMinisterio();
+          refrescarDeudaTesoro();
           void guardarAutomatico(mensaje.partida);
         } else if (mensaje.peticion !== undefined) {
           esperando.get(mensaje.peticion)?.(mensaje.partida);
@@ -677,6 +679,16 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
           }).elemento,
       );
     }
+    // Economía y Hacienda › Deuda y Tesoro (tarea f20-t2).
+    ponerContenidoPestana(
+      elementoDeMinisterio('economia'),
+      'deuda',
+      () =>
+        deudaTesoro({
+          fuente: () => fuentePresupuesto(partida.jugador.paisId),
+          ordenar: (cambios) => motor?.enviar({ tipo: 'cambiosPresupuesto', cambios }),
+        }).elemento,
+    );
   }
   const alTeclearSecciones = (evento: KeyboardEvent): void => {
     secciones.alTeclear(evento);
@@ -1111,6 +1123,7 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
     for (const ministerio of MINISTERIOS) {
       ponerContenidoPestana(elementoDeMinisterio(ministerio), 'presupuesto', null);
     }
+    ponerContenidoPestana(elementoDeMinisterio('economia'), 'deuda', null);
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.1",
-  "actualizado": "2026-11-18T09:33:21Z",
+  "actualizado": "2026-11-18T09:40:15Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "f20-t1 hecha: la deuda se emite en letras a 1 año y bonos a 5 y 10 años, cada plazo con su tipo; calendario de vencimientos de 10 años; Tesoro automático (se puede apagar) que emite lo que falta para un mes de gasto y paga antes si sobra; emitir y recomprar a mano; si la tesorería se acaba, impago, con avisos al jugador; partidas en formato 9.",
-    "siguientePaso": "f20-t2: pestaña «Deuda y Tesoro» en la ventana del Ministerio de Economía y Hacienda (tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático).",
+    "resumen": "f20-t2 hecha: pestaña «Deuda y Tesoro» en la ventana del Ministerio de Economía y Hacienda (deuda, tipo medio, vida media, tesorería, rating; tipos de cada plazo; calendario de vencimientos por año; Tesoro automático y su reparto; emitir y recomprar; cambios pendientes), también en la galería. f20-t1 ya estaba: la deuda por emisiones en el motor.",
+    "siguientePaso": "f20-t3: negociar con los acreedores por rondas (más plazo, menos interés o una quita; aceptan, rechazan o contraofertan) y pedir ayuda (línea preventiva del FMI, fondo de la zona euro desde mayo de 2010, préstamo de un país con superávit), también la IA.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1213,20 +1213,20 @@
           "titulo": "La deuda por emisiones, en el motor: letras a 1 año y bonos a 5 y 10 años con su tipo, calendario de vencimientos, Tesoro automático que se puede apagar, emitir a mano y recomprar; si se acaba la tesorería, impago",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/1fe7fba02f6068b7946db292441610641db0d499"
         },
         {
           "id": "f20-t2",
           "titulo": "Pestaña «Deuda y Tesoro» en el Ministerio de Economía y Hacienda: tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático",
-          "estado": "en-curso",
+          "estado": "hecha",
           "fecha": "2026-11-18",
           "enlace": ""
         },
         {
           "id": "f20-t3",
           "titulo": "Negociar con los acreedores por rondas (oferta y contraoferta) y pedir ayuda (línea preventiva del FMI, fondo de la zona euro o un país con superávit); también la IA",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "en-curso",
+          "fecha": "2026-11-18",
           "enlace": ""
         },
         {
