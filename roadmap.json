@@ -1,12 +1,12 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.0",
-  "actualizado": "2026-11-18T08:50:16Z",
+  "actualizado": "2026-11-18T08:56:13Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Ajustes de la Fase 19 (v0.20.1, en el PR #39): f19-a1 y f19-a2 hechos. f19-a2: Gobierno › Presupuesto es la vista general, con resumen, previsión a 12 meses, ajuste general de todo el gasto (para el año que viene o extraordinario, con atajos), cambios pendientes con su fecha y la lista de ministerios (solo ver; un clic abre su ventana).",
-    "siguientePaso": "f19-a3: la pestaña «Presupuesto» de cada ministerio, como en Power & Revolution, y cerrar la v0.20.1.",
+    "resumen": "Ajustes de la Fase 19 hechos (f19-a1 a f19-a3). f19-a3: la pestaña «Presupuesto» de cada ministerio, con empleados, sueldos, puestos nuevos o despidos, inversión, compras y programas en cifras y en %, cada cambio con su plazo; en Trabajo y Seguridad Social, pensiones y prestación por parado.",
+    "siguientePaso": "Cerrar la v0.20.1 en el mismo PR #39.",
     "pendienteDelJugador": []
   },
   "etapas": [
@@ -1184,15 +1184,15 @@
           "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6e6131d"
         },
         {
           "id": "f19-a3",
           "titulo": "Pestaña «Presupuesto» de cada ministerio, como en Power & Revolution: empleados, sueldos, puestos nuevos o despidos, inversión, compras y programas, en cifras y en %; pensiones y prestación por desempleo en Trabajo y Seguridad Social",
           "version": "0.20.1",
           "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
-          "estado": "pendiente",
-          "fecha": null,
+          "estado": "hecha",
+          "fecha": "2026-11-18",
           "enlace": ""
         }
       ]

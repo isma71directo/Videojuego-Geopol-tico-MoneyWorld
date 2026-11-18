@@ -288,3 +288,70 @@
   color: var(--texto-suave);
   white-space: nowrap;
 }
+
+/* Pestaña «Presupuesto» de cada ministerio (ajuste f19-a3). */
+.presupuesto-ministerio {
+  display: grid;
+  gap: 10px;
+}
+
+.presupuesto-ministerio__empleados,
+.presupuesto-ministerio__total {
+  margin: 0;
+  font-size: 14px;
+}
+
+.presupuesto-ministerio__total {
+  font-weight: 600;
+}
+
+.presupuesto-ministerio__nota {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.presupuesto-ministerio__fila-puestos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.presupuesto-ministerio__fila-puestos > span {
+  flex: 1 1 100%;
+  font-weight: 600;
+}
+
+.presupuesto-ministerio__puestos {
+  width: 120px;
+  padding: 6px 8px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.boton--pequeno {
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.presupuesto-ministerio .deslizador {
+  position: relative;
+}
+
+.presupuesto-ministerio .deslizador > .icono {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  width: 16px;
+  height: 16px;
+  color: var(--texto-suave);
+}

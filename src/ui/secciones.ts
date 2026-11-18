@@ -232,6 +232,28 @@ export function ponerContenido(elemento: string, contenido: (() => HTMLElement) 
   else contenidosReales.delete(elemento);
 }
 
+/**
+ * Pestañas con contenido de verdad dentro de una ventana con varias (ajuste f19-a3: la pestaña
+ * «Presupuesto» de cada ministerio): en lugar del hueco «llega en la fase N», lo que dé la función.
+ */
+const pestanasReales = new Map<string, () => HTMLElement>();
+
+/** Pone (o quita, con `null`) el contenido de verdad de una pestaña de un elemento. */
+export function ponerContenidoPestana(
+  elemento: string,
+  pestana: string,
+  contenido: (() => HTMLElement) | null,
+): void {
+  const clave = `${elemento}/${pestana}`;
+  if (contenido) pestanasReales.set(clave, contenido);
+  else pestanasReales.delete(clave);
+}
+
+/** El contenido de una pestaña: el de verdad, si lo tiene, o el hueco de su fase. */
+function contenidoDe(elemento: string, pestana: PestanaSeccion): HTMLElement {
+  return pestanasReales.get(`${elemento}/${pestana.id}`)?.() ?? contenidoPestana(elemento, pestana);
+}
+
 /** Vuelve a pintar, si está abierta, la ventana de un elemento con contenido de verdad. */
 export function refrescarElemento(elemento: string): void {
   const contenido = contenidosReales.get(elemento);
@@ -250,12 +272,12 @@ export function abrirElemento(elemento: string): Ventana | null {
   const contenido = real
     ? real()
     : pestanas.length === 1 && unica
-      ? contenidoPestana(elemento, unica)
+      ? contenidoDe(elemento, unica)
       : crearPestanas(
           pestanas.map((pestana) => ({
             id: pestana.id,
             titulo: tituloPestana(elemento, pestana.id),
-            contenido: () => [contenidoPestana(elemento, pestana)],
+            contenido: () => [contenidoDe(elemento, pestana)],
           })),
           { etiqueta: titulo },
         ).elemento;

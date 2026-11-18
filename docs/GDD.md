@@ -506,6 +506,17 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
   - la lista de los ministerios con su gasto, su parte del total y sus empleados (solo para ver): un clic abre su ventana.
 - Sustituye al editor con un deslizador por ministerio de la tarea f19-t2.
 
+**La pestaña «Presupuesto» de cada ministerio (ajuste f19-a3; también en Presidencia):**
+- Arriba, su gasto al año y su parte del gasto del Estado, sus empleados públicos (estimados) y su sueldo medio.
+- **Personal:**
+  - puestos nuevos o despidos, en número, con botones de 1 000 en 1 000. Dice lo que cuestan o ahorran al año, la indemnización de los despidos y el día en que valen (los puestos nuevos, cuando acaba la oposición);
+  - la subida de los sueldos, del −10 % al +10 %, con el sueldo medio que quedaría.
+- **Inversión, compras y mantenimiento, y programas y ayudas:** del −50 % al +50 %, cada uno con su dinero.
+- **Cuándo:** para el año que viene (desde el 1 de enero) o extraordinario (desde el mes siguiente).
+- **En Trabajo y Seguridad Social, además:** la subida de las pensiones de cada enero (o con el IPC) y la prestación de cada parado.
+- El gasto con los cambios, «Aplicar los cambios» (con el sello y su sonido) y los cambios pendientes del ministerio, con su día.
+- En la galería, la de Trabajo y Seguridad Social.
+
 
 ### 6.3 Impuestos
 

@@ -37,6 +37,7 @@ import { bloqueEconomia } from '../src/ui/economia-en-vivo';
 import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
 import { distintivoRating } from '../src/ui/rating';
 import { editorPresupuesto } from '../src/ui/presupuesto-editable';
+import { presupuestoMinisterio } from '../src/ui/presupuesto-ministerio';
 import { fechaDelMes, haciendaDelMes } from '../src/sim/hacienda';
 import type { CambioPresupuesto } from '../src/sim/presupuesto';
 import {
@@ -491,12 +492,24 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
       },
     });
   let editor = crearEditor();
+  // Y la pestaña «Presupuesto» de un ministerio (ajuste f19-a3): Trabajo y Seguridad Social, con
+  // las pensiones y el paro.
+  const crearMinisterio = () =>
+    presupuestoMinisterio({
+      ministerio: 'trabajo',
+      fuente: () => ({ presupuesto, economia: actual, fecha }),
+      ordenar: (cambios) => {
+        pendientes.push(...cambios);
+      },
+    });
+  let ministerio = crearMinisterio();
   const contenedor = el(
     'div',
     { class: 'galeria__economia' },
     bloque.elemento,
     bloqueP.elemento,
     editor.elemento,
+    ministerio.elemento,
   );
   /** Rehace los bloques (con sus gráficos animados) al cambiar de país o volver a 2010. */
   const rehacer = (): void => {
@@ -504,7 +517,13 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
     bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
     pendientes = [];
     editor = crearEditor();
-    contenedor.replaceChildren(bloque.elemento, bloqueP.elemento, editor.elemento);
+    ministerio = crearMinisterio();
+    contenedor.replaceChildren(
+      bloque.elemento,
+      bloqueP.elemento,
+      editor.elemento,
+      ministerio.elemento,
+    );
   };
   const boton = (texto: string, hacer: () => void): HTMLButtonElement => {
     const b = el('button', { class: 'boton', type: 'button' }, texto);
@@ -555,6 +574,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
         bloque.actualizar();
         bloqueP.actualizar();
         editor.actualizar();
+        ministerio.actualizar();
       }),
       boton(t('galeria.economia.reiniciar'), () => {
         empezar();
