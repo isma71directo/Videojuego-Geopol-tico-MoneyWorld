@@ -19,6 +19,7 @@ import {
   type DefinicionEfecto,
   type Efecto,
 } from './efectos';
+import { negociar, type AccionNegociacion } from './acreedores';
 import type { PresupuestoDecidido } from './hacienda';
 import type { CambioPresupuesto } from './presupuesto';
 import { avanzarPartida, type Partida } from './partida';
@@ -60,6 +61,8 @@ export type OrdenMotor =
   | { tipo: 'presupuesto'; presupuesto: PresupuestoDecidido }
   /** Cambios del presupuesto de los ministerios (ajuste f19-a1): cada uno vale cuando le toca. */
   | { tipo: 'cambiosPresupuesto'; cambios: CambioPresupuesto[] }
+  /** Negociar con los acreedores (tarea f20-t3): se responde al momento. */
+  | { tipo: 'negociar'; accion: AccionNegociacion }
   | { tipo: 'terminar' };
 
 /** El estado de la partida que necesita la pantalla. */
@@ -237,6 +240,14 @@ export function crearMotor(opciones: OpcionesMotor = {}): Motor {
             ...structuredClone(orden.cambios),
           ],
         };
+        return [];
+      }
+      if (orden.tipo === 'negociar') {
+        if (!partida) return [];
+        const pais = partida.paises[partida.jugador.paisId];
+        if (pais?.mercado && pais.presupuesto) {
+          negociar(pais.mercado, pais.presupuesto, structuredClone(orden.accion), partida.fecha);
+        }
         return [];
       }
       if (orden.tipo === 'programar') {

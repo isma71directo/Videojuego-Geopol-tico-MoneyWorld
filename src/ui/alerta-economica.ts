@@ -7,7 +7,7 @@
 import { icono, type NombreIcono } from '../av/iconos';
 import type { Efecto } from '../av/sonido';
 import { formatearFechaLarga } from '../compartido/fechas';
-import { porcentaje, puntos } from '../compartido/formato';
+import { dineroConSigno, porcentaje, puntos } from '../compartido/formato';
 import { t } from '../i18n';
 import type { TipoAlerta } from '../sim/alertas';
 import type { Suceso } from '../sim/sucesos';
@@ -26,6 +26,9 @@ export const ICONO_ALERTA: Record<TipoAlerta, NombreIcono> = {
   crisisDeuda: 'deuda',
   ratingBaja: 'rating',
   ratingSube: 'rating',
+  sinTesoreria: 'tesoreria',
+  tesoreriaBaja: 'tesoreria',
+  ayudaRetirada: 'deuda',
 };
 
 /** El sonido propio de cada alerta. */
@@ -38,10 +41,26 @@ export const SONIDO_ALERTA: Record<TipoAlerta, Efecto> = {
   crisisDeuda: 'alertaCrisisDeuda',
   ratingBaja: 'alertaRatingBaja',
   ratingSube: 'alertaRatingSube',
+  sinTesoreria: 'alertaSinTesoreria',
+  tesoreriaBaja: 'alertaTesoreriaBaja',
+  ayudaRetirada: 'alertaAyudaRetirada',
 };
 
 /** Las alertas cuyo dato es la prima de riesgo (puntos), no un tanto por uno. */
 const EN_PUNTOS: ReadonlySet<TipoAlerta> = new Set(['crisisDeuda', 'ratingBaja', 'ratingSube']);
+/** Las alertas cuyo dato es la tesorería (dólares). */
+const EN_DINERO: ReadonlySet<TipoAlerta> = new Set([
+  'sinTesoreria',
+  'tesoreriaBaja',
+  'ayudaRetirada',
+]);
+
+/** El dato de una alerta, con su formato. */
+function datoDe(tipo: TipoAlerta, valor: number): string {
+  if (EN_PUNTOS.has(tipo)) return puntos(valor);
+  if (EN_DINERO.has(tipo)) return dineroConSigno(valor);
+  return porcentaje(valor * 100);
+}
 
 /** Cuánto se queda a la vista una tarjeta (ms). */
 export const DURACION_ALERTA = 9000;
@@ -57,7 +76,8 @@ export function traducirSuceso(suceso: Suceso): Suceso {
     titulo: t(`juego.alertas.${alerta.tipo}.titulo`),
     texto: t(`juego.alertas.${alerta.tipo}.texto`, {
       // (Las de la deuda traen la prima de riesgo, en puntos, y las del rating, la nota nueva.)
-      valor: EN_PUNTOS.has(alerta.tipo) ? puntos(alerta.valor) : porcentaje(alerta.valor * 100),
+      // (La tesorería, en dinero.)
+      valor: datoDe(alerta.tipo, alerta.valor),
       rating: alerta.rating ? textoRating(alerta.rating) : '',
     }),
   };

@@ -54,6 +54,7 @@ export function paisCompleto(
       haciendaDelMes(presupuesto, economia, mercado, {
         esJugador: opciones.jugador ?? false,
         fecha: fechaDelMes(economia.meses),
+        estado,
       });
     }
   };

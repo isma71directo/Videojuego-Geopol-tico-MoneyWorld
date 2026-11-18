@@ -1,13 +1,15 @@
 {
   "$schema": "./roadmap.schema.json",
-  "versionActual": "0.20.1",
-  "actualizado": "2026-11-18T09:01:51Z",
-  "faseActiva": "fase-20",
+  "versionActual": "0.21.0",
+  "actualizado": "2026-11-18T10:03:12Z",
+  "faseActiva": "fase-21",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 cerrada como v0.20.1 (PR #40; la v0.20.0 ya se fusionó en el #39): presupuesto jugable, con la vista general en Gobierno › Presupuesto y el presupuesto de cada ministerio en su ventana, como en Power & Revolution (empleados, sueldos, puestos nuevos, inversión, compras y programas), y cada cambio con su plazo.",
-    "siguientePaso": "Cuando el jugador fusione el PR #40: presentar el plan de la Fase 20 (deuda y Tesoro jugables) y preguntarle las decisiones de diseño.",
-    "pendienteDelJugador": ["Probar la v0.20.1 en el PC (ver el PR #40) y fusionarlo"]
+    "resumen": "Fase 20 cerrada (v0.21.0): la deuda por emisiones y el Tesoro, la pestaña «Deuda y Tesoro» en Economía y Hacienda, negociar con los acreedores por rondas, pedir ayuda (FMI, fondo del euro, países con superávit) y su audiovisual. PR #41 abierto para que el jugador lo pruebe.",
+    "siguientePaso": "Cuando el jugador fusione el PR #41: presentar el plan de la Fase 21 (impuestos: modelo y tipos) y preguntarle las decisiones de diseño.",
+    "pendienteDelJugador": [
+      "Probar la v0.21.0 en el PC (ver «Prueba en el PC» del PR #41) y fusionarlo"
+    ]
   },
   "etapas": [
     {
@@ -1206,35 +1208,35 @@
       "dependeDe": ["fase-19"],
       "hechoCuando": "La deuda se gestiona a mano y la IA también lo hace",
       "pruebaJugador": "Con Grecia en 2010, alargar los plazos, pedir la línea preventiva y ver si evita la crisis",
-      "estado": "pendiente",
+      "estado": "hecha",
       "tareas": [
         {
           "id": "f20-t1",
-          "titulo": "La deuda por emisiones: letras a 1 año y bonos a 5 y 10 años, con su tipo y su vencimiento; calendario de vencimientos",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "La deuda por emisiones, en el motor: letras a 1 año y bonos a 5 y 10 años con su tipo, calendario de vencimientos, Tesoro automático que se puede apagar, emitir a mano y recomprar; si se acaba la tesorería, impago",
+          "estado": "hecha",
+          "fecha": "2026-11-18",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/1fe7fba02f6068b7946db292441610641db0d499"
         },
         {
           "id": "f20-t2",
-          "titulo": "Ventana «Deuda y Tesoro»: tesorería, vencimientos, emitir a mano, amortizar y recomprar; si se acaba la tesorería, impago",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Pestaña «Deuda y Tesoro» en el Ministerio de Economía y Hacienda: tesorería, calendario de vencimientos, emitir, recomprar y el Tesoro automático",
+          "estado": "hecha",
+          "fecha": "2026-11-18",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/8b19862"
         },
         {
           "id": "f20-t3",
-          "titulo": "Negociar con los acreedores (plazo, interés o quita) y pedir ayuda antes de la crisis (línea preventiva del FMI o préstamo de otros países); también la IA",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "titulo": "Negociar con los acreedores por rondas (oferta y contraoferta) y pedir ayuda (línea preventiva del FMI, fondo de la zona euro o un país con superávit); también la IA",
+          "estado": "hecha",
+          "fecha": "2026-11-18",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b8542e4"
         },
         {
           "id": "f20-t4",
           "titulo": "Audiovisual: calendario de vencimientos animado y sonidos de la subasta y de la negociación",
-          "estado": "pendiente",
-          "fecha": null,
-          "enlace": ""
+          "estado": "hecha",
+          "fecha": "2026-11-18",
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/e2ddcc9"
         }
       ]
     },
@@ -4846,6 +4848,17 @@
         "Cada cambio vale cuando le toca: subidas anuales en enero, extraordinarias el mes siguiente, puestos nuevos tras la oposición (sacan gente del paro) y despidos con indemnización",
         "Gobierno › Presupuesto, la vista general: resumen, previsión, ajuste general de todo el gasto, cambios pendientes y lista de ministerios que abre cada uno",
         "Pensiones y prestación por desempleo, en Trabajo y Seguridad Social"
+      ]
+    },
+    {
+      "version": "0.21.0",
+      "fecha": "2026-11-18",
+      "cambios": [
+        "La deuda por emisiones: letras a 1 año y bonos a 5 y a 10 años, cada plazo con su tipo; calendario de vencimientos de 10 años; Tesoro automático que se puede apagar (si la tesorería se acaba, el país deja de pagar); emitir y recomprar a mano",
+        "Pestaña «Deuda y Tesoro» en la ventana del Ministerio de Economía y Hacienda (decisión del jugador): tesorería, tipos de cada plazo, calendario de vencimientos animado, Tesoro automático y su reparto, emitir y recomprar",
+        "Negociar con los acreedores por rondas de oferta y contraoferta: más plazo, menos interés o una quita; un acuerdo o una ruptura suben la prima de después",
+        "Pedir ayuda antes de la crisis: la línea preventiva del FMI, el fondo de rescate del euro (desde mayo de 2010) y préstamos de países con superávit, con sus condiciones; si no se cumple el objetivo de déficit, se retira. También la IA",
+        "Alertas «Sin dinero en la tesorería», «Queda poca tesorería» y «Retiran la ayuda»; sonidos de la subasta y de la negociación"
       ]
     }
   ]

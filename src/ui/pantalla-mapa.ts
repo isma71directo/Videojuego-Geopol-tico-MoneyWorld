@@ -31,6 +31,9 @@ import {
   refrescarElemento,
 } from './secciones';
 import { presupuestoMinisterio, refrescarPresupuestosMinisterio } from './presupuesto-ministerio';
+import { deudaTesoro, refrescarDeudaTesoro } from './deuda-tesoro';
+import { ponerNombresDePaises } from './cambios-presupuesto';
+import { ofertasDeAyuda } from '../sim/acreedores';
 import { MINISTERIOS } from '../sim/presupuesto';
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
@@ -295,6 +298,8 @@ export function abrirPantallaMapa(
   let guardadaHasta = partida ? horaAbsoluta(partida) : 0;
   const hayCambios = (): boolean => partida !== null && horaAbsoluta(partida) !== guardadaHasta;
   const nombreDe = (id: string): string => conjunto?.paises[id]?.nombre ?? id;
+  // (Para «préstamo de China» en los cambios del Tesoro: tarea f20-t3.)
+  ponerNombresDePaises((id) => conjunto?.paises[id]?.nombre);
   /** Copias de la partida pedidas al motor para guardarlas. */
   let peticiones = 0;
   const esperando = new Map<number, (copia: Partida) => void>();
@@ -439,6 +444,7 @@ export function abrirPantallaMapa(
           refrescarPresupuestoEnVivo();
           refrescarEditoresPresupuesto();
           refrescarPresupuestosMinisterio();
+          refrescarDeudaTesoro();
           void guardarAutomatico(mensaje.partida);
         } else if (mensaje.peticion !== undefined) {
           esperando.get(mensaje.peticion)?.(mensaje.partida);
@@ -677,6 +683,19 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
           }).elemento,
       );
     }
+    // Economía y Hacienda › Deuda y Tesoro (tarea f20-t2).
+    ponerContenidoPestana(
+      elementoDeMinisterio('economia'),
+      'deuda',
+      () =>
+        deudaTesoro({
+          fuente: () => fuentePresupuesto(partida.jugador.paisId),
+          ordenar: (cambios) => motor?.enviar({ tipo: 'cambiosPresupuesto', cambios }),
+          // Negociar y pedir ayuda (tarea f20-t3).
+          enviarNegociacion: (accion) => motor?.enviar({ tipo: 'negociar', accion }),
+          ofertas: () => ofertasDeAyuda(partida.jugador.paisId, partida.paises, partida.fecha),
+        }).elemento,
+    );
   }
   const alTeclearSecciones = (evento: KeyboardEvent): void => {
     secciones.alTeclear(evento);
@@ -1111,6 +1130,7 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
     for (const ministerio of MINISTERIOS) {
       ponerContenidoPestana(elementoDeMinisterio(ministerio), 'presupuesto', null);
     }
+    ponerContenidoPestana(elementoDeMinisterio('economia'), 'deuda', null);
     // Las ventanas de las secciones no siguen abiertas fuera del mapa.
     cerrarVentanas();
     desconectar();

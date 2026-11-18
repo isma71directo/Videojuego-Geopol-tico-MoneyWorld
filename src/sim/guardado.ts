@@ -176,6 +176,9 @@ export const MIGRACIONES: Record<number, (partida: Datos) => Datos> = {
   // 7 → 8 (Fase 19): el presupuesto en dinero (población activa, prestación por parado, subida de
   // las pensiones, presupuesto en vigor y referencia). Se completa al cargar (completarPresupuesto).
   7: (partida) => ({ ...partida, formato: 8 }),
+  // 8 → 9 (Fase 20): el calendario de vencimientos de la deuda y el Tesoro. Se completa al cargar
+  // (completarPresupuesto): la deuda vence como la de 2010 y el Tesoro empieza automático.
+  8: (partida) => ({ ...partida, formato: 9 }),
 };
 
 /** Lleva una partida de cualquier formato anterior al actual. */

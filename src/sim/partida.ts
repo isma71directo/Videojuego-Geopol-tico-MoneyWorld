@@ -29,9 +29,10 @@ import {
  *  - 5: v0.17.0: el paro y la inflación en la economía (Fase 16).
  *  - 6: v0.18.0: el presupuesto de cada país (Fase 17).
  *  - 7: v0.19.0: el mercado de la deuda de cada país (Fase 18).
- *  - 8: v0.20.0 en adelante: el presupuesto en dinero y fijo hasta que se decida (Fase 19).
+ *  - 8: v0.20.x: el presupuesto en dinero y fijo hasta que se decida (Fase 19).
+ *  - 9: v0.21.0 en adelante: la deuda por emisiones y el Tesoro (Fase 20).
  */
-export const FORMATO_PARTIDA = 8;
+export const FORMATO_PARTIDA = 9;
 
 export const FECHA_INICIO = '2010-01-01';
 /** La partida empieza a medianoche (hora local de la capital del jugador, tarea f11-t1). */

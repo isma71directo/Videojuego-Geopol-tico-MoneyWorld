@@ -89,8 +89,7 @@
     "presupuesto": {
       "icono": "presupuesto",
       "pestanas": {
-        "partidas": 19,
-        "deuda": 20
+        "partidas": 19
       }
     },
     "impuestos": {
@@ -255,7 +254,10 @@
     "economia": {
       "icono": "hacienda",
       "faseAcciones": 18,
-      "infraestructuras": false
+      "infraestructuras": false,
+      "pestanasExtra": {
+        "deuda": 20
+      }
     },
     "exteriores": {
       "icono": "diplomacia",

@@ -9,6 +9,7 @@
  * es e elevada al riesgo; el tipo de mercado, un tipo base (provisional hasta el banco central de
  * la Fase 23) más la inflación esperada y la prima; y el rating, según la prima. Motor puro.
  */
+import type { AyudaDeuda, NegociacionDeuda } from './acreedores';
 import config from './config/deuda.json';
 import { durezaDe, pibNominal, type EconomiaPais } from './economia';
 import type { Sistema } from './motor';
@@ -20,6 +21,7 @@ import {
   PARTIDAS,
   saldo,
   totalIngresos,
+  ponerTiposDelTesoro,
   type PresupuestoPais,
 } from './presupuesto';
 import { horaAbsoluta, momentoDe } from './reloj';
@@ -175,6 +177,10 @@ export interface MercadoDeuda {
   programa: ProgramaCrisis | null;
   /** Recargo de la prima tras un impago (puntos), que se apaga. */
   recargo: number;
+  /** La última negociación con los acreedores (tarea f20-t3), o null. */
+  negociacion: NegociacionDeuda | null;
+  /** La última ayuda pedida (tarea f20-t3), o null. */
+  ayuda: AyudaDeuda | null;
   /** Lo que no cambia hasta otras fases: estabilidad política, déficit exterior y región. */
   estabilidad: number;
   deficitExterior: number;
@@ -234,6 +240,8 @@ export function mercadoInicial(
     rating: 'AAA',
     cerrado: false,
     programa: null,
+    negociacion: null,
+    ayuda: null,
     recargo: 0,
     estabilidad: de2010.estabilidad,
     deficitExterior: de2010.deficitExterior,
@@ -257,6 +265,7 @@ export function mercadoInicial(
   // Lo que pesa en el crédito: la de 2010 es la referencia.
   economia.primaRiesgo = mercado.prima;
   economia.primaReferencia = mercado.prima;
+  ponerTiposDelTesoro(mercado, presupuesto);
   return mercado;
 }
 
@@ -311,25 +320,22 @@ export function avanzarMercado(
   mercado.ajuste *= Math.pow(0.5, 1 / m.mesesAjuste);
   const extra = Math.min(c.maximo, contagio * vulnerabilidad(f));
   mercado.recargo *= Math.pow(0.5, 1 / k.mesesRecargo);
+  // Mientras llega una ayuda, respalda al país: la prima que se pide baja (tarea f20-t3).
+  const ayuda = mercado.ayuda;
+  const respaldo =
+    ayuda && ayuda.retirada === null && ayuda.tramosRestantes > 0 ? ayuda.respaldo : 0;
   const objetivo = Math.min(
     config.primaMaxima,
-    Math.exp(riesgoPais(f) + extra) + mercado.ajuste + mercado.recargo,
+    (Math.exp(riesgoPais(f) + extra) + mercado.ajuste + mercado.recargo) * (1 - respaldo),
   );
   mercado.prima = Math.max(0, mercado.prima + (objetivo - mercado.prima) * m.reaccionMensual);
   mercado.tipoMercado = tipoDeMercado(mercado.prima, economia.inflacionEsperada);
-  // La deuda que vence este mes y la nueva se pagan al tipo de ahora: el tipo medio se acerca.
-  // (Con un rescate del FMI, al tipo del FMI; en un impago no se renueva nada: lo que se debe
-  // sigue al tipo que tenía.)
-  const deuda = presupuesto.deuda;
-  const nueva = Math.max(0, deuda - mercado.deudaVista);
-  const vence = deuda / (12 * m.vidaMedia);
-  const tipoNuevo = mercado.programa?.tipo === 'fmi' ? k.tipoFmi : mercado.tipoMercado;
+  // Lo que pide el mercado este mes por cada plazo de la deuda (tarea f20-t1): el Tesoro emite a
+  // esos tipos el mes que viene. (Con un rescate del FMI, al tipo del FMI; en un impago no se
+  // pagan intereses.)
   const enImpago = mercado.programa?.tipo === 'impago';
-  if (deuda > 0 && !enImpago) {
-    const parte = Math.min(1, (nueva + vence) / deuda);
-    presupuesto.tipoInteres += (tipoNuevo / 100 - presupuesto.tipoInteres) * parte;
-  }
-  mercado.deudaVista = deuda;
+  ponerTiposDelTesoro(mercado, presupuesto);
+  mercado.deudaVista = presupuesto.deuda;
   if (enImpago) mercado.rating = 'D';
   else if (economia.meses % m.mesesRevision === 0 || mercado.rating === 'D') {
     mercado.rating = revisarRating(
@@ -453,9 +459,11 @@ export function empezarSalida(
   mercado.programa = { tipo: 'impago', meses: k.mesesImpago, tipoInteres: presupuesto.tipoInteres };
   mercado.rating = 'D';
   presupuesto.deuda *= 1 - k.quita;
+  presupuesto.vencimientos = presupuesto.vencimientos.map((v) => v * (1 - k.quita));
   presupuesto.tipoInteres = 0;
   presupuesto.transversales.intereses = 0;
   mercado.deudaVista = presupuesto.deuda;
+  ponerTiposDelTesoro(mercado, presupuesto);
   economia.confianzaEmpresas -= k.confianzaImpagoEmpresas;
   economia.confianzaConsumidores -= k.confianzaImpagoConsumidores;
 }
@@ -527,6 +535,18 @@ export function gestionarCrisis(
   presupuesto: PresupuestoPais,
   opciones: { esJugador: boolean; decision?: SalidaCrisis; dureza?: number },
 ): boolean {
+  const preguntar = crisisDelMes(mercado, economia, presupuesto, opciones);
+  // El Tesoro emite el mes que viene con lo que haya quedado (rescate, impago o mercados).
+  ponerTiposDelTesoro(mercado, presupuesto);
+  return preguntar;
+}
+
+function crisisDelMes(
+  mercado: MercadoDeuda,
+  economia: EconomiaPais,
+  presupuesto: PresupuestoPais,
+  opciones: { esJugador: boolean; decision?: SalidaCrisis; dureza?: number },
+): boolean {
   const dureza = opciones.dureza ?? 1;
   const programa = mercado.programa;
   if (!programa) {
@@ -593,6 +613,11 @@ export function completarMercado(
   paises: Record<string, PaisParaMercado>,
 ): Partida {
   for (const [id, estado] of Object.entries(partida.paises)) {
+    // Lo que añadió la tarea f20-t3 (partidas de la v0.20).
+    if (estado.mercado && estado.mercado.ayuda === undefined) {
+      estado.mercado.ayuda = null;
+      estado.mercado.negociacion = null;
+    }
     if (estado.mercado !== undefined) continue;
     const pais = paises[id];
     estado.mercado =
@@ -605,5 +630,8 @@ export function completarMercado(
 
 /** ¿Le falta el mercado de su deuda a algún país? (Partidas de antes de la Fase 18.) */
 export function faltaMercado(partida: Pick<Partida, 'paises'>): boolean {
-  return Object.values(partida.paises).some((estado) => estado.mercado === undefined);
+  return Object.values(partida.paises).some(
+    (estado) =>
+      estado.mercado === undefined || (estado.mercado && estado.mercado.ayuda === undefined),
+  );
 }

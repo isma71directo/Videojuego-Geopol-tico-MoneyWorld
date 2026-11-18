@@ -7,6 +7,53 @@ Aquí se anota lo nuevo de cada versión del juego. El formato sigue
 La versión tiene una sola fuente, `package.json`. `roadmap.json` (`versionActual` e `historial`)
 y este archivo deben coincidir con ella; los tests lo comprueban.
 
+## 0.21.0 - 2026-11-18
+
+Fase 20: deuda y Tesoro jugables (decisiones del jugador: en el Ministerio de Economía y Hacienda;
+Tesoro automático que se puede apagar; negociación por rondas de oferta y contraoferta; ayuda del
+FMI, del fondo de la zona euro y de países con superávit).
+
+### Añadido
+
+- **La deuda por emisiones:**
+  - letras a 1 año y bonos a 5 y a 10 años, cada plazo con su tipo (las letras, más baratas, hay
+    que renovarlas antes);
+  - calendario de vencimientos de 10 años, mes a mes (la deuda de 2010 vence con una vida media de
+    unos 5 años, estimada);
+  - cada mes el saldo pasa por la tesorería y se paga lo que vence.
+- **El Tesoro automático** emite lo que falta para un mes de gasto, con el reparto de plazos que se
+  elija, y paga antes si sobra. Se puede apagar: si la tesorería se acaba, el país deja de pagar.
+- **Emitir y recomprar a mano.** La recompra, al precio de la deuda en el mercado (por encima de su
+  valor si el mercado pide menos de lo que paga).
+- **Pestaña «Deuda y Tesoro» en la ventana del Ministerio de Economía y Hacienda:**
+  - la deuda, su tipo medio, la vida media, la tesorería, el rating y la prima;
+  - lo que pide hoy el mercado por cada plazo;
+  - el calendario de vencimientos, que crece barra a barra;
+  - el Tesoro automático y su reparto, emitir y recomprar, y los cambios pendientes.
+- **Negociar con los acreedores por rondas:** más plazo, menos interés o una quita. Aceptan,
+  contraofertan o rechazan según el riesgo de impago que ven; tres rondas en el mes. Un acuerdo
+  sube la prima de después; romper, también. No se repite en 12 meses.
+- **Pedir ayuda antes de la crisis:**
+  - la línea preventiva del FMI;
+  - el fondo de rescate del euro, para sus miembros desde mayo de 2010;
+  - préstamos de los países con más superávit.
+
+  Cada una llega en tramos, baja la prima mientras llega y, si pide bajar el déficit y no se cumple,
+  se retira.
+
+- **La IA** pide ayuda, recorta hasta cumplir su objetivo de déficit y negocia más plazo cuando la
+  prima se acerca al cierre.
+- **Alertas** «Sin dinero en la tesorería» (grave), «Queda poca tesorería» y «Retiran la ayuda»,
+  con icono y sonido.
+- **Sonidos** de la subasta del Tesoro y de la negociación (acuerdo, contraoferta, rechazo y
+  ruptura).
+
+### Cambiado
+
+- Las partidas guardadas pasan al formato 9. Las de la v0.20 se completan al cargar: la deuda vence
+  como la de 2010 y el Tesoro empieza automático.
+- Gobierno › Presupuesto ya no anuncia una pestaña de deuda: está en Economía y Hacienda.
+
 ## 0.20.1 - 2026-11-18
 
 Ajustes de la Fase 19 (decisiones del jugador tras ver la v0.20.0): el presupuesto de cada

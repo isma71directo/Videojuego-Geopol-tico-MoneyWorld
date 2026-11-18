@@ -88,6 +88,7 @@ import programas from './iconos/programas.svg?raw';
 import pensiones from './iconos/pensiones.svg?raw';
 import prima from './iconos/prima.svg?raw';
 import rating from './iconos/rating.svg?raw';
+import tesoreria from './iconos/tesoreria.svg?raw';
 import ejercito from './iconos/ejercito.svg?raw';
 import mas from './iconos/mas.svg?raw';
 import ministros from './iconos/ministros.svg?raw';
@@ -212,6 +213,8 @@ const ICONOS = {
   pensiones,
   rating,
   prima,
+  // Tesoro (tarea f20-t1).
+  tesoreria,
   // Regímenes políticos (tarea f8-t3).
   'regimen-parlamentario': regimenParlamentario,
   'regimen-presidencial': regimenPresidencial,

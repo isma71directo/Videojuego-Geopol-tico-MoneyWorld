@@ -38,6 +38,9 @@ import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
 import { distintivoRating } from '../src/ui/rating';
 import { editorPresupuesto } from '../src/ui/presupuesto-editable';
 import { presupuestoMinisterio } from '../src/ui/presupuesto-ministerio';
+import { deudaTesoro } from '../src/ui/deuda-tesoro';
+import { ofertasDeAyuda } from '../src/sim/acreedores';
+import { ponerNombresDePaises } from '../src/ui/cambios-presupuesto';
 import { fechaDelMes, haciendaDelMes } from '../src/sim/hacienda';
 import type { CambioPresupuesto } from '../src/sim/presupuesto';
 import {
@@ -272,6 +275,10 @@ const EJEMPLO_ALERTA: Record<TipoAlerta, number> = {
   crisisDeuda: 16.4,
   ratingBaja: 6.3,
   ratingSube: 2.1,
+  // (La tesorería, en dólares.)
+  sinTesoreria: -4.2e9,
+  tesoreriaBaja: 11.8e9,
+  ayudaRetirada: 9.6e9,
 };
 /** La nota de ejemplo de las alertas del rating. */
 const EJEMPLO_RATING: Partial<Record<TipoAlerta, string>> = { ratingBaja: 'BB-', ratingSube: 'A' };
@@ -442,6 +449,7 @@ function guardarCargar(conjunto: ConjuntoPaises): HTMLElement {
  * Economía, con los datos reales de 2010 de cuatro países, para verlo crecer año a año.
  */
 function economia(conjunto: ConjuntoPaises): HTMLElement {
+  ponerNombresDePaises((id) => conjunto.paises[id]?.nombre);
   const PAISES = ['ESP', 'CHN', 'GRC', 'USA'];
   let paisId = PAISES[0]!;
   let actual: EconomiaPais | null = null;
@@ -503,6 +511,20 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
       },
     });
   let ministerio = crearMinisterio();
+  // Y Economía y Hacienda › Deuda y Tesoro (tarea f20-t2).
+  const crearTesoro = () =>
+    deudaTesoro({
+      fuente: fuentePresupuesto,
+      ordenar: (cambios) => {
+        pendientes.push(...cambios);
+      },
+      // (Aquí, sin el resto del mundo: el FMI y, en el euro, su fondo; tarea f20-t3.)
+      ofertas: () =>
+        actual && presupuesto && mercado
+          ? ofertasDeAyuda(paisId, { [paisId]: { economia: actual, presupuesto, mercado } }, fecha)
+          : [],
+    });
+  let tesoro = crearTesoro();
   const contenedor = el(
     'div',
     { class: 'galeria__economia' },
@@ -510,6 +532,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
     bloqueP.elemento,
     editor.elemento,
     ministerio.elemento,
+    tesoro.elemento,
   );
   /** Rehace los bloques (con sus gráficos animados) al cambiar de país o volver a 2010. */
   const rehacer = (): void => {
@@ -518,11 +541,13 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
     pendientes = [];
     editor = crearEditor();
     ministerio = crearMinisterio();
+    tesoro = crearTesoro();
     contenedor.replaceChildren(
       bloque.elemento,
       bloqueP.elemento,
       editor.elemento,
       ministerio.elemento,
+      tesoro.elemento,
     );
   };
   const boton = (texto: string, hacer: () => void): HTMLButtonElement => {
@@ -575,6 +600,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
         bloqueP.actualizar();
         editor.actualizar();
         ministerio.actualizar();
+        tesoro.actualizar();
       }),
       boton(t('galeria.economia.reiniciar'), () => {
         empezar();
