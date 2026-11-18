@@ -1,13 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.0",
-  "actualizado": "2026-11-18T08:02:54Z",
+  "actualizado": "2026-11-18T08:39:24Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 cerrada como v0.20.0 (presupuesto jugable): presupuesto en dinero y fijo hasta que se decida, anual con prórroga, IA con presupuestos según su situación, Pantalla «Presupuesto» editable con previsión a 12 meses, y sonidos y sello al aprobar. PR abierto.",
-    "siguientePaso": "Cuando el jugador fusione el PR de la v0.20.0: presentar el plan de la Fase 20 (deuda y Tesoro jugables: emitir, amortizar y recomprar, negociar y pedir ayuda) y preguntarle las decisiones de diseño.",
-    "pendienteDelJugador": ["Probar la v0.20.0 en el PC (ver el PR) y fusionarlo"]
+    "resumen": "El jugador vio la v0.20.0 (PR #39, sin fusionar): el presupuesto de cada ministerio debe decidirse en su ventana, como en Power & Revolution (cifras y %: empleados, sueldos, puestos nuevos…), y cada cambio valer según la acción. Gobierno › Presupuesto queda para ver y un ajuste general. Decidido y apuntado en el GDD; ajustes f19-a1 a f19-a3 (v0.20.1) en el mismo PR.",
+    "siguientePaso": "f19-a1: motor de empleados públicos, sueldos y cambios con su plazo.",
+    "pendienteDelJugador": []
   },
   "etapas": [
     {
@@ -1165,6 +1165,35 @@
           "estado": "hecha",
           "fecha": "2026-11-18",
           "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/3c9f529"
+        }
+      ],
+      "ajustes": [
+        {
+          "id": "f19-a1",
+          "titulo": "Motor: empleados públicos y sueldos por ministerio (estimados) y cambios de presupuesto con su plazo (anual en enero, extraordinario el mes siguiente, puestos nuevos tras la oposición, despidos con indemnización); los puestos nuevos sacan gente del paro",
+          "version": "0.20.1",
+          "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
+          "estado": "en-curso",
+          "fecha": "2026-11-18",
+          "enlace": ""
+        },
+        {
+          "id": "f19-a2",
+          "titulo": "Gobierno › Presupuesto, la vista general: resumen, previsión, lista de ministerios (abre su ministerio) y un ajuste general de todo el gasto con su plazo",
+          "version": "0.20.1",
+          "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
+        },
+        {
+          "id": "f19-a3",
+          "titulo": "Pestaña «Presupuesto» de cada ministerio, como en Power & Revolution: empleados, sueldos, puestos nuevos o despidos, inversión, compras y programas, en cifras y en %; pensiones y prestación por desempleo en Trabajo y Seguridad Social",
+          "version": "0.20.1",
+          "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
+          "estado": "pendiente",
+          "fecha": null,
+          "enlace": ""
         }
       ]
     },

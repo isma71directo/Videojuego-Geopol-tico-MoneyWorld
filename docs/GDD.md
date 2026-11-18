@@ -466,6 +466,25 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - Al aprobar el presupuesto suena el golpe de un sello y un acorde mayor, y un sello «Aprobado» cae sobre el botón y se desvanece.
 - Los tres sonidos, en la galería (Sonidos).
 
+**Decisiones del jugador (18/11/2026, tras ver la v0.20.0: el presupuesto de cada ministerio, en su ministerio; ajustes f19-a1 a f19-a3, v0.20.1):**
+- **Gobierno › Presupuesto es la vista general:**
+  - el resumen, la previsión a 12 meses y la lista de ministerios con su presupuesto (solo para ver; un clic abre el ministerio);
+  - un único ajuste general: subir o bajar todo el gasto de los ministerios en un %, con atajos (con el IPC, congelar y recortar).
+- **Cada ministerio decide su presupuesto en su ventana** (pestaña «Presupuesto»), como en Power & Revolution, en porcentajes y en cifras:
+  - empleados públicos y sueldo medio (estimados);
+  - nuevos puestos o despidos;
+  - subida de los sueldos;
+  - inversión, compras y mantenimiento, y programas.
+- **Cada cambio vale cuando le toca, según lo que sea:**
+  - una subida anual, desde el 1 de enero;
+  - una subida o un recorte extraordinarios, desde el mes siguiente;
+  - los puestos nuevos, cuando acaba la oposición (unos meses después, según el país);
+  - los despidos, desde el mes siguiente, con su indemnización;
+  - una compra, el mes siguiente;
+  - una obra, a medida que se construye. Las obras llegan con la Fase 36; hasta entonces, la inversión es una partida que se sube o se baja.
+- **Puestos públicos y paro:** los puestos nuevos sacan gente del paro (parte de ellos los ocupan parados) cuando acaba la oposición. Los despidos la devuelven al paro. Mientras no existan las leyes (Fase 67), la duración de las oposiciones depende del nivel de renta: es ESTIMADA y provisional.
+- **La subida de las pensiones y la prestación por desempleo** se deciden en Trabajo y Seguridad Social.
+
 
 ### 6.3 Impuestos
 
@@ -2431,6 +2450,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Crisis de deuda concretada al programarla (tarea f18-t3): en el impago, moratoria de intereses durante 4 años y recortes también de las pensiones hasta cerrar el déficit; el ajuste del FMI es proporcional al déficit que sobra; si un rescate acaba con los mercados cerrados, se vuelve a elegir; el impago contagia y el rescate hace de cortafuegos; si el jugador cierra la ventana sin elegir, se le pregunta el mes siguiente; desaparece la fila «Ajuste forzoso» de la ficha | Calibración de la tarea f18-t3 (con el diseño aprobado por el jugador) | 6.2, 9 |
 | 18/11/2026 | Hacienda jugable y nuevo orden: el presupuesto se ve en dinero y en % del total (el % del PIB, en la ayuda); el gasto de los ministerios queda fijo en dinero hasta que se decida; deuda jugable (emitir, amortizar y recomprar, negociar y pedir ayuda preventiva); la Fase 19 pasa a ser el presupuesto jugable y la 20 la deuda jugable, los impuestos se adelantan a las 21 y 22, el banco central se junta con la pantalla de Economía en la 23, la moneda pasa a la 24 y los bancos a la 25; regla 21 (jugable en cada fase) | Prueba de la v0.18.0 por el jugador («falta jugabilidad»; «el presupuesto no es un % del PIB») | 6.2, 9, 11, 13 |
 | 18/11/2026 | Fase 19 concretada con el jugador: presupuesto anual con cambios a mitad de año y prórroga; cada ministerio con sus 4 partidas; la subida de las pensiones y la prestación por parado también se deciden; la IA aprueba su presupuesto según su situación; la fase sigue con 4 tareas | Plan de la Fase 19 aprobado por el jugador | 6.2, 9, 13 |
+| 18/11/2026 | Presupuesto de cada ministerio en su ventana (ajustes f19-a1 a f19-a3, v0.20.1): Gobierno › Presupuesto queda para ver y para un ajuste general; cada ministerio decide el suyo en su pestaña «Presupuesto», como en Power & Revolution, con cifras (empleados, sueldos, puestos nuevos) y porcentajes; cada cambio vale cuando le toca (anual en enero, extraordinario el mes siguiente, puestos tras la oposición, despidos con indemnización, obras según se construyen desde la Fase 36); los puestos nuevos sacan gente del paro; pensiones y prestación por desempleo, en Trabajo y Seguridad Social | Mensaje del jugador tras ver la v0.20.0 (PR #39) | 6.2, 9, 13 |
 
 ---
 
@@ -2463,6 +2483,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Deuda, prima y rating | Datos: fórmula + tipos reales / solo fórmula / ratings a mano; intereses: poco a poco / al momento; crisis: elegir FMI o impago / siempre FMI / siempre impago; efectos: crédito más caro, contagio, huida de capitales | **Decidido por el jugador (17/11/2026):** fórmula calibrada con los tipos reales de 2010 de la OCDE (40 países); la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago (la IA, según su situación); crédito más caro y contagio |
 | Hacienda jugable | Mostrar: dinero y % del total / dinero y % de los ingresos / solo dinero; gasto: fijo hasta que se decida / actualizado con el IPC / con la economía; deuda: emitir, amortizar y recomprar, negociar, ayuda preventiva; orden: ya y reordenar / ya sin reordenar / solo corregir el dinero | **Decidido por el jugador (18/11/2026):** dinero y % del total (el % del PIB, en la ayuda); gasto fijo en dinero hasta que se decida (pensiones con los precios); las cuatro acciones con la deuda; Fases 19 (presupuesto jugable) y 20 (deuda jugable) ya, y la hoja de ruta reordenada para que cada fase traiga decisiones (regla 21) |
 | Presupuesto jugable | Cuándo: anual con cambios / en cualquier momento / solo en enero; detalle: ministerio y partidas / ministerio / bloques; pensiones y paro: sí / no; IA: según su situación / siempre prorrogan | **Decidido por el jugador (18/11/2026):** anual con cambios a mitad de año y prórroga; ministerio y sus 4 partidas; pensiones y paro también; la IA, según su situación |
+| Presupuesto por ministerio | General: ver y ajuste general / solo ver; ministerio: total y reparto / solo total / total y partidas / como Power & Revolution con cifras; cuándo vale: mes siguiente / se aprueba junto / según la acción; pensiones: en Trabajo / en general; empleo público: puestos que salen del paro / solo por la economía | **Decidido por el jugador (18/11/2026):** Gobierno › Presupuesto, para ver y el ajuste general; cada ministerio, en su pestaña «Presupuesto», con cifras y porcentajes (empleados, sueldos, puestos nuevos…); cada cambio vale según la acción (anual en enero, extraordinario el mes siguiente, puestos tras la oposición, obras según se construyen); los puestos nuevos sacan gente del paro tras la oposición; pensiones y prestación, en Trabajo y Seguridad Social |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |
