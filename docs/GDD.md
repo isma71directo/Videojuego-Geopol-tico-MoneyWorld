@@ -410,6 +410,12 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Deuda jugable (Fase 20):** emitir a mano, amortizar y recomprar, negociar con los acreedores y pedir ayuda antes de la crisis.
 - **Nuevo orden de la hoja de ruta:** desde la Fase 19, cada fase trae decisiones del jugador (regla 21; sección 9).
 
+**Decisiones del jugador (18/11/2026, plan de la Fase 19: presupuesto jugable):**
+- **Presupuesto anual con cambios a mitad de año:** se aprueba el del año y se puede modificar; cada cambio vale desde el mes siguiente. Si llega enero sin presupuesto nuevo, se prorroga el anterior.
+- **Detalle:** cada ministerio con un deslizador y, desplegado, uno por cada una de sus 4 partidas.
+- **Pensiones y paro también se deciden:** la subida anual de las pensiones (por defecto, el IPC) y la prestación de cada parado. Las reformas a fondo, con la Fase 31.
+- **La IA, según su situación:** cada enero, con margen sube el gasto con la inflación; con un déficit alto, lo congela; con la prima cerca del cierre de los mercados, recorta; con superávit, gasta algo más. Copiar los presupuestos reales de 2011-2014 de los 190 países no es posible: no hay datos abiertos completos.
+
 
 ### 6.3 Impuestos
 
@@ -1136,16 +1142,17 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 
 #### Fase 19 — v0.20.0 · Presupuesto jugable
 **Objetivo:** el jugador decide el presupuesto, en dinero.
-**Tareas** (decisiones del jugador del 18/11/2026: en dinero y en % del total; el gasto, fijo hasta que se decida)
-1. Presupuesto en dinero:
+**Tareas** (decisiones del jugador del 18/11/2026: en dinero y en % del total; el gasto, fijo hasta que se decida; presupuesto anual con cambios a mitad de año; cada ministerio con sus 4 partidas; pensiones y paro también; la IA, según su situación)
+1. El presupuesto en dinero, en el motor:
    - el gasto de los ministerios queda fijo en dinero hasta que se decida otro (ya no crece solo con la economía; con la inflación, compra menos);
-   - las pensiones suben con los precios, por ley;
-   - en pantalla, todo en dinero y en % del total (cada ingreso, de lo recaudado; cada gasto, de lo gastado). El % del PIB, en la ayuda, para comparar países.
-2. Los gobiernos de la IA aprueban su presupuesto cada año, según su situación.
-3. Pantalla «Presupuesto» editable:
-   - deslizadores por ministerio y partida;
-   - previsión a 12 meses y comparación con el año anterior;
-   - prórroga si no se aprueba (preparada para cuando exista el parlamento).
+   - las pensiones suben cada año lo que se decida (por defecto, el IPC) y cada parado cobra su prestación;
+   - presupuesto anual con modificaciones durante el año, que valen desde el mes siguiente; si llega enero sin presupuesto nuevo, se prorroga el anterior (preparado para cuando exista el parlamento);
+   - los gobiernos de la IA aprueban el suyo cada enero, según su situación: con margen, suben el gasto con la inflación; con un déficit alto, lo congelan; si la prima se acerca al cierre de los mercados, recortan; con superávit, gastan algo más.
+2. Pantalla «Presupuesto» editable, y todo en dinero:
+   - un deslizador por ministerio y, al desplegarlo, uno por cada una de sus 4 partidas (la inversión crea capital; el personal y el mantenimiento son consumo público; los programas llegan a los hogares);
+   - la subida anual de las pensiones y la prestación de cada parado;
+   - en la pantalla, en la ficha y en Gobierno › Presupuesto, todo en dinero y en % del total (cada ingreso, de lo recaudado; cada gasto, de lo gastado). El % del PIB, en la ayuda, para comparar países.
+3. Previsión a 12 meses (déficit, deuda y prima si no cambia nada más) y comparación con el año anterior.
 4. **Audiovisual:** deslizadores con respuesta visual y sonora; animación y sonido al aprobar el presupuesto.
 
 **Tests:**
@@ -1153,6 +1160,7 @@ La ficha y el panel del país pasan a los componentes nuevos en la Fase 8, que r
 - Recortar baja la demanda y sube el paro.
 - Gastar más sin ingresos sube la deuda y la prima.
 - Con la inflación, un gasto congelado compra menos.
+- Subir las pensiones por encima del IPC sube el consumo y el déficit.
 
 **Prueba en el PC:** con España, recortar y subir partidas y ver en 12 meses el déficit, la deuda y la prima.
 **Hecho cuando:** el presupuesto se decide en dinero y sus efectos son coherentes.
@@ -2372,6 +2380,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | 17/11/2026 | Fase 18 concretada con el jugador: rating y prima con fórmula calibrada con los tipos reales de 2010 de la OCDE; la prima encarece la deuda poco a poco (vida media); en una crisis de deuda se elige entre el rescate del FMI y el impago; una prima alta encarece el crédito y se contagia; sustituye al ajuste forzoso provisional; la fase pasa a 4 tareas | Plan de la Fase 18 aprobado por el jugador | 6.2, 9, 13 |
 | 17/11/2026 | Crisis de deuda concretada al programarla (tarea f18-t3): en el impago, moratoria de intereses durante 4 años y recortes también de las pensiones hasta cerrar el déficit; el ajuste del FMI es proporcional al déficit que sobra; si un rescate acaba con los mercados cerrados, se vuelve a elegir; el impago contagia y el rescate hace de cortafuegos; si el jugador cierra la ventana sin elegir, se le pregunta el mes siguiente; desaparece la fila «Ajuste forzoso» de la ficha | Calibración de la tarea f18-t3 (con el diseño aprobado por el jugador) | 6.2, 9 |
 | 18/11/2026 | Hacienda jugable y nuevo orden: el presupuesto se ve en dinero y en % del total (el % del PIB, en la ayuda); el gasto de los ministerios queda fijo en dinero hasta que se decida; deuda jugable (emitir, amortizar y recomprar, negociar y pedir ayuda preventiva); la Fase 19 pasa a ser el presupuesto jugable y la 20 la deuda jugable, los impuestos se adelantan a las 21 y 22, el banco central se junta con la pantalla de Economía en la 23, la moneda pasa a la 24 y los bancos a la 25; regla 21 (jugable en cada fase) | Prueba de la v0.18.0 por el jugador («falta jugabilidad»; «el presupuesto no es un % del PIB») | 6.2, 9, 11, 13 |
+| 18/11/2026 | Fase 19 concretada con el jugador: presupuesto anual con cambios a mitad de año y prórroga; cada ministerio con sus 4 partidas; la subida de las pensiones y la prestación por parado también se deciden; la IA aprueba su presupuesto según su situación; la fase sigue con 4 tareas | Plan de la Fase 19 aprobado por el jugador | 6.2, 9, 13 |
 
 ---
 
@@ -2403,6 +2412,7 @@ El GDD es un **documento vivo**: el jugador puede añadir, quitar o corregir cua
 | Presupuesto | Detalle: ministerios y partidas / grandes bloques / cada ministerio por dentro; datos: Banco Mundial + FMI / COFOG; evolución: responde a la economía / fijo en % del PIB; tesorería: déficit → deuda / tesorería sin deuda | **Decidido por el jugador (17/11/2026):** cada ministerio por dentro; Banco Mundial + FMI (lo demás, estimado y marcado); responde a la economía (estabilizadores automáticos); el déficit se cubre con deuda al tipo de 2010, con sus intereses en el gasto |
 | Deuda, prima y rating | Datos: fórmula + tipos reales / solo fórmula / ratings a mano; intereses: poco a poco / al momento; crisis: elegir FMI o impago / siempre FMI / siempre impago; efectos: crédito más caro, contagio, huida de capitales | **Decidido por el jugador (17/11/2026):** fórmula calibrada con los tipos reales de 2010 de la OCDE (40 países); la prima encarece la deuda poco a poco; en una crisis se elige entre el FMI y el impago (la IA, según su situación); crédito más caro y contagio |
 | Hacienda jugable | Mostrar: dinero y % del total / dinero y % de los ingresos / solo dinero; gasto: fijo hasta que se decida / actualizado con el IPC / con la economía; deuda: emitir, amortizar y recomprar, negociar, ayuda preventiva; orden: ya y reordenar / ya sin reordenar / solo corregir el dinero | **Decidido por el jugador (18/11/2026):** dinero y % del total (el % del PIB, en la ayuda); gasto fijo en dinero hasta que se decida (pensiones con los precios); las cuatro acciones con la deuda; Fases 19 (presupuesto jugable) y 20 (deuda jugable) ya, y la hoja de ruta reordenada para que cada fase traiga decisiones (regla 21) |
+| Presupuesto jugable | Cuándo: anual con cambios / en cualquier momento / solo en enero; detalle: ministerio y partidas / ministerio / bloques; pensiones y paro: sí / no; IA: según su situación / siempre prorrogan | **Decidido por el jugador (18/11/2026):** anual con cambios a mitad de año y prórroga; ministerio y sus 4 partidas; pensiones y paro también; la IA, según su situación |
 | Uso del 3D | Ninguno / solo componentes complementarios / también el mapa | **Decidido por el jugador (12/11/2026):** 3D donde sea posible y necesario para el juego; nada de 3D solo decorativo (no hay globo 3D). El mapa es 2D |
 | Aspecto del mapa | A: relieve con colores del terreno y profundidad del mar / B: imagen de satélite / C: efecto de volumen en 2D / D: vista inclinada en 3D real | **Decidido por el jugador (12/11/2026):** A + C, en la Fase 6. D queda como opción para más adelante, siempre con alternativa plana |
 | Regiones del mapa | Divisiones actuales / divisiones de 2010 | **Decidido por el jugador (12/11/2026):** las de 2010, agrupadas hasta unas 30 por país (Fase 5) |

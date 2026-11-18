@@ -1,11 +1,11 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.19.0",
-  "actualizado": "2026-11-18T07:18:40Z",
+  "actualizado": "2026-11-18T07:23:49Z",
   "faseActiva": "fase-19",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "El jugador probó la v0.18.0: falta jugabilidad («solo se abre una pestaña y se pasa el tiempo») y el presupuesto no debe medirse en % del PIB. Decidido: presupuesto en dinero y en % del total (el % del PIB, en la ayuda); gasto de los ministerios fijo en dinero hasta que se decida (pensiones con los precios); deuda jugable con cuatro acciones (emitir, amortizar y recomprar, negociar, ayuda preventiva). Hoja de ruta reordenada: Fase 19 presupuesto jugable, 20 deuda y Tesoro jugables, 21-22 impuestos, 23 banco central y pantalla de Economía, 24 moneda, 25 bancos. Regla 21: jugable en cada fase. PR #38 (v0.19.0) abierto, con este plan.",
+    "resumen": "El jugador probó la v0.18.0: falta jugabilidad («solo se abre una pestaña y se pasa el tiempo») y el presupuesto no debe medirse en % del PIB. Decidido: presupuesto en dinero y en % del total (el % del PIB, en la ayuda); gasto de los ministerios fijo en dinero hasta que se decida (pensiones con los precios); deuda jugable con cuatro acciones (emitir, amortizar y recomprar, negociar, ayuda preventiva). Hoja de ruta reordenada: Fase 19 presupuesto jugable, 20 deuda y Tesoro jugables, 21-22 impuestos, 23 banco central y pantalla de Economía, 24 moneda, 25 bancos. Regla 21: jugable en cada fase. PR #38 (v0.19.0) abierto, con este plan. Fase 19 concretada con el jugador: presupuesto anual con cambios a mitad de año y prórroga; cada ministerio con sus 4 partidas; pensiones y paro también se deciden; la IA, según su situación; 4 tareas.",
     "siguientePaso": "Cuando el jugador fusione el PR #38 y responda las preguntas del plan de la Fase 19 (presupuesto jugable), empezar f19-t1: presupuesto en dinero.",
     "pendienteDelJugador": [
       "Fusionar el PR #38 (v0.19.0, con el plan nuevo)",
@@ -1143,21 +1143,21 @@
       "tareas": [
         {
           "id": "f19-t1",
-          "titulo": "Presupuesto en dinero: el gasto de los ministerios, fijo hasta que se decida; las pensiones, con los precios; en pantalla, dinero y % del total (el % del PIB, en la ayuda)",
+          "titulo": "El presupuesto en dinero, en el motor: gasto fijo hasta que se decida, subida de las pensiones y prestación por parado, presupuesto anual con cambios y prórroga, y la IA según su situación",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f19-t2",
-          "titulo": "Los gobiernos de la IA aprueban su presupuesto cada año, según su situación",
+          "titulo": "Pantalla «Presupuesto» editable (ministerios y sus 4 partidas, pensiones y paro) y todo en dinero y % del total (el % del PIB, en la ayuda)",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
         },
         {
           "id": "f19-t3",
-          "titulo": "Pantalla «Presupuesto» editable: deslizadores por ministerio y partida, previsión a 12 meses, comparación con el año anterior y prórroga",
+          "titulo": "Previsión a 12 meses (déficit, deuda y prima) y comparación con el año anterior",
           "estado": "pendiente",
           "fecha": null,
           "enlace": ""
