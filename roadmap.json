@@ -1,14 +1,14 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.21.0",
-  "actualizado": "2026-11-18T10:01:48Z",
+  "actualizado": "2026-11-18T10:03:12Z",
   "faseActiva": "fase-21",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 20 cerrada (v0.21.0): la deuda por emisiones y el Tesoro, la pestaña «Deuda y Tesoro» en Economía y Hacienda, negociar con los acreedores por rondas, pedir ayuda (FMI, fondo del euro, países con superávit) y su audiovisual. PR abierto para que el jugador lo pruebe.",
-    "siguientePaso": "Cuando el jugador fusione el PR y lo pruebe: presentar el plan de la Fase 21 (impuestos: modelo y tipos) y preguntarle las decisiones de diseño.",
+    "resumen": "Fase 20 cerrada (v0.21.0): la deuda por emisiones y el Tesoro, la pestaña «Deuda y Tesoro» en Economía y Hacienda, negociar con los acreedores por rondas, pedir ayuda (FMI, fondo del euro, países con superávit) y su audiovisual. PR #41 abierto para que el jugador lo pruebe.",
+    "siguientePaso": "Cuando el jugador fusione el PR #41: presentar el plan de la Fase 21 (impuestos: modelo y tipos) y preguntarle las decisiones de diseño.",
     "pendienteDelJugador": [
-      "Probar la v0.21.0 en el PC (ver «Prueba en el PC» del PR) y fusionar el PR"
+      "Probar la v0.21.0 en el PC (ver «Prueba en el PC» del PR #41) y fusionarlo"
     ]
   },
   "etapas": [
@@ -1236,7 +1236,7 @@
           "titulo": "Audiovisual: calendario de vencimientos animado y sonidos de la subasta y de la negociación",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": ""
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/e2ddcc9"
         }
       ]
     },
