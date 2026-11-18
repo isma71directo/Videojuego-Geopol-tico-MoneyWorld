@@ -1,13 +1,13 @@
 {
   "$schema": "./roadmap.schema.json",
   "versionActual": "0.20.1",
-  "actualizado": "2026-11-18T08:57:10Z",
+  "actualizado": "2026-11-18T09:01:51Z",
   "faseActiva": "fase-20",
   "ultimaSesion": {
     "fecha": "2026-11-18",
-    "resumen": "Fase 19 cerrada como v0.20.1 (en el PR #39, que incluye la v0.20.0): presupuesto jugable, con la vista general en Gobierno › Presupuesto y el presupuesto de cada ministerio en su ventana, como en Power & Revolution (empleados, sueldos, puestos nuevos, inversión, compras y programas), y cada cambio con su plazo.",
-    "siguientePaso": "Cuando el jugador fusione el PR #39: presentar el plan de la Fase 20 (deuda y Tesoro jugables) y preguntarle las decisiones de diseño.",
-    "pendienteDelJugador": ["Probar la v0.20.1 en el PC (ver el PR #39) y fusionarlo"]
+    "resumen": "Fase 19 cerrada como v0.20.1 (PR #40; la v0.20.0 ya se fusionó en el #39): presupuesto jugable, con la vista general en Gobierno › Presupuesto y el presupuesto de cada ministerio en su ventana, como en Power & Revolution (empleados, sueldos, puestos nuevos, inversión, compras y programas), y cada cambio con su plazo.",
+    "siguientePaso": "Cuando el jugador fusione el PR #40: presentar el plan de la Fase 20 (deuda y Tesoro jugables) y preguntarle las decisiones de diseño.",
+    "pendienteDelJugador": ["Probar la v0.20.1 en el PC (ver el PR #40) y fusionarlo"]
   },
   "etapas": [
     {
@@ -1175,7 +1175,7 @@
           "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/b2ff137"
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/2f150aa"
         },
         {
           "id": "f19-a2",
@@ -1184,7 +1184,7 @@
           "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/6e6131d"
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/5ef389a"
         },
         {
           "id": "f19-a3",
@@ -1193,7 +1193,7 @@
           "origen": "Mensaje del jugador tras ver la v0.20.0 (PR #39): el presupuesto de cada ministerio, en su ministerio, como en Power & Revolution",
           "estado": "hecha",
           "fecha": "2026-11-18",
-          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/5ea5188"
+          "enlace": "https://github.com/isma71directo/Videojuego-Geopol-tico-MoneyWorld/commit/d2342b9"
         }
       ]
     },
