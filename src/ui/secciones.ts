@@ -58,6 +58,10 @@ export interface Ministerio {
 /** Prefijo de los elementos de la sub-barra que son ministerios. */
 export const PREFIJO_MINISTERIO = 'ministerio-';
 
+/** El elemento de la ventana de un ministerio («presidencia» o «ministerio-sanidad»). */
+export const elementoDeMinisterio = (id: string): string =>
+  id === 'presidencia' ? 'presidencia' : `${PREFIJO_MINISTERIO}${id}`;
+
 export const APARTADOS: readonly Apartado[] = config.apartados.map((apartado) => ({
   ...apartado,
   icono: apartado.icono as NombreIcono,

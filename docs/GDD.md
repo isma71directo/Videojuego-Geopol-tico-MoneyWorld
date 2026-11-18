@@ -498,6 +498,14 @@ Los datos los **descarga y procesa Claude Code** con scripts en `/scripts`. Cada
 - **Si llega enero con alguna subida anual, ese es el presupuesto del año;** si no, se prorroga.
 - **La previsión a 12 meses cuenta con los cambios ordenados hoy.**
 
+**La vista general (ajuste f19-a2):** Gobierno › Presupuesto tiene dos pestañas, «General» y «Cuentas y gráficos».
+- «General»:
+  - el resumen y la previsión a 12 meses;
+  - el ajuste general: todo el gasto de los ministerios del −20 % al +20 %, para el año que viene (desde el 1 de enero) o extraordinario (desde el mes siguiente), con atajos (con el IPC, recortar un 5 % y sin cambios);
+  - los cambios pendientes, cada uno con el día en que vale;
+  - la lista de los ministerios con su gasto, su parte del total y sus empleados (solo para ver): un clic abre su ventana.
+- Sustituye al editor con un deslizador por ministerio de la tarea f19-t2.
+
 
 ### 6.3 Impuestos
 

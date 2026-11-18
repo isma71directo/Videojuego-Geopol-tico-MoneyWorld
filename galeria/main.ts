@@ -37,7 +37,8 @@ import { bloqueEconomia } from '../src/ui/economia-en-vivo';
 import { bloquePresupuesto } from '../src/ui/presupuesto-en-vivo';
 import { distintivoRating } from '../src/ui/rating';
 import { editorPresupuesto } from '../src/ui/presupuesto-editable';
-import { fechaDelMes, haciendaDelMes, type PresupuestoDecidido } from '../src/sim/hacienda';
+import { fechaDelMes, haciendaDelMes } from '../src/sim/hacienda';
+import type { CambioPresupuesto } from '../src/sim/presupuesto';
 import {
   avanzarMercado,
   gestionarCrisis,
@@ -474,7 +475,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   let bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
   // Y el presupuesto nuevo (tarea f19-t2): lo aprobado se aplica al avanzar, como en la partida
   // (el día 1 del mes siguiente).
-  let pendiente: PresupuestoDecidido | null = null;
+  let pendientes: CambioPresupuesto[] = [];
   const crearEditor = () =>
     editorPresupuesto({
       fuente: () => ({
@@ -485,8 +486,8 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
         mercado,
         tesoreria: estado.tesoreria,
       }),
-      aprobar: (decidido) => {
-        pendiente = decidido;
+      ordenar: (cambios) => {
+        pendientes.push(...cambios);
       },
     });
   let editor = crearEditor();
@@ -501,7 +502,7 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
   const rehacer = (): void => {
     bloque = bloqueEconomia(() => ({ economia: actual, fecha }), { anchoGrafico: 520 });
     bloqueP = bloquePresupuesto(fuentePresupuesto, { completo: true, anchoGrafico: 520 });
-    pendiente = null;
+    pendientes = [];
     editor = crearEditor();
     contenedor.replaceChildren(bloque.elemento, bloqueP.elemento, editor.elemento);
   };
@@ -544,9 +545,10 @@ function economia(conjunto: ConjuntoPaises): HTMLElement {
             haciendaDelMes(presupuesto, actual, mercado, {
               esJugador: true,
               fecha: fechaDelMes(actual.meses),
-              decidido: pendiente ?? undefined,
+              cambios: pendientes,
+              estado,
             });
-            pendiente = null;
+            pendientes = [];
           }
         }
         fecha = `${Number(fecha.slice(0, 4)) + 1}-01-01`;

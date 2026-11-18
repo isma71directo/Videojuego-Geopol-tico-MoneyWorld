@@ -22,7 +22,13 @@ import { contenidoLeyenda } from './leyenda';
 import { crearSelectorCapas, POLITICA } from './selector-capas';
 import { abrirMenuContextual, menuAbierto, SEPARADOR, type OpcionMenu } from './componentes/menu';
 import { cerrarVentanas } from './componentes/ventana';
-import { crearBarraSecciones, ponerContenido, refrescarElemento } from './secciones';
+import {
+  abrirElemento,
+  crearBarraSecciones,
+  elementoDeMinisterio,
+  ponerContenido,
+  refrescarElemento,
+} from './secciones';
 import { contenidoEfectosEnCurso } from './efectos-en-curso';
 import { contenidoVentanaEconomia, refrescarEconomiaEnVivo } from './economia-en-vivo';
 import { contenidoVentanaPresupuesto, refrescarPresupuestoEnVivo } from './presupuesto-en-vivo';
@@ -649,7 +655,8 @@ ${t(`juego.decisiones.${decision.clave}.pregunta`)}`,
                 }
               );
             },
-            aprobar: (presupuesto) => motor?.enviar({ tipo: 'presupuesto', presupuesto }),
+            ordenar: (cambios) => motor?.enviar({ tipo: 'cambiosPresupuesto', cambios }),
+            abrirMinisterio: (ministerio) => abrirElemento(elementoDeMinisterio(ministerio)),
           }).elemento,
       ),
     );
